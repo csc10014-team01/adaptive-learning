@@ -51,10 +51,16 @@ skill = {
 get_all_skills() trả về list các skill
 # 5. Student
 # MVP 1
+
 student = {
 "student_id": "HS001",
 “name”: “Nguyễn Văn A”
     "grade_level": 11,
+    "skill_mastery":[
+        "skill_id": "A001",
+        "mastery_score": 3.4,
+        "evidence_count": 4
+    ]
     "learning_history": [
         {
             "test_id": "T001",

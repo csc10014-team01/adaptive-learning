@@ -1,12 +1,16 @@
 import sqlite3
+import csv
+import json
+import re
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "question_bank.db"
 
-conn = sqlite3.connect(DB_PATH)
+
 #Hàm trả về tập tất cả question
 def get_all_questions():
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -31,7 +35,7 @@ def get_all_questions():
 
         parts = cursor.fetchall()
         question["part"] = [dict(row) for row in parts]
-
+    conn.close()
     return questions
 
 #Hàm trả về 1 question
@@ -132,6 +136,7 @@ def get_answer(answer_id):
         return answer
 
 def get_all_terminology():
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -145,6 +150,8 @@ def get_all_terminology():
     rows = cursor.fetchall()
     # Chuyển mỗi dòng SQL thành Dictionary
     terminology = [dict(row) for row in rows]
+
+    conn.close()
 
     return terminology
 
@@ -160,6 +167,7 @@ def get_terminology(term):
         return dict(row) if row else None
 
 def get_all_skills():
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -173,7 +181,7 @@ def get_all_skills():
     rows = cursor.fetchall()
     # Chuyển mỗi dòng SQL thành Dictionary
     skills = [dict(row) for row in rows]
-
+    conn.close()
     return skills
 
 def get_skill(skill_id):
@@ -187,6 +195,59 @@ def get_skill(skill_id):
 
         return dict(row) if row else None
 
-print(get_all_answers())
 
+def get_question_template():
+    conn = None
 
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT *
+            FROM question_templates
+        """)
+
+        rows = cursor.fetchall()
+
+        templates = [dict(row) for row in rows]
+        return templates
+
+    except sqlite3.Error as e:
+        print(f"Lỗi khi đọc question_templates: {e}")
+        return []
+
+    finally:
+        if conn is not None:
+            conn.close()
+
+def get_question_template_by_id(template_id):
+    conn = None
+
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT *
+            FROM question_templates
+            WHERE template_id = ?
+        """, (template_id,))
+
+        row = cursor.fetchone()
+
+        if row is None:
+            return None
+
+        return dict(row)
+
+    except sqlite3.Error as e:
+        print(f"Lỗi khi đọc question_templates: {e}")
+        return None
+
+    finally:
+        if conn is not None:
+            conn.close()
+print(get_question_template_by_id("EA0001")['solution_rule'])
