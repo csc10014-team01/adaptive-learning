@@ -1,0 +1,113 @@
+{
+  "experiment": "Issue #6 local Qwen baseline spike",
+  "created_at_utc": "2026-10-19T16:49:16.055241+00:00",
+  "model": "qwen3:1.7b",
+  "ollama": {
+    "version": "0.40.6",
+    "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "size_bytes": 1359293444,
+    "quantization": "Q4_K_M"
+  },
+  "machine": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "python_version": "3.14.4",
+    "logical_cpu_cores": 16,
+    "nvidia_gpus": [],
+    "hostname_redacted": true
+  },
+  "measurement_limitations": "Only this machine's real run; system-level RAM/VRAM sampling is approximate, not model-specific.",
+  "runs": [
+    {
+      "case_id": "C01",
+      "input": {
+        "case_id": "C01",
+        "task": "choose_group",
+        "n": 8,
+        "k": 3,
+        "objects": "học sinh",
+        "context": "một lớp học",
+        "order_matters": false,
+        "replacement": false
+      },
+      "expected_answer": 56,
+      "created_at_utc": "2026-10-19T16:49:16.132649+00:00",
+      "api_duration_s": 5.403,
+      "ollama_metrics": {
+        "total_duration_s": 5.388,
+        "load_duration_s": 1.541,
+        "prompt_eval_count": 263,
+        "eval_count": 68,
+        "eval_duration_s": 2.405
+      },
+      "model_output": {
+        "question": "Lớp học có 8 học sinh. Cần chọn 3 học sinh để làm nhiệm vụ. Hỏi có bao nhiêu cách chọn?",
+        "task": "choose_group",
+        "n": 8,
+        "k": 3,
+        "answer": 56
+      },
+      "validation_errors": [],
+      "json_valid": true,
+      "status": "needs_teacher_review",
+      "resources": {
+        "ram_system_total_mib": 24118.2,
+        "ram_system_used_before_mib": 14679.3,
+        "ram_system_used_peak_mib": 16599.3,
+        "ram_system_peak_delta_mib": 1920.0,
+        "nvidia_vram_used_before_mib": null,
+        "nvidia_vram_used_peak_mib": null,
+        "nvidia_vram_peak_delta_mib": null,
+        "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples."
+      }
+    },
+    {
+      "case_id": "C02",
+      "input": {
+        "case_id": "C02",
+        "task": "assign_roles",
+        "n": 7,
+        "k": 3,
+        "objects": "học sinh",
+        "context": "một câu lạc bộ",
+        "roles": [
+          "trưởng nhóm",
+          "phó nhóm",
+          "thư ký"
+        ],
+        "order_matters": true,
+        "replacement": false
+      },
+      "expected_answer": 210,
+      "created_at_utc": "2026-10-19T16:49:21.557094+00:00",
+      "api_duration_s": 4.208,
+      "ollama_metrics": {
+        "total_duration_s": 4.193,
+        "load_duration_s": 0.005,
+        "prompt_eval_count": 283,
+        "eval_count": 100,
+        "eval_duration_s": 3.592
+      },
+      "model_output": {
+        "question": "Trong một câu lạc bộ có 7 học sinh, cần phân công 3 học sinh vào 3 vai trò: trưởng nhóm, phó nhóm và thư ký. Mỗi vai trò phải được đảm nhiệm bởi một học sinh khác nhau. Hỏi có bao nhiêu cách phân công vai trò?",
+        "task": "assign_roles",
+        "n": 7,
+        "k": 3,
+        "answer": 210
+      },
+      "validation_errors": [],
+      "json_valid": true,
+      "status": "needs_teacher_review",
+      "resources": {
+        "ram_system_total_mib": 24118.2,
+        "ram_system_used_before_mib": 16599.4,
+        "ram_system_used_peak_mib": 16696.1,
+        "ram_system_peak_delta_mib": 96.8,
+        "nvidia_vram_used_before_mib": null,
+        "nvidia_vram_used_peak_mib": null,
+        "nvidia_vram_peak_delta_mib": null,
+        "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples."
+      }
+    }
+  ]
+}
