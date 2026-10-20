@@ -250,4 +250,3 @@ def get_question_template_by_id(template_id):
     finally:
         if conn is not None:
             conn.close()
-print(get_question_template_by_id("EA0001")['solution_rule'])
