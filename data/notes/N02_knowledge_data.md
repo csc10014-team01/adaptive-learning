@@ -1,5 +1,7 @@
-# Dataset & Memory
-
+#[N03] Pre-work: Chủ đề Đại số tổ hợp, Câu hỏi mẫu & Data Dictionary/Schema
+**Owner**: Nguyen Ngoc Anh Duong
+**Issue**: #5
+**Tổng quan**: 
 Tài liệu mô tả hai phần dữ liệu của dự án **AI sinh đề Toán cá nhân hóa hỗ trợ giáo viên** trong phạm vi **MVP 1**.
 
 - **Dataset**: lưu ngân hàng câu hỏi, kỹ năng, đáp án/lời giải và thuật ngữ Toán học.
