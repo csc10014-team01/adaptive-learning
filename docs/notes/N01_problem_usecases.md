@@ -1,7 +1,7 @@
 # Problem Brief: Hệ thống AI hỗ trợ giáo viên sinh đề Toán tự luận cá nhân hóa
 
-* **Mã tài liệu:** N01 (Problem Brief v1.1)
-* **Owner:** Ngô Nhất Nghi (Project & Product Lead)
+* **Mã tài liệu:** N01 (Problem Brief v1.1 & Use Cases)
+* **Owner:** Ngô Nhất Nghi (Project & Product Lead), Trần Lộc Chi Mai (UX & Requirements Lead)
 * **Reviewer:** Phạm Yến Trân (AI & Algorithms Lead)
 * **Ngày cập nhật:** 19/10/2026
 
