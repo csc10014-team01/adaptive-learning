@@ -221,3 +221,138 @@ The Qwen3-1.7B model was successfully tested locally using Ollama.
 - Integrate the validated question generation module into the system.
 
 **Future work beyond Issue #6:** Larger benchmark dataset, question templates, generator integration, teacher review UI, and fine-tuning if justified.
+
+## 7. Proposed Qwen Generator Pseudocode (New Architecture)
+
+> **Status:** Design proposal for the next development stage; **NOT** part of the two completed local baseline runs in Sections 2–3. The existing `qwen_spike.py` is a baseline prototype, not an implementation of the full flow below.
+>
+> **Architecture:** Backend Input → Rule-based Exam Planner → Content & Expression Planner → **Qwen Generator (Module 4)** → **Six-layer Validator (Module 5)** → Exam Assembler.
+
+### 7.1 Responsibility and interface
+
+The **Qwen Generator** receives a mathematical problem already selected by the previous module, a permitted scenario/context, and exactly one expression type. It writes **one Vietnamese open-ended question per call**. It **does not** select student skills, choose problems, change mathematical parameters, calculate the answer, or decide whether a question is mathematically valid.
+
+**Inputs (logical interface; final JSON schema pending):**
+
+- `problem_data`: verified mathematical facts, values, constraints and relationships of the selected problem.
+- `context`: a compatible scenario selected by the Content & Expression Planner.
+- `generate_type`: `direct` or `indirect` only.
+- `model_config`: local Ollama model name, temperature, seed, and timeout.
+- `previous_errors` (optional): feedback from a failed validation attempt; not an instruction to alter the mathematical specification.
+
+**Output:** one unvalidated **candidate**, consisting of the raw model response, requested `generate_type`, model metadata, measured latency and `pending_validation` state. The expected answer and reference solution are retained **outside Qwen** from the selected problem record.
+
+### 7.2 Module 4 — Generate one candidate
+
+```text
+FUNCTION qwen_generate_question(problem_data, context, generate_type,
+                                model_config, previous_errors = []):
+    IF problem_data IS MISSING OR context IS MISSING:
+        RETURN {status: "generation_error", reason: "Missing input"}
+
+    IF generate_type NOT IN {"direct", "indirect"}:
+        RETURN {status: "generation_error", reason: "Invalid generate_type"}
+
+    IF generate_type == "direct":
+        instruction = "State the necessary mathematical data and conditions clearly."
+    ELSE:
+        instruction = "Describe a natural situation so the student must infer the
+                       mathematical structure, without changing any facts or conditions."
+
+    prompt = BUILD_PROMPT(
+        problem_data = problem_data,
+        allowed_context = context,
+        expression_instruction = instruction,
+        strict_rules = [
+            "Write exactly one Vietnamese open-ended question",
+            "Preserve every original mathematical quantity and constraint",
+            "Do not add or omit conditions or irrelevant information",
+            "Do not change whether order matters or whether repetition is allowed",
+            "Do not compute, invent, or output a new answer",
+            "Return JSON with a question field"
+        ],
+        validation_feedback = previous_errors
+    )
+
+    start = CURRENT_TIME()
+    TRY:
+        response = OLLAMA_GENERATE_LOCAL(
+            model = model_config.model_name,
+            prompt = prompt,
+            temperature = model_config.temperature,
+            seed = model_config.seed,
+            stream = FALSE,
+            format = "json"
+        )
+    CATCH error:
+        RETURN {status: "generation_error", reason: error}
+
+    RETURN {
+        status: "pending_validation",
+        raw_response: response,
+        requested_generate_type: generate_type,
+        model_name: model_config.model_name,
+        latency_seconds: CURRENT_TIME() - start
+    }
+END FUNCTION
+```
+
+**Note:** This module does not label the result `pass`. JSON parsing/schema checks, mathematical equivalence, expression checks, answer agreement and diversity belong to the Validator. A basic request-input check inside the generator is not equivalent to the six-layer validation.
+
+### 7.3 Backend orchestration — Retry after validation failure
+
+The **Backend Orchestrator**, not Qwen itself, controls retries. It calls Module 4, receives Module 5's result, and decides the next action. `MAX_ATTEMPTS = 3` is an **example configurable limit**, not a fixed project requirement.
+
+```text
+FUNCTION generate_valid_candidate(problem_data, context, generate_type,
+                                  model_config, existing_questions):
+    MAX_ATTEMPTS = CONFIGURED_RETRY_LIMIT  // e.g. 3
+    previous_errors = []
+
+    FOR attempt FROM 1 TO MAX_ATTEMPTS:
+        config = COPY(model_config)
+        config.seed = model_config.seed + attempt - 1
+
+        candidate = qwen_generate_question(
+            problem_data, context, generate_type, config, previous_errors
+        )
+
+        IF candidate.status == "generation_error":
+            RECORD_FAILURE(attempt, candidate.reason)
+            CONTINUE_OR_STOP_BASED_ON_ERROR(candidate.reason)
+
+        validation = VALIDATE_AUTOMATIC_LAYERS_1_TO_5(
+            original_problem = problem_data,
+            candidate = candidate,
+            requested_generate_type = generate_type,
+            existing_questions = existing_questions
+        )
+
+        IF validation.status == "pass":
+            RETURN {status: "pending_teacher_review", candidate, validation}
+
+        IF validation.status == "needs_review":
+            RETURN {status: "needs_teacher_review", candidate, validation}
+
+        // Only definite failures are automatically retried.
+        previous_errors = validation.errors
+        RECORD_FAILURE(attempt, previous_errors)
+
+    RETURN {status: "generation_failed", errors: previous_errors}
+END FUNCTION
+```
+
+**Validation boundary:** Layers 1–5 are automated checks (format, mathematical constraints, expression type, answer agreement, and diversity). **Layer 6 is teacher review**, performed after a candidate passes automated checks or is flagged as uncertain. An automated `pass` must **never** be treated as teacher approval.
+
+### 7.4 One candidate vs. multiple stylistic variants
+
+- **One candidate + retry (current priority):** generate one question, validate, retry only on definite failure.
+- **Multiple variants (future option):** independently request several stylistic alternatives from the same immutable `problem_data`, validate each, and retain distinct approved candidates. This is not necessary to implement the current retry mechanism.
+
+### 7.5 Outstanding contracts and assumptions
+
+1. Actual `problem_data` / `context` JSON shape will be confirmed by the Dataset and Backend owners.
+2. `generate_type` is fixed to `direct` or `indirect`.
+3. The answer and reference solution remain with the source problem and are **not generated by Qwen**.
+4. The validator can return `pass`, `fail`, or `needs_review`; exact error codes are TBD.
+5. Generator failures and retry histories should be logged for reproducibility; do not silently change the source math or publish unreviewed questions.
