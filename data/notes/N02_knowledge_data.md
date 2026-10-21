@@ -79,7 +79,7 @@ Ví dụ, nếu câu `QA0001` liên kết với hai kỹ năng `A001` và `A002`
 - Kiểm tra lại công thức, ký hiệu Toán và định dạng sau khi trích xuất dữ liệu từ PDF.
 - Chỉ đưa các câu hỏi đã được kiểm tra vào quy trình sinh đề, theo quy ước của trường `status`.
 
-## 3. Memory — Dữ liệu học sinh
+## 3. student_profiles_sample — Dữ liệu học sinh
 
 ### 3.1. Vai trò trong MVP 1
 

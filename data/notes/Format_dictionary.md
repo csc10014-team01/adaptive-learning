@@ -51,10 +51,16 @@ skill = {
 get_all_skills() trả về list các skill
 # 5. Student
 # MVP 1
+
 student = {
 "student_id": "HS001",
 “name”: “Nguyễn Văn A”
     "grade_level": 11,
+    "skill_mastery":[
+        "skill_id": "A001",
+        "mastery_score": 3.4,
+        "evidence_count": 4
+    ]
     "learning_history": [
         {
             "test_id": "T001",
@@ -66,3 +72,32 @@ student = {
         }
     ]
 }
+
+
+**Kiểu trả về của AI sau khi sinh đề**
+- `test` (`dict`): thông tin bài kiểm tra cần thêm.
+    test = {
+        "test_id": "T001",
+        "test_name": "Kiểm tra Đại số tổ hợp",
+        "date": "2026-10-21",
+        "score": 8.5
+    }
+- `test_question`: các câu hỏi trong test đó
+    test_questions = [
+        {
+            "question_id": "QA0001",
+            "question_order": 1,
+            "is_correct": 1
+        },
+        {
+            "question_id": "QA0002",
+            "question_order": 2,
+            "is_correct": 0
+        },
+        {
+            "question_id": "QA0003",
+            "question_order": 3,
+            "is_correct": 1
+        }
+    ]
+Nếu là AI tự sinh câu hỏi mới thì phải add question đó vào question_bank.
