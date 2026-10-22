@@ -69,7 +69,7 @@
 ## 2. Màn hình 2: Question Generation Configuration (`/students/:id/generate`)
 
 ### 2.1. Bố cục Wireframe phác thảo (ASCII Art)
-
+```text
 +-----------------------------------------------------------------------------------+
 |  < Quay lại Hồ sơ học sinh                                                        |
 |                                                                                   |
@@ -95,7 +95,7 @@
 |                                                                                   |
 |  [ Hủy ]                                              [ Bắt đầu sinh đề bằng AI ] |
 +-----------------------------------------------------------------------------------+
-
+```
 ### 2.2. Bảng đặc tả Data Contract (Input / Output)
 
 #### Frontend Request Payload (`POST /api/v1/exams/generate`)
@@ -121,7 +121,7 @@
 ## 3. Màn hình 3: Exam Preview, Solutions & Rubric (`/exams/:exam_id/preview`)
 
 ### 3.1. Bố cục Wireframe phác thảo (ASCII Art)
-
+```text
 +-----------------------------------------------------------------------------------+
 |  Xem trước đề kiểm tra Toán tự luận (Mã đề: EX-8821)             Trạng thái: Nháp |
 |  Học sinh: Nguyen Van B | Chuyên đề: Oxyz, Tích phân | 4 câu - 45 phút            |
@@ -147,7 +147,7 @@
 |                                                                                   |
 |  [ Hủy bỏ ]                   [ Xuất file PDF / Word ]     [ Phê duyệt & Giao đề ]|
 +-----------------------------------------------------------------------------------+
-
+```
 ### 3.2. Bảng đặc tả Data Contract (Input / Output)
 
 #### Frontend Request (`GET /api/v1/exams/:exam_id`)
