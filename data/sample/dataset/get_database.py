@@ -259,6 +259,3 @@ def get_question_template_by_id(DB_PATH, template_id):
     finally:
         if conn is not None:
             conn.close()
-
-for q in get_all_questions(DB_PATH):
-    print(q)
