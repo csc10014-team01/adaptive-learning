@@ -56,28 +56,6 @@ def _require_non_empty_string(
             f"{field_name} cannot be empty"
         )
 
-
-
-def _require_id_prefix(
-    value: Any,
-    prefix: str,
-    field_name: str,
-) -> None:
-    if not isinstance(value, str):
-        raise KnowledgeValidationError(
-            f"{field_name} must be a string"
-        )
-
-    if not value.startswith(prefix):
-        raise KnowledgeValidationError(
-            f"{field_name} must start with '{prefix}'"
-        )
-
-    if len(value) == len(prefix):
-        raise KnowledgeValidationError(
-            f"{field_name} cannot be empty after '{prefix}'"
-        )
-
 def validate_question(data: dict[str, Any]) -> None:
     """Validate a question record."""
 
@@ -145,12 +123,6 @@ def validate_question(data: dict[str, Any]) -> None:
         answer,
         {"correct_answer", "explanation"},
     )
-
-    _require_id_prefix(
-        data["question_id"],
-        "Q",
-        "question_id",
-    )    
 
     for field in ("correct_answer", "explanation"):
         _require_non_empty_string(answer[field], field)
@@ -234,12 +206,6 @@ def validate_student(data: dict[str, Any]) -> None:
     learning_history = data["learning_history"]
 
     _require_type(learning_history, list, "learning_history")
-
-    _require_id_prefix(
-            data["student_id"],
-            "ST",
-            "student_id",
-    )
 
     for record in learning_history:
         _require_type(record, dict, "learning_history item")
