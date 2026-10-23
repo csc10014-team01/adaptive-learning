@@ -1,0 +1,1378 @@
+[
+    {
+      "test_case_id": "TS-BR-01",
+      "scenario_group": "Branching: evidence_count = 0 (no_data)",
+      "type": "positive",
+      "objective": "Học sinh chưa có skill_mastery nào -> Default Blueprint.",
+      "preconditions": "student.skill_mastery rỗng (chưa có bản ghi, theo N03 mục 6.4).",
+      "input_data": {
+        "student": {
+          "student_id": "HS001",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gọi hàm sinh đề với student chưa có skill_mastery."
+      ],
+      "expected_result": "Áp dụng Default Blueprint, trả về test + test_questions đúng format.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu blueprint_type = Default và không ném exception.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-BR-02",
+      "scenario_group": "Branching: evidence_count = 0 (no_data)",
+      "type": "positive",
+      "objective": "Có dữ liệu ở skill khác nhưng chưa có ở skill đang sinh đề (ngưỡng tính theo từng skill).",
+      "preconditions": "skill_mastery chỉ có A002 (evidence_count = 3), không có A001.",
+      "input_data": {
+        "student": {
+          "student_id": "HS002",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A002",
+              "mastery_score": 3,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề cho skill A001."
+      ],
+      "expected_result": "Với A001 là no_data nên dùng Default Blueprint, dù A002 đã đủ dữ liệu.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu skill A001 dùng Default và A002 không bị dùng để cá nhân hóa A001.",
+      "related_risk_id": "RSK-MODEL-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "Cần xác nhận với Nhất Nghi: ngưỡng tính theo từng skill hay cả topic."
+    },
+    {
+      "test_case_id": "TS-BR-03",
+      "scenario_group": "Branching: evidence_count = 0 (no_data)",
+      "type": "positive",
+      "objective": "no_data nhưng yêu cầu nhiều câu hỏi.",
+      "preconditions": "skill_mastery rỗng, learning_history rỗng.",
+      "input_data": {
+        "student": {
+          "student_id": "HS003",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 3
+        }
+      },
+      "steps": [
+        "1. Yêu cầu 3 câu hỏi."
+      ],
+      "expected_result": "Trả về đủ 3 câu trong test_questions, question_order = 1,2,3, đúng format.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null,
+        "num_questions": 3
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu có đúng 3 phần tử, đúng schema.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001",
+      "tbd": "Chưa có tài liệu xác nhận API nhận question_count."
+    },
+    {
+      "test_case_id": "TS-BR-04",
+      "scenario_group": "Branching: evidence_count = 0 (no_data)",
+      "type": "positive",
+      "objective": "Bản ghi tồn tại nhưng evidence_count = 0 tường minh.",
+      "preconditions": "skill_mastery có A001 với evidence_count = 0.",
+      "input_data": {
+        "student": {
+          "student_id": "HS004",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 0,
+              "evidence_count": 0
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề với evidence_count = 0 tường minh."
+      ],
+      "expected_result": "Dùng Default Blueprint (no_data), không cá nhân hóa theo mastery_score = 0.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu blueprint_type = Default.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-BR-05",
+      "scenario_group": "Branching: evidence_count = 1 (partial)",
+      "type": "positive",
+      "objective": "evidence_count = 1 -> Default Blueprint (chưa đủ tin cậy).",
+      "preconditions": "skill_mastery có A001 với evidence_count = 1.",
+      "input_data": {
+        "student": {
+          "student_id": "HS005",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 2,
+              "evidence_count": 1
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề với evidence_count = 1."
+      ],
+      "expected_result": "Ghi nhận dữ liệu một phần nhưng vẫn rẽ nhánh về Default Blueprint.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu blueprint_type = Default.",
+      "related_risk_id": "RSK-MODEL-02",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-BR-06",
+      "scenario_group": "Branching: evidence_count = 1 (partial)",
+      "type": "positive",
+      "objective": "Chống overfitting: 1 câu sai khó không làm kết luận học sinh yếu toàn diện.",
+      "preconditions": "A001: mastery_score = 0, evidence_count = 1 (sai 1 câu khó).",
+      "input_data": {
+        "student": {
+          "student_id": "HS006",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 0,
+              "evidence_count": 1
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề với mastery_score cực thấp nhưng evidence_count = 1."
+      ],
+      "expected_result": "Vẫn Default Blueprint, không ưu tiên ôn kỹ năng theo mastery_score.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu blueprint_type = Default.",
+      "related_risk_id": "RSK-MODEL-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-BR-07",
+      "scenario_group": "Branching: evidence_count = 1 (partial)",
+      "type": "positive",
+      "objective": "evidence_count = 1 với mastery_score cao nhất (4.0).",
+      "preconditions": "A001: mastery_score = 4, evidence_count = 1.",
+      "input_data": {
+        "student": {
+          "student_id": "HS007",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 4,
+              "evidence_count": 1
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề."
+      ],
+      "expected_result": "Vẫn Default Blueprint, không tăng độ khó dựa trên 1 bằng chứng.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu blueprint_type = Default.",
+      "related_risk_id": "RSK-MODEL-02",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-BR-08",
+      "scenario_group": "Branching: evidence_count = 1 (partial)",
+      "type": "positive",
+      "objective": "Nhiều skill với mức dữ liệu khác nhau (A001 đủ, A002 chỉ 1).",
+      "preconditions": "A001: evidence_count = 4; A002: evidence_count = 1.",
+      "input_data": {
+        "student": {
+          "student_id": "HS008",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 3.4,
+              "evidence_count": 4
+            },
+            {
+              "skill_id": "A002",
+              "mastery_score": 1,
+              "evidence_count": 1
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A002",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề cho skill A002."
+      ],
+      "expected_result": "A002 (partial) dùng Default Blueprint dù A001 đủ dữ liệu.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu A002 dùng Default.",
+      "related_risk_id": "RSK-MODEL-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "Phụ thuộc xác nhận ngưỡng theo skill."
+    },
+    {
+      "test_case_id": "TS-BR-09",
+      "scenario_group": "Branching: evidence_count >= 2 (sufficient)",
+      "type": "positive",
+      "objective": "Biên 1 -> 2: evidence_count = 2 kích hoạt Personalized Blueprint.",
+      "preconditions": "A001: mastery_score = 1.0, evidence_count = 2.",
+      "input_data": {
+        "student": {
+          "student_id": "HS009",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1,
+              "evidence_count": 2
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề.",
+        "2. Lặp lại 10 lần với cùng input để kiểm tra rẽ nhánh ổn định."
+      ],
+      "expected_result": "Chuyển sang Personalized Blueprint, ưu tiên ôn tập kỹ năng điểm thấp.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Personalized",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu 10/10 lần blueprint_type = Personalized.",
+      "related_risk_id": "RSK-MODEL-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-BR-10",
+      "scenario_group": "Branching: evidence_count >= 2 (sufficient)",
+      "type": "positive",
+      "objective": "Dữ liệu dày (evidence_count = 10) cùng lịch sử nhiều bài.",
+      "preconditions": "A001: mastery_score = 3.4, evidence_count = 10; learning_history có 3 bài.",
+      "input_data": {
+        "student": {
+          "student_id": "HS010",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 3.4,
+              "evidence_count": 10
+            }
+          ],
+          "learning_history": [
+            {
+              "test_id": "T001",
+              "wrong_questions": [
+                "QA0002"
+              ]
+            },
+            {
+              "test_id": "T002",
+              "wrong_questions": [
+                "QA0003"
+              ]
+            },
+            {
+              "test_id": "T003",
+              "wrong_questions": []
+            }
+          ]
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề dựa trên lịch sử dài."
+      ],
+      "expected_result": "Personalized Blueprint, mastery cao nên có câu vận dụng/nâng cao; không tràn bộ nhớ, không timeout.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Personalized",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Personalized và hoàn thành trước mốc timeout.",
+      "related_risk_id": "RSK-SYS-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "Mốc timeout (đề cũ ghi 45s) chưa có trong tài liệu, cần hỏi Yến Trân."
+    },
+    {
+      "test_case_id": "TS-BR-11",
+      "scenario_group": "Branching: evidence_count >= 2 (sufficient)",
+      "type": "positive",
+      "objective": "Tất cả câu sai (mastery_score = 0) khác với chưa có dữ liệu (N03 mục 6.6).",
+      "preconditions": "A001: mastery_score = 0, evidence_count = 3.",
+      "input_data": {
+        "student": {
+          "student_id": "HS011",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 0,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề."
+      ],
+      "expected_result": "Personalized Blueprint (không fallback), ưu tiên câu nền tảng cho kỹ năng yếu.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Personalized",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Personalized và fallback_triggered = false.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-BR-12",
+      "scenario_group": "Branching: evidence_count >= 2 (sufficient)",
+      "type": "positive",
+      "objective": "Đề cá nhân hóa phải đúng toán học (Output Validator).",
+      "preconditions": "A001: mastery_score = 1.5, evidence_count = 3.",
+      "input_data": {
+        "student": {
+          "student_id": "HS012",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Sinh đề cá nhân hóa.",
+        "2. Chạy Validator trên correct_answer và explanation."
+      ],
+      "expected_result": "Đáp án và lời giải đúng toán học.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Personalized",
+        "fallback_triggered": false,
+        "fallback_reason": null,
+        "math_validation": "passed"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Validator xác nhận 100% câu đúng.",
+      "related_risk_id": "RSK-MODEL-01",
+      "severity_if_failed": "Critical",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-ED-01",
+      "scenario_group": "Edge cases: Missing fields",
+      "type": "negative",
+      "objective": "Thiếu student_id.",
+      "preconditions": "Hệ thống chạy.",
+      "input_data": {
+        "student": {
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gửi student không có student_id."
+      ],
+      "expected_result": "Từ chối xử lý với lỗi validation rõ ràng.",
+      "expected_output": {
+        "raised_exception": true,
+        "blueprint_type": null,
+        "fallback_triggered": false,
+        "fallback_reason": null,
+        "error_type": "TBD"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu có lỗi validation rõ ràng, không có lỗi 500/crash.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "Cần chốt: ném ValueError hay trả dict lỗi? (tài liệu là hàm Python, không có mã HTTP)."
+    },
+    {
+      "test_case_id": "TS-ED-02",
+      "scenario_group": "Edge cases: Missing fields",
+      "type": "negative",
+      "objective": "Thiếu evidence_count trong skill_mastery (ADR-001: Data Missing).",
+      "preconditions": "Phần tử skill_mastery không có khóa evidence_count.",
+      "input_data": {
+        "student": {
+          "student_id": "HS013",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gửi skill_mastery thiếu evidence_count."
+      ],
+      "expected_result": "Fallback về Default Blueprint, trả đề hợp lệ.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "DATA_MISSING"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Default, fallback_triggered = true, không exception.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-ED-03",
+      "scenario_group": "Edge cases: Type mismatch",
+      "type": "negative",
+      "objective": "evidence_count sai kiểu (chuỗi 'hai').",
+      "preconditions": "Kiểu dữ liệu không phải số nguyên.",
+      "input_data": {
+        "student": {
+          "student_id": "HS014",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 2,
+              "evidence_count": "hai"
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gửi evidence_count = 'hai'."
+      ],
+      "expected_result": "TBD: lỗi validation hoặc fallback DATA_MISSING (ADR chưa nói về sai kiểu).",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "TBD",
+        "fallback_triggered": true,
+        "fallback_reason": "DATA_MISSING"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass khi chốt hành vi; tối thiểu không crash.",
+      "related_risk_id": "RSK-DATA-02",
+      "severity_if_failed": "Low",
+      "decision_ref": "ADR-001",
+      "tbd": "Cần Nhất Nghi chốt hành vi sai kiểu dữ liệu."
+    },
+    {
+      "test_case_id": "TS-ED-04",
+      "scenario_group": "Edge cases: Invalid range",
+      "type": "negative",
+      "objective": "evidence_count âm (-1).",
+      "preconditions": "Giá trị không hợp lệ.",
+      "input_data": {
+        "student": {
+          "student_id": "HS015",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 2,
+              "evidence_count": -1
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gửi evidence_count = -1."
+      ],
+      "expected_result": "TBD: coi là dữ liệu không hợp lệ -> fallback Default (đề xuất), không rẽ nhánh Personalized.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "DATA_MISSING"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu không bao giờ vào Personalized.",
+      "related_risk_id": "RSK-DATA-02",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001",
+      "tbd": "ADR chưa quy định giá trị âm."
+    },
+    {
+      "test_case_id": "TS-ED-05",
+      "scenario_group": "Edge cases: Null mastery_score",
+      "type": "negative",
+      "objective": "mastery_score = null khi evidence_count >= 2 (ADR-001).",
+      "preconditions": "Dữ liệu mastery_score bị khuyết.",
+      "input_data": {
+        "student": {
+          "student_id": "HS016",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": null,
+              "evidence_count": 2
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gửi mastery_score = null."
+      ],
+      "expected_result": "Fallback về Default Blueprint, tránh lỗi tính toán.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "DATA_MISSING"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Default, fallback_triggered = true, không exception.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-ED-06",
+      "scenario_group": "Edge cases: Invalid range",
+      "type": "negative",
+      "objective": "mastery_score ngoài thang 0-4 (4.5) (N03 mục 6.3.1).",
+      "preconditions": "Giá trị vượt thang.",
+      "input_data": {
+        "student": {
+          "student_id": "HS017",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 4.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gửi mastery_score = 4.5."
+      ],
+      "expected_result": "mastery_score không hợp lệ -> fallback Default Blueprint (ADR 2.2).",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "DATA_MISSING"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Default và fallback_triggered = true.",
+      "related_risk_id": "RSK-DATA-02",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-ED-07",
+      "scenario_group": "Edge cases: Empty body",
+      "type": "negative",
+      "objective": "Input hoàn toàn rỗng ({}).",
+      "preconditions": "Client gửi dữ liệu rỗng.",
+      "input_data": {},
+      "steps": [
+        "1. Gọi hàm sinh đề với input rỗng."
+      ],
+      "expected_result": "Báo lỗi thiếu trường bắt buộc, không crash.",
+      "expected_output": {
+        "raised_exception": true,
+        "blueprint_type": null,
+        "fallback_triggered": false,
+        "fallback_reason": null,
+        "error_type": "TBD"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu lỗi validation rõ ràng, không unhandled exception.",
+      "related_risk_id": "RSK-DATA-01",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001",
+      "tbd": "Chốt định dạng lỗi."
+    },
+    {
+      "test_case_id": "TS-ED-08",
+      "scenario_group": "Edge cases: Special characters",
+      "type": "negative",
+      "objective": "Ký tự độc hại trong student_id (SQL injection).",
+      "preconditions": "Input chứa ký tự đặc biệt.",
+      "input_data": {
+        "student": {
+          "student_id": "HS'; DROP TABLE students;--",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        }
+      },
+      "steps": [
+        "1. Gửi student_id chứa chuỗi SQL.",
+        "2. Kiểm tra bảng Students/Tests vẫn nguyên vẹn."
+      ],
+      "expected_result": "Không thực thi lệnh độc hại; từ chối hoặc coi là học sinh không tồn tại.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": null,
+        "fallback_triggered": false,
+        "fallback_reason": null,
+        "db_intact": true
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu DB không bị thay đổi.",
+      "related_risk_id": "RSK-DATA-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-AI-01",
+      "scenario_group": "AI Model: Malformed JSON",
+      "type": "negative",
+      "objective": "Qwen trả JSON bị cụt.",
+      "preconditions": "Học sinh evidence_count = 3 (đúng ra là Personalized). Lỗi được giả lập bằng mock/fixture của Qwen, không phải trường API thật.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "truncated_json"
+        }
+      },
+      "steps": [
+        "1. Cấu hình mock Qwen theo lỗi.",
+        "2. Gọi hàm sinh đề."
+      ],
+      "expected_result": "Phát hiện lỗi parse, fallback về Default Blueprint.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "JSON_PARSE_ERROR"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Default, fallback_triggered = true, ứng dụng không sập.",
+      "related_risk_id": "RSK-SYS-01",
+      "severity_if_failed": "Critical",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-AI-02",
+      "scenario_group": "AI Model: Extra text in JSON",
+      "type": "negative",
+      "objective": "Qwen chèn văn bản thừa ngoài JSON.",
+      "preconditions": "Học sinh evidence_count = 3 (đúng ra là Personalized). Lỗi được giả lập bằng mock/fixture của Qwen, không phải trường API thật.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "chatty_response"
+        }
+      },
+      "steps": [
+        "1. Cấu hình mock Qwen theo lỗi.",
+        "2. Gọi hàm sinh đề."
+      ],
+      "expected_result": "TBD: trích xuất JSON thành công, hoặc fallback JSON_PARSE_ERROR.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "TBD",
+        "fallback_triggered": false,
+        "fallback_reason": null
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass khi hành vi đúng với quyết định đã chốt.",
+      "related_risk_id": "RSK-SYS-01",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "ADR không nói về trích xuất; hỏi Yến Trân."
+    },
+    {
+      "test_case_id": "TS-AI-03",
+      "scenario_group": "AI Model: Timeout",
+      "type": "negative",
+      "objective": "Qwen Local phản hồi quá hạn.",
+      "preconditions": "Học sinh evidence_count = 3 (đúng ra là Personalized). Lỗi được giả lập bằng mock/fixture của Qwen, không phải trường API thật.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "hang",
+          "delay_seconds": "TBD"
+        }
+      },
+      "steps": [
+        "1. Cấu hình mock Qwen theo lỗi.",
+        "2. Gọi hàm sinh đề."
+      ],
+      "expected_result": "Ngắt kết nối, fallback về Default Blueprint, không deadlock.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "AI_TIMEOUT"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu Default, fallback_triggered = true, trả kết quả trong thời gian cho phép.",
+      "related_risk_id": "RSK-SYS-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "Mốc timeout (đề cũ ghi 45s) chưa có tài liệu."
+    },
+    {
+      "test_case_id": "TS-AI-04",
+      "scenario_group": "AI Model: Hallucination",
+      "type": "negative",
+      "objective": "Validator toán học phát hiện đáp án sai.",
+      "preconditions": "Học sinh evidence_count = 3 (đúng ra là Personalized). Lỗi được giả lập bằng mock/fixture của Qwen, không phải trường API thật.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "wrong_math_answer"
+        }
+      },
+      "steps": [
+        "1. Cấu hình mock Qwen theo lỗi.",
+        "2. Gọi hàm sinh đề."
+      ],
+      "expected_result": "Câu sai không được trả ra; fallback về Default Blueprint (ADR 2.2 gộp lỗi Validator vào JSON Parse Error).",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "JSON_PARSE_ERROR",
+        "invalid_question_returned": false
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu câu sai không xuất hiện trong test_questions.",
+      "related_risk_id": "RSK-MODEL-01",
+      "severity_if_failed": "Critical",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-AI-05",
+      "scenario_group": "AI Model: Topic Mismatch",
+      "type": "negative",
+      "objective": "Qwen sinh nội dung ngoài phạm vi (không thuộc Đại số tổ hợp/skill yêu cầu).",
+      "preconditions": "Học sinh evidence_count = 3 (đúng ra là Personalized). Lỗi được giả lập bằng mock/fixture của Qwen, không phải trường API thật.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "off_topic_question"
+        }
+      },
+      "steps": [
+        "1. Cấu hình mock Qwen theo lỗi.",
+        "2. Gọi hàm sinh đề."
+      ],
+      "expected_result": "TBD: fallback Default Blueprint khi vi phạm phạm vi.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "TBD"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu câu ngoài phạm vi không được trả ra.",
+      "related_risk_id": "RSK-MODEL-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "ADR chưa có điều kiện fallback cho lệch chủ đề."
+    },
+    {
+      "test_case_id": "TS-AI-06",
+      "scenario_group": "AI Model: Fallback Execution",
+      "type": "negative",
+      "objective": "Lỗi hệ thống nghiêm trọng liên tiếp vẫn luôn có đề trả về.",
+      "preconditions": "Học sinh evidence_count = 3 (đúng ra là Personalized). Lỗi được giả lập bằng mock/fixture của Qwen, không phải trường API thật.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "crash_every_call"
+        }
+      },
+      "steps": [
+        "1. Cấu hình mock Qwen theo lỗi.",
+        "2. Gọi hàm sinh đề."
+      ],
+      "expected_result": "Trả Default Blueprint hợp lệ, UI giáo viên không sập.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "TBD"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu luôn trả dict đúng format và không exception.",
+      "related_risk_id": "RSK-SYS-01",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-AI-07",
+      "scenario_group": "AI Model: Empty Output",
+      "type": "negative",
+      "objective": "Qwen trả chuỗi rỗng.",
+      "preconditions": "Học sinh evidence_count = 3 (đúng ra là Personalized). Lỗi được giả lập bằng mock/fixture của Qwen, không phải trường API thật.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "empty_string"
+        }
+      },
+      "steps": [
+        "1. Cấu hình mock Qwen theo lỗi.",
+        "2. Gọi hàm sinh đề."
+      ],
+      "expected_result": "Bắt lỗi, fallback Default Blueprint.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "JSON_PARSE_ERROR"
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu không có unhandled exception.",
+      "related_risk_id": "RSK-SYS-01",
+      "severity_if_failed": "Medium",
+      "decision_ref": "ADR-001"
+    },
+    {
+      "test_case_id": "TS-AI-08",
+      "scenario_group": "AI Model: Concurrent Requests",
+      "type": "positive",
+      "objective": "Nhiều yêu cầu đồng thời tới Qwen Local.",
+      "preconditions": "5 học sinh Personalized (evidence_count >= 2).",
+      "input_data": {
+        "concurrent_requests": [
+          {
+            "student": {
+              "student_id": "HS100",
+              "name": "Nguyễn Văn A",
+              "grade_level": 11,
+              "skill_mastery": [
+                {
+                  "skill_id": "A001",
+                  "mastery_score": 2,
+                  "evidence_count": 3
+                }
+              ],
+              "learning_history": []
+            },
+            "request": {
+              "skill_id": "A001",
+              "question_count": 5
+            }
+          },
+          {
+            "student": {
+              "student_id": "HS101",
+              "name": "Nguyễn Văn A",
+              "grade_level": 11,
+              "skill_mastery": [
+                {
+                  "skill_id": "A001",
+                  "mastery_score": 2,
+                  "evidence_count": 3
+                }
+              ],
+              "learning_history": []
+            },
+            "request": {
+              "skill_id": "A001",
+              "question_count": 5
+            }
+          },
+          {
+            "student": {
+              "student_id": "HS102",
+              "name": "Nguyễn Văn A",
+              "grade_level": 11,
+              "skill_mastery": [
+                {
+                  "skill_id": "A001",
+                  "mastery_score": 2,
+                  "evidence_count": 3
+                }
+              ],
+              "learning_history": []
+            },
+            "request": {
+              "skill_id": "A001",
+              "question_count": 5
+            }
+          },
+          {
+            "student": {
+              "student_id": "HS103",
+              "name": "Nguyễn Văn A",
+              "grade_level": 11,
+              "skill_mastery": [
+                {
+                  "skill_id": "A001",
+                  "mastery_score": 2,
+                  "evidence_count": 3
+                }
+              ],
+              "learning_history": []
+            },
+            "request": {
+              "skill_id": "A001",
+              "question_count": 5
+            }
+          },
+          {
+            "student": {
+              "student_id": "HS104",
+              "name": "Nguyễn Văn A",
+              "grade_level": 11,
+              "skill_mastery": [
+                {
+                  "skill_id": "A001",
+                  "mastery_score": 2,
+                  "evidence_count": 3
+                }
+              ],
+              "learning_history": []
+            },
+            "request": {
+              "skill_id": "A001",
+              "question_count": 5
+            }
+          }
+        ]
+      },
+      "steps": [
+        "1. Gửi 5 request song song."
+      ],
+      "expected_result": "Cả 5 đều trả kết quả hợp lệ (xử lý hoặc xếp hàng), không lẫn dữ liệu giữa các học sinh.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": null,
+        "fallback_triggered": false,
+        "fallback_reason": null,
+        "all_valid": true
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu 5/5 trả dict đúng format, test_id không trùng.",
+      "related_risk_id": "RSK-SYS-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "Chưa rõ kỳ vọng hàng đợi/thời gian tối đa."
+    },
+    {
+      "test_case_id": "TS-AI-09",
+      "scenario_group": "AI Model: New question added to bank",
+      "type": "positive",
+      "objective": "Câu AI tự sinh phải được thêm vào question_bank đúng format.",
+      "preconditions": "Qwen sinh câu mới.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "new_question",
+          "question": {
+            "question_id": "QA9001",
+            "question_type": "essay",
+            "difficulty": 3,
+            "content": "Một lớp có 20 học sinh nam và 15 học sinh nữ. Có bao nhiêu cách chọn một bạn làm lớp trưởng?",
+            "grade_level": 11,
+            "status": "TBD",
+            "part": []
+          },
+          "answer": {
+            "answer_id": "AA9001",
+            "question_id": "QA9001",
+            "correct_answer": "35",
+            "explanation": "Quy tắc cộng: 20 + 15 = 35.",
+            "solution_method": "Cộng số cách.",
+            "part": []
+          }
+        }
+      },
+      "steps": [
+        "1. Sinh câu mới.",
+        "2. Kiểm tra bản ghi trong question và answer của question_bank."
+      ],
+      "expected_result": "Câu mới và đáp án được thêm đủ trường, ID duy nhất, LaTeX hiển thị đúng.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Personalized",
+        "fallback_triggered": false,
+        "fallback_reason": null,
+        "question_added_to_bank": true
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu question + answer đủ trường theo Format_dictionary, question_id không trùng.",
+      "related_risk_id": "RSK-MODEL-01",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "status mặc định của câu AI sinh (active hay chờ duyệt) chưa quy định."
+    },
+    {
+      "test_case_id": "TS-AI-10",
+      "scenario_group": "AI Model: Invalid new question",
+      "type": "negative",
+      "objective": "Câu AI sinh có difficulty ngoài thang 1-6 hoặc question_id trùng.",
+      "preconditions": "Qwen sinh dữ liệu sai quy ước.",
+      "input_data": {
+        "student": {
+          "student_id": "HS018",
+          "name": "Nguyễn Văn A",
+          "grade_level": 11,
+          "skill_mastery": [
+            {
+              "skill_id": "A001",
+              "mastery_score": 1.5,
+              "evidence_count": 3
+            }
+          ],
+          "learning_history": []
+        },
+        "request": {
+          "skill_id": "A001",
+          "question_count": 5
+        },
+        "mock_qwen": {
+          "behavior": "new_question_invalid",
+          "variants": [
+            {
+              "difficulty": 7
+            },
+            {
+              "question_id": "QA0001"
+            }
+          ]
+        }
+      },
+      "steps": [
+        "1. Chạy từng variant.",
+        "2. Kiểm tra question_bank."
+      ],
+      "expected_result": "Không thêm câu lỗi vào bank; fallback Default Blueprint.",
+      "expected_output": {
+        "raised_exception": false,
+        "blueprint_type": "Default",
+        "fallback_triggered": true,
+        "fallback_reason": "JSON_PARSE_ERROR",
+        "question_added_to_bank": false
+      },
+      "actual_result": "Not Run",
+      "pass_fail_criteria": "Pass nếu bank không bị ghi và không ghi đè QA0001.",
+      "related_risk_id": "RSK-DATA-02",
+      "severity_if_failed": "High",
+      "decision_ref": "ADR-001",
+      "tbd": "Lý do fallback cho dữ liệu sai thang chưa có trong ADR."
+    }
+  ]

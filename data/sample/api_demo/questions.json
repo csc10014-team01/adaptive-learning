@@ -1,0 +1,70 @@
+{
+  "fixture_kind": "synthetic_api_demo",
+  "topic_id": "combinatorics",
+  "questions": [
+    {
+      "question_id": "DEMO_Q01", "grade_level": 10, "skill_ids": ["A001"],
+      "cognitive_level": "recognition", "generate_type": "direct",
+      "content": "Có 3 bút đỏ và 5 bút xanh, tất cả các bút phân biệt. Có bao nhiêu cách chọn một bút?",
+      "answer": {"correct_answer": "8", "explanation": "Chọn bút thuộc một trong hai nhóm không giao nhau: 3 + 5 = 8 cách."},
+      "solution_steps": ["Nhận ra hai nhóm bút không giao nhau.", "Áp dụng quy tắc cộng: 3 + 5 = 8."],
+      "rubric_criteria": ["Nhận diện quy tắc cộng.", "Tính đúng và kết luận 8 cách."]
+    },
+    {
+      "question_id": "DEMO_Q02", "grade_level": 10, "skill_ids": ["A003"],
+      "cognitive_level": "recognition", "generate_type": "direct",
+      "content": "Xếp 4 mô hình phân biệt thành một hàng. Có bao nhiêu cách xếp?",
+      "answer": {"correct_answer": "24", "explanation": "Sắp xếp toàn bộ 4 đối tượng phân biệt: 4! = 24."},
+      "solution_steps": ["Nhận ra hoán vị của 4 đối tượng.", "Tính 4! = 24."],
+      "rubric_criteria": ["Chọn đúng phép đếm hoán vị.", "Tính đúng 24 cách."]
+    },
+    {
+      "question_id": "DEMO_Q03", "grade_level": 10, "skill_ids": ["A004"],
+      "cognitive_level": "understanding", "generate_type": "direct",
+      "content": "Một nhóm có 6 học sinh. Chọn 2 học sinh vào tổ trực nhật, không phân vai. Có bao nhiêu cách chọn?",
+      "answer": {"correct_answer": "15", "explanation": "Không xét thứ tự: C(6,2) = 6 × 5 / 2 = 15."},
+      "solution_steps": ["Chọn tổ hợp 2 trong 6 học sinh.", "Tính C(6,2) = 15."],
+      "rubric_criteria": ["Xác định không xét thứ tự.", "Tính đúng 15 cách."]
+    },
+    {
+      "question_id": "DEMO_Q04", "grade_level": 10, "skill_ids": ["A002"],
+      "cognitive_level": "understanding", "generate_type": "direct",
+      "content": "Có 3 mẫu áo và 4 mẫu quần. Một bộ gồm một áo và một quần. Có bao nhiêu bộ khác nhau?",
+      "answer": {"correct_answer": "12", "explanation": "Hai lựa chọn độc lập: 3 × 4 = 12 bộ."},
+      "solution_steps": ["Xác định hai lựa chọn độc lập.", "Áp dụng quy tắc nhân: 3 × 4 = 12."],
+      "rubric_criteria": ["Nhận diện quy tắc nhân.", "Tính đúng 12 bộ."]
+    },
+    {
+      "question_id": "DEMO_Q05", "grade_level": 10, "skill_ids": ["A004"],
+      "cognitive_level": "application", "generate_type": "direct",
+      "content": "Một tổ có 5 nam và 4 nữ. Chọn nhóm gồm 2 nam và 1 nữ. Có bao nhiêu cách chọn?",
+      "answer": {"correct_answer": "40", "explanation": "C(5,2) × C(4,1) = 10 × 4 = 40."},
+      "solution_steps": ["Đếm riêng cách chọn nam và nữ.", "Nhân C(5,2) với C(4,1) được 40."],
+      "rubric_criteria": ["Phân tách đúng hai lựa chọn.", "Kết hợp và tính đúng 40 cách."]
+    },
+    {
+      "question_id": "DEMO_Q06", "grade_level": 10, "skill_ids": ["A006"],
+      "cognitive_level": "application", "generate_type": "direct",
+      "content": "Từ 7 thành viên, phân công 3 người khác nhau làm trưởng nhóm, phó nhóm và thư ký. Có bao nhiêu cách?",
+      "answer": {"correct_answer": "210", "explanation": "Ba vai trò khác nhau nên có 7 × 6 × 5 = 210 cách."},
+      "solution_steps": ["Nhận ra ba vai trò phân biệt, không lặp người.", "Tính A(7,3) = 210."],
+      "rubric_criteria": ["Xác định đúng thứ tự và không lặp.", "Tính đúng 210 cách."]
+    },
+    {
+      "question_id": "DEMO_Q07", "grade_level": 10, "skill_ids": ["A003", "A007"],
+      "cognitive_level": "advanced_application", "generate_type": "direct",
+      "content": "Xếp 6 học sinh phân biệt thành hàng, hai bạn A và B không được đứng cạnh nhau. Có bao nhiêu cách?",
+      "answer": {"correct_answer": "480", "explanation": "Lấy tất cả trừ trường hợp A và B liền nhau: 6! - 2 × 5! = 480."},
+      "solution_steps": ["Đếm tất cả 6! và đếm trường hợp bị cấm bằng cách gộp A, B.", "Tính 6! - 2 × 5! = 480."],
+      "rubric_criteria": ["Đếm đúng trường hợp A và B liền nhau.", "Lấy phần bù và tính đúng 480 cách."]
+    },
+    {
+      "question_id": "DEMO_Q08", "grade_level": 10, "skill_ids": ["A004", "A007"],
+      "cognitive_level": "advanced_application", "generate_type": "direct",
+      "content": "Một tổ gồm 4 nam và 5 nữ. Chọn 3 người sao cho có ít nhất một nam. Có bao nhiêu cách chọn?",
+      "answer": {"correct_answer": "74", "explanation": "C(9,3) - C(5,3) = 84 - 10 = 74."},
+      "solution_steps": ["Dùng phần bù: tất cả nhóm trừ nhóm chỉ có nữ.", "Tính C(9,3) - C(5,3) = 74."],
+      "rubric_criteria": ["Thiết lập đúng công thức phần bù.", "Tính đúng 74 cách."]
+    }
+  ]
+}

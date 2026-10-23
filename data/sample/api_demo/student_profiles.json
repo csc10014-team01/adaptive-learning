@@ -1,0 +1,45 @@
+{
+  "fixture_kind": "synthetic_api_demo",
+  "topic_id": "combinatorics",
+  "students": [
+    {
+      "student_id": "DEMO_NEW_001",
+      "name": "Học sinh mới — demo",
+      "grade_level": 10,
+      "evidence_count": 0,
+      "skill_mastery": [],
+      "learning_history": []
+    },
+    {
+      "student_id": "DEMO_PARTIAL_001",
+      "name": "Hồ sơ một evidence — demo",
+      "grade_level": 10,
+      "evidence_count": 1,
+      "skill_mastery": [{"skill_id": "A001", "mastery_score": 1.5, "evidence_count": 1}],
+      "learning_history": [{"test_id": "DEMO_T01", "wrongs": ["DEMO_Q01"]}]
+    },
+    {
+      "student_id": "DEMO_PARTIAL_002",
+      "name": "Hồ sơ hai evidence — demo",
+      "grade_level": 10,
+      "evidence_count": 2,
+      "skill_mastery": [
+        {"skill_id": "A001", "mastery_score": 1.5, "evidence_count": 1},
+        {"skill_id": "A003", "mastery_score": 3.0, "evidence_count": 1}
+      ],
+      "learning_history": [{"test_id": "DEMO_T02", "wrongs": ["DEMO_Q01"]}]
+    },
+    {
+      "student_id": "DEMO_SUFFICIENT_001",
+      "name": "Hồ sơ đủ evidence — demo",
+      "grade_level": 10,
+      "evidence_count": 3,
+      "skill_mastery": [
+        {"skill_id": "A001", "mastery_score": 1.5, "evidence_count": 1},
+        {"skill_id": "A003", "mastery_score": 3.0, "evidence_count": 1},
+        {"skill_id": "A004", "mastery_score": 3.5, "evidence_count": 1}
+      ],
+      "learning_history": [{"test_id": "DEMO_T03", "wrongs": ["DEMO_Q01"]}]
+    }
+  ]
+}
