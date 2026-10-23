@@ -4,15 +4,6 @@ from typing import Any
 
 """
 Validation rules for knowledge data.
-
-ID rules:
-- student_id must be a non-empty string starting with "ST".
-  Examples: ST001, ST1000, ST000001.
-- question_id must be a non-empty string starting with "Q".
-  Examples: Q001, QA0001, Q1000.
-- IDs do not have a fixed length or a fixed number of digits.
-- An ID containing only its prefix (e.g. "ST" or "Q") is invalid.
-
 Data validation rules:
 - Required fields must be present.
 - String fields must not be empty or contain only whitespace.
