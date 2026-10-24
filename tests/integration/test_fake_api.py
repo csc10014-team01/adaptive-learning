@@ -58,7 +58,7 @@ def test_student_profile_and_catalogue(client):
     assert len(students) == 4
     topics = client.get("/api/v1/topics").json()["items"]
     assert topics[0]["topic_id"] == "combinatorics"
-    assert {s["skill_id"] for s in topics[0]["skills"]} == {f"A00{i}" for i in range(1, 8)}
+    assert {s["skill_id"] for s in topics[0]["skills"]} == {f"A00{i}" for i in range(1, 10)}
 
 
 @pytest.mark.parametrize("path", [

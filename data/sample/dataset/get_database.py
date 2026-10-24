@@ -9,7 +9,7 @@ DB_PATH = BASE_DIR / "question_bank.db"
 
 
 #Hàm trả về tập tất cả question
-def get_all_questions():
+def get_all_questions(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
@@ -35,11 +35,20 @@ def get_all_questions():
 
         parts = cursor.fetchall()
         question["part"] = [dict(row) for row in parts]
+
+        cursor.execute("""
+            SELECT skill_id
+            FROM question_skills
+            WHERE question_id = ?
+        """, (question["question_id"],))
+        question_skills = cursor.fetchall()
+
+        question["skill_ids"] = [row["skill_id"] for row in question_skills]
     conn.close()
     return questions
 
 #Hàm trả về 1 question
-def get_question(question_id):
+def get_question(DB_PATH, question_id):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -62,7 +71,7 @@ def get_question(question_id):
 
         return question
     
-def get_all_answers():
+def get_all_answers(DB_PATH):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -100,7 +109,7 @@ def get_all_answers():
 
         return answers
 
-def get_answer(answer_id):
+def get_answer(DB_PATH, answer_id):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -135,7 +144,7 @@ def get_answer(answer_id):
 
         return answer
 
-def get_all_terminology():
+def get_all_terminology(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
@@ -155,7 +164,7 @@ def get_all_terminology():
 
     return terminology
 
-def get_terminology(term):
+def get_terminology(DB_PATH, term):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -166,7 +175,7 @@ def get_terminology(term):
 
         return dict(row) if row else None
 
-def get_all_skills():
+def get_all_skills(DB_PATH):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
@@ -184,7 +193,7 @@ def get_all_skills():
     conn.close()
     return skills
 
-def get_skill(skill_id):
+def get_skill(DB_PATH, skill_id):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -196,7 +205,7 @@ def get_skill(skill_id):
         return dict(row) if row else None
 
 
-def get_question_template():
+def get_question_template(DB_PATH):
     conn = None
 
     try:
@@ -222,7 +231,7 @@ def get_question_template():
         if conn is not None:
             conn.close()
 
-def get_question_template_by_id(template_id):
+def get_question_template_by_id(DB_PATH, template_id):
     conn = None
 
     try:
