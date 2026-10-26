@@ -1,41 +1,48 @@
-# N03 – Algorithm & AI: Local Qwen Baseline and Profile-Driven Question Generation
+# N03 – Thuật toán & AI: Thử nghiệm cơ sở Qwen cục bộ và sinh câu hỏi dựa trên hồ sơ học sinh
 
-**Related issues:** #6 (completed local baseline spike); #19 (Profile JSON / Blueprint pseudocode alignment)  
-**Owner:** M4 – AI & Algorithms Lead  
-**Reviewers for Issue #19:** Nhukei (Architecture Lead), Hoài Thương (Risk Lead)  
-**Document status:** Baseline experiment completed; Issue #19 pseudocode aligned with the stated Decision Log rules; target generator architecture described as a proposed next implementation stage.  
-**MVP subject / topic:** Grade 10 Mathematics / Combinatorics (`topic_id = "combinatorics"`). Keep `topic_id` in the interface to support additional topics later.
+> **Cập nhật 23/10/2026:** Backend thật đã được bổ sung theo
+> [ADR-002](../decisions/ADR-002-real-personalized-mvp.md): cá nhân hóa từ 1 evidence
+> theo từng skill, đọc M3 SQLite, Planner + Ollama/Qwen + lưu đề SQLite riêng.
+> ADR-002 thay thế ngưỡng cấp student trong mã giả §4 cho backend thật. Nội dung
+> thử nghiệm/đề xuất phía dưới được giữ để truy vết; bộ kiểm định ngữ nghĩa đầy đủ
+> vẫn chưa được triển khai. Hướng dẫn chạy hiện tại ở [README](../../README.md).
 
-> **Scope and evidence.** Sections 2–3 and 6 record an actual local Qwen experiment performed on 2026-10-19. Section 4 implements the **agreed branching rule in pseudocode only** using M3's precomputed Profile JSON. Section 7 documents the planned end-to-end question-generation design; it is **not** a claim that these modules or the six-layer validator have already been implemented or tested.
+**Issue liên quan:** #6 (đã hoàn thành thử nghiệm khả thi cơ sở trên máy cục bộ); #19 (đồng bộ Profile JSON và mã giả Blueprint)  
+**Phụ trách:** M4 – Trưởng nhóm AI & Thuật toán  
+**Người review Issue #19:** Nhukei (Trưởng nhóm Kiến trúc), Hoài Thương (Trưởng nhóm Rủi ro)  
+**Trạng thái tài liệu:** Đã hoàn thành thử nghiệm cơ sở; mã giả của Issue #19 đã được đồng bộ với các quy tắc nêu trong Decision Log; kiến trúc bộ sinh câu hỏi mục tiêu được trình bày dưới dạng đề xuất cho giai đoạn triển khai tiếp theo.  
+**Môn học / chủ đề trong MVP:** Toán lớp 10 / Đại số tổ hợp (`topic_id = "combinatorics"`). Giữ `topic_id` trong interface để có thể hỗ trợ thêm chủ đề sau này.
 
-## 1. Architectural decisions and responsibilities
+> **Phạm vi và bằng chứng.** Các mục 2–3 và 6 ghi nhận thử nghiệm Qwen cục bộ thực tế được thực hiện ngày 2026-10-19. Mục 4 thể hiện **quy tắc rẽ nhánh đã thống nhất chỉ bằng mã giả**, sử dụng Profile JSON do M3 tính sẵn. Mục 7 mô tả thiết kế dự kiến cho toàn bộ quy trình sinh câu hỏi; nội dung này **không khẳng định** rằng các module hoặc bộ kiểm định sáu lớp đã được triển khai hay kiểm thử.
 
-The system prepares a personalized **practice exam** consisting of open-ended questions. The backend receives the student profile, the teacher-selected topic, and the requested number of questions. The components have distinct responsibilities:
+## 1. Quyết định kiến trúc và phân công trách nhiệm
 
-1. **Backend / Rule-based Exam Planner:** determine Default versus Personalized mode using the profile's `evidence_count`; then plan the exam's difficulty and target skills, and select suitable mathematical problems from the dataset.
-2. **Content & Expression Planner:** select a mathematically compatible real-world context and `generate_type` (`direct` or `indirect`).
-3. **Local Qwen Generator:** verbalize an **already selected** mathematical problem as one Vietnamese question without altering the facts, constraints, or expected answer.
-4. **Validator:** apply five automated validation layers; the sixth layer is teacher review. Reject, flag, or request bounded regeneration as appropriate.
-5. **Exam Assembler:** number accepted candidates, associate answers from the dataset, and output an exam draft for teacher approval.
+Hệ thống tạo **đề ôn tập cá nhân hóa** gồm các câu hỏi tự luận. Backend nhận hồ sơ học sinh, chủ đề do giáo viên chọn và số lượng câu hỏi được yêu cầu. Các thành phần có trách nhiệm riêng:
 
-**Mathematics is deterministic where supported:** the reference answer comes from verified dataset data or a deterministic answer rule, **not from Qwen's guess**. The use of pretrained Qwen3-1.7B through local Ollama satisfies the baseline AI integration experiment; it is not a model trained by the team.
+1. **Backend / Bộ lập kế hoạch đề thi theo quy tắc (Rule-based Exam Planner):** dựa trên `evidence_count` trong hồ sơ để xác định chế độ mặc định hay cá nhân hóa; sau đó lập kế hoạch độ khó, kỹ năng mục tiêu và chọn các bài toán phù hợp từ dataset.
+2. **Bộ lập kế hoạch nội dung và cách diễn đạt (Content & Expression Planner):** chọn ngữ cảnh thực tế phù hợp về mặt toán học và `generate_type` (`direct` hoặc `indirect`).
+3. **Bộ sinh câu hỏi Qwen cục bộ (Local Qwen Generator):** diễn đạt một bài toán **đã được chọn** thành một câu hỏi tiếng Việt, không thay đổi dữ kiện, ràng buộc hay đáp án dự kiến.
+4. **Bộ kiểm định (Validator):** áp dụng năm lớp kiểm định tự động; lớp thứ sáu là giáo viên review. Tùy trường hợp, loại bỏ, đánh dấu hoặc yêu cầu sinh lại với số lần thử giới hạn.
+5. **Bộ tổng hợp đề thi (Exam Assembler):** đánh số các câu hỏi ứng viên đã được chấp nhận, gắn đáp án từ dataset và xuất bản nháp đề thi để giáo viên phê duyệt.
 
-**Important separation:** `evidence_count` determines **whether there is enough profile evidence to enable the Personalized Blueprint**. It does **not** directly measure skill weakness. Skill prioritization is a separate planning decision using fields supplied by M3 / backend and an agreed priority policy.
+**Phần toán học được xử lý bằng quy tắc xác định trong phạm vi được hỗ trợ:** đáp án tham chiếu lấy từ dữ liệu đã được kiểm chứng trong dataset hoặc từ quy tắc tính đáp án xác định, **không lấy từ suy đoán của Qwen**. Việc sử dụng Qwen3-1.7B đã được huấn luyện sẵn thông qua Ollama cục bộ đáp ứng thử nghiệm tích hợp AI cơ sở; đây không phải mô hình do nhóm tự huấn luyện.
 
-## 2. Completed local Qwen baseline: setup and I/O contract
+**Cần phân biệt rõ:** `evidence_count` xác định **hồ sơ đã có đủ bằng chứng để kích hoạt cấu trúc đề cá nhân hóa (Personalized Blueprint) hay chưa**. Trường này **không** trực tiếp đo mức độ yếu của kỹ năng. Việc ưu tiên kỹ năng là một quyết định lập kế hoạch riêng, dựa trên các trường do M3 / backend cung cấp và chính sách ưu tiên đã thống nhất.
 
-This section is a historical record of Issue #6; it does **not** define the final production Qwen JSON contract.
+## 2. Thử nghiệm cơ sở Qwen cục bộ đã hoàn thành: thiết lập và contract đầu vào/đầu ra
 
-- **Local inference server:** `http://127.0.0.1:11434` (Ollama; no external inference API).
-- **Model:** `qwen3:1.7b` (quantization `Q4_K_M`).
-- **Baseline options:** `temperature=0`, `seed=42`, `num_predict=250`, `think=false`, `stream=false`.
-- **C01:** choose three out of eight students, no replacement, order irrelevant; Python expected answer `C(8,3) = 56`.
-- **C02:** assign three distinct roles among seven students without repeating a student; Python expected answer `A(7,3) = 210`.
-- **Historical Qwen JSON schema:** `question: string`, `task: enum`, `n: int`, `k: int`, `answer: int`.
-- **Runner:** `src/ai/qwen_spike.py`.
-- **Evidence:** `eval/results/baseline_spike_output.json` (real run data, not simulated).
+Mục này ghi lại kết quả của Issue #6; nội dung này **không** định nghĩa JSON contract cuối cùng của Qwen cho phiên bản triển khai thực tế.
 
-**Baseline prompt skeleton:**
+- **Máy chủ suy luận cục bộ:** `http://127.0.0.1:11434` (Ollama; không dùng API suy luận bên ngoài).
+- **Mô hình:** `qwen3:1.7b` (lượng tử hóa `Q4_K_M`).
+- **Cấu hình thử nghiệm cơ sở:** `temperature=0`, `seed=42`, `num_predict=250`, `think=false`, `stream=false`.
+- **C01:** chọn ba trong tám học sinh, không lặp, không xét thứ tự; đáp án dự kiến do Python tính là `C(8,3) = 56`.
+- **C02:** phân công ba vai trò khác nhau cho ba trong bảy học sinh, mỗi học sinh chỉ nhận một vai trò; đáp án dự kiến do Python tính là `A(7,3) = 210`.
+- **JSON schema của Qwen trong thử nghiệm đã thực hiện:** `question: string`, `task: enum`, `n: int`, `k: int`, `answer: int`.
+- **Script chạy thử nghiệm:** `src/ai/qwen_spike.py`.
+- **Bằng chứng:** `eval/results/baseline_spike_output.json` (dữ liệu chạy thực tế, không phải mô phỏng).
+
+**Khung prompt của thử nghiệm cơ sở:**
 
 ```text
 Bạn là người soạn đề Toán tổ hợp lớp 10.
@@ -45,46 +52,46 @@ Không tự ý thêm/bớt điều kiện làm thay đổi đáp án.
 Trả JSON theo schema thử nghiệm: {question, task, n, k, answer}.
 ```
 
-The baseline code checks JSON shape and simple metadata / numerical consistency, but **cannot prove that the entire Vietnamese word problem is mathematically equivalent**. Teacher review is required.
+Code thử nghiệm kiểm tra cấu trúc JSON và tính nhất quán cơ bản của metadata / số liệu, nhưng **không thể chứng minh toàn bộ bài toán có lời văn tiếng Việt tương đương về mặt toán học với đặc tả gốc**. Cần có giáo viên review.
 
-## 3. Actual hardware and latency measurements
+## 3. Số liệu đo phần cứng và độ trễ thực tế
 
-**Test date:** 2026-10-19  
-**Tester:** Phạm Yến Trân (AI & Algorithms Lead)
+**Ngày thử nghiệm:** 2026-10-19  
+**Người thực hiện:** Phạm Yến Trân (Trưởng nhóm AI & Thuật toán)
 
-| Measurement | Actual result |
+| Hạng mục đo | Kết quả thực tế |
 |---|---|
-| Operating system | Windows 11 (`10.0.26200`) |
+| Hệ điều hành | Windows 11 (`10.0.26200`) |
 | Python / Ollama | Python `3.14.4` / Ollama `0.40.6` |
-| CPU | Intel64 Family 6 Model 186 Stepping 2, GenuineIntel; 16 logical CPU cores |
-| Installed system RAM | `24,118.2 MiB` (about `23.55 GiB`) |
-| NVIDIA GPU / VRAM | No NVIDIA GPU detected by the measurement script; `nvidia-smi` unavailable, VRAM recorded as `N/A` |
-| Model / quantization | `qwen3:1.7b` / `Q4_K_M` |
-| Model digest | `8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7` |
-| Model file size | `1,359,293,444 bytes` |
-| C01: API wall time / Ollama total / model load | `5.403 s` / `5.388 s` / `1.541 s` |
-| C01: RAM before / sampled peak / increase | `14,679.3 MiB` / `16,599.3 MiB` / `+1,920.0 MiB` |
-| C01: JSON / metadata validation | Passed; teacher review not completed |
-| C02: API wall time / Ollama total / model load | `4.208 s` / `4.193 s` / `0.005 s` |
-| C02: RAM before / sampled peak / increase | `16,599.4 MiB` / `16,696.1 MiB` / `+96.8 MiB` |
-| C02: JSON / metadata validation | Passed; teacher review not completed |
+| CPU | Intel64 Family 6 Model 186 Stepping 2, GenuineIntel; 16 nhân CPU logic |
+| RAM được lắp trên hệ thống | `24,118.2 MiB` (khoảng `23.55 GiB`) |
+| NVIDIA GPU / VRAM | Script đo không phát hiện GPU NVIDIA; không có `nvidia-smi`, VRAM được ghi là `N/A` |
+| Mô hình / lượng tử hóa | `qwen3:1.7b` / `Q4_K_M` |
+| Mã băm mô hình | `8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7` |
+| Kích thước file mô hình | `1,359,293,444 bytes` |
+| C01: thời gian thực của API / tổng thời gian Ollama / thời gian nạp mô hình | `5.403 s` / `5.388 s` / `1.541 s` |
+| C01: RAM trước khi chạy / đỉnh ghi nhận qua lấy mẫu / mức tăng | `14,679.3 MiB` / `16,599.3 MiB` / `+1,920.0 MiB` |
+| C01: kiểm định JSON / metadata | Đạt; chưa hoàn thành review của giáo viên |
+| C02: thời gian thực của API / tổng thời gian Ollama / thời gian nạp mô hình | `4.208 s` / `4.193 s` / `0.005 s` |
+| C02: RAM trước khi chạy / đỉnh ghi nhận qua lấy mẫu / mức tăng | `16,599.4 MiB` / `16,696.1 MiB` / `+96.8 MiB` |
+| C02: kiểm định JSON / metadata | Đạt; chưa hoàn thành review của giáo viên |
 
-**Measurement caveats:**
+**Lưu ý về phép đo:**
 
-- API wall time uses Python `time.perf_counter`; Ollama timing fields were converted from nanoseconds to seconds.
-- `psutil` samples **total system-used RAM**, not memory exclusively owned by the Qwen process.
-- NVIDIA VRAM entries are `null`/`N/A` because the measurement method was unavailable; **do not interpret this as zero VRAM usage or proof that no other GPU exists**.
-- Sampling can miss transient peaks. The second call is a warm-model observation; only two cases were tested, so no broad speed or quality claim is justified.
+- Thời gian thực của API được đo bằng `time.perf_counter` của Python; các trường thời gian của Ollama được chuyển từ nano giây sang giây.
+- `psutil` lấy mẫu **tổng RAM đang được toàn hệ thống sử dụng**, không phải bộ nhớ chỉ riêng tiến trình Qwen sử dụng.
+- Các giá trị VRAM NVIDIA là `null`/`N/A` vì không có phương thức đo tương ứng; **không được hiểu là mức sử dụng VRAM bằng không hoặc bằng chứng máy không có GPU khác**.
+- Việc lấy mẫu có thể bỏ sót các đỉnh sử dụng bộ nhớ ngắn hạn. Lần gọi thứ hai được đo khi mô hình đã được nạp; chỉ có hai trường hợp được thử nghiệm nên chưa đủ cơ sở để kết luận chung về tốc độ hoặc chất lượng.
 
-## 4. Profile JSON and rule-based Blueprint pseudocode (Issue #19)
+## 4. Profile JSON và mã giả chọn Blueprint theo quy tắc (Issue #19)
 
-### 4.1. Contract and scope
+### 4.1. Contract và phạm vi
 
-**Source of truth:** M3 provides a **static Student Profile JSON** with `evidence_count` and skill-related `mastery_score` values already available. This module **does not** iterate over `graded_records`, calculate normalized marks, update mastery, or perform AI-based grading.
+**Nguồn dữ liệu chuẩn:** M3 cung cấp **Student Profile JSON tĩnh**, có sẵn `evidence_count` và các giá trị `mastery_score` theo kỹ năng. Module này **không** duyệt `graded_records`, tính điểm chuẩn hóa, cập nhật mức độ thành thạo hoặc chấm bài bằng AI.
 
-For the MVP branch decision, `evidence_count` is read as a **student-level evidence count supplied by M3**. If M3's actual profile stores counts only per skill, M3 and the backend must expose one agreed student-level value **before** calling this branching function; M4 must not silently invent an aggregation formula.
+Để quyết định rẽ nhánh trong MVP, `evidence_count` được hiểu là **số lượng bằng chứng ở cấp học sinh do M3 cung cấp**. Nếu hồ sơ thực tế của M3 chỉ lưu số lượng theo từng kỹ năng, M3 và backend phải cung cấp một giá trị ở cấp học sinh đã được thống nhất **trước khi** gọi hàm rẽ nhánh này; M4 không được tự đặt công thức tổng hợp mà không thông báo.
 
-**Illustrative interface** (field layout is an integration example, not a claim about M3's finalized JSON):
+**Interface minh họa** (cấu trúc trường là ví dụ tích hợp, không khẳng định đây là JSON cuối cùng của M3):
 
 ```json
 {
@@ -99,19 +106,19 @@ For the MVP branch decision, `evidence_count` is read as a **student-level evide
 }
 ```
 
-Here the numbers `2.0` and `3.5` are **illustrative input values only**. This document does not define their scale or compute them. The priority list is optional upstream planning metadata; if it is not supplied, the Exam Planner must use a separately specified interpretation of the mastery-score scale rather than assume that a particular number means “weak.”
+Các số `2.0` và `3.5` ở đây **chỉ là giá trị đầu vào minh họa**. Tài liệu này không định nghĩa thang đo hay tính các giá trị đó. Danh sách ưu tiên là metadata lập kế hoạch tùy chọn do thành phần phía trước cung cấp; nếu không có danh sách này, Exam Planner phải sử dụng cách diễn giải thang điểm thành thạo đã được quy định riêng, thay vì tự cho rằng một giá trị cụ thể có nghĩa là “yếu”.
 
-**Issue #19's mandatory branching rule:**
+**Quy tắc rẽ nhánh bắt buộc của Issue #19:**
 
-| Student-level `evidence_count` | Evidence category | Blueprint branch |
+| `evidence_count` ở cấp học sinh | Nhóm bằng chứng | Nhánh Blueprint |
 |---:|---|---|
 | `0` | `no_data` | `default` |
-| `1` or `2` | `partial` | `default` |
+| `1` hoặc `2` | `partial` | `default` |
 | `>= 3` | `sufficient` | `personalized` |
 
-The three categories describe **data availability**, not a student's absolute knowledge or proficiency.
+Ba nhóm này mô tả **mức độ đầy đủ của dữ liệu**, không phản ánh trực tiếp kiến thức hay trình độ tuyệt đối của học sinh.
 
-### 4.2. Pseudocode: classify evidence and select Blueprint
+### 4.2. Mã giả: phân loại bằng chứng và chọn Blueprint
 
 ```text
 FUNCTION classify_evidence(student_profile):
@@ -171,55 +178,55 @@ FUNCTION select_exam_blueprint(student_profile, topic_id, question_count):
 END FUNCTION
 ```
 
-`DEFAULT_BLUEPRINT` and `PERSONALIZED_BLUEPRINT` represent the planners' interfaces, not completed implementations in `qwen_spike.py`. The **threshold and branch names above are fixed by Issue #19**; policy details inside those planners are described separately in Section 7.
+`DEFAULT_BLUEPRINT` và `PERSONALIZED_BLUEPRINT` biểu diễn interface của các bộ lập kế hoạch, không phải phần triển khai đã hoàn thành trong `qwen_spike.py`. **Ngưỡng và tên nhánh ở trên được cố định theo Issue #19**; chi tiết chính sách bên trong các bộ lập kế hoạch được mô tả riêng ở Mục 7.
 
-### 4.3. Branch tests and examples
+### 4.3. Các trường hợp kiểm thử rẽ nhánh và ví dụ
 
-| Case | Profile input | Expected result |
+| Trường hợp | Đầu vào hồ sơ | Kết quả mong đợi |
 |---|---|---|
-| New student | `evidence_count = 0` | `no_data` → Default Blueprint |
-| Some evidence | `evidence_count = 1` | `partial` → Default Blueprint |
-| Some evidence | `evidence_count = 2` | `partial` → Default Blueprint |
-| Enough evidence | `evidence_count = 3` | `sufficient` → Personalized Blueprint |
-| More evidence | `evidence_count = 5` | `sufficient` → Personalized Blueprint |
-| Invalid profile | negative, missing or non-integer count | `invalid_profile`; request corrected data |
+| Học sinh mới | `evidence_count = 0` | `no_data` → Default Blueprint |
+| Có một phần bằng chứng | `evidence_count = 1` | `partial` → Default Blueprint |
+| Có một phần bằng chứng | `evidence_count = 2` | `partial` → Default Blueprint |
+| Đủ bằng chứng | `evidence_count = 3` | `sufficient` → Personalized Blueprint |
+| Có thêm bằng chứng | `evidence_count = 5` | `sufficient` → Personalized Blueprint |
+| Hồ sơ không hợp lệ | Số lượng âm, bị thiếu hoặc không phải số nguyên | `invalid_profile`; yêu cầu sửa dữ liệu |
 
-**Boundary:** The student may need substantial support even with `evidence_count >= 3`, and may show strengths even with only two evidence records. `evidence_count` selects the branch; the separate skill information influences **what the personalized branch does**.
+**Giới hạn diễn giải:** Học sinh vẫn có thể cần được hỗ trợ nhiều dù `evidence_count >= 3`, và vẫn có thể thể hiện điểm mạnh khi chỉ có hai bản ghi bằng chứng. `evidence_count` chọn nhánh; thông tin kỹ năng riêng biệt quyết định **nhánh cá nhân hóa sẽ thực hiện những điều chỉnh nào**.
 
-## 5. Risks and fallback behavior
+## 5. Rủi ro và cơ chế dự phòng (fallback)
 
-| Risk / edge case | Handling / limitation |
+| Rủi ro / trường hợp biên | Cách xử lý / giới hạn |
 |---|---|
-| Missing or invalid student-level `evidence_count` | Reject/flag malformed profile and request M3/backend correction; no invented aggregation |
-| `evidence_count` is 0, 1 or 2 | Always use Default Blueprint, as required by Issue #19 |
-| Sufficient evidence but missing/undocumented skill priorities or score scale | The Personalized branch is selected; flag its missing input rather than invent skill rankings |
-| Requested topic or question count unsupported by bank | Return `insufficient_question_bank` / explicit error, not an incorrect substitute |
-| Local model unavailable, out of memory, timeout | Log runtime error; allow configured fallback or stop; never fabricate generated content |
-| Qwen produces invalid JSON or changes constraints | Validator rejects or flags for review; bounded retry through backend orchestration |
-| Correct syntax but incorrect mathematical semantics | Automated checks are incomplete; require teacher review before release |
-| Repeated surface paraphrases | Diversity checker compares candidates and already-used items; do not assume new wording means new mathematics |
-| Non-NVIDIA VRAM cannot be sampled | Report `N/A`, not `0` |
-| Student data in Qwen prompt | Send only required mathematical facts and minimal non-sensitive context; do not include identifying student information |
+| Thiếu hoặc sai `evidence_count` ở cấp học sinh | Từ chối/đánh dấu hồ sơ sai cấu trúc và yêu cầu M3/backend sửa; không tự đặt công thức tổng hợp |
+| `evidence_count` bằng 0, 1 hoặc 2 | Luôn dùng Default Blueprint theo yêu cầu của Issue #19 |
+| Đủ bằng chứng nhưng thiếu hoặc chưa có tài liệu về ưu tiên kỹ năng hay thang điểm | Chọn nhánh Personalized; đánh dấu đầu vào còn thiếu thay vì tự xếp hạng kỹ năng |
+| Chủ đề hoặc số câu yêu cầu nằm ngoài khả năng của ngân hàng câu hỏi | Trả `insufficient_question_bank` / lỗi rõ ràng, không thay bằng nội dung sai yêu cầu |
+| Mô hình cục bộ không sẵn sàng, hết bộ nhớ hoặc quá thời gian chờ | Ghi log lỗi runtime; dùng fallback đã cấu hình hoặc dừng; không bịa nội dung đã sinh |
+| Qwen trả JSON không hợp lệ hoặc thay đổi ràng buộc | Validator từ chối hoặc đánh dấu để review; backend điều phối việc thử lại với số lần giới hạn |
+| Đúng cú pháp nhưng sai ngữ nghĩa toán học | Kiểm tra tự động chưa đầy đủ; cần giáo viên review trước khi phát hành |
+| Chỉ thay đổi câu chữ nhưng lặp lại nội dung | Bộ kiểm tra độ đa dạng so sánh các câu ứng viên với câu đã dùng; không coi cách diễn đạt mới là nội dung toán học mới |
+| Không thể lấy mẫu VRAM của GPU ngoài NVIDIA | Báo `N/A`, không báo `0` |
+| Dữ liệu học sinh xuất hiện trong prompt Qwen | Chỉ gửi dữ kiện toán học cần thiết và ngữ cảnh tối thiểu không nhạy cảm; không đưa thông tin định danh học sinh vào prompt |
 
-## 6. Actual results and interpretation
+## 6. Kết quả thực tế và diễn giải
 
-**Baseline status: completed on local hardware on 2026-10-19.**
+**Trạng thái thử nghiệm cơ sở: đã hoàn thành trên phần cứng cục bộ ngày 2026-10-19.**
 
-- Two Vietnamese combinatorics questions were generated by local Qwen3-1.7B.
-- Both outputs passed the baseline JSON and metadata checks (`2/2`).
-- Their deterministic Python reference answers were `56` and `210`, respectively.
-- Measured API wall times were `5.403 s` and `4.208 s`.
-- System RAM was sampled; NVIDIA VRAM metrics were unavailable.
-- **Teacher semantic review has not been recorded**. Results do not establish a general mathematical-correctness rate.
-- The Profile-driven branching pseudocode is aligned to Issue #19 but is **not** evidence of an integrated runtime with M3's real Profile JSON.
+- Qwen3-1.7B cục bộ đã sinh hai câu hỏi Đại số tổ hợp bằng tiếng Việt.
+- Cả hai đầu ra đều đạt kiểm tra JSON và metadata của thử nghiệm cơ sở (`2/2`).
+- Đáp án tham chiếu do Python tính bằng quy tắc xác định lần lượt là `56` và `210`.
+- Thời gian thực của API đo được là `5.403 s` và `4.208 s`.
+- Đã lấy mẫu RAM hệ thống; không có số liệu VRAM NVIDIA.
+- **Chưa ghi nhận kết quả review ngữ nghĩa của giáo viên**. Các kết quả này chưa xác lập tỷ lệ đúng toán học nói chung.
+- Mã giả rẽ nhánh theo hồ sơ đã được đồng bộ với Issue #19 nhưng **không** chứng minh rằng đã có runtime tích hợp với Profile JSON thực tế của M3.
 
-## 7. Planned MVP question-generation architecture (product-design proposal)
+## 7. Kiến trúc sinh câu hỏi dự kiến cho MVP (đề xuất thiết kế sản phẩm)
 
-> This section captures the team's developing product idea, **not additional acceptance criteria stated by Issue #19**. It also does not overwrite the measured baseline in Sections 2–3.
+> Mục này ghi lại ý tưởng sản phẩm đang được nhóm phát triển, **không phải các tiêu chí nghiệm thu bổ sung của Issue #19**. Nội dung này cũng không thay thế số liệu thử nghiệm cơ sở đã đo ở các mục 2–3.
 
-### 7.1. Input and ordered pipeline
+### 7.1. Đầu vào và thứ tự xử lý
 
-The backend receives: `student_profile`, `question_count`, and `topic_id` selected by the teacher. The current MVP supports `topic_id = "combinatorics"`, but the field remains for future subjects/topics.
+Backend nhận `student_profile`, `question_count` và `topic_id` do giáo viên chọn. MVP hiện hỗ trợ `topic_id = "combinatorics"`, nhưng vẫn giữ trường này để mở rộng sang môn học/chủ đề khác sau này.
 
 ```text
 Student Profile + Teacher Request (topic_id, question_count)
@@ -233,51 +240,51 @@ Student Profile + Teacher Request (topic_id, question_count)
     -> Approved exam, or revision / rejection
 ```
 
-**Dataset-side mathematical problem record (illustrative):** retain `question_id` (or a corresponding stable problem identifier), `topic_id`, `skill_ids`, four-level `difficulty`, machine-readable mathematical conditions and parameters, plus a **verified reference answer and solution method**. A finished Vietnamese `content` string and `generate_type` are **not required in the mathematical source record**. If the existing SQL `Questions` table continues to store rendered `content`, the dataset/backend team should distinguish **source mathematical data** from **generated wording** in its storage model.
+**Bản ghi bài toán phía dataset (minh họa):** giữ `question_id` (hoặc mã định danh bài toán ổn định tương ứng), `topic_id`, `skill_ids`, `difficulty` theo bốn mức, các điều kiện và tham số toán học ở dạng máy có thể đọc, cùng **đáp án tham chiếu và phương pháp giải đã được kiểm chứng**. Chuỗi `content` tiếng Việt hoàn chỉnh và `generate_type` **không bắt buộc phải có trong bản ghi toán học nguồn**. Nếu bảng SQL `Questions` hiện tại tiếp tục lưu `content` đã diễn đạt, nhóm dataset/backend cần phân biệt **dữ liệu toán học nguồn** với **câu chữ được sinh ra** trong mô hình lưu trữ.
 
-### 7.2. Rule-based planning policy: skills and difficulty
+### 7.2. Chính sách lập kế hoạch theo quy tắc: kỹ năng và độ khó
 
-**Seven agreed skill groups** (IDs below are suggested interface labels, not pre-existing canonical SQL IDs):
+**Bảy nhóm kỹ năng đã thống nhất** (các ID dưới đây là nhãn interface được đề xuất, không phải ID chuẩn đã tồn tại trong SQL):
 
-| Example ID | Skill group |
+| ID minh họa | Nhóm kỹ năng |
 |---|---|
-| `SK01` | Basic calculation ability (Năng lực tính toán cơ bản) |
-| `SK02` | Understanding and representing problems (Khả năng hiểu và biểu diễn bài toán) |
-| `SK03` | Addition and multiplication rules (Quy tắc cộng, quy tắc nhân) |
-| `SK04` | Permutations, arrangements, combinations (Hoán vị, chỉnh hợp, tổ hợp) |
-| `SK05` | Conditions and constraints analysis (Phân tích điều kiện và ràng buộc) |
-| `SK06` | Solution strategy selection (Lựa chọn chiến lược giải) |
-| `SK07` | Checking and evaluating results (Kiểm tra và đánh giá kết quả) |
+| `SK01` | Năng lực tính toán cơ bản |
+| `SK02` | Khả năng hiểu và biểu diễn bài toán |
+| `SK03` | Quy tắc cộng, quy tắc nhân |
+| `SK04` | Hoán vị, chỉnh hợp, tổ hợp |
+| `SK05` | Phân tích điều kiện và ràng buộc |
+| `SK06` | Lựa chọn chiến lược giải |
+| `SK07` | Kiểm tra và đánh giá kết quả |
 
-**Four agreed difficulty labels:**
+**Bốn nhãn độ khó đã thống nhất:**
 
 - `recognition` – Nhận biết
 - `comprehension` – Thông hiểu
 - `application` – Vận dụng
 - `advanced_application` – Vận dụng cao
 
-The previously mentioned 1–6 `difficulty` scale is **not used** in this target design.
+Thang `difficulty` từ 1–6 từng được đề cập trước đây **không được sử dụng** trong thiết kế mục tiêu này.
 
-**Default difficulty distribution proposed for the project:** 20% / 40% / 30% / 10%, respectively. With 10 questions this becomes 2 / 4 / 3 / 1. For other requested counts, use a deterministic rounding rule that always sums to `question_count`; a category may receive zero questions for very short exams. This distribution reflects the product design discussed by M4, **not a numerical threshold introduced by Issue #19**.
+**Phân bổ độ khó mặc định được đề xuất cho dự án:** lần lượt là 20% / 40% / 30% / 10%. Với 10 câu hỏi, số câu tương ứng là 2 / 4 / 3 / 1. Với số câu yêu cầu khác, dùng quy tắc làm tròn xác định sao cho tổng luôn bằng `question_count`; một mức có thể không có câu nào trong đề rất ngắn. Phân bổ này phản ánh thiết kế sản phẩm do M4 thảo luận, **không phải ngưỡng định lượng do Issue #19 đưa ra**.
 
-**Personalized policy proposal:** initially keep the same four-level difficulty distribution but **prioritize skills identified for additional practice**. The backend consumes priority information from the profile or an approved policy interpreting M3's `mastery_score`; **it does not compute mastery**. A pilot split could be 60% priority-skills coverage and 40% other skill coverage, provided the bank can meet it; this is an adjustable planning policy, not an Issue #19 rule.
+**Đề xuất chính sách cá nhân hóa:** ban đầu giữ nguyên phân bổ độ khó bốn mức nhưng **ưu tiên các kỹ năng đã được xác định là cần luyện tập thêm**. Backend sử dụng thông tin ưu tiên từ hồ sơ hoặc chính sách đã được phê duyệt để diễn giải `mastery_score` của M3; **backend không tính mức độ thành thạo**. Có thể thử tỷ lệ 60% cho các kỹ năng ưu tiên và 40% cho các kỹ năng khác nếu ngân hàng câu hỏi đáp ứng được; đây là chính sách lập kế hoạch có thể điều chỉnh, không phải quy tắc của Issue #19.
 
-Planning should prefer topic and skill alignment, adequate cognitive-level distribution, and avoidance of excessive repeats. Do not label a question with a skill unless solving it genuinely exercises that skill. If the bank cannot satisfy the plan, report the missing slots.
+Kế hoạch cần ưu tiên sự phù hợp về chủ đề và kỹ năng, phân bổ mức độ nhận thức hợp lý và tránh lặp lại quá nhiều. Chỉ gắn nhãn kỹ năng cho câu hỏi khi việc giải câu đó thực sự rèn luyện kỹ năng tương ứng. Nếu ngân hàng câu hỏi không đáp ứng được kế hoạch, phải báo các vị trí câu hỏi còn thiếu.
 
-### 7.3. Content & Expression Planner
+### 7.3. Bộ lập kế hoạch nội dung và cách diễn đạt (Content & Expression Planner)
 
-The backend selects a compatible **context** (e.g., choosing distinct students for a group, assigning committee roles) **after** selecting the mathematical problem. Context choices must preserve the original mathematical meaning; an unconstrained random noun may change whether objects are distinguishable or whether order matters.
+Backend chọn **ngữ cảnh** phù hợp (ví dụ: chọn các học sinh khác nhau vào một nhóm, phân công vai trò trong ban cán sự) **sau khi** chọn bài toán. Ngữ cảnh phải giữ nguyên ý nghĩa toán học ban đầu; việc chọn ngẫu nhiên danh từ mà không có ràng buộc có thể làm thay đổi tính phân biệt của đối tượng hoặc việc có xét thứ tự hay không.
 
-The finalized `generate_type` enumeration has **exactly two values**:
+Enum `generate_type` đã chốt có **đúng hai giá trị**:
 
-- `direct`: state useful numerical facts and constraints clearly; make the problem structure readily recognizable.
-- `indirect`: use an understandable situation requiring the learner to identify the mathematical structure; **do not** insert new mathematical conditions or irrelevant distractors.
+- `direct`: trình bày rõ dữ kiện số và ràng buộc cần thiết để người học dễ nhận ra cấu trúc bài toán.
+- `indirect`: dùng tình huống dễ hiểu, yêu cầu người học tự nhận diện cấu trúc toán học; **không** thêm điều kiện toán học mới hoặc dữ kiện gây nhiễu không liên quan.
 
-`generate_type` is independent of the four-level `difficulty` label.
+`generate_type` độc lập với nhãn `difficulty` theo bốn mức.
 
-**Expression-personalization proposal:** for a skill requiring stronger support, initially choose more `direct` questions and fewer `indirect` questions (e.g., a configurable 80/20 split). This is a **presentation policy** determined before calling Qwen, **not** a property inferred from `evidence_count` and **not** a rule that Qwen should choose on its own. If no reliable support-level indicator exists, use an explicit configured default rather than infer student weakness from evidence volume.
+**Đề xuất cá nhân hóa cách diễn đạt:** với kỹ năng cần hỗ trợ nhiều hơn, ban đầu chọn nhiều câu `direct` và ít câu `indirect` hơn (ví dụ: tỷ lệ 80/20 có thể cấu hình). Đây là **chính sách trình bày** được quyết định trước khi gọi Qwen, **không** phải thuộc tính suy ra từ `evidence_count` và **không** phải quy tắc để Qwen tự chọn. Nếu chưa có chỉ báo đáng tin cậy về mức hỗ trợ cần thiết, dùng giá trị mặc định được cấu hình rõ ràng thay vì suy mức độ yếu của học sinh từ số lượng bằng chứng.
 
-### 7.4. Pseudocode: local Qwen generator (Module 4 only)
+### 7.4. Mã giả: bộ sinh câu hỏi Qwen cục bộ (chỉ Module 4)
 
 ```text
 FUNCTION qwen_generate_question(
@@ -339,13 +346,13 @@ FUNCTION qwen_generate_question(
 END FUNCTION
 ```
 
-**Qwen's proposed response contract:** `{"question": "..."}`. The wrapping application retains `problem_data`, the verified answer, `skill_ids`, `difficulty`, and the requested `generate_type`. Qwen does **not** author those authoritative fields. The first validator layer parses/checks Qwen's returned JSON.
+**Response contract đề xuất cho Qwen:** `{"question": "..."}`. Ứng dụng bao quanh giữ `problem_data`, đáp án đã kiểm chứng, `skill_ids`, `difficulty` và `generate_type` được yêu cầu. Qwen **không** tạo các trường dữ liệu chuẩn này. Lớp kiểm định đầu tiên phân tích cú pháp và kiểm tra JSON do Qwen trả về.
 
-### 7.5. Validation and bounded retry (Backend orchestration)
+### 7.5. Kiểm định và thử lại có giới hạn (điều phối tại backend)
 
-**Six validation layers:** (1) JSON structure, (2) mathematical facts and constraints, (3) direct/indirect expression fidelity, (4) answer equivalence against the reference mathematical problem, (5) diversity / near-duplicate checks, and (6) human teacher review. Layers 1–5 are intended for automated screening. Layer 6 is approval of the prepared draft; automated `pass` does not equal `teacher_approved`.
+**Sáu lớp kiểm định:** (1) cấu trúc JSON, (2) dữ kiện và ràng buộc toán học, (3) mức độ tuân thủ cách diễn đạt direct/indirect, (4) tính tương đương của đáp án so với bài toán tham chiếu, (5) độ đa dạng / phát hiện gần trùng lặp và (6) giáo viên review. Các lớp 1–5 được dự kiến dùng để sàng lọc tự động. Lớp 6 là phê duyệt bản nháp đã chuẩn bị; kết quả tự động `pass` không đồng nghĩa với `teacher_approved`.
 
-**Answer-checking rule:** do not simply ask the same Qwen model to solve its own generated question and trust agreement. Where supported, parse/verify constraints and evaluate with deterministic code; if semantic equivalence cannot be established, flag for teacher review. Another AI may help extract conditions as a secondary signal, not as sole mathematical proof.
+**Quy tắc kiểm tra đáp án:** không chỉ yêu cầu chính mô hình Qwen giải câu hỏi nó vừa sinh rồi tin vào việc hai kết quả trùng nhau. Trong phạm vi được hỗ trợ, cần phân tích/xác minh ràng buộc và kiểm tra bằng code xác định; nếu chưa xác lập được tính tương đương ngữ nghĩa, đánh dấu để giáo viên review. Một AI khác có thể hỗ trợ trích xuất điều kiện như tín hiệu phụ, không phải bằng chứng toán học duy nhất.
 
 ```text
 FUNCTION create_candidate_with_retry(problem_data, context, generate_type, config):
@@ -384,11 +391,11 @@ FUNCTION create_candidate_with_retry(problem_data, context, generate_type, confi
 END FUNCTION
 ```
 
-This retry function belongs to **backend orchestration**, not to the Qwen inference component itself. Repeated seeds can increase variation but **do not guarantee** a distinct or correct output. Diversity generation for multiple alternative phrasings is a separate optional feature.
+Hàm thử lại này thuộc **tầng điều phối backend**, không thuộc chính thành phần suy luận Qwen. Các seed được sử dụng qua những lần thử có thể tăng mức độ biến đổi nhưng **không bảo đảm** đầu ra khác biệt hoặc chính xác. Sinh nhiều cách diễn đạt thay thế để tăng độ đa dạng là một tính năng tùy chọn riêng.
 
-### 7.6. Proposed exam JSON output and release gate
+### 7.6. JSON đầu ra đề thi được đề xuất và điều kiện phát hành
 
-The **teacher/backend version** of an assembled exam contains numbered question text, original source identifiers, difficulty, skill IDs, generate type, stored reference answers, validator results, and teacher-review status. The **student version must not contain reference answers or internal validation metadata**.
+**Phiên bản dành cho giáo viên/backend** của đề đã tổng hợp chứa nội dung câu hỏi được đánh số, mã định danh nguồn gốc, độ khó, ID kỹ năng, kiểu sinh câu hỏi, đáp án tham chiếu đã lưu, kết quả kiểm định và trạng thái review của giáo viên. **Phiên bản dành cho học sinh không được chứa đáp án tham chiếu hoặc metadata kiểm định nội bộ**.
 
 ```json
 {
@@ -419,22 +426,22 @@ The **teacher/backend version** of an assembled exam contains numbered question 
 }
 ```
 
-This one-question JSON is an **interface example**, not a recorded Qwen output and not an example of the 20/40/30/10 distribution (which applies when the count allows it). The actual exam assembler must use the requested number of questions or report unsatisfied slots. Source dataset identities and generated-question identities should remain traceable even if they are stored as separate records.
+JSON một câu hỏi này là **ví dụ về interface**, không phải đầu ra Qwen đã ghi nhận và không minh họa phân bổ 20/40/30/10 (phân bổ này áp dụng khi số câu cho phép). Bộ tổng hợp đề thi thực tế phải đáp ứng số câu được yêu cầu hoặc báo các vị trí chưa đáp ứng. Cần duy trì khả năng truy vết giữa mã định danh trong dataset nguồn và mã định danh câu hỏi được sinh, kể cả khi chúng được lưu thành các bản ghi riêng.
 
-## 8. Implementation boundaries and next steps
+## 8. Ranh giới triển khai và các bước tiếp theo
 
-**Already demonstrated (Issue #6):** local Qwen inference for two sample cases, a repeatable result JSON, latency measurements, and system RAM sampling.
+**Đã chứng minh qua thử nghiệm (Issue #6):** suy luận bằng Qwen cục bộ cho hai trường hợp mẫu, file JSON kết quả có thể tạo lại khi chạy thử nghiệm, số liệu đo độ trễ và lấy mẫu RAM hệ thống.
 
-**Documentation aligned for Issue #19:** no `graded_records` loop; use M3's static Profile JSON, mandatory 0/1–2/default and >=3/personalized branches; keep completed baseline numbers. This alignment is a **document/pseudocode change**, not a claim of integrated code.
+**Tài liệu đã được đồng bộ cho Issue #19:** không có vòng lặp `graded_records`; sử dụng Profile JSON tĩnh của M3; bắt buộc dùng default khi số bằng chứng là 0 hoặc 1–2, dùng personalized khi >=3; giữ nguyên số liệu thử nghiệm cơ sở đã hoàn thành. Việc đồng bộ này là **thay đổi tài liệu/mã giả**, không khẳng định đã có code tích hợp.
 
-**Next engineering steps (separate implementation work):**
+**Các bước kỹ thuật tiếp theo (công việc triển khai riêng):**
 
-1. Agree with M3/backend on the real Profile JSON field paths, the meaning of the **student-level** `evidence_count`, and the interpretation scale of incoming `mastery_score`.
-2. Define machine-readable mathematical problem records and context-compatibility rules; do not require production Qwen to invent question IDs or answers.
-3. Implement the two-branch Exam Planner and deterministic distribution of requested question counts.
-4. Implement the Content & Expression Planner, with only `direct` and `indirect`.
-5. Adapt `qwen_spike.py` into a standalone generation adapter matching Section 7.4, without changing historical baseline evidence.
-6. Build an error-focused test corpus for all five automated validators, including deliberate new-condition, changed-number, order/replacement, duplicate, and unclear-wording cases; obtain teacher review labels for semantic correctness.
-7. Integrate bounded retries, exam assembly, and teacher approval; keep answers out of student-facing responses.
+1. Thống nhất với M3/backend về đường dẫn các trường trong Profile JSON thực tế, ý nghĩa của `evidence_count` **ở cấp học sinh** và cách diễn giải thang điểm `mastery_score` đầu vào.
+2. Định nghĩa bản ghi bài toán ở dạng máy có thể đọc và quy tắc tương thích ngữ cảnh; không yêu cầu Qwen trong phiên bản triển khai thực tế tự tạo ID câu hỏi hoặc đáp án.
+3. Triển khai Exam Planner hai nhánh và phân bổ số câu được yêu cầu theo quy tắc xác định.
+4. Triển khai Content & Expression Planner, chỉ sử dụng `direct` và `indirect`.
+5. Chuyển `qwen_spike.py` thành adapter sinh câu hỏi độc lập theo Mục 7.4, không thay đổi bằng chứng thử nghiệm cơ sở đã ghi nhận.
+6. Xây dựng tập kiểm thử tập trung vào lỗi cho cả năm lớp kiểm định tự động, bao gồm các trường hợp cố ý thêm điều kiện, đổi số liệu, đổi thứ tự/quy tắc lặp, trùng lặp và diễn đạt không rõ; thu thập nhãn review của giáo viên về tính đúng đắn ngữ nghĩa.
+7. Tích hợp thử lại có giới hạn, tổng hợp đề thi và phê duyệt của giáo viên; không đưa đáp án vào response dành cho học sinh.
 
-**Excluded from this stage:** teacher grading of completed student solutions, AI updating learner mastery, automatic fine-tuning, or unrestricted invention of mathematical structures.
+**Ngoài phạm vi giai đoạn này:** giáo viên chấm bài làm đã hoàn thành của học sinh, AI cập nhật mức độ thành thạo của người học, fine-tuning tự động hoặc tự do tạo cấu trúc toán học không có giới hạn.

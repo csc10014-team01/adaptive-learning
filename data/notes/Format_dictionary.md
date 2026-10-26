@@ -52,15 +52,18 @@ get_all_skills() trả về list các skill
 # 5. Student
 # MVP 1
 
+```python
 student = {
-"student_id": "HS001",
-“name”: “Nguyễn Văn A”
+    "student_id": "HS001",
+    "name": "Nguyễn Văn A",
     "grade_level": 11,
-    "skill_mastery":[
-        "skill_id": "A001",
-        "mastery_score": 3.4,
-        "evidence_count": 4
-    ]
+    "skill_mastery": [
+        {
+            "skill_id": "A001",
+            "mastery_score": 3.4,
+            "evidence_count": 4
+        }
+    ],
     "learning_history": [
         {
             "test_id": "T001",
@@ -72,6 +75,10 @@ student = {
         }
     ]
 }
+```
+
+`evidence_count` thuộc từng phần tử trong `skill_mastery`, không có trường này ở
+cấp student. Cách tính evidence và cách sử dụng khi lập đề thuộc quy tắc thuật toán.
 
 
 **Kiểu trả về của AI sau khi sinh đề**

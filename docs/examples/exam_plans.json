@@ -1,0 +1,863 @@
+{
+  "weak_skill_student": {
+    "request": {
+      "student_id": "S",
+      "generation_mode": "adaptive",
+      "selected_topic_ids": [
+        "combinatorics"
+      ],
+      "total_questions": 10,
+      "duration_minutes": 45,
+      "difficulty_distribution": null,
+      "advanced_options": {
+        "include_real_world_context": true,
+        "step_scoring_granularity": 0.25
+      }
+    },
+    "profile": {
+      "student_id": "S",
+      "name": "Student",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": 1.0,
+          "evidence_count": 3
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": 2.0,
+          "evidence_count": 3
+        },
+        {
+          "skill_id": "A003",
+          "mastery_score": 3.2,
+          "evidence_count": 3
+        },
+        {
+          "skill_id": "A004",
+          "mastery_score": 3.8,
+          "evidence_count": 4
+        }
+      ],
+      "learning_history": []
+    },
+    "plan": {
+      "policy_version": "mvp-personalization-v2",
+      "strategy": "focused_practice",
+      "difficulty_locked": false,
+      "skill_classifications": {
+        "A001": "WEAK",
+        "A002": "WEAK",
+        "A003": "ACHIEVED",
+        "A004": "ACHIEVED"
+      },
+      "quota_summary": {
+        "requested_groups": {
+          "focus": 6,
+          "review": 4
+        },
+        "achieved_groups": {
+          "focus": 6,
+          "review": 4
+        },
+        "requested_skills": {
+          "A001": 3,
+          "A002": 3,
+          "A003": 2,
+          "A004": 2
+        },
+        "achieved_skills": {
+          "A001": 3,
+          "A002": 3,
+          "A003": 2,
+          "A004": 2
+        },
+        "requested_levels": {
+          "recognition": 3,
+          "understanding": 2,
+          "application": 3,
+          "advanced_application": 2
+        },
+        "achieved_levels": {
+          "recognition": 3,
+          "understanding": 2,
+          "application": 3,
+          "advanced_application": 2
+        },
+        "requested_skill_levels": {
+          "A001": {
+            "recognition": 2,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 1,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          }
+        },
+        "achieved_skill_levels": {
+          "A001": {
+            "recognition": 2,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 1,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          }
+        }
+      },
+      "warnings": [],
+      "student_id": "S",
+      "requested_mode": "adaptive",
+      "personalized": true,
+      "priority_skills": [
+        "A001",
+        "A002"
+      ],
+      "target_count": 6,
+      "achieved_target_count": 6,
+      "questions": [
+        {
+          "source_id": "Q_A001_recognition_00",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "recognition",
+          "group": "focus",
+          "targeted": true,
+          "reasons": [
+            "focus: A001 is WEAK; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A002_recognition_00",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "recognition",
+          "group": "focus",
+          "targeted": true,
+          "reasons": [
+            "focus: A002 is WEAK; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A003_application_00",
+          "target_skill_id": "A003",
+          "skill_ids": [
+            "A003"
+          ],
+          "cognitive_level": "application",
+          "group": "review",
+          "targeted": false,
+          "reasons": [
+            "review: A003 is ACHIEVED; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A004_application_00",
+          "target_skill_id": "A004",
+          "skill_ids": [
+            "A004"
+          ],
+          "cognitive_level": "application",
+          "group": "review",
+          "targeted": false,
+          "reasons": [
+            "review: A004 is ACHIEVED; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_recognition_01",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "recognition",
+          "group": "focus",
+          "targeted": true,
+          "reasons": [
+            "focus: A001 is WEAK; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A002_understanding_00",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "understanding",
+          "group": "focus",
+          "targeted": true,
+          "reasons": [
+            "focus: A002 is WEAK; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A003_advanced_application_00",
+          "target_skill_id": "A003",
+          "skill_ids": [
+            "A003"
+          ],
+          "cognitive_level": "advanced_application",
+          "group": "review",
+          "targeted": false,
+          "reasons": [
+            "review: A003 is ACHIEVED; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A004_advanced_application_00",
+          "target_skill_id": "A004",
+          "skill_ids": [
+            "A004"
+          ],
+          "cognitive_level": "advanced_application",
+          "group": "review",
+          "targeted": false,
+          "reasons": [
+            "review: A004 is ACHIEVED; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_understanding_00",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "understanding",
+          "group": "focus",
+          "targeted": true,
+          "reasons": [
+            "focus: A001 is WEAK; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A002_application_00",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "application",
+          "group": "focus",
+          "targeted": true,
+          "reasons": [
+            "focus: A002 is WEAK; strategy=focused_practice.",
+            "No prior exposure recorded in available history."
+          ]
+        }
+      ]
+    }
+  },
+  "mixed_missing_data_student": {
+    "request": {
+      "student_id": "S",
+      "generation_mode": "adaptive",
+      "selected_topic_ids": [
+        "combinatorics"
+      ],
+      "total_questions": 10,
+      "duration_minutes": 45,
+      "difficulty_distribution": null,
+      "advanced_options": {
+        "include_real_world_context": true,
+        "step_scoring_granularity": 0.25
+      }
+    },
+    "profile": {
+      "student_id": "S",
+      "name": "Student",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": 3.2,
+          "evidence_count": 3
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": 1.0,
+          "evidence_count": 1
+        }
+      ],
+      "learning_history": []
+    },
+    "plan": {
+      "policy_version": "mvp-personalization-v2",
+      "strategy": "diagnostic_review",
+      "difficulty_locked": false,
+      "skill_classifications": {
+        "A001": "ACHIEVED",
+        "A002": "PARTIAL",
+        "A003": "NO_DATA",
+        "A004": "NO_DATA"
+      },
+      "quota_summary": {
+        "requested_groups": {
+          "diagnostic": 6,
+          "maintenance": 4
+        },
+        "achieved_groups": {
+          "diagnostic": 6,
+          "maintenance": 4
+        },
+        "requested_skills": {
+          "A002": 2,
+          "A003": 2,
+          "A004": 2,
+          "A001": 4
+        },
+        "achieved_skills": {
+          "A002": 2,
+          "A003": 2,
+          "A004": 2,
+          "A001": 4
+        },
+        "requested_levels": {
+          "recognition": 0,
+          "understanding": 4,
+          "application": 5,
+          "advanced_application": 1
+        },
+        "achieved_levels": {
+          "recognition": 0,
+          "understanding": 4,
+          "application": 5,
+          "advanced_application": 1
+        },
+        "requested_skill_levels": {
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 2,
+            "advanced_application": 1
+          }
+        },
+        "achieved_skill_levels": {
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 2,
+            "advanced_application": 1
+          }
+        }
+      },
+      "warnings": [],
+      "student_id": "S",
+      "requested_mode": "adaptive",
+      "personalized": false,
+      "priority_skills": [],
+      "target_count": 0,
+      "achieved_target_count": 0,
+      "questions": [
+        {
+          "source_id": "Q_A002_understanding_00",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "understanding",
+          "group": "diagnostic",
+          "targeted": false,
+          "reasons": [
+            "diagnostic: A002 is PARTIAL; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A003_understanding_00",
+          "target_skill_id": "A003",
+          "skill_ids": [
+            "A003"
+          ],
+          "cognitive_level": "understanding",
+          "group": "diagnostic",
+          "targeted": false,
+          "reasons": [
+            "diagnostic: A003 is NO_DATA; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A004_understanding_00",
+          "target_skill_id": "A004",
+          "skill_ids": [
+            "A004"
+          ],
+          "cognitive_level": "understanding",
+          "group": "diagnostic",
+          "targeted": false,
+          "reasons": [
+            "diagnostic: A004 is NO_DATA; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_understanding_00",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "understanding",
+          "group": "maintenance",
+          "targeted": false,
+          "reasons": [
+            "maintenance: A001 is ACHIEVED; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A002_application_00",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "application",
+          "group": "diagnostic",
+          "targeted": false,
+          "reasons": [
+            "diagnostic: A002 is PARTIAL; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A003_application_00",
+          "target_skill_id": "A003",
+          "skill_ids": [
+            "A003"
+          ],
+          "cognitive_level": "application",
+          "group": "diagnostic",
+          "targeted": false,
+          "reasons": [
+            "diagnostic: A003 is NO_DATA; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A004_application_00",
+          "target_skill_id": "A004",
+          "skill_ids": [
+            "A004"
+          ],
+          "cognitive_level": "application",
+          "group": "diagnostic",
+          "targeted": false,
+          "reasons": [
+            "diagnostic: A004 is NO_DATA; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_application_00",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "application",
+          "group": "maintenance",
+          "targeted": false,
+          "reasons": [
+            "maintenance: A001 is ACHIEVED; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_application_01",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "application",
+          "group": "maintenance",
+          "targeted": false,
+          "reasons": [
+            "maintenance: A001 is ACHIEVED; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_advanced_application_00",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "advanced_application",
+          "group": "maintenance",
+          "targeted": false,
+          "reasons": [
+            "maintenance: A001 is ACHIEVED; strategy=diagnostic_review.",
+            "No prior exposure recorded in available history."
+          ]
+        }
+      ]
+    }
+  },
+  "all_achieved_student": {
+    "request": {
+      "student_id": "S",
+      "generation_mode": "adaptive",
+      "selected_topic_ids": [
+        "combinatorics"
+      ],
+      "total_questions": 10,
+      "duration_minutes": 45,
+      "difficulty_distribution": null,
+      "advanced_options": {
+        "include_real_world_context": true,
+        "step_scoring_granularity": 0.25
+      }
+    },
+    "profile": {
+      "student_id": "S",
+      "name": "Student",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": 3.8,
+          "evidence_count": 3
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": 3.8,
+          "evidence_count": 3
+        },
+        {
+          "skill_id": "A003",
+          "mastery_score": 3.8,
+          "evidence_count": 3
+        },
+        {
+          "skill_id": "A004",
+          "mastery_score": 3.8,
+          "evidence_count": 3
+        }
+      ],
+      "learning_history": []
+    },
+    "plan": {
+      "policy_version": "mvp-personalization-v2",
+      "strategy": "advanced_review",
+      "difficulty_locked": false,
+      "skill_classifications": {
+        "A001": "ACHIEVED",
+        "A002": "ACHIEVED",
+        "A003": "ACHIEVED",
+        "A004": "ACHIEVED"
+      },
+      "quota_summary": {
+        "requested_groups": {
+          "advanced_review": 10
+        },
+        "achieved_groups": {
+          "advanced_review": 10
+        },
+        "requested_skills": {
+          "A001": 3,
+          "A002": 3,
+          "A003": 2,
+          "A004": 2
+        },
+        "achieved_skills": {
+          "A001": 3,
+          "A002": 3,
+          "A003": 2,
+          "A004": 2
+        },
+        "requested_levels": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 6,
+          "advanced_application": 4
+        },
+        "achieved_levels": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 6,
+          "advanced_application": 4
+        },
+        "requested_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 2,
+            "advanced_application": 1
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 2,
+            "advanced_application": 1
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          }
+        },
+        "achieved_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 2,
+            "advanced_application": 1
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 2,
+            "advanced_application": 1
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 1
+          }
+        }
+      },
+      "warnings": [],
+      "student_id": "S",
+      "requested_mode": "adaptive",
+      "personalized": false,
+      "priority_skills": [],
+      "target_count": 0,
+      "achieved_target_count": 0,
+      "questions": [
+        {
+          "source_id": "Q_A001_application_00",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A001 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A002_application_00",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A002 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A003_application_00",
+          "target_skill_id": "A003",
+          "skill_ids": [
+            "A003"
+          ],
+          "cognitive_level": "application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A003 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A004_application_00",
+          "target_skill_id": "A004",
+          "skill_ids": [
+            "A004"
+          ],
+          "cognitive_level": "application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A004 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_application_01",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A001 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A002_application_01",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A002 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A003_advanced_application_00",
+          "target_skill_id": "A003",
+          "skill_ids": [
+            "A003"
+          ],
+          "cognitive_level": "advanced_application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A003 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A004_advanced_application_00",
+          "target_skill_id": "A004",
+          "skill_ids": [
+            "A004"
+          ],
+          "cognitive_level": "advanced_application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A004 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A001_advanced_application_00",
+          "target_skill_id": "A001",
+          "skill_ids": [
+            "A001"
+          ],
+          "cognitive_level": "advanced_application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A001 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        },
+        {
+          "source_id": "Q_A002_advanced_application_00",
+          "target_skill_id": "A002",
+          "skill_ids": [
+            "A002"
+          ],
+          "cognitive_level": "advanced_application",
+          "group": "advanced_review",
+          "targeted": false,
+          "reasons": [
+            "advanced_review: A002 is ACHIEVED; strategy=advanced_review.",
+            "No prior exposure recorded in available history."
+          ]
+        }
+      ]
+    }
+  }
+}
