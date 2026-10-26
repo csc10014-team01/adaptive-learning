@@ -8,6 +8,7 @@ from typing import Protocol
 from uuid import uuid4
 
 from src.api.data_adapter import ApiFailure, StaticDataAdapter
+from src.adaptation.policy import PlannerPolicyConfig
 from src.api.schemas import (
     LEVELS, ExamQuestion, ExamResponse, GenerateExamRequest, Provenance,
     RubricCriterion, SolutionStep, SourceReference, StudentProfileResponse,
@@ -29,10 +30,17 @@ def allocate_units(total: int, slots: int) -> list[int]:
 
 
 def question_slots(request: GenerateExamRequest) -> dict[str, int]:
-    exact = [getattr(request.difficulty_distribution, level) * request.total_questions / 100 for level in LEVELS]
+    weights = (tuple(getattr(request.difficulty_distribution, level) for level in LEVELS)
+               if request.difficulty_distribution is not None else PlannerPolicyConfig().default_levels)
+    return level_counts(request.total_questions, weights)
+
+
+def level_counts(total: int, weights: tuple[float, ...]) -> dict[str, int]:
+    """Largest remainder with stable L1 → L4 ties."""
+    exact = [weight * total / 100 for weight in weights]
     counts = [floor(value) for value in exact]
     order = sorted(range(len(LEVELS)), key=lambda i: (-(exact[i] - counts[i]), i))
-    for index in order[:request.total_questions - sum(counts)]:
+    for index in order[:total - sum(counts)]:
         counts[index] += 1
     return dict(zip(LEVELS, counts))
 
@@ -46,7 +54,8 @@ class FakeExamGenerator:
         # belong to the replacement AI service, not an invented fake algorithm.
         selected = []
         for level, count in question_slots(request).items():
-            candidates = [q for q in self.data.questions if q.cognitive_level == level]
+            candidates = [q for q in self.data.questions
+                          if q.cognitive_level == level and q.grade_level == profile.grade_level]
             if len(candidates) < count:
                 raise ApiFailure(
                     409, "INSUFFICIENT_QUESTION_BANK",
@@ -81,7 +90,6 @@ class FakeExamGenerator:
             grade_level=profile.grade_level, topic_id="combinatorics",
             title="Đề ôn tập Đại số tổ hợp — Fake MVP1",
             generation_mode=request.generation_mode,
-            evidence_count=profile.evidence_count, data_status=profile.data_status,
             total_questions=request.total_questions, duration_minutes=request.duration_minutes,
             total_score=10.0, status="pending_teacher_review",
             provenance=Provenance(generator="fake", model=None), questions=questions,
@@ -104,3 +112,15 @@ class InMemoryExamStore:
             if exam_id not in self._exams:
                 raise ApiFailure(404, "EXAM_NOT_FOUND", "Không tìm thấy exam draft.")
             return self._exams[exam_id].model_copy(deep=True)
+
+    def replace(self, exam: ExamResponse, *, expected_revision: int) -> None:
+        exam = ExamResponse.model_validate(exam)
+        if exam.revision != expected_revision + 1:
+            raise ValueError("Replacement must advance the revision once")
+        with self._lock:
+            current = self._exams.get(exam.exam_id)
+            if current is None:
+                raise ApiFailure(404, "EXAM_NOT_FOUND", "Exam not found")
+            if current.revision != expected_revision:
+                raise ApiFailure(409, "EXAM_REVISION_CONFLICT", "Reload the latest draft before changing it")
+            self._exams[exam.exam_id] = exam.model_copy(deep=True)

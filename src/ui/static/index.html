@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Không gian thử nghiệm tạo đề Toán theo hồ sơ học sinh.">
+  <title>Math Studio · Tạo đề ôn tập</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232d5b50'/%3E%3Ctext x='20' y='29' font-size='29' text-anchor='middle' fill='white'%3EΣ%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/ui/assets/style.css">
+  <script src="/ui/assets/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Math Studio"><span class="brand-icon">∑</span><span>Math Studio<small>PERSONALIZED ASSESSMENT</small></span></a>
+    <div class="top-right"><span class="pill" id="connection-state">Chưa kết nối</span><a href="/docs" target="_blank" rel="noopener">API docs ↗</a></div>
+  </header>
+  <main class="workspace">
+    <section class="intro">
+      <div><p class="eyebrow">KHÔNG GIAN GIÁO VIÊN</p><h1>Một đề ôn tập.<br><span>Đúng nhu cầu học sinh.</span></h1><p class="intro-note">Chọn hồ sơ, thiết lập yêu cầu và xem bản nháp đề Toán.</p></div>
+      <div class="subject-note"><span class="subject-mark">ƒ(x)</span><span>TOÁN LỚP 10<strong>Đại số tổ hợp</strong><small id="runtime-label">Thử nghiệm tạo đề</small></span></div>
+    </section>
+
+    <section class="connection-card" aria-labelledby="connection-title">
+      <div><h2 id="connection-title">Kết nối phiên làm việc</h2><p id="connection-help">Nhập teacher token của backend, hoặc mở UI bằng lệnh <code>python -m src.ui</code>.</p></div>
+      <form id="connect-form" class="connect-form"><label class="sr-only" for="teacher-token">Teacher token</label><input id="teacher-token" type="password" placeholder="Teacher token" autocomplete="off" required><button class="secondary" id="connect-button" type="submit">Kết nối</button></form>
+    </section>
+
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <div id="demo-notice" class="notice warning" hidden>Chế độ demo: đề được ghép từ câu hỏi có sẵn, không gọi Qwen và chưa cá nhân hóa. “Xem kế hoạch” vẫn sử dụng planner thật.</div>
+
+    <div class="studio-grid">
+      <aside class="controls">
+        <form id="exam-form" class="panel">
+          <div class="panel-heading"><span class="step">01</span><div><h2>Thiết lập đề</h2><p>Bắt đầu từ hồ sơ học sinh</p></div></div>
+          <fieldset id="exam-fields" disabled>
+            <label for="student">Học sinh <span id="student-count" class="muted"></span></label>
+            <select id="student" required><option value="">Kết nối để tải danh sách</option></select>
+            <div id="profile" class="profile"><p class="muted">Mastery và evidence sẽ xuất hiện khi bạn chọn học sinh.</p></div>
+            <label for="topic">Chủ đề</label><select id="topic" required><option value="">Chưa tải chủ đề</option></select>
+            <label for="mode">Cách tạo đề</label><select id="mode"><option value="adaptive">Cá nhân hóa theo hồ sơ</option><option value="standard">Đề chuẩn theo yêu cầu</option></select>
+            <div class="two-col"><div><label for="question-count">Số câu</label><input id="question-count" type="number" min="1" max="10" step="1" value="4" required></div><div><label for="duration">Thời gian (phút)</label><input id="duration" type="number" min="1" max="180" step="1" value="45" required></div></div>
+            <label class="check-row" for="lock-levels"><input type="checkbox" id="lock-levels"><span>Tự chọn phân bố độ khó</span></label>
+            <p class="field-help" id="level-help">Để planner tự phân bổ theo chế độ đã chọn.</p>
+            <div id="level-inputs" class="level-inputs" hidden>
+              <div><label for="recognition">Nhận biết</label><input id="recognition" type="number" min="0" max="100" step="1" value="25" disabled></div>
+              <div><label for="understanding">Thông hiểu</label><input id="understanding" type="number" min="0" max="100" step="1" value="35" disabled></div>
+              <div><label for="application">Vận dụng</label><input id="application" type="number" min="0" max="100" step="1" value="30" disabled></div>
+              <div><label for="advanced_application">Vận dụng cao</label><input id="advanced_application" type="number" min="0" max="100" step="1" value="10" disabled></div>
+              <p id="level-total">Tổng: 100%</p>
+            </div>
+            <div class="actions"><button type="button" id="plan-button" class="secondary">Xem kế hoạch</button><button type="submit" id="generate-button" class="primary">Tạo đề <span aria-hidden="true">↗</span></button></div>
+            <p class="field-help">Xem kế hoạch chọn câu trước khi gọi AI. Mọi đề mới đều cần giáo viên kiểm tra.</p>
+          </fieldset>
+        </form>
+        <form id="retrieve-form" class="panel retrieve"><label for="exam-id">Mở đề đã lưu</label><div class="inline-form"><input id="exam-id" placeholder="Nhập mã EX_… hoặc FE_…" autocomplete="off" required><button id="retrieve-button" type="submit" class="secondary" disabled>Mở</button></div></form>
+      </aside>
+
+      <section class="panel output" aria-labelledby="output-title" aria-busy="false" id="output">
+        <div class="output-top"><div><p class="eyebrow">BẢN XEM TRƯỚC</p><h2 id="output-title">Từ hồ sơ đến đề ôn tập</h2></div><button id="download-button" type="button" class="quiet" disabled>Tải JSON ↓</button></div>
+        <div class="tabs" role="tablist" aria-label="Nội dung kết quả"><button id="exam-tab" type="button" role="tab" aria-selected="true" aria-controls="exam-pane" class="active">Đề ôn tập</button><button id="plan-tab" type="button" role="tab" aria-selected="false" aria-controls="plan-pane" tabindex="-1">Kế hoạch chọn câu</button></div>
+        <div id="loading" class="loading" role="status" aria-live="polite" hidden><span class="spinner" aria-hidden="true"></span><div><strong id="loading-title">Đang xử lý…</strong><p><span id="elapsed">0</span> giây · <span id="loading-help">Vui lòng giữ trang mở.</span></p></div></div>
+        <div id="exam-pane" role="tabpanel" aria-labelledby="exam-tab"><div class="empty-state"><div class="empty-icon">∑</div><h3>Đề tiếp theo bắt đầu ở đây</h3><p>Chọn một học sinh ở bên trái, xem kế hoạch<br>hoặc tạo đề để kiểm tra luồng hoạt động.</p><div class="empty-steps"><span>01 · Hồ sơ</span><span>02 · Chọn câu</span><span>03 · Bản nháp</span></div></div></div>
+        <div id="plan-pane" role="tabpanel" aria-labelledby="plan-tab" hidden><div class="empty-state"><div class="empty-icon">≡</div><h3>Hiểu lý do chọn từng câu</h3><p>Bấm “Xem kế hoạch” để xem phân bố kỹ năng,<br>độ khó và các câu nguồn mà planner đã chọn.</p></div></div>
+      </section>
+    </div>
+    <footer>Math Studio <span>·</span> AI-Powered Personalized Mathematics Assessment System <span>·</span> Local workspace</footer>
+  </main>
+</body>
+</html>

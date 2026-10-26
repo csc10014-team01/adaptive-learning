@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from math import isclose
 from typing import Annotated, Literal, Self
 
@@ -13,8 +14,7 @@ GradeLevel = Annotated[int, Field(strict=True, ge=10, le=10)]
 Count = Annotated[int, Field(strict=True, ge=0)]
 PositiveInt = Annotated[int, Field(strict=True, gt=0)]
 Number = Annotated[float, Field(strict=True, allow_inf_nan=False, ge=0)]
-Mode = Literal["adaptive", "default_blueprint"]
-DataStatus = Literal["no_data", "partial", "sufficient"]
+Mode = Literal["adaptive", "default_blueprint", "standard"]
 CognitiveLevel = Literal["recognition", "understanding", "application", "advanced_application"]
 LEVELS: tuple[CognitiveLevel, ...] = (
     "recognition", "understanding", "application", "advanced_application",
@@ -23,10 +23,6 @@ LEVELS: tuple[CognitiveLevel, ...] = (
 
 class ContractModel(BaseModel):
     model_config = ConfigDict(extra="forbid", validate_default=True, revalidate_instances="always")
-
-
-def evidence_status(count: int) -> DataStatus:
-    return "no_data" if count == 0 else "partial" if count < 3 else "sufficient"
 
 
 def score_units(score: float) -> int:
@@ -44,34 +40,26 @@ class SkillMastery(ContractModel):
 
 class StudentSummary(ContractModel):
     student_id: Identifier
-    student_name: Text
-    grade_level: Annotated[int, Field(strict=True, ge=10, le=10)]
-    evidence_count: Count
-    data_status: DataStatus
+    name: Text
+    grade_level: PositiveInt
 
-    @model_validator(mode="after")
-    def consistent_evidence(self) -> Self:
-        if self.data_status != evidence_status(self.evidence_count):
-            raise ValueError("data_status must agree with profile-level evidence_count")
-        return self
+
+class LearningHistoryItem(ContractModel):
+    test_id: Identifier
+    wrong_questions: list[Identifier]
 
 
 class StudentProfileResponse(StudentSummary):
+    """MVP student format; evidence is recorded independently for each skill."""
+
     skill_mastery: list[SkillMastery]
-    recommended_blueprint_mode: Mode
+    learning_history: list[LearningHistoryItem]
 
     @model_validator(mode="after")
     def consistent_skills(self) -> Self:
         ids = [skill.skill_id for skill in self.skill_mastery]
         if len(ids) != len(set(ids)):
             raise ValueError("Duplicate skill IDs")
-        if any(skill.evidence_count > self.evidence_count for skill in self.skill_mastery):
-            raise ValueError("Per-skill evidence cannot exceed the profile count")
-        expected = "adaptive" if self.evidence_count >= 3 else "default_blueprint"
-        if self.recommended_blueprint_mode != expected:
-            raise ValueError("Recommended mode must agree with evidence eligibility")
-        if self.evidence_count >= 3 and not any(s.evidence_count for s in self.skill_mastery):
-            raise ValueError("Sufficient profile requires observed skill information")
         return self
 
 
@@ -129,7 +117,8 @@ class GenerateExamRequest(ContractModel):
     selected_topic_ids: Annotated[list[Literal["combinatorics"]], Field(min_length=1, max_length=1)]
     total_questions: Annotated[int, Field(strict=True, ge=1, le=10)]
     duration_minutes: Annotated[int, Field(strict=True, ge=1, le=180)]
-    difficulty_distribution: DifficultyDistribution
+    # None survives JSON round trips and means no explicit teacher level lock.
+    difficulty_distribution: DifficultyDistribution | None = None
     advanced_options: AdvancedOptions = Field(default_factory=AdvancedOptions)
 
 
@@ -156,7 +145,7 @@ class RubricCriterion(ContractModel):
 
 class ValidationSummary(ContractModel):
     auto_status: Literal["pass", "needs_review", "not_evaluated"]
-    teacher_approved: Literal[False]
+    teacher_approved: Annotated[bool, Field(strict=True)]
     review_notes: list[str]
 
 
@@ -175,6 +164,8 @@ class StudentQuestion(ContractModel):
 
 class ExamQuestion(StudentQuestion):
     source_ref: SourceReference
+    source_digest: Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")] | None = None
+    target_skill_id: Identifier | None = None
     answer: Answer
     step_solutions: Annotated[list[SolutionStep], Field(min_length=1)]
     rubric: Annotated[list[RubricCriterion], Field(min_length=1)]
@@ -182,6 +173,8 @@ class ExamQuestion(StudentQuestion):
 
     @model_validator(mode="after")
     def consistent_scoring(self) -> Self:
+        if self.target_skill_id is not None and self.target_skill_id not in self.skill_ids:
+            raise ValueError("Target skill must belong to skill_ids")
         units = score_units(self.max_score)
         if sum(score_units(s.score) for s in self.step_solutions) != units:
             raise ValueError("Solution scores must sum to max_score")
@@ -200,31 +193,74 @@ class Provenance(ContractModel):
     def truthful_model(self) -> Self:
         if self.generator == "fake" and self.model is not None:
             raise ValueError("Fake generation cannot claim a model invocation")
+        if self.generator == "qwen" and (not self.model or not self.model.strip()):
+            raise ValueError("Qwen generation must identify its model")
         return self
+
+
+class QuotaSummary(ContractModel):
+    requested_groups: dict[str, int]
+    achieved_groups: dict[str, int]
+    requested_skills: dict[str, int]
+    achieved_skills: dict[str, int]
+    requested_levels: dict[str, int]
+    achieved_levels: dict[str, int]
+    requested_skill_levels: dict[str, dict[str, int]]
+    achieved_skill_levels: dict[str, dict[str, int]]
+
+
+class PlannerSummary(ContractModel):
+    policy_version: str
+    strategy: Literal["focused_practice", "diagnostic_review", "advanced_review", "standard"]
+    difficulty_locked: bool
+    skill_classifications: dict[str, Literal["NO_DATA", "PARTIAL", "WEAK", "ACHIEVED"]]
+    quota_summary: QuotaSummary
+    warnings: list[str]
+
+
+class TeacherReview(ContractModel):
+    approved_at: datetime
+    # The current shared teacher token does not identify an individual teacher.
+    access_method: Literal["teacher_token"] = "teacher_token"
+    notes: Annotated[str, Field(max_length=2000)] = ""
+
+
+class ApproveExamRequest(ContractModel):
+    expected_revision: PositiveInt
+    accepted_question_ids: Annotated[list[Identifier], Field(min_length=1)]
+    notes: Annotated[str, Field(max_length=2000)] = ""
+
+
+class RegenerateQuestionRequest(ContractModel):
+    expected_revision: PositiveInt
 
 
 class ExamResponse(ContractModel):
     exam_id: Identifier
     student_id: Identifier
-    grade_level: Annotated[int, Field(strict=True, ge=10, le=10)]
+    grade_level: PositiveInt
     topic_id: Literal["combinatorics"]
     title: Text
     generation_mode: Mode
-    evidence_count: Count
-    data_status: DataStatus
     total_questions: Annotated[int, Field(strict=True, ge=1, le=10)]
     duration_minutes: Annotated[int, Field(strict=True, ge=1, le=180)]
     total_score: Annotated[float, Field(strict=True, ge=10, le=10, allow_inf_nan=False)]
-    status: Literal["pending_teacher_review"]
+    status: Literal["pending_teacher_review", "approved"]
+    revision: PositiveInt = 1
+    teacher_review: TeacherReview | None = None
     provenance: Provenance
     questions: Annotated[list[ExamQuestion], Field(min_length=1)]
+    planner_summary: PlannerSummary | None = None
 
     @model_validator(mode="after")
     def complete_exam(self) -> Self:
-        if self.data_status != evidence_status(self.evidence_count):
-            raise ValueError("Exam evidence status mismatch")
-        if self.generation_mode == "adaptive" and self.evidence_count < 3:
-            raise ValueError("Adaptive generation requires evidence_count >= 3")
+        approved = all(q.validation.teacher_approved for q in self.questions)
+        if self.status == "approved" and (not approved or self.teacher_review is None):
+            raise ValueError("Approved exams require teacher acceptance of all questions and a review record")
+        if self.status == "pending_teacher_review" and (
+            any(q.validation.teacher_approved for q in self.questions) or self.teacher_review is not None
+        ):
+            raise ValueError("Pending drafts cannot carry teacher approval")
         if len(self.questions) != self.total_questions:
             raise ValueError("Question count mismatch")
         if [q.order_index for q in self.questions] != list(range(1, self.total_questions + 1)):
@@ -258,7 +294,7 @@ class ExamResponse(ContractModel):
 class StudentExamResponse(ContractModel):
     exam_id: Identifier
     title: Text
-    grade_level: Annotated[int, Field(strict=True, ge=10, le=10)]
+    grade_level: PositiveInt
     topic_id: Literal["combinatorics"]
     total_questions: PositiveInt
     duration_minutes: PositiveInt

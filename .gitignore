@@ -231,3 +231,5 @@ __pycache__/
 *.db
 .vscode/
 .idea/
+# Application-owned generated drafts; canonical M3 databases remain tracked.
+data/runtime/
