@@ -33,7 +33,7 @@ def payload(student_id="DEMO_NEW_001", **changes):
 
 @pytest.fixture
 def client():
-    with TestClient(create_app(teacher_token=TOKEN), headers=HEADERS) as test_client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN), headers=HEADERS) as test_client:
         yield test_client
 
 
@@ -48,14 +48,19 @@ def test_student_profile_and_catalogue(client):
     assert response.status_code == 200
     profile = StudentProfileResponse.model_validate(response.json())
     assert profile.grade_level == 10
-    assert profile.evidence_count == 3
     assert profile.skill_mastery[0].evidence_count == 1
-    assert profile.data_status == "sufficient"
-    assert profile.recommended_blueprint_mode == "adaptive"
-    assert "name" not in response.json()
+    assert profile.learning_history[0].wrong_questions == ["DEMO_Q01"]
+    fixture = json.loads((DEFAULT_FIXTURES / "student_profiles.json").read_text(encoding="utf-8"))
+    for student in fixture["students"]:
+        actual = client.get(f"/api/v1/students/{student['student_id']}/profile").json()
+        assert actual == student
+        assert set(actual) == {"student_id", "name", "grade_level", "skill_mastery", "learning_history"}
     assert "birthday" not in response.json()
     students = client.get("/api/v1/students").json()["items"]
-    assert len(students) == 4
+    assert students == [
+        {field: student[field] for field in ("student_id", "name", "grade_level")}
+        for student in fixture["students"]
+    ]
     topics = client.get("/api/v1/topics").json()["items"]
     assert topics[0]["topic_id"] == "combinatorics"
     assert {s["skill_id"] for s in topics[0]["skills"]} == {f"A00{i}" for i in range(1, 8)}
@@ -91,23 +96,20 @@ def test_default_generation_is_complete_and_retrievable(client):
     assert all(not q.validation.teacher_approved for q in exam.questions)
     assert all(q.validation.auto_status == "not_evaluated" for q in exam.questions)
     assert "job_id" not in json.dumps(body)
+    assert {"evidence_count", "data_status"}.isdisjoint(body)
     stored = client.get(f"/api/v1/exams/{exam.exam_id}")
     assert stored.status_code == 200 and stored.json() == body
     assert stored.headers["cache-control"] == "no-store"
 
 
-@pytest.mark.parametrize("student_id", ["DEMO_NEW_001", "DEMO_PARTIAL_001", "DEMO_PARTIAL_002"])
-def test_adaptive_rejected_at_evidence_zero_one_two(client, student_id):
-    response = client.post("/api/v1/exams/generate", json=payload(student_id, generation_mode="adaptive"))
-    assert response.status_code == 409
-    assert response.json()["error"]["code"] == "ADAPTIVE_NOT_ALLOWED"
-
-
+@pytest.mark.parametrize("student_id", [
+    "DEMO_NEW_001", "DEMO_PARTIAL_001", "DEMO_PARTIAL_002", "DEMO_SUFFICIENT_001",
+])
 @pytest.mark.parametrize("mode", ["adaptive", "default_blueprint"])
-def test_sufficient_profile_allows_explicit_mode(client, mode):
-    body = generated(client, student_id="DEMO_SUFFICIENT_001", generation_mode=mode)
+def test_fake_generation_does_not_invent_an_evidence_policy(client, student_id, mode):
+    body = generated(client, student_id=student_id, generation_mode=mode)
     assert body["generation_mode"] == mode
-    assert body["evidence_count"] == 3
+    assert {"evidence_count", "data_status"}.isdisjoint(body)
 
 
 @pytest.mark.parametrize("count", [1, 3, 4, 5, 8, 10])
@@ -195,7 +197,7 @@ def test_student_projection_cannot_expose_solutions(client):
     ("GET", "/api/v1/exams/ANY?audience=student"),
 ])
 def test_teacher_routes_deny_anonymous_and_student_tokens(method, path):
-    with TestClient(create_app(teacher_token=TOKEN)) as unauthenticated:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN)) as unauthenticated:
         kwargs = {"json": payload()} if method == "POST" else {}
         assert unauthenticated.request(method, path, **kwargs).status_code == 401
         denied = unauthenticated.request(method, path, headers={"Authorization": "Bearer student-token"}, **kwargs)
@@ -205,34 +207,112 @@ def test_teacher_routes_deny_anonymous_and_student_tokens(method, path):
 
 def test_no_configured_teacher_token_fails_closed(monkeypatch):
     monkeypatch.delenv("FAKE_API_TEACHER_TOKEN", raising=False)
-    with TestClient(create_app()) as client:
+    with TestClient(create_app(backend="fake")) as client:
         response = client.get("/api/v1/students")
         assert response.status_code == 503
         assert response.json()["error"]["code"] == "TEACHER_ACCESS_NOT_CONFIGURED"
 
 
-@pytest.mark.parametrize("value", [None, -1, True, "3"])
-def test_malformed_profile_is_not_silently_defaulted(tmp_path, value):
+@pytest.mark.parametrize("value", [None, -1, True, "3", 1.5])
+def test_malformed_skill_evidence_is_not_silently_defaulted(tmp_path, value):
     shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
     path = tmp_path / "data" / "student_profiles.json"
     fixture = json.loads(path.read_text(encoding="utf-8"))
+    skill = fixture["students"][1]["skill_mastery"][0]
     if value is None:
-        fixture["students"][0].pop("evidence_count")
+        skill.pop("evidence_count")
     else:
-        fixture["students"][0]["evidence_count"] = value
+        skill["evidence_count"] = value
     path.write_text(json.dumps(fixture), encoding="utf-8")
-    with TestClient(create_app(teacher_token=TOKEN, fixture_dir=path.parent), headers=HEADERS) as client:
-        response = client.get("/api/v1/students/DEMO_NEW_001/profile")
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent), headers=HEADERS) as client:
+        response = client.get("/api/v1/students/DEMO_PARTIAL_001/profile")
         assert response.status_code == 500
         assert response.json()["error"]["code"] == "INVALID_PROFILE_DATA"
 
 
+@pytest.mark.parametrize("mutation", [
+    "root_evidence", "student_name", "data_status", "recommended_mode",
+    "legacy_wrongs", "missing_history", "duplicate_skill", "unknown_skill",
+])
+def test_profile_fixture_must_follow_agreed_student_format(tmp_path, mutation):
+    shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
+    path = tmp_path / "data" / "student_profiles.json"
+    fixture = json.loads(path.read_text(encoding="utf-8"))
+    student = fixture["students"][1]
+    if mutation == "root_evidence":
+        student["evidence_count"] = 1
+    elif mutation == "student_name":
+        student["student_name"] = student.pop("name")
+    elif mutation == "data_status":
+        student["data_status"] = "partial"
+    elif mutation == "recommended_mode":
+        student["recommended_blueprint_mode"] = "default_blueprint"
+    elif mutation == "legacy_wrongs":
+        history = student["learning_history"][0]
+        history["wrongs"] = history.pop("wrong_questions")
+    elif mutation == "missing_history":
+        student.pop("learning_history")
+    elif mutation == "duplicate_skill":
+        student["skill_mastery"].append(student["skill_mastery"][0].copy())
+    else:
+        student["skill_mastery"][0]["skill_id"] = "UNKNOWN"
+    path.write_text(json.dumps(fixture), encoding="utf-8")
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent), headers=HEADERS) as client:
+        response = client.get("/api/v1/students/DEMO_PARTIAL_001/profile")
+        assert response.status_code == 500
+        assert response.json()["error"]["code"] == "INVALID_PROFILE_DATA"
+
+
+def test_service_receives_independent_skill_evidence_and_full_history(tmp_path):
+    shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
+    path = tmp_path / "data" / "student_profiles.json"
+    fixture = json.loads(path.read_text(encoding="utf-8"))
+    student = fixture["students"][-1]
+    for skill, count in zip(student["skill_mastery"], [4, 1, 0]):
+        skill["evidence_count"] = count
+    path.write_text(json.dumps(fixture), encoding="utf-8")
+    fixture_generator = FakeExamGenerator(StaticDataAdapter(fixture_dir=path.parent))
+
+    class Replacement:
+        calls = 0
+
+        def generate(self, request, profile):
+            self.calls += 1
+            assert profile.model_dump(mode="json") == student
+            return fixture_generator.generate(request, profile)
+
+    replacement = Replacement()
+    app = create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent, generator=replacement)
+    with TestClient(app, headers=HEADERS) as client:
+        generated(client, student_id=student["student_id"], generation_mode="adaptive")
+        assert replacement.calls == 1
+        assert client.get(f"/api/v1/students/{student['student_id']}/profile").json() == student
+
+
+def test_grade_eleven_profile_is_read_without_using_grade_ten_question_fixtures(tmp_path):
+    shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
+    path = tmp_path / "data" / "student_profiles.json"
+    fixture = json.loads(path.read_text(encoding="utf-8"))
+    student = fixture["students"][0]
+    student["grade_level"] = 11
+    path.write_text(json.dumps(fixture), encoding="utf-8")
+    app = create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent)
+    with TestClient(app, headers=HEADERS) as client:
+        response = client.get(f"/api/v1/students/{student['student_id']}/profile")
+        assert response.status_code == 200
+        assert response.json() == student
+        response = client.post("/api/v1/exams/generate", json=payload(student["student_id"]))
+        assert response.status_code == 409
+        assert response.json()["error"]["code"] == "INSUFFICIENT_QUESTION_BANK"
+        assert not app.state.exams._exams
+
+
 def test_missing_fixture_and_database_do_not_create_files(tmp_path):
     missing = tmp_path / "missing.db"
-    with TestClient(create_app(teacher_token=TOKEN, bank_path=missing), headers=HEADERS) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, bank_path=missing), headers=HEADERS) as client:
         assert client.get("/api/v1/topics").status_code == 500
     assert not missing.exists()
-    with TestClient(create_app(teacher_token=TOKEN, fixture_dir=tmp_path), headers=HEADERS) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, fixture_dir=tmp_path), headers=HEADERS) as client:
         assert client.get("/api/v1/students").status_code == 500
 
 
@@ -249,7 +329,7 @@ def test_generator_can_be_replaced_and_bad_output_is_not_stored():
             return result
 
     replacement = Replacement()
-    app = create_app(teacher_token=TOKEN, generator=replacement)
+    app = create_app(backend="fake", teacher_token=TOKEN, generator=replacement)
     with TestClient(app, headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=payload())
         assert response.status_code == 500
@@ -267,7 +347,7 @@ def test_valid_service_replacement_uses_same_http_contract():
             result["title"] = "Replacement service draft"
             return result
 
-    with TestClient(create_app(teacher_token=TOKEN, generator=Replacement()), headers=HEADERS) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, generator=Replacement()), headers=HEADERS) as client:
         body = generated(client)
         assert body["title"] == "Replacement service draft"
         ExamResponse.model_validate(body)
@@ -282,19 +362,22 @@ def test_replacement_cannot_ignore_requested_distribution():
             result["questions"][0]["cognitive_level"] = "advanced_application"
             return result
 
-    with TestClient(create_app(teacher_token=TOKEN, generator=WrongDistribution()), headers=HEADERS) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, generator=WrongDistribution()), headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=payload())
         assert response.status_code == 500
         assert response.json()["error"]["code"] == "INVALID_EXAM_OUTPUT"
 
 
-@pytest.mark.parametrize("status,code", [(502, "INVALID_MODEL_OUTPUT"), (503, "MODEL_UNAVAILABLE"), (504, "GENERATION_TIMEOUT")])
+@pytest.mark.parametrize("status,code", [
+    (409, "ADAPTIVE_NOT_ALLOWED"), (502, "INVALID_MODEL_OUTPUT"),
+    (503, "MODEL_UNAVAILABLE"), (504, "GENERATION_TIMEOUT"),
+])
 def test_replacement_provider_failures_are_errors_not_partial_exams(status, code):
     class FailingService:
         def generate(self, request, profile):
             raise ApiFailure(status, code, "Provider failure")
 
-    with TestClient(create_app(teacher_token=TOKEN, generator=FailingService()), headers=HEADERS) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, generator=FailingService()), headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=payload())
         assert response.status_code == status
         assert response.json()["error"]["code"] == code
@@ -304,7 +387,7 @@ def test_replacement_provider_failures_are_errors_not_partial_exams(status, code
 
 def test_cors_allows_only_configured_ui_origin(monkeypatch):
     monkeypatch.setenv("FAKE_API_CORS_ORIGINS", "http://localhost:5173")
-    with TestClient(create_app(teacher_token=TOKEN)) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN)) as client:
         headers = {
             "Origin": "http://localhost:5173", "Access-Control-Request-Method": "POST",
             "Access-Control-Request-Headers": "authorization,content-type",
@@ -318,7 +401,7 @@ def test_cors_allows_only_configured_ui_origin(monkeypatch):
 
 def test_new_process_store_has_no_previous_exam(client):
     exam = generated(client)
-    with TestClient(create_app(teacher_token=TOKEN), headers=HEADERS) as restarted:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN), headers=HEADERS) as restarted:
         assert restarted.get(f"/api/v1/exams/{exam['exam_id']}").status_code == 404
 
 
@@ -335,25 +418,23 @@ def test_generate_does_not_write_data_or_call_qwen(client, monkeypatch):
     assert before == {p: hashlib.sha256(p.read_bytes()).digest() for p in paths}
 
 
-def test_openapi_documents_five_teacher_endpoints(client):
+def test_openapi_documents_teacher_endpoints(client):
     schema = client.get("/openapi.json").json()
-    assert len(schema["paths"]) == 5
+    assert len(schema["paths"]) == 8
     for path in schema["paths"].values():
         for operation in path.values():
             assert operation["security"] == [{"HTTPBearer": []}]
             assert "200" in operation["responses"]
 
 
-@pytest.mark.parametrize("mutation", ["evidence", "identity", "duration", "distribution"])
+@pytest.mark.parametrize("mutation", ["mode", "identity", "duration", "distribution"])
 def test_generator_cannot_rewrite_trusted_context(mutation):
     fixture_generator = FakeExamGenerator(StaticDataAdapter())
 
     class MutatingService:
         def generate(self, request, profile):
-            if mutation == "evidence":
+            if mutation == "mode":
                 request.generation_mode = "adaptive"
-                profile.evidence_count = 3
-                profile.data_status = "sufficient"
             elif mutation == "identity":
                 profile.student_id = "SOMEONE_ELSE"
             elif mutation == "duration":
@@ -363,13 +444,13 @@ def test_generator_cannot_rewrite_trusted_context(mutation):
                     setattr(request.difficulty_distribution, level, 100 if level == "recognition" else 0)
             return fixture_generator.generate(request, profile)
 
-    app = create_app(teacher_token=TOKEN, generator=MutatingService())
+    app = create_app(backend="fake", teacher_token=TOKEN, generator=MutatingService())
     with TestClient(app, headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=payload(total_questions=1))
         assert response.status_code == 500
         assert response.json()["error"]["code"] == "INVALID_EXAM_OUTPUT"
         assert not app.state.exams._exams
-        assert client.get("/api/v1/students/DEMO_NEW_001/profile").json()["evidence_count"] == 0
+        assert client.get("/api/v1/students/DEMO_NEW_001/profile").json()["skill_mastery"] == []
 
 
 def test_generator_nested_working_mutations_do_not_change_original_inputs():
@@ -381,14 +462,17 @@ def test_generator_nested_working_mutations_do_not_change_original_inputs():
             request.selected_topic_ids.clear()
             request.difficulty_distribution.recognition = 999
             profile.skill_mastery[0].mastery_score = 4
+            profile.skill_mastery[0].evidence_count = 99
             profile.skill_mastery.clear()
+            profile.learning_history[0].wrong_questions.clear()
+            profile.learning_history.clear()
             return result
 
-    with TestClient(create_app(teacher_token=TOKEN, generator=WorkingCopyService()), headers=HEADERS) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, generator=WorkingCopyService()), headers=HEADERS) as client:
         url = "/api/v1/students/DEMO_SUFFICIENT_001/profile"
         before = client.get(url).json()
         exam = generated(client, student_id="DEMO_SUFFICIENT_001", generation_mode="adaptive")
-        assert exam["generation_mode"] == "adaptive" and exam["evidence_count"] == 3
+        assert exam["generation_mode"] == "adaptive"
         assert client.get(url).json() == before
 
 
@@ -411,7 +495,7 @@ def test_generator_invalid_catalogue_references_are_not_stored(change):
             result["questions"][0].update(change)
             return result
 
-    app = create_app(teacher_token=TOKEN, generator=BadReferences())
+    app = create_app(backend="fake", teacher_token=TOKEN, generator=BadReferences())
     with TestClient(app, headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=payload(
             total_questions=1, difficulty_distribution={
@@ -451,7 +535,7 @@ def test_broken_question_fixture_does_not_break_profile_or_topics(tmp_path, fail
         fixture = json.loads(question_path.read_text(encoding="utf-8"))
         fixture["questions"][0].pop("answer")
         question_path.write_text(json.dumps(fixture), encoding="utf-8")
-    app = create_app(teacher_token=TOKEN, fixture_dir=fixture_dir)
+    app = create_app(backend="fake", teacher_token=TOKEN, fixture_dir=fixture_dir)
     with TestClient(app, headers=HEADERS) as client:
         for path in ("/api/v1/students", "/api/v1/students/DEMO_NEW_001/profile", "/api/v1/topics"):
             assert client.get(path).status_code == 200
@@ -464,7 +548,7 @@ def test_broken_question_fixture_does_not_break_profile_or_topics(tmp_path, fail
 
 
 def test_topics_do_not_depend_on_profile_fixtures(tmp_path):
-    with TestClient(create_app(teacher_token=TOKEN, fixture_dir=tmp_path), headers=HEADERS) as client:
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, fixture_dir=tmp_path), headers=HEADERS) as client:
         assert client.get("/api/v1/topics").status_code == 200
         response = client.get("/api/v1/students")
         assert response.status_code == 500
@@ -479,7 +563,7 @@ def test_unexpected_500_preserves_cors_only_for_allowed_origins(monkeypatch, ori
         def generate(self, request, profile):
             raise RuntimeError("Internal provider details must stay private")
 
-    app = create_app(teacher_token=TOKEN, generator=CrashingService())
+    app = create_app(backend="fake", teacher_token=TOKEN, generator=CrashingService())
     with TestClient(app, headers=HEADERS, raise_server_exceptions=False) as client:
         response = client.post(
             "/api/v1/exams/generate", json=payload(),
