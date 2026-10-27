@@ -15,6 +15,7 @@ question = {
             "content": "Tính số cách thực hiện hành động thứ nhất."
         }
     ]
+    "skills": [A001]
 }
 get_all_questions() trả về list các question
 # 2. Answer
@@ -50,7 +51,7 @@ skill = {
 }
 get_all_skills() trả về list các skill
 # 5. Student
-# MVP 1
+## MVP 1
 
 student = {
 "student_id": "HS001",
@@ -73,6 +74,26 @@ student = {
     ]
 }
 
+# 6. question_template:
+{
+    'template_id': 'EA0001', 
+    'template_content': 'Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là {counts}. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?', 
+    'parameter_rules': '{
+        "counts": {
+            "type": "array", 
+            "items": {"type": "integer", "min": 0}, 
+            "min_length": 2
+            }, 
+        "groups": {
+            "type": "disjoint_groups", 
+            "description": "Các nhóm phân biệt và không giao nhau"
+            }
+        }', 
+    'answer_rule': 'N = sum(counts)', 
+    'solution_rule': 'Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.', 
+    'difficulty': 1, 
+    'skills': ['A001']
+}
 
 **Kiểu trả về của AI sau khi sinh đề**
 - `test` (`dict`): thông tin bài kiểm tra cần thêm.
