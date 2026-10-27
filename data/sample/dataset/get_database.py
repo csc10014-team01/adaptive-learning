@@ -205,7 +205,7 @@ def get_skill(DB_PATH, skill_id):
         return dict(row) if row else None
 
 
-def get_question_template(DB_PATH):
+def get_all_question_templates(DB_PATH):
     conn = None
 
     try:
@@ -221,6 +221,14 @@ def get_question_template(DB_PATH):
         rows = cursor.fetchall()
 
         templates = [dict(row) for row in rows]
+        for template in templates:
+            cursor.execute("""
+            SELECT skill_id FROM question_template_skills WHERE template_id = ?
+        """, (template["template_id"],))
+            template_id = cursor.fetchall()
+
+            template["skills"] = [dict(row) for row in template_id]
+
         return templates
 
     except sqlite3.Error as e:
