@@ -13,6 +13,7 @@ Data validation rules:
 - Lists and nested objects must follow the expected data structure.
 - Invalid data raises KnowledgeValidationError.
 """
+
 class KnowledgeValidationError(Exception):
     """Raised when knowledge data is invalid."""
 
@@ -53,7 +54,6 @@ def _require_non_empty_string(
         raise KnowledgeValidationError(
             f"{field_name} cannot be empty"
         )
-
 
 def validate_question(data: dict[str, Any]) -> None:
     """Validate a question record."""
@@ -126,39 +126,71 @@ def validate_question(data: dict[str, Any]) -> None:
     for field in ("correct_answer", "explanation"):
         _require_non_empty_string(answer[field], field)
 
-
 def validate_skill_mastery(data: dict[str, Any]) -> None:
     """Validate a skill mastery record."""
 
-    required_fields = {
-        "skill_id",
-        "mastery_score",
-    }
+    _require_fields(
+        data,
+        {"skill_id", "mastery_score"},
+    )
 
-    missing_fields = required_fields - data.keys()
-
-    if missing_fields:
-        raise KnowledgeValidationError(
-            f"Missing required fields: {sorted(missing_fields)}"
-        )
+    _require_non_empty_string(data["skill_id"], "skill_id")
 
     mastery_score = data["mastery_score"]
 
-    if not isinstance(mastery_score, (int, float)):
+    _require_type(
+        mastery_score,
+        (int, float),
+        "mastery_score",
+    )
+
+    if (
+        isinstance(mastery_score, bool)
+        or not isfinite(mastery_score)
+        or not 0 <= mastery_score <= 4
+    ):
         raise KnowledgeValidationError(
-            "mastery_score must be a number"
+            "mastery_score must be a finite number between 0 and 4"
         )
 
-    if mastery_score < 0:
+
+def validate_student(data: dict[str, Any]) -> None:
+    """Validate a student profile."""
+
+    required_fields = {
+        "student_id",
+        "name",
+        "grade_level",
+        "evidence_count",
+        "skill_mastery",
+        "learning_history",
+    }
+
+    _require_fields(data, required_fields)
+
+    # Validate basic fields
+    for field in ("student_id", "name"):
+        _require_non_empty_string(data[field], field)
+
+    # Validate grade_level
+    grade_level = data["grade_level"]
+
+    _require_type(grade_level, int, "grade_level")
+
+    if isinstance(grade_level, bool) or grade_level <= 0:
         raise KnowledgeValidationError(
-            "mastery_score cannot be negative"
+            "grade_level must be a positive integer"
         )
 
-    if not 0 <= mastery_score <= 4:
-        raise KnowledgeValidationError(
-            "mastery_score must be between 0 and 4"
-        )
+    # Validate evidence_count
+    evidence_count = data["evidence_count"]
 
+    _require_type(evidence_count, int, "evidence_count")
+
+    if isinstance(evidence_count, bool) or evidence_count < 0:
+        raise KnowledgeValidationError(
+            "evidence_count must be a non-negative integer"
+        )
 
     # Validate skill_mastery
     skill_mastery = data["skill_mastery"]

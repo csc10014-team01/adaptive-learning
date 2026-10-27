@@ -43,7 +43,7 @@ def get_all_questions(DB_PATH):
         """, (question["question_id"],))
         question_skills = cursor.fetchall()
 
-        question["skills"] = [row["skill_id"] for row in question_skills]
+        question["skill_ids"] = [row["skill_id"] for row in question_skills]
     conn.close()
     return questions
 
@@ -205,7 +205,7 @@ def get_skill(DB_PATH, skill_id):
         return dict(row) if row else None
 
 
-def get_all_question_templates(DB_PATH):
+def get_question_template(DB_PATH):
     conn = None
 
     try:
@@ -219,15 +219,8 @@ def get_all_question_templates(DB_PATH):
         """)
 
         rows = cursor.fetchall()
+
         templates = [dict(row) for row in rows]
-        for template in templates:
-            cursor.execute("""
-            SELECT skill_id FROM question_template_skills WHERE template_id = ?
-        """, (template["template_id"],))
-            template_skills = cursor.fetchall()
-
-            template["skills"] = [row["skill_id"] for row in template_skills]           
-
         return templates
 
     except sqlite3.Error as e:
@@ -266,4 +259,3 @@ def get_question_template_by_id(DB_PATH, template_id):
     finally:
         if conn is not None:
             conn.close()
-
