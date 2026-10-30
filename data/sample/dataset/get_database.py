@@ -1,7 +1,4 @@
 import sqlite3
-import csv
-import json
-import re
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -43,7 +40,7 @@ def get_all_questions(DB_PATH):
         """, (question["question_id"],))
         question_skills = cursor.fetchall()
 
-        question["skill_ids"] = [row["skill_id"] for row in question_skills]
+        question["skills"] = [row["skill_id"] for row in question_skills]
 
         cursor.execute("""
             SELECT skill_id
@@ -61,22 +58,49 @@ def get_question(DB_PATH, question_id):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
-        row = conn.execute(
-            "SELECT * FROM questions WHERE question_id = ?",
-            (question_id,)
-        ).fetchone()
+        # Lấy thông tin question
+        row = conn.execute("""
+            SELECT question_id, question_type, difficulty,
+                   content, grade_level, status
+            FROM questions
+            WHERE question_id = ?
+        """, (question_id,)).fetchone()
 
         if not row:
             return None
-        
+
         question = dict(row)
 
-        parts = conn.execute(
-            "SELECT * FROM question_parts WHERE question_id = ?",
-            (question_id,)
-        ).fetchall()
+        # Lấy danh sách question parts
+        parts = conn.execute("""
+            SELECT part_id, label, content
+            FROM question_parts
+            WHERE question_id = ?
+        """, (question_id,)).fetchall()
 
         question["part"] = [dict(row) for row in parts]
+
+        # Lấy danh sách skills
+        question_skills = conn.execute("""
+            SELECT skill_id
+            FROM question_skills
+            WHERE question_id = ?
+        """, (question_id,)).fetchall()
+
+        question["skills"] = [
+            row["skill_id"] for row in question_skills
+        ]
+
+        # Lấy main skill
+        main_skill = conn.execute("""
+            SELECT skill_id
+            FROM QuestionMainSkill
+            WHERE question_id = ?
+        """, (question_id,)).fetchall()
+
+        question["main_skill"] = (
+            main_skill[0]["skill_id"] if main_skill else None
+        )
 
         return question
     
@@ -276,6 +300,3 @@ def get_question_template_by_id(DB_PATH, template_id):
     finally:
         if conn is not None:
             conn.close()
-
-for q in get_all_questions(DB_PATH):
-    print(q)
