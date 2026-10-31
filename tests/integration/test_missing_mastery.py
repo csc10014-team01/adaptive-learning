@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+from contextlib import closing
 from pathlib import Path
 import sqlite3
 
@@ -219,27 +220,37 @@ def test_default_api_uses_data_lead_sql_instead_of_the_offline_seeded_copy(tmp_p
     monkeypatch.delenv("M3_STUDENT_DB", raising=False)
     expected = ROOT.parents[1] / "pre-work/data/sample/memory/student_profiles_sample.db"
     assert DEFAULT_STUDENTS == expected
+    offline = ROOT / "data/sample/memory/student_profiles_sample.db"
+    # Independent SQL expectations, not adapter output or mutable score snapshots.
+    with closing(sqlite3.connect(expected.resolve().as_uri() + "?mode=ro", uri=True)) as c:
+        c.execute("PRAGMA query_only=ON")
+        students = [row[0] for row in c.execute("SELECT student_id FROM Students ORDER BY student_id")]
+        source = {(sid, skill): (score, evidence) for sid, skill, score, evidence in c.execute(
+            "SELECT student_id,skill_id,mastery_score,evidence_count FROM student_skill_mastery")}
+    assert students
     app = create_app(backend="qwen", profile_source="m3", teacher_token="missing-mastery-test",
         exam_db=tmp_path / "drafts.db")
-    assert app.state.student_path == expected
+    assert app.state.student_path.resolve() == expected.resolve()
+    assert app.state.student_path.resolve() != offline.resolve()
     with TestClient(app, headers=HEADERS) as client:
-        # The actual Data Lead row is (2.3,1), not the old seeded copy's (1.1,8).
-        first = client.get("/api/v1/students/ST001/profile").json()["skill_mastery"][0]
-        assert first == dict(skill_id="A001", mastery_score=2.3, evidence_count=1)
-        # A genuine measured zero is retained, not turned into missing mastery.
-        fourth = client.get("/api/v1/students/ST004/profile").json()["skill_mastery"][4]
-        assert fourth == dict(skill_id="A005", mastery_score=0.0, evidence_count=1)
-        # ST011 has real A004 evidence; the seeded file's all-zero scenario must
-        # never erase it or be used as a fallback.
-        eleventh = client.get("/api/v1/students/ST011/profile").json()["skill_mastery"][3]
-        assert eleventh == dict(skill_id="A004", mastery_score=3.0, evidence_count=1)
-        unassessed = client.get("/api/v1/students/ST012/profile").json()
-        assert len(unassessed["skill_mastery"]) == 9
-        assert all(s["mastery_score"] is None and s["evidence_count"] == 0 for s in unassessed["skill_mastery"])
-        planned = client.post("/api/v1/exams/plan", json=request(10, student_id="ST012").model_dump())
-        assert planned.status_code == 200, planned.text
-        assert set(planned.json()["skill_classifications"].values()) == {"NO_DATA"}
-        assert planned.json()["strategy"] == "diagnostic_review" and not planned.json()["personalized"]
+        for sid in students:
+            response = client.get(f"/api/v1/students/{sid}/profile")
+            assert response.status_code == 200, response.text
+            expected_skills = []
+            for skill in CATALOGUE:
+                score, evidence = source.get((sid, skill), (None, 0))
+                expected_skills.append(dict(skill_id=skill,
+                    mastery_score=score if evidence > 0 else None, evidence_count=evidence))
+            assert response.json()["skill_mastery"] == expected_skills, sid
+            # No fixed student ID is guaranteed to remain unassessed after a pull.
+            if all(row["evidence_count"] == 0 for row in expected_skills):
+                planned = client.post("/api/v1/exams/plan", json=request(10, student_id=sid).model_dump())
+                assert planned.status_code == 200, planned.text
+                assert planned.json()["skill_classifications"] == dict.fromkeys(CATALOGUE, "NO_DATA")
+                assert planned.json()["strategy"] == "diagnostic_review" and not planned.json()["personalized"]
+        assert isinstance(app.state.data, M3DataAdapter)
+        assert not app.state.data.profile_json
+        assert app.state.data.student_path.resolve() == expected.resolve()
 
 
 def test_explicit_relative_student_sql_override_is_resolved_from_app_root(tmp_path, monkeypatch):
