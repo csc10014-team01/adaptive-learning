@@ -3,11 +3,26 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "question_bank.db"
+_MISSING = object()
+
+
+def _database_path(database):
+    """Keep the local default while accepting an explicitly supplied database."""
+    return DB_PATH if database is _MISSING else database
+
+
+def _lookup_arguments(database, identifier, argument_name):
+    """Accept legacy lookup(id) and the incoming lookup(database, id) API."""
+    if identifier is _MISSING:
+        if database is _MISSING:
+            raise TypeError(f"Missing required argument: {argument_name}")
+        return DB_PATH, database
+    return _database_path(database), identifier
 
 
 # Hàm trả về tập tất cả question
-def get_all_questions():
-    conn = sqlite3.connect(DB_PATH)
+def get_all_questions(DB_PATH=_MISSING):
+    conn = sqlite3.connect(_database_path(DB_PATH))
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -35,12 +50,25 @@ def get_all_questions():
 
         parts = cursor.fetchall()
         question["part"] = [dict(row) for row in parts]
+
+        cursor.execute(
+            """
+            SELECT skill_id
+            FROM question_skills
+            WHERE question_id = ?
+        """,
+            (question["question_id"],),
+        )
+        question_skills = cursor.fetchall()
+
+        question["skill_ids"] = [row["skill_id"] for row in question_skills]
     conn.close()
     return questions
 
 
 # Hàm trả về 1 question
-def get_question(question_id):
+def get_question(DB_PATH=_MISSING, question_id=_MISSING):
+    DB_PATH, question_id = _lookup_arguments(DB_PATH, question_id, "question_id")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -62,8 +90,8 @@ def get_question(question_id):
         return question
 
 
-def get_all_answers():
-    with sqlite3.connect(DB_PATH) as conn:
+def get_all_answers(DB_PATH=_MISSING):
+    with sqlite3.connect(_database_path(DB_PATH)) as conn:
         conn.row_factory = sqlite3.Row
 
         rows = conn.execute("SELECT * FROM answers").fetchall()
@@ -98,7 +126,8 @@ def get_all_answers():
         return answers
 
 
-def get_answer(answer_id):
+def get_answer(DB_PATH=_MISSING, answer_id=_MISSING):
+    DB_PATH, answer_id = _lookup_arguments(DB_PATH, answer_id, "answer_id")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -131,8 +160,8 @@ def get_answer(answer_id):
         return answer
 
 
-def get_all_terminology():
-    conn = sqlite3.connect(DB_PATH)
+def get_all_terminology(DB_PATH=_MISSING):
+    conn = sqlite3.connect(_database_path(DB_PATH))
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -152,7 +181,8 @@ def get_all_terminology():
     return terminology
 
 
-def get_terminology(term):
+def get_terminology(DB_PATH=_MISSING, term=_MISSING):
+    DB_PATH, term = _lookup_arguments(DB_PATH, term, "term")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -163,8 +193,8 @@ def get_terminology(term):
         return dict(row) if row else None
 
 
-def get_all_skills():
-    conn = sqlite3.connect(DB_PATH)
+def get_all_skills(DB_PATH=_MISSING):
+    conn = sqlite3.connect(_database_path(DB_PATH))
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -182,7 +212,8 @@ def get_all_skills():
     return skills
 
 
-def get_skill(skill_id):
+def get_skill(DB_PATH=_MISSING, skill_id=_MISSING):
+    DB_PATH, skill_id = _lookup_arguments(DB_PATH, skill_id, "skill_id")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
@@ -193,11 +224,11 @@ def get_skill(skill_id):
         return dict(row) if row else None
 
 
-def get_question_template():
+def get_question_template(DB_PATH=_MISSING):
     conn = None
 
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(_database_path(DB_PATH))
         conn.row_factory = sqlite3.Row
 
         cursor = conn.cursor()
@@ -220,7 +251,8 @@ def get_question_template():
             conn.close()
 
 
-def get_question_template_by_id(template_id):
+def get_question_template_by_id(DB_PATH=_MISSING, template_id=_MISSING):
+    DB_PATH, template_id = _lookup_arguments(DB_PATH, template_id, "template_id")
     conn = None
 
     try:
