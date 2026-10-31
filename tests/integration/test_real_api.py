@@ -18,6 +18,8 @@ from src.api.data_adapter import ApiFailure, DEFAULT_BANK, StaticDataAdapter
 from src.api.main import create_app
 from src.api.m3_adapter import DEFAULT_STUDENTS, M3DataAdapter
 from src.api.schemas import ExamResponse, GenerateExamRequest, StudentProfileResponse
+from tests.unit.test_planner import make_data
+from data.sample.memory.seed_sample_profiles import DEFAULT_DATABASE as SEEDED_PROFILES
 
 HEADERS = {"Authorization": "Bearer teacher-test"}
 
@@ -25,7 +27,7 @@ HEADERS = {"Authorization": "Bearer teacher-test"}
 def payload(student_id="ST001", **changes):
     value = dict(student_id=student_id, generation_mode="adaptive", selected_topic_ids=["combinatorics"],
                  total_questions=4, duration_minutes=45,
-                 difficulty_distribution=dict(recognition=20, understanding=40, application=30, advanced_application=10))
+                 difficulty_distribution=None)
     value.update(changes)
     return value
 
@@ -80,9 +82,13 @@ def test_m3_reader_matches_sql_and_normalizes_history():
     p = data.get_profile("ST001")
     with sqlite3.connect(DEFAULT_STUDENTS) as c:
         assert len(data.list_students()) == c.execute("SELECT COUNT(*) FROM Students").fetchone()[0]
-        assert [(s.skill_id, s.mastery_score, s.evidence_count) for s in p.skill_mastery] == c.execute(
+        stored = {skill: (score, evidence) for skill, score, evidence in c.execute(
             "SELECT skill_id, mastery_score, evidence_count FROM student_skill_mastery WHERE student_id='ST001' ORDER BY skill_id"
-        ).fetchall()
+        )}
+        assert [s.skill_id for s in p.skill_mastery] == sorted(s.skill_id for s in data.topic.skills)
+        for skill in p.skill_mastery:
+            score, evidence = stored.get(skill.skill_id, (None, 0))
+            assert (skill.mastery_score, skill.evidence_count) == (score if evidence > 0 else None, evidence)
     assert p.learning_history and "wrongs" not in p.model_dump_json()
     assert all(s in {k.skill_id for k in data.topic.skills} for q in data.questions for s in q.skill_ids)
     assert len(data.questions) >= 80
@@ -116,13 +122,12 @@ def test_m3_reads_author_supplied_primary_without_modifying_canonical_bank(tmp_p
 
     path = tmp_path / "annotated-bank.db"
     shutil.copyfile(DEFAULT_BANK, path)
-    # Synthetic author annotation in an isolated copy, deliberately using the
-    # second linked skill. Production must never infer from link order.
+    # The authoritative relationship wins over a conflicting obsolete column.
     with sqlite3.connect(path) as connection:
         connection.execute("ALTER TABLE questions ADD COLUMN primary_skill_id TEXT")
         connection.execute("UPDATE questions SET primary_skill_id='A002' WHERE question_id='QA0019'")
     questions = {q.question_id: q for q in M3DataAdapter(bank_path=path).questions}
-    assert questions["QA0019"].primary_skill_id == "A002"
+    assert questions["QA0019"].primary_skill_id == "A001"
     assert questions["QA0019"].skill_ids == ["A001", "A002"]
 
 
@@ -140,11 +145,12 @@ def test_sufficient_evidence_targets_the_weak_primary_skill():
 @pytest.mark.parametrize("evidence,mastery,mode,expected", [
     (0, 0, "adaptive", False), (1, 1.5, "adaptive", False),
     (2, 1.5, "adaptive", False), (3, 1.5, "adaptive", True),
-    (3, 3.0, "adaptive", False),
+    (3, 3.0, "adaptive", True),
     (1, 1.5, "default_blueprint", False),
 ])
 def test_evidence_is_per_skill(evidence, mastery, mode, expected):
-    plan = RuleBasedPlanner(StaticDataAdapter()).plan(
+    # Isolate evidence policy from shortages in the deliberately sparse demo.
+    plan = RuleBasedPlanner(make_data()).plan(
         GenerateExamRequest.model_validate(payload("S", generation_mode=mode)),
         profile(mastery=mastery, evidence=evidence))
     assert plan.personalized is expected
@@ -166,6 +172,10 @@ def test_quota_shortage_is_explicit_and_distribution_preserved():
     assert any("1/2" in warning for warning in plan.warnings)
     assert Counter(q.cognitive_level for q in plan.questions) == {
         "recognition": 1, "understanding": 2, "application": 1}
+    assert plan.quota_summary.achieved_levels == plan.quota_summary.requested_levels
+    assert plan.quota_summary.requested_levels == dict(zip(
+        ("recognition", "understanding", "application", "advanced_application"), (1, 2, 1, 0)))
+    assert not any("Soft level quotas deviated" in warning for warning in plan.warnings)
     assert len({q.source_id for q in plan.questions}) == 4
 
 
@@ -179,13 +189,14 @@ def test_two_evidence_never_outranks_an_eligible_weak_skill():
 
 def test_real_api_m3_to_http_qwen_to_durable_draft(tmp_path, ollama):
     qwen, calls, _ = ollama
-    hashes = {p: hashlib.sha256(p.read_bytes()).digest() for p in (DEFAULT_STUDENTS, DEFAULT_BANK)}
+    hashes = {p: hashlib.sha256(p.read_bytes()).digest() for p in (DEFAULT_STUDENTS, DEFAULT_BANK, SEEDED_PROFILES)}
     db = tmp_path / "exams.db"
-    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, exam_db=db)
+    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, exam_db=db,
+        student_path=SEEDED_PROFILES)
     with TestClient(app, headers=HEADERS) as c:
         plan = c.post("/api/v1/exams/plan", json=payload())
         assert plan.status_code == 200 and not calls
-        # The diversified sample gives ST001 sufficient evidence and a weak addition skill.
+        # This explicitly selected test fixture supplies a hypothetical weak skill.
         assert plan.json()["personalized"]
         assert plan.json()["skill_classifications"]["A001"] == "WEAK"
         result = c.post("/api/v1/exams/generate", json=payload())
@@ -197,10 +208,14 @@ def test_real_api_m3_to_http_qwen_to_durable_draft(tmp_path, ollama):
         bank = {q.question_id: q for q in app.state.data.questions}
         for q in exam.questions:
             assert q.validation.auto_status == "needs_review" and not q.validation.teacher_approved
-            assert q.answer == bank[q.source_ref.id].answer
-            assert q.target_skill_id == bank[q.source_ref.id].primary_skill_id
-            assert q.skill_ids == bank[q.source_ref.id].skill_ids
-        assert len(calls) == 4
+            if q.source_ref.kind == "question":
+                assert q.answer == bank[q.source_ref.id].answer
+                assert q.target_skill_id == bank[q.source_ref.id].primary_skill_id
+                assert q.skill_ids == bank[q.source_ref.id].skill_ids
+                assert q.content_latex == bank[q.source_ref.id].content
+            else:
+                assert q.template_instance and q.target_skill_id in q.skill_ids
+        assert len(calls) == sum(q.source_ref.kind == "template" for q in exam.questions)
         assert all("ST001" not in call["prompt"] and "Gia Han" not in call["prompt"] for call in calls)
         assert c.get(f"/api/v1/exams/{exam.exam_id}").json() == result.json()
     with TestClient(create_app(backend="qwen", teacher_token="teacher-test", exam_db=db), headers=HEADERS) as c:
@@ -209,16 +224,19 @@ def test_real_api_m3_to_http_qwen_to_durable_draft(tmp_path, ollama):
 
 
 @pytest.mark.parametrize("kind,code,status,calls_count", [
-    ("numbers", "INVALID_QWEN_OUTPUT", 502, 2), ("json", "INVALID_QWEN_OUTPUT", 502, 2),
-    ("truncated", "INVALID_QWEN_OUTPUT", 502, 2), ("http_error", "QWEN_PROVIDER_ERROR", 503, 1),
+    ("numbers", "INSUFFICIENT_QUESTION_BANK", 409, 2), ("json", "INSUFFICIENT_QUESTION_BANK", 409, 2),
+    ("truncated", "INSUFFICIENT_QUESTION_BANK", 409, 2), ("http_error", "INSUFFICIENT_QUESTION_BANK", 409, 1),
 ])
 def test_provider_failure_never_saves_partial_exam(tmp_path, ollama, kind, code, status, calls_count):
     qwen, calls, state = ollama
     state["kind"] = kind
     path = tmp_path / "no_partial.db"
     app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, exam_db=path)
+    from tests.integration.test_hybrid_exam_api import hybrid_data
+    app.state.data = hybrid_data()
+    app.state.data._questions = []
     with TestClient(app, headers=HEADERS) as c:
-        result = c.post("/api/v1/exams/generate", json=payload())
+        result = c.post("/api/v1/exams/generate", json=payload("S", total_questions=1))
     assert result.status_code == status and result.json()["error"]["code"] == code
     assert len(calls) == calls_count and not path.exists()
 
@@ -244,7 +262,9 @@ def test_busy_and_plan_auth(tmp_path, ollama):
         assert c.post("/api/v1/exams/plan", json=payload()).status_code == 401
         qwen.capacity.acquire()
         try:
-            assert c.post("/api/v1/exams/generate", headers=HEADERS, json=payload()).status_code == 503
+            generated = c.post("/api/v1/exams/generate", headers=HEADERS, json=payload())
+            assert generated.status_code == 200, generated.text
+            assert all(q["source_ref"]["kind"] == "question" for q in generated.json()["questions"])
         finally:
             qwen.capacity.release()
         assert c.post("/api/v1/exams/plan", headers=HEADERS, json=payload()).status_code == 200
@@ -258,7 +278,7 @@ def test_json_profile_real_backend_still_uses_m3_bank(tmp_path):
         assert result.status_code == 200, result.text
         assert result.json()["priority_skills"] == []
         assert result.json()["skill_classifications"]["A001"] == "PARTIAL"
-        assert all(q["source_id"].startswith("QA") for q in result.json()["questions"])
+        assert all(q["source_id"].startswith("QA" if q["source_kind"] == "question" else "EA") for q in result.json()["questions"])
 
 
 def test_cannot_store_drafts_in_canonical_m3_database():

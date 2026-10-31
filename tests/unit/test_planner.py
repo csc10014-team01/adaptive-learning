@@ -80,7 +80,7 @@ def test_one_weak_gets_four_focus():
 
 
 def test_two_lowest_weak_focus_and_third_weak_can_review():
-    result = plan([("A003", 1, 3), ("A002", 1, 3), ("A001", 2, 5)])
+    result = plan([("A003", 1, 3), ("A002", 1, 3), ("A001", 1.8, 5)])
     assert result.priority_skills == ["A002", "A003"]
     assert result.target_count == result.achieved_target_count == 6
     assert result.quota_summary.achieved_skills == {"A002": 3, "A003": 3, "A001": 2, "A004": 2}
@@ -89,7 +89,10 @@ def test_two_lowest_weak_focus_and_third_weak_can_review():
 
 @pytest.mark.parametrize("evidence,mastery,status", [
     (0, 0, "NO_DATA"), (1, 1, "PARTIAL"), (2, 0, "PARTIAL"),
-    (3, 2.99, "WEAK"), (3, 3, "ACHIEVED"), (10, 4, "ACHIEVED"),
+    (3, 0, "WEAK"), (5, 1.49, "WEAK"), (5, 1.50, "WEAK"),
+    (3, 1.99, "WEAK"), (5, 1.99, "WEAK"), (3, 2.00, "ACHIEVED"),
+    (5, 2.00, "ACHIEVED"), (5, 2.50, "ACHIEVED"), (3, 2.99, "ACHIEVED"),
+    (3, 3, "ACHIEVED"), (3, 4, "ACHIEVED"), (10, 4, "ACHIEVED"),
 ])
 def test_classification_boundary(evidence, mastery, status):
     result = plan([("A001", mastery, evidence)])
@@ -102,7 +105,8 @@ def test_all_achieved_uses_advanced_review():
     assert result.strategy == "advanced_review"
     assert result.priority_skills == []
     assert Counter(q.group for q in result.questions) == {"advanced_review": 10}
-    assert set(q.cognitive_level for q in result.questions) <= {"application", "advanced_application"}
+    assert result.quota_summary.achieved_levels == dict(zip(LEVELS, (1, 3, 4, 2)))
+    assert result.personalized
 
 
 @pytest.mark.parametrize("mode", ["standard", "default_blueprint"])
@@ -112,7 +116,8 @@ def test_standard_ignores_weaknesses_and_uses_global_default(mode):
     other = plan([(s, 4, 5) for s in SKILLS], mode=mode)
     assert result.strategy == "standard" and not result.personalized
     assert result.priority_skills == []
-    assert [q.source_id for q in result.questions] == [q.source_id for q in other.questions]
+    assert result.quota_summary.requested_levels == other.quota_summary.requested_levels
+    assert all(q.cognitive_level != "advanced_application" for q in result.questions if q.target_skill_id == "A004")
     assert result.quota_summary.requested_skills == {"A001": 3, "A002": 3, "A003": 2, "A004": 2}
     assert result.quota_summary.achieved_levels == level_counts(10, (25, 35, 30, 10))
     assert plan(weak).priority_skills == ["A004"]
@@ -237,7 +242,7 @@ def test_short_exams_have_exact_integer_totals(n, rows):
 
 
 def test_missing_cell_and_group_fallback_warns_without_partial_plan():
-    bank = [question("A001", "advanced_application", i) for i in range(10)]
+    bank = [question("A001", "understanding", i) for i in range(10)]
     result = plan([("A001", 4, 4)], bank=bank)
     assert len(result.questions) == 10
     assert result.quota_summary.requested_groups["diagnostic"] == 6
@@ -284,8 +289,9 @@ def test_default_distribution_remains_unlocked_after_round_trip():
 
 
 @pytest.mark.parametrize("mastery,expected", [
-    (1.49, (50, 35, 15, 0)), (1.5, (25, 45, 25, 5)), (2.5, (10, 30, 45, 15)),
-    (3, (5, 20, 50, 25)), (3.5, (0, 10, 50, 40)), (4, (0, 10, 50, 40)),
+    (1.49, (50, 40, 10, 0)), (1.5, (35, 45, 20, 0)), (1.99, (35, 45, 20, 0)),
+    (2.00, (25, 40, 30, 5)), (2.49, (25, 40, 30, 5)), (2.5, (20, 35, 35, 10)),
+    (3, (15, 30, 40, 15)), (3.5, (10, 25, 45, 20)), (4, (10, 25, 45, 20)),
 ])
 def test_mastery_band_boundaries(mastery, expected):
     planner = RuleBasedPlanner(make_data())

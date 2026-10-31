@@ -18,11 +18,11 @@ from pydantic import ValidationError
 
 from src.api.data_adapter import ApiFailure, DEFAULT_BANK, DEFAULT_FIXTURES, StaticDataAdapter
 from src.api.schemas import (
-    ApiError, ApiErrorResponse, ErrorDetail, ExamResponse, GenerateExamRequest,
+    ApiError, ApiErrorResponse, ErrorDetail, ExamResponse, GenerateExamRequest, LEVELS,
     StudentListResponse, StudentProfileResponse, TopicListResponse,
     ApproveExamRequest, RegenerateQuestionRequest,
 )
-from src.api.services import ExamGenerator, FakeExamGenerator, InMemoryExamStore, question_slots
+from src.api.services import ExamGenerator, FakeExamGenerator, InMemoryExamStore
 from src.adaptation.planner import ExamPlan, RuleBasedPlanner
 from src.adaptation.skill_relationships import SkillRelationships
 from src.ai.qwen_client import QwenClient
@@ -30,7 +30,7 @@ from src.api.exam_store import SQLiteExamStore
 from src.api.m3_adapter import DEFAULT_STUDENTS, M3DataAdapter
 from src.api.real_generator import QwenExamGenerator
 from src.api.data_adapter import ROOT
-from src.orchestration.review_service import approve_exam, check_revision, validate_regeneration
+from src.orchestration.review_service import approve_exam, check_revision, validate_regeneration, require_template_regeneration
 from src.ui.routes import mount_ui
 
 logger = logging.getLogger(__name__)
@@ -69,7 +69,7 @@ def get_exam_generator(
     if state.generator is not None:
         return state.generator
     if state.backend == "fake":
-        return FakeExamGenerator(data)
+        return FakeExamGenerator(data, planner=RuleBasedPlanner(data, relationships=state.relationships))
     return QwenExamGenerator(data, state.qwen_client,
         planner=RuleBasedPlanner(data, relationships=state.relationships))
 
@@ -80,6 +80,22 @@ def error_response(status: int, code: str, message: str, details: list[ErrorDeta
         status_code=status, content=payload.model_dump(mode="json"),
         headers={"Cache-Control": "no-store", **({"WWW-Authenticate": "Bearer"} if status == 401 else {})},
     )
+
+
+def automatic_exam_request(payload: GenerateExamRequest) -> GenerateExamRequest:
+    """One public request policy for preview and both generation backends.
+
+    Old modes/quotas remain readable for internal integrations and old drafts;
+    the teacher API never allows them to bypass profile-driven planning.
+    """
+    issues = []
+    if payload.generation_mode != "adaptive":
+        issues.append({"loc": ("body", "generation_mode"), "msg": "Chỉ hỗ trợ adaptive: hệ thống tự chọn kế hoạch theo hồ sơ.", "type": "value_error"})
+    if payload.difficulty_distribution is not None:
+        issues.append({"loc": ("body", "difficulty_distribution"), "msg": "Độ khó được xác định tự động; không chấp nhận tỷ lệ thủ công.", "type": "value_error"})
+    if issues:
+        raise RequestValidationError(issues)
+    return payload
 
 
 def create_app(
@@ -99,6 +115,8 @@ def create_app(
     relationship_file = os.getenv("SKILL_RELATIONSHIPS_FILE")
     api.state.relationships = relationships or (SkillRelationships.load(Path(relationship_file)) if relationship_file else None)
     api.state.student_path = student_path or Path(os.getenv("M3_STUDENT_DB", str(DEFAULT_STUDENTS)))
+    if not api.state.student_path.is_absolute():
+        api.state.student_path = ROOT / api.state.student_path
     api.state.qwen_client = qwen_client or QwenClient(
         base_url=os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434"),
         model=os.getenv("QWEN_MODEL", "qwen3:1.7b"),
@@ -111,6 +129,8 @@ def create_app(
     api.state.fixture_dir = fixture_dir or Path(os.getenv(
         "API_PROFILE_DIR", os.getenv("FAKE_API_FIXTURE_DIR", str(DEFAULT_FIXTURES))))
     api.state.bank_path = Path(os.getenv("M3_QUESTION_DB", str(bank_path)))
+    if not api.state.bank_path.is_absolute():
+        api.state.bank_path = ROOT / api.state.bank_path
     api.state.data = None
     api.state.data_lock = Lock()
     api.state.generator = generator
@@ -172,7 +192,7 @@ def create_app(
 
     @router.post("/exams/generate", response_model=ExamResponse)
     def generate(
-        payload: GenerateExamRequest, request: Request,
+        payload: Annotated[GenerateExamRequest, Depends(automatic_exam_request)], request: Request,
         data: Annotated[StaticDataAdapter, Depends(get_data)],
         service: Annotated[ExamGenerator, Depends(get_exam_generator)],
     ) -> ExamResponse:
@@ -186,14 +206,20 @@ def create_app(
             ))
             expected = (
                 exam.status == "pending_teacher_review" and exam.revision == 1,
+                exam.teacher_review is None and all(not q.validation.teacher_approved
+                    and not q.validation.blocking_errors for q in exam.questions),
+                exam.provenance.generator == "fake" or all(
+                    q.validation.auto_status != "not_evaluated" for q in exam.questions),
                 exam.student_id == student.student_id,
                 exam.grade_level == student.grade_level,
                 exam.generation_mode == payload.generation_mode,
                 exam.total_questions == payload.total_questions,
                 exam.duration_minutes == payload.duration_minutes,
                 exam.topic_id == payload.selected_topic_ids[0],
-                payload.difficulty_distribution is None or {level: sum(q.cognitive_level == level for q in exam.questions)
-                 for level in question_slots(payload)} == question_slots(payload),
+                exam.planner_summary is None or (not exam.planner_summary.difficulty_locked
+                    and exam.planner_summary.quota_summary.achieved_levels == {
+                        level: sum(q.cognitive_level == level for q in exam.questions)
+                        for level in LEVELS}),
             )
             if not all(expected):
                 raise ValueError("Service output does not match request/profile")
@@ -204,7 +230,7 @@ def create_app(
         return exam
 
     @router.post("/exams/plan", response_model=ExamPlan)
-    def plan(payload: GenerateExamRequest, data: Annotated[StaticDataAdapter, Depends(get_data)]) -> ExamPlan:
+    def plan(payload: Annotated[GenerateExamRequest, Depends(automatic_exam_request)], data: Annotated[StaticDataAdapter, Depends(get_data)]) -> ExamPlan:
         """Preview rule decisions without invoking Qwen or storing a draft."""
         return RuleBasedPlanner(data, relationships=api.state.relationships).plan(payload, data.get_profile(payload.student_id))
 
@@ -213,9 +239,16 @@ def create_app(
         return request.app.state.exams.get(exam_id)
 
     @router.post("/exams/{exam_id}/approve", response_model=ExamResponse)
-    def approve(exam_id: str, payload: ApproveExamRequest, request: Request) -> ExamResponse:
+    def approve(exam_id: str, payload: ApproveExamRequest, request: Request,
+                data: Annotated[StaticDataAdapter, Depends(get_data)]) -> ExamResponse:
         store = request.app.state.exams
-        reviewed = approve_exam(store.get(exam_id), payload)
+        current = store.get(exam_id)
+        check_revision(current, payload.expected_revision)
+        reviewed = approve_exam(current, payload)
+        try:
+            data.validate_exam_references(reviewed)
+        except (ValueError, ValidationError) as exc:
+            raise ApiFailure(409, "EXAM_NOT_READY", "Stored source content or Template proof is no longer valid") from exc
         store.replace(reviewed, expected_revision=payload.expected_revision)
         return reviewed
 
@@ -226,10 +259,11 @@ def create_app(
         store = request.app.state.exams
         current = store.get(exam_id)
         check_revision(current, payload.expected_revision)
+        require_template_regeneration(current, question_id)
         if not hasattr(service, "regenerate_question"):
             raise ApiFailure(409, "REGENERATION_UNSUPPORTED", "Regeneration requires the Qwen pipeline")
         regenerated = ExamResponse.model_validate(service.regenerate_question(current.model_copy(deep=True), question_id))
-        validate_regeneration(current, regenerated, question_id)
+        validate_regeneration(current, regenerated, question_id, data=data)
         data.validate_exam_references(regenerated)
         store.replace(regenerated, expected_revision=payload.expected_revision)
         return regenerated

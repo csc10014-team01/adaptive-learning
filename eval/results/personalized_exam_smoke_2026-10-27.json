@@ -1,0 +1,24 @@
+{
+  "model": "qwen3:1.7b",
+  "live_inference": true,
+  "elapsed_seconds": 7.04,
+  "results": [
+    {
+      "path": "legacy_exam",
+      "status": "pending_teacher_review",
+      "validation": "needs_review",
+      "source": "QA0001",
+      "question": "Bạn Phương có 7 quyển sách Tiếng Anh và 8 quyển sách Văn học, các quyển sách là khác nhau. Hỏi bạn Phương có bao nhiêu cách chọn một quyển sách để đọc?"
+    },
+    {
+      "path": "synthetic_books_direct",
+      "validation": "pass",
+      "question": "Có 8 quyển sách phân biệt. Chọn 3 quyển sách làm một bộ, không xét thứ tự và không hoàn lại. Có bao nhiêu bộ sách?"
+    },
+    {
+      "path": "synthetic_students_indirect",
+      "validation": "pass",
+      "question": "Một lớp có 8 học sinh phân biệt. Cô giáo lập danh sách tất cả nhóm gồm 3 học sinh, không xét thứ tự và không hoàn lại. Hãy xác định số nhóm trong danh sách."
+    }
+  ]
+}

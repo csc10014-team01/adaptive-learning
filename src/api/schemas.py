@@ -6,7 +6,7 @@ from datetime import datetime
 from math import isclose
 from typing import Annotated, Literal, Self
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, model_validator
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, JsonValue, model_validator
 
 Identifier = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^\S+$")]
 Text = Annotated[str, Field(strict=True, min_length=1, pattern=r"\S")]
@@ -34,8 +34,18 @@ def score_units(score: float) -> int:
 
 class SkillMastery(ContractModel):
     skill_id: Identifier
-    mastery_score: Annotated[float, Field(strict=True, ge=0, le=4, allow_inf_nan=False)]
+    mastery_score: Annotated[float, Field(strict=True, ge=0, le=4, allow_inf_nan=False)] | None = None
     evidence_count: Count
+
+    @model_validator(mode="after")
+    def evidence_controls_mastery(self) -> Self:
+        if self.evidence_count == 0:
+            # SQL may contain a legacy numeric placeholder. It is not an
+            # assessment and must never be exposed as a measured score.
+            self.mastery_score = None
+        elif self.mastery_score is None:
+            raise ValueError("Positive evidence requires an actual mastery_score; evidence cannot be discarded")
+        return self
 
 
 class StudentSummary(ContractModel):
@@ -113,18 +123,45 @@ class AdvancedOptions(ContractModel):
 
 class GenerateExamRequest(ContractModel):
     student_id: Identifier
-    generation_mode: Mode
+    generation_mode: Mode = Field(default="adaptive", description="Teacher endpoints accept only adaptive; legacy modes are internal compatibility only.",
+        json_schema_extra={"enum": ["adaptive"]})
     selected_topic_ids: Annotated[list[Literal["combinatorics"]], Field(min_length=1, max_length=1)]
     total_questions: Annotated[int, Field(strict=True, ge=1, le=10)]
     duration_minutes: Annotated[int, Field(strict=True, ge=1, le=180)]
-    # None survives JSON round trips and means no explicit teacher level lock.
-    difficulty_distribution: DifficultyDistribution | None = None
+    # Retained for old internal integrations. Teacher HTTP endpoints reject non-null values.
+    difficulty_distribution: DifficultyDistribution | None = Field(default=None,
+        description="Deprecated manual override. Teacher endpoints require null or omission.", json_schema_extra={"deprecated": True, "enum": [None]})
     advanced_options: AdvancedOptions = Field(default_factory=AdvancedOptions)
 
 
 class SourceReference(ContractModel):
     kind: Literal["question", "template"]
     id: Identifier
+
+
+class TemplateInstanceRecord(ContractModel):
+    instance_id: Identifier
+    parameters: dict[str, JsonValue]
+    signature: Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
+    template_digest: Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
+
+
+class TemplatePresentationRecord(ContractModel):
+    presentation_id: Identifier
+    generate_type: Literal["direct", "indirect"]
+    config_version: Identifier
+    fingerprint: Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
+    verification_status: Literal["source_direct", "verified", "experimental"] | None = None
+    context_id: Identifier | None = None
+
+    @model_validator(mode="after")
+    def experimental_label(self):
+        if self.presentation_id == "experimental_indirect":
+            if self.generate_type != "indirect" or self.verification_status != "experimental" or not self.context_id:
+                raise ValueError("Experimental Indirect must retain explicit experimental provenance")
+        elif self.verification_status == "experimental":
+            raise ValueError("Experimental status requires the experimental presentation pathway")
+        return self
 
 
 class Answer(ContractModel):
@@ -147,6 +184,7 @@ class ValidationSummary(ContractModel):
     auto_status: Literal["pass", "needs_review", "not_evaluated"]
     teacher_approved: Annotated[bool, Field(strict=True)]
     review_notes: list[str]
+    blocking_errors: list[Text] = Field(default_factory=list)
 
 
 class StudentQuestion(ContractModel):
@@ -164,8 +202,11 @@ class StudentQuestion(ContractModel):
 
 class ExamQuestion(StudentQuestion):
     source_ref: SourceReference
+    template_instance: TemplateInstanceRecord | None = None
+    template_presentation: TemplatePresentationRecord | None = None
     source_digest: Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")] | None = None
     target_skill_id: Identifier | None = None
+    expression_context_id: Identifier | None = None
     answer: Answer
     step_solutions: Annotated[list[SolutionStep], Field(min_length=1)]
     rubric: Annotated[list[RubricCriterion], Field(min_length=1)]
@@ -173,6 +214,15 @@ class ExamQuestion(StudentQuestion):
 
     @model_validator(mode="after")
     def consistent_scoring(self) -> Self:
+        if self.template_instance is not None and self.source_ref.kind != "template":
+            raise ValueError("Only template questions can contain template instances")
+        if self.template_presentation is not None and (
+            self.source_ref.kind != "template" or self.template_presentation.generate_type != self.generate_type
+        ):
+            raise ValueError("Template presentation provenance must match source kind and generate_type")
+        if (self.template_presentation and self.template_presentation.verification_status == "experimental"
+                and self.validation.auto_status == "pass"):
+            raise ValueError("Experimental wording cannot be labeled fully validated")
         if self.target_skill_id is not None and self.target_skill_id not in self.skill_ids:
             raise ValueError("Target skill must belong to skill_ids")
         units = score_units(self.max_score)
@@ -186,13 +236,13 @@ class ExamQuestion(StudentQuestion):
 
 
 class Provenance(ContractModel):
-    generator: Literal["fake", "qwen"]
+    generator: Literal["fake", "qwen", "question_bank"]
     model: str | None
 
     @model_validator(mode="after")
     def truthful_model(self) -> Self:
-        if self.generator == "fake" and self.model is not None:
-            raise ValueError("Fake generation cannot claim a model invocation")
+        if self.generator in ("fake", "question_bank") and self.model is not None:
+            raise ValueError("Generation without inference cannot claim a model invocation")
         if self.generator == "qwen" and (not self.model or not self.model.strip()):
             raise ValueError("Qwen generation must identify its model")
         return self
@@ -209,6 +259,45 @@ class QuotaSummary(ContractModel):
     achieved_skill_levels: dict[str, dict[str, int]]
 
 
+class CellShortage(ContractModel):
+    skill_id: Identifier
+    level: CognitiveLevel
+    requested: int
+    available: int
+    shortage: int
+
+
+class LevelShortage(ContractModel):
+    level: CognitiveLevel
+    requested: int
+    available: int
+    achieved: int
+    shortage: int
+    reason: str
+
+
+class SourceSubstitution(ContractModel):
+    slot: int
+    requested_skill: Identifier
+    requested_level: CognitiveLevel
+    actual_skill: Identifier
+    actual_level: CognitiveLevel
+    source_kind: Literal["question", "template"]
+    source_id: Identifier
+    reason: str
+
+
+class SelectionDiagnostics(ContractModel):
+    exact_skill_level_matrix_feasible: bool
+    exact_exam_levels_feasible: bool
+    eligible_question_levels: dict[str, int]
+    eligible_template_instance_levels: dict[str, int]
+    cell_shortages: list[CellShortage]
+    level_shortages: list[LevelShortage]
+    substitutions: list[SourceSubstitution]
+    fallback_policy: str
+
+
 class PlannerSummary(ContractModel):
     policy_version: str
     strategy: Literal["focused_practice", "diagnostic_review", "advanced_review", "standard"]
@@ -216,6 +305,8 @@ class PlannerSummary(ContractModel):
     skill_classifications: dict[str, Literal["NO_DATA", "PARTIAL", "WEAK", "ACHIEVED"]]
     quota_summary: QuotaSummary
     warnings: list[str]
+    # Optional for persisted drafts created before source diagnostics existed.
+    selection_diagnostics: SelectionDiagnostics | None = None
 
 
 class TeacherReview(ContractModel):
@@ -227,7 +318,8 @@ class TeacherReview(ContractModel):
 
 class ApproveExamRequest(ContractModel):
     expected_revision: PositiveInt
-    accepted_question_ids: Annotated[list[Identifier], Field(min_length=1)]
+    # Optional individual review acknowledgements, independent of whole-exam approval.
+    accepted_question_ids: list[Identifier] = Field(default_factory=list)
     notes: Annotated[str, Field(max_length=2000)] = ""
 
 
@@ -254,20 +346,18 @@ class ExamResponse(ContractModel):
 
     @model_validator(mode="after")
     def complete_exam(self) -> Self:
-        approved = all(q.validation.teacher_approved for q in self.questions)
-        if self.status == "approved" and (not approved or self.teacher_review is None):
-            raise ValueError("Approved exams require teacher acceptance of all questions and a review record")
-        if self.status == "pending_teacher_review" and (
-            any(q.validation.teacher_approved for q in self.questions) or self.teacher_review is not None
-        ):
-            raise ValueError("Pending drafts cannot carry teacher approval")
+        if self.status == "approved" and self.teacher_review is None:
+            raise ValueError("Approved exams require a whole-exam teacher review record")
+        if self.status == "pending_teacher_review" and self.teacher_review is not None:
+            raise ValueError("Pending drafts cannot carry whole-exam approval")
         if len(self.questions) != self.total_questions:
             raise ValueError("Question count mismatch")
         if [q.order_index for q in self.questions] != list(range(1, self.total_questions + 1)):
             raise ValueError("Question order must be consecutive")
         if len({q.question_id for q in self.questions}) != self.total_questions:
             raise ValueError("Duplicate generated question IDs")
-        if len({(q.source_ref.kind, q.source_ref.id) for q in self.questions}) != self.total_questions:
+        if len({(q.source_ref.kind, q.template_instance.signature if q.template_instance else q.source_ref.id)
+                for q in self.questions}) != self.total_questions:
             raise ValueError("Duplicate source questions")
         if sum(score_units(q.max_score) for q in self.questions) != score_units(self.total_score):
             raise ValueError("Question scores must sum to total_score")

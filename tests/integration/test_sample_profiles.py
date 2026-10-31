@@ -18,17 +18,29 @@ MANIFEST = json.loads(SCENARIOS.read_text(encoding="utf-8"))
 
 @pytest.mark.parametrize("scenario", MANIFEST["students"], ids=lambda s: s["student_id"])
 def test_sample_scenario_drives_expected_adaptive_strategy(scenario):
-    data = M3DataAdapter()
+    # Explicitly exercise the historical seeded SQL fixture, never the default
+    # authoritative Data Lead profile source.
+    data = M3DataAdapter(student_path=DEFAULT_DATABASE)
     profile = data.get_profile(scenario["student_id"])
-    assert {s.skill_id for s in profile.skill_mastery} == set(MANIFEST["skill_ids"])
+    assert {s.skill_id for s in profile.skill_mastery} == {s.skill_id for s in data.topic.skills}
+    assert all(s.mastery_score is None and s.evidence_count == 0 for s in profile.skill_mastery
+               if s.skill_id not in MANIFEST["skill_ids"])
     for count in (4, 10):
         request = GenerateExamRequest(student_id=profile.student_id, generation_mode="adaptive",
             selected_topic_ids=["combinatorics"], total_questions=count, duration_minutes=45)
         plan = RuleBasedPlanner(data).plan(request, profile)
-        assert plan.strategy == scenario["expected_strategy"]
-        assert len(plan.questions) == len({q.source_id for q in plan.questions}) == count
+        # The source manifest describes the former <3 policy. Keep its stored
+        # scores/evidence untouched; only these two strategies change under <2.
+        expected = {"ST005": "advanced_review", "ST012": "advanced_review"}.get(
+            profile.student_id, scenario["expected_strategy"])
+        # The new authoritative bank has A008/A009; old seven-skill profiles
+        # lack their evidence, so achieved-only rows now include diagnostics.
+        if expected == "advanced_review":
+            expected = "diagnostic_review"
+        assert plan.strategy == expected
+        assert len(plan.questions) == len({(q.source_kind, q.source_key) for q in plan.questions}) == count
         if profile.student_id in ("ST017", "ST018"):
-            assert plan.priority_skills and not plan.personalized and plan.warnings
+            assert plan.priority_skills and plan.personalized and plan.warnings
         elif plan.strategy == "focused_practice":
             assert plan.personalized
 

@@ -18,14 +18,11 @@ HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 def payload(student_id="DEMO_NEW_001", **changes):
     result = {
         "student_id": student_id,
-        "generation_mode": "default_blueprint",
+        "generation_mode": "adaptive",
         "selected_topic_ids": ["combinatorics"],
         "total_questions": 4,
         "duration_minutes": 45,
-        "difficulty_distribution": {
-            "recognition": 20, "understanding": 40,
-            "application": 30, "advanced_application": 10,
-        },
+        "difficulty_distribution": None,
     }
     result.update(changes)
     return result
@@ -63,7 +60,7 @@ def test_student_profile_and_catalogue(client):
     ]
     topics = client.get("/api/v1/topics").json()["items"]
     assert topics[0]["topic_id"] == "combinatorics"
-    assert {s["skill_id"] for s in topics[0]["skills"]} == {f"A00{i}" for i in range(1, 8)}
+    assert {s["skill_id"] for s in topics[0]["skills"]} == {f"A00{i}" for i in range(1, 10)}
 
 
 @pytest.mark.parametrize("path", [
@@ -87,9 +84,9 @@ def test_default_generation_is_complete_and_retrievable(client):
     assert len(exam.questions) == exam.total_questions == 4
     assert exam.total_score == 10
     assert [q.order_index for q in exam.questions] == [1, 2, 3, 4]
-    assert [q.cognitive_level for q in exam.questions] == [
-        "recognition", "understanding", "understanding", "application",
-    ]
+    preview = client.post("/api/v1/exams/plan", json=payload()).json()
+    assert [q.source_ref.id for q in exam.questions] == [q["source_id"] for q in preview["questions"]]
+    assert [q.cognitive_level for q in exam.questions] == [q["cognitive_level"] for q in preview["questions"]]
     assert exam.status == "pending_teacher_review"
     assert exam.provenance.generator == "fake" and exam.provenance.model is None
     assert all(q.answer.correct_answer and q.rubric and q.step_solutions for q in exam.questions)
@@ -107,6 +104,11 @@ def test_default_generation_is_complete_and_retrievable(client):
 ])
 @pytest.mark.parametrize("mode", ["adaptive", "default_blueprint"])
 def test_fake_generation_does_not_invent_an_evidence_policy(client, student_id, mode):
+    if mode != "adaptive":
+        response = client.post("/api/v1/exams/generate", json=payload(student_id=student_id, generation_mode=mode))
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "REQUEST_VALIDATION_ERROR"
+        return
     body = generated(client, student_id=student_id, generation_mode=mode)
     assert body["generation_mode"] == mode
     assert {"evidence_count", "data_status"}.isdisjoint(body)
@@ -114,14 +116,10 @@ def test_fake_generation_does_not_invent_an_evidence_policy(client, student_id, 
 
 @pytest.mark.parametrize("count", [1, 3, 4, 5, 8, 10])
 def test_requested_count_is_exact_or_explicit_failure(client, count):
-    distribution = (
-        {"recognition": 25, "understanding": 25, "application": 25, "advanced_application": 25}
-        if count == 8 else payload()["difficulty_distribution"]
-    )
     response = client.post("/api/v1/exams/generate", json=payload(
-        total_questions=count, difficulty_distribution=distribution,
+        total_questions=count,
     ))
-    if count == 10:
+    if count > 6:  # Two multi-skill fixtures have no approved primary annotation.
         assert response.status_code == 409
         assert response.json()["error"]["code"] == "INSUFFICIENT_QUESTION_BANK"
     else:
@@ -278,7 +276,7 @@ def test_service_receives_independent_skill_evidence_and_full_history(tmp_path):
 
         def generate(self, request, profile):
             self.calls += 1
-            assert profile.model_dump(mode="json") == student
+            assert profile.model_dump(mode="json") == StudentProfileResponse.model_validate(student).model_dump(mode="json")
             return fixture_generator.generate(request, profile)
 
     replacement = Replacement()
@@ -286,7 +284,7 @@ def test_service_receives_independent_skill_evidence_and_full_history(tmp_path):
     with TestClient(app, headers=HEADERS) as client:
         generated(client, student_id=student["student_id"], generation_mode="adaptive")
         assert replacement.calls == 1
-        assert client.get(f"/api/v1/students/{student['student_id']}/profile").json() == student
+        assert client.get(f"/api/v1/students/{student['student_id']}/profile").json() == StudentProfileResponse.model_validate(student).model_dump(mode="json")
 
 
 def test_grade_eleven_profile_is_read_without_using_grade_ten_question_fixtures(tmp_path):
@@ -434,21 +432,21 @@ def test_generator_cannot_rewrite_trusted_context(mutation):
     class MutatingService:
         def generate(self, request, profile):
             if mutation == "mode":
-                request.generation_mode = "adaptive"
+                request.generation_mode = "standard"
             elif mutation == "identity":
                 profile.student_id = "SOMEONE_ELSE"
             elif mutation == "duration":
                 request.duration_minutes = 60
             else:
-                for level in ("recognition", "understanding", "application", "advanced_application"):
-                    setattr(request.difficulty_distribution, level, 100 if level == "recognition" else 0)
+                from src.api.schemas import DifficultyDistribution
+                request.difficulty_distribution = DifficultyDistribution(recognition=100, understanding=0, application=0, advanced_application=0)
             return fixture_generator.generate(request, profile)
 
     app = create_app(backend="fake", teacher_token=TOKEN, generator=MutatingService())
     with TestClient(app, headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=payload(total_questions=1))
         assert response.status_code == 500
-        assert response.json()["error"]["code"] == "INVALID_EXAM_OUTPUT"
+        assert response.json()["error"]["code"] == ("INVALID_PROFILE_DATA" if mutation == "identity" else "INVALID_EXAM_OUTPUT")
         assert not app.state.exams._exams
         assert client.get("/api/v1/students/DEMO_NEW_001/profile").json()["skill_mastery"] == []
 
@@ -460,7 +458,7 @@ def test_generator_nested_working_mutations_do_not_change_original_inputs():
         def generate(self, request, profile):
             result = fixture_generator.generate(request, profile)
             request.selected_topic_ids.clear()
-            request.difficulty_distribution.recognition = 999
+            request.advanced_options.step_scoring_granularity = 999
             profile.skill_mastery[0].mastery_score = 4
             profile.skill_mastery[0].evidence_count = 99
             profile.skill_mastery.clear()
@@ -498,9 +496,7 @@ def test_generator_invalid_catalogue_references_are_not_stored(change):
     app = create_app(backend="fake", teacher_token=TOKEN, generator=BadReferences())
     with TestClient(app, headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=payload(
-            total_questions=1, difficulty_distribution={
-                "recognition": 100, "understanding": 0, "application": 0, "advanced_application": 0,
-            },
+            total_questions=1,
         ))
         assert response.status_code == 500
         assert response.json()["error"]["code"] == "INVALID_EXAM_OUTPUT"
@@ -508,8 +504,7 @@ def test_generator_invalid_catalogue_references_are_not_stored(change):
 
 
 @pytest.mark.parametrize("kind,source_id", [("question", "QA0001"), ("template", "EA0001")])
-def test_reference_validator_recognizes_existing_repository_sources(kind, source_id):
-    # Identity/link checks only; this does not claim semantic approval of a draft.
+def test_reference_validator_rejects_relabelled_sources_without_matching_content_or_instance(kind, source_id):
     data = StaticDataAdapter()
     request = GenerateExamRequest.model_validate(payload(
         total_questions=1, difficulty_distribution={
@@ -519,7 +514,9 @@ def test_reference_validator_recognizes_existing_repository_sources(kind, source
     exam = FakeExamGenerator(data).generate(request, data.get_profile(request.student_id))
     exam.questions[0].source_ref.kind = kind
     exam.questions[0].source_ref.id = source_id
-    data.validate_exam_references(exam)
+    exam.questions[0].target_skill_id = None  # Older drafts may omit primary-target metadata.
+    with pytest.raises(ValueError):
+        data.validate_exam_references(exam)
 
 
 @pytest.mark.parametrize("failure", ["missing", "invalid_json", "invalid_schema"])

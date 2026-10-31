@@ -14,6 +14,9 @@ def test_ui_assets_are_public_but_do_not_embed_credentials_or_profiles():
         page = client.get("/")
         assert page.status_code == 200 and "text/html" in page.headers["content-type"]
         assert "Math Studio" in page.text and TOKEN not in page.text
+        for control in ("mode", "lock-levels", "recognition", "understanding", "application", "advanced_application"):
+            assert f'id="{control}"' not in page.text
+        assert "độ khó được xác định tự động" in page.text
         assert "frame-ancestors 'none'" in page.headers["content-security-policy"]
         assert page.headers["cache-control"] == "no-store"
         for asset in ["app.js", "style.css"]:

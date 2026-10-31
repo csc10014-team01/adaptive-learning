@@ -1,11 +1,15 @@
-"""Deterministic, read-only exam planning in five small policy stages."""
+"""Deterministic, read-only allocation followed by source-question selection."""
 
 from math import floor
+from typing import Literal
 
 from pydantic import ValidationError
 
 from src.adaptation.contracts import AllocationPlan
+from src.adaptation.difficulty_allocator import coordinated_levels
 from src.adaptation.question_selector import QuestionSelector
+from src.adaptation.source_selector import SourceSelector
+from src.api.schemas import TemplateInstanceRecord
 from src.adaptation.skill_relationships import SkillRelationships
 from src.adaptation.policy import PlannerPolicyConfig
 from src.api.data_adapter import ApiFailure, FixtureQuestion, StaticDataAdapter
@@ -24,6 +28,13 @@ class PlannedQuestion(ContractModel):
     group: str
     targeted: bool
     reasons: list[Text]
+    source_kind: Literal["question", "template"] = "question"
+    source_status: Literal["stored", "pending_wording"] = "stored"
+    template_instance: TemplateInstanceRecord | None = None
+
+    @property
+    def source_key(self):
+        return self.template_instance.instance_id if self.template_instance else self.source_id
 
 
 class ExamPlan(PlannerSummary):
@@ -109,6 +120,7 @@ class RuleBasedPlanner:
         skills = sorted(known) if profile.grade_level == self.data.topic.grade_level else []
         if not skills:
             raise ApiFailure(409, "INSUFFICIENT_QUESTION_BANK", "No question catalogue for the requested topic and grade")
+        warnings.extend(self.data.question_warnings)
         return profile, sorted(bank, key=lambda q: q.question_id), skills, warnings
 
     def classify(self, profile: StudentProfileResponse, skills: list[str]) -> dict[str, str]:
@@ -119,6 +131,9 @@ class RuleBasedPlanner:
             row = rows.get(skill)
             if row is None or row.evidence_count == 0:
                 result[skill] = "NO_DATA"
+            elif row.mastery_score is None:
+                raise ApiFailure(500, "INVALID_PROFILE_DATA",
+                    f"Skill {skill} has assessment evidence but no mastery score")
             elif row.evidence_count < self.policy.min_evidence:
                 result[skill] = "PARTIAL"
             elif row.mastery_score < self.policy.mastery_target:
@@ -130,7 +145,7 @@ class RuleBasedPlanner:
     def _allocate(
         self, request: GenerateExamRequest, profile: StudentProfileResponse, statuses: dict[str, str],
     ) -> Allocation:
-        """C. Group half-up rounding, fair skill coverage, then level preferences."""
+        """C. Group half-up rounding, fair skill coverage, then joint difficulty rounding."""
         rows = {s.skill_id: s for s in profile.skill_mastery}
         weak = sorted((s for s in statuses if statuses[s] == "WEAK"),
                       key=lambda s: (rows[s].mastery_score, s))
@@ -182,22 +197,23 @@ class RuleBasedPlanner:
         # Explicit teacher totals are allocated globally, never rounded per skill.
         locked = request.difficulty_distribution is not None
         standard = request.generation_mode != "adaptive"
-        skill_levels = {} if locked or standard else {s: level_counts(count, weights[s]) for s, count in skill_counts.items()}
+        forbidden = {s: ["advanced_application"] for s, status in statuses.items() if status == "WEAK"}
+        skill_levels = {}
         if locked:
             levels = question_slots(request)
         elif standard:
             levels = level_counts(n, self.policy.default_levels)
         else:
-            levels = {level: sum(counts[level] for counts in skill_levels.values()) for level in LEVELS}
+            skill_levels, levels = coordinated_levels(skill_counts, weights, groups, forbidden_levels=forbidden)
         return AllocationPlan(strategy=strategy, focus=focus, groups=groups,
             group_counts=group_counts, skill_counts=skill_counts, weights=weights,
-            skill_levels=skill_levels, levels=levels)
+            skill_levels=skill_levels, levels=levels, forbidden_levels=forbidden)
 
     def _select(self, bank, allocation, locked, seen, warnings):
         """Compatibility entry point; selection belongs to QuestionSelector."""
         return self.selector.select(bank, allocation, locked, seen, warnings)
 
-    def plan(self, request: GenerateExamRequest, profile: StudentProfileResponse) -> ExamPlan:
+    def plan(self, request: GenerateExamRequest, profile: StudentProfileResponse, *, seed=0, excluded_templates=()) -> ExamPlan:
         """E. Integrate selection, achieved quotas, explanations, and warnings."""
         allocation = self.build_allocation_plan(request, profile)
         profile, bank, skills, warnings = self._validate(request, profile)
@@ -207,15 +223,25 @@ class RuleBasedPlanner:
         if unknown:
             warnings.append("History IDs unavailable in the bank (no skill/evidence inferred): " + ", ".join(sorted(unknown)))
         locked = request.difficulty_distribution is not None
-        selected, group_for = self._select(bank, allocation, locked, seen, warnings)
+        all_templates = self.data.templates
+        templates = [t for t in all_templates if t.grade_level == profile.grade_level
+                     and t.topic_id in request.selected_topic_ids and set(t.skill_ids).issubset(skills)]
+        warnings.extend(self.data.template_warnings)
+        if all_templates and not templates:
+            warnings.append("No Template matches this grade/topic/skill catalogue; using Question Bank fallback.")
+        audit = {}
+        selected, group_for = SourceSelector().select(bank, templates, allocation, locked, seen, warnings,
+                                                     seed=seed, excluded_templates=excluded_templates, audit=audit)
         questions = []
         for q in selected:
             skill = q.primary_skill_id
             reasons = [f"{group_for[skill]}: {skill} is {statuses[skill]}; strategy={allocation.strategy}.",
-                       "Previously recorded in history; alternatives exhausted for preferred cell." if q.question_id in seen
-                       else "No prior exposure recorded in available history."]
+                       "Available wrong-question history is partial; completed-question history is not inferred."]
             questions.append(PlannedQuestion(
-                source_id=q.question_id, target_skill_id=skill, skill_ids=list(q.skill_ids),
+                source_id=q.source_id, source_kind=q.source_kind,
+                source_status="pending_wording" if q.source_kind == "template" else "stored",
+                template_instance=q.instance.record if q.instance else None,
+                target_skill_id=skill, skill_ids=list(q.skill_ids),
                 cognitive_level=q.cognitive_level, group=group_for[skill], targeted=skill in allocation.focus, reasons=reasons,
             ))
         achieved_skills = {s: sum(q.target_skill_id == s for q in questions) for s in allocation.skill_counts}
@@ -237,9 +263,13 @@ class RuleBasedPlanner:
         return ExamPlan(
             policy_version=self.policy.version + ("+" + self.relationships.version if self.relationships else ""),
             student_id=profile.student_id, requested_mode=request.generation_mode,
-            strategy=allocation.strategy, personalized=bool(allocation.focus) and targeted > 0, priority_skills=allocation.focus,
+            strategy=allocation.strategy,
+            personalized=request.generation_mode == "adaptive" and any(
+                statuses[q.target_skill_id] in ("WEAK", "ACHIEVED") for q in questions),
+            priority_skills=allocation.focus,
             target_count=target, achieved_target_count=targeted, warnings=warnings, questions=questions,
             difficulty_locked=locked, skill_classifications=statuses,
+            selection_diagnostics=audit or None,
             quota_summary=QuotaSummary(
                 requested_groups=allocation.group_counts, achieved_groups=achieved_groups,
                 requested_skills=allocation.skill_counts, achieved_skills=achieved_skills,

@@ -1,0 +1,468 @@
+{
+  "date": "2026-10-29",
+  "data_kind": "synthetic_fixture",
+  "student_profile": {
+    "student_id": "S",
+    "name": "Student",
+    "grade_level": 10,
+    "skill_mastery": [
+      {
+        "skill_id": "A001",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A002",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A003",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A004",
+        "mastery_score": 1.8,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A005",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A006",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A007",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A008",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      },
+      {
+        "skill_id": "A009",
+        "mastery_score": 3.2,
+        "evidence_count": 5
+      }
+    ],
+    "learning_history": []
+  },
+  "request": {
+    "student_id": "S",
+    "generation_mode": "adaptive",
+    "selected_topic_ids": [
+      "combinatorics"
+    ],
+    "total_questions": 10,
+    "duration_minutes": 45,
+    "difficulty_distribution": null,
+    "advanced_options": {
+      "include_real_world_context": true,
+      "step_scoring_granularity": 0.25
+    }
+  },
+  "before_previous_policy_independent_rounding": {
+    "skill_levels": {
+      "A004": {
+        "recognition": 1,
+        "understanding": 2,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A001": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A005": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A009": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      }
+    },
+    "exam_levels": {
+      "recognition": 1,
+      "understanding": 2,
+      "application": 7,
+      "advanced_application": 0
+    }
+  },
+  "after_policy_version": "mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1",
+  "after_group_difficulties": {
+    "focus": {
+      "recognition": 1,
+      "understanding": 2,
+      "application": 1,
+      "advanced_application": 0
+    },
+    "related_review": {
+      "recognition": 1,
+      "understanding": 1,
+      "application": 1,
+      "advanced_application": 0
+    },
+    "balanced_review": {
+      "recognition": 0,
+      "understanding": 1,
+      "application": 1,
+      "advanced_application": 1
+    }
+  },
+  "after_quota_summary": {
+    "requested_groups": {
+      "focus": 4,
+      "related_review": 3,
+      "balanced_review": 3
+    },
+    "achieved_groups": {
+      "focus": 4,
+      "related_review": 3,
+      "balanced_review": 3
+    },
+    "requested_skills": {
+      "A004": 4,
+      "A002": 1,
+      "A008": 1,
+      "A003": 1,
+      "A001": 1,
+      "A005": 1,
+      "A006": 1,
+      "A007": 0,
+      "A009": 0
+    },
+    "achieved_skills": {
+      "A004": 4,
+      "A002": 1,
+      "A008": 1,
+      "A003": 1,
+      "A001": 1,
+      "A005": 1,
+      "A006": 1,
+      "A007": 0,
+      "A009": 0
+    },
+    "requested_levels": {
+      "recognition": 2,
+      "understanding": 4,
+      "application": 3,
+      "advanced_application": 1
+    },
+    "achieved_levels": {
+      "recognition": 2,
+      "understanding": 4,
+      "application": 3,
+      "advanced_application": 1
+    },
+    "requested_skill_levels": {
+      "A004": {
+        "recognition": 1,
+        "understanding": 2,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A001": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A005": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 1
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A009": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      }
+    },
+    "achieved_skill_levels": {
+      "A004": {
+        "recognition": 1,
+        "understanding": 2,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A001": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A005": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 1
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A009": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      }
+    }
+  },
+  "after_selected_questions": [
+    {
+      "source_id": "Q_A004_recognition_00",
+      "target_skill_id": "A004",
+      "skill_ids": [
+        "A004"
+      ],
+      "cognitive_level": "recognition",
+      "group": "focus",
+      "targeted": true,
+      "reasons": [
+        "focus: A004 is WEAK; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A002_application_00",
+      "target_skill_id": "A002",
+      "skill_ids": [
+        "A002"
+      ],
+      "cognitive_level": "application",
+      "group": "related_review",
+      "targeted": false,
+      "reasons": [
+        "related_review: A002 is ACHIEVED; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A008_understanding_00",
+      "target_skill_id": "A008",
+      "skill_ids": [
+        "A008"
+      ],
+      "cognitive_level": "understanding",
+      "group": "related_review",
+      "targeted": false,
+      "reasons": [
+        "related_review: A008 is ACHIEVED; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A003_recognition_00",
+      "target_skill_id": "A003",
+      "skill_ids": [
+        "A003"
+      ],
+      "cognitive_level": "recognition",
+      "group": "related_review",
+      "targeted": false,
+      "reasons": [
+        "related_review: A003 is ACHIEVED; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A001_application_00",
+      "target_skill_id": "A001",
+      "skill_ids": [
+        "A001"
+      ],
+      "cognitive_level": "application",
+      "group": "balanced_review",
+      "targeted": false,
+      "reasons": [
+        "balanced_review: A001 is ACHIEVED; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A005_understanding_00",
+      "target_skill_id": "A005",
+      "skill_ids": [
+        "A005"
+      ],
+      "cognitive_level": "understanding",
+      "group": "balanced_review",
+      "targeted": false,
+      "reasons": [
+        "balanced_review: A005 is ACHIEVED; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A006_advanced_application_00",
+      "target_skill_id": "A006",
+      "skill_ids": [
+        "A006"
+      ],
+      "cognitive_level": "advanced_application",
+      "group": "balanced_review",
+      "targeted": false,
+      "reasons": [
+        "balanced_review: A006 is ACHIEVED; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A004_understanding_00",
+      "target_skill_id": "A004",
+      "skill_ids": [
+        "A004"
+      ],
+      "cognitive_level": "understanding",
+      "group": "focus",
+      "targeted": true,
+      "reasons": [
+        "focus: A004 is WEAK; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A004_understanding_01",
+      "target_skill_id": "A004",
+      "skill_ids": [
+        "A004"
+      ],
+      "cognitive_level": "understanding",
+      "group": "focus",
+      "targeted": true,
+      "reasons": [
+        "focus: A004 is WEAK; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    },
+    {
+      "source_id": "Q_A004_application_00",
+      "target_skill_id": "A004",
+      "skill_ids": [
+        "A004"
+      ],
+      "cognitive_level": "application",
+      "group": "focus",
+      "targeted": true,
+      "reasons": [
+        "focus: A004 is WEAK; strategy=focused_practice.",
+        "No prior exposure recorded in available history."
+      ]
+    }
+  ],
+  "after_warnings": [
+    "Excluded Q_A004_advanced_application_00: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_01: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_02: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_03: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_04: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_05: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_06: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_07: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_08: L4 is forbidden by the assessed skill's difficulty policy.",
+    "Excluded Q_A004_advanced_application_09: L4 is forbidden by the assessed skill's difficulty policy."
+  ]
+}

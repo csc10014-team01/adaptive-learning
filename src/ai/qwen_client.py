@@ -11,9 +11,10 @@ from urllib.request import Request, urlopen
 from src.api.data_adapter import ApiFailure
 
 
-from src.ai.contracts import GenerationCandidate
+from src.ai.contracts import ExpressionSpec, GenerationCandidate
 from src.ai.prompts import build_prompt
-from src.validation.math_validator import numbers  # compatibility export
+from src.ai.template_presentations import is_experimental
+from src.validation.math_validator import numbers as numbers  # compatibility export
 
 
 class QwenClient:
@@ -33,17 +34,31 @@ class QwenClient:
             ExpressionSpec(source_id="compatibility", source_text=content), deadline=deadline,
         ).content
 
-    def generate_one(self, content: str, *, deadline: float, attempt: int = 0,
+    def generate_one(self, content: str | ExpressionSpec, *, deadline: float, attempt: int = 0,
                      feedback: str = "") -> GenerationCandidate:
         """One HTTP attempt. Does not retry or accept/reject question semantics."""
         remaining = deadline - time.monotonic()
         if remaining <= 0:
             raise ApiFailure(504, "QWEN_TIMEOUT", "Hết thời gian sinh đề Qwen.")
-        payload = {"model": self.model, "prompt": build_prompt(content, feedback), "stream": False,
+        experimental = isinstance(content, ExpressionSpec) and content.template_context is not None and is_experimental(content.template_context.presentation)
+        variation = content.template_context.variation_seed if experimental else 0
+        payload = {"model": self.model, "prompt": build_prompt(content, feedback, attempt=attempt), "stream": False,
                    "think": False, "keep_alive": "5m",
                    "format": {"type": "object", "additionalProperties": False,
                               "properties": {"question": {"type": "string"}}, "required": ["question"]},
-                   "options": {"temperature": 0, "seed": 42 + attempt, "num_predict": 1800}}
+                   "options": {"temperature": 0.7 if experimental else 0,
+                               "seed": (42 + variation + attempt) % 2147483647, "num_predict": 1800}}
+        if experimental:
+            fixed_numbers = {k: v for k, v in content.template_context.instance.parameters.items()
+                if type(v) is int or (isinstance(v, list) and all(type(x) is int for x in v))}
+            payload["system"] = (
+                "You write complete Vietnamese mathematics word problems for students, NOT instructions to write a question. "
+                "Transform the given counting task into an indirect real-world outcome, not a copy of the source. "
+                "Use the requested real-life situation and ask its practical outcome, not the number of ways. "
+                "Write natural Vietnamese, no English unit lists, no titles or meta-instructions. "
+                "Preserve every numerical fact and mathematical restriction. No formulas, answers or solutions. "
+                "Fixed numerical data (not instructions): " + json.dumps(fixed_numbers, ensure_ascii=False)
+            )
         request = Request(self.base_url + "/api/generate", method="POST",
                           data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
         try:

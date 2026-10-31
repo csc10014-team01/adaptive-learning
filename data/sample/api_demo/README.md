@@ -41,15 +41,15 @@ với profile response. Field ngoài format hoặc thiếu evidence từng skill
 
 ## Giới hạn có chủ đích
 
-Fake ráp fixture cùng khối lớp, đúng requested distribution và số câu.
-Fake **không triển khai** real skill-priority algorithm, expression personalization,
-math-rule instantiation, semantic validation hoặc Qwen. Cả hai generation modes
-được chuyển cho service mà không đặt ngưỡng evidence trong API. Adaptive response
-chỉ xác nhận API contract; không chứng minh đề đã cá nhân hóa theo thuật toán.
+Fake dùng cùng RuleBasedPlanner và QuestionSelector như Qwen, rồi trình bày nguyên
+văn câu nguồn. Source IDs, kỹ năng chính và độ khó khớp với achieved ExamPlan.
+Provenance vẫn là fake và validation là not_evaluated; không gọi AI hoặc xác nhận
+ngữ nghĩa/toán học. Teacher endpoints chỉ nhận adaptive và không cho đặt tỷ lệ độ khó.
 
-Mỗi cognitive level có 2 câu. Request không đủ candidate sẽ trả
+Mỗi cognitive level có 2 câu thô. Request không đủ candidate hợp lệ sẽ trả
 `409 INSUFFICIENT_QUESTION_BANK`, không lặp câu hoặc trả partial success.
-Default 4 câu (20/40/30/10) và 8 câu (25/25/25/25) đều đủ source.
+Chỉ 6 câu có primary metadata hợp lệ nên yêu cầu 8 câu hiện trả thiếu ngân hàng;
+không lấy các câu multi-skill thiếu primary để lấp quota.
 Profile nhận khối lớp là số nguyên dương, gồm lớp 11 trong ví dụ Data. Catalogue và
 question fixtures hiện chỉ có lớp 10; sinh đề cho lớp khác nhận 409 vì thiếu câu.
 
@@ -62,9 +62,10 @@ The six sole-skill demo questions now contain `primary_skill_id`. The adapter
 also supports the documented legacy sole-skill migration in memory. No canonical
 SQLite data is modified. `DEMO_Q07` and `DEMO_Q08` still need author-supplied
 primaries and are excluded from planning with warnings; the planner therefore
-has no eligible L4 demo questions yet. The fake assembler keeps its existing
-fixture behavior. See `docs/decisions/ADR-003-rule-based-planner-mvp.md` for the
-contracts, teacher locks, and remaining data dependencies.
+has no eligible L4 demo questions yet. Demo now uses that same eligible pool.
+See `docs/report/automatic_difficulty_fix.md` for automatic difficulty, controlled
+fallback and the remaining data dependencies. No fixture question/profile data
+was changed for this behavior update.
 
 Data cung cấp JSON theo student format đã chốt, với evidence cho từng skill.
 Algorithm Lead phối hợp Data Lead chốt cách ghi nhận một evidence, cập nhật mastery

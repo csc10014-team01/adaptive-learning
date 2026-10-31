@@ -3,6 +3,10 @@
 Date: 2026-10-26. This implements the modular boundaries and review workflow
 from the two-person implementation proposal while retaining existing API contracts.
 
+The verified structured-data path and teacher review UI were subsequently added
+in [ADR-005](ADR-005-verified-problems-and-teacher-ui.md). The legacy behavior
+described here still applies to the canonical prose-only M3 bank.
+
 ## Internal boundaries
 
 | Stage | Implementation | Output |
@@ -57,10 +61,13 @@ cannot exceed the related cap or violate explicit teacher difficulty totals;
 if no valid candidate remains, the request fails rather than fabricating a slot.
 Other skill/group preferences remain soft and report achieved quotas and warnings.
 
-`tests/fixtures/nine_skill_relationships.json` transcribes the proposal's nine-skill
-matrix solely for synthetic tests. No A001–A007 to SK01–SK09 mapping is inferred,
-no student mastery is migrated, and no M3 database is modified. The Data team
-must supply the approved catalogue, source annotations and profile migration.
+The official nine-skill target is now **A001–A009**. Its authoritative matrix is
+`config/skill_relationships_a001_a009.json` (`a001-a009-relationships-v1`);
+`tests/fixtures/nine_skill_relationships.json` is a drift-checked test snapshot.
+This replaces the former SK-series policy without inferring a semantic mapping.
+No student mastery is migrated and no M3 database is modified. The Data Lead owns
+the separate SQL update, including catalogue names, source annotations and profiles.
+See [policy configuration and integration status](../../config/README.md).
 Available history still records wrong questions only; novelty is limited to that
 subset, not complete prior exposure.
 
@@ -73,9 +80,10 @@ replacement `/drafts` API are introduced. Additive response fields are `revision
 
 Teacher-only additions:
 
-- `POST /api/v1/exams/{exam_id}/approve`: `expected_revision`, all current
-  `accepted_question_ids`, optional `notes`. It changes pending to approved,
-  records UTC approval time and marks every question teacher-approved.
+- `POST /api/v1/exams/{exam_id}/approve`: `expected_revision`,
+  optional `accepted_question_ids` and `notes`. It changes a complete validated
+  draft to approved and records UTC whole-exam approval. Individual IDs are
+  optional acknowledgements; omitted IDs do not mark questions manually reviewed.
 - `POST /api/v1/exams/{exam_id}/questions/{question_id}/regenerate`:
   `expected_revision`. The Qwen pipeline rewrites the same source, keeps its
   answer/scoring/metadata, creates a new question ID, and returns the complete

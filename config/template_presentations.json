@@ -1,0 +1,175 @@
+{
+  "version": "template-presentations-v1",
+  "presentations": [
+    {
+      "template_id": "EA0001",
+      "presentation_id": "ea0001_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Một quầy phục vụ chia các mặt hàng thành các nhóm phân biệt, không giao nhau, có số lượng lần lượt là {counts}. Khách nhận đúng một mặt hàng từ một trong các nhóm. Quầy cần liệt kê bao nhiêu lựa chọn cho khách?",
+      "required_placeholders": [
+        "counts"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1",
+      "cognitive_level": "recognition",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    },
+    {
+      "template_id": "EA0002",
+      "presentation_id": "ea0002_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Một trung tâm có {n} phương thức phục vụ với số phương án tương ứng là {counts}. Mỗi lượt khách chỉ chọn một phương thức và thực hiện một phương án thuộc phương thức đó. Danh sách lựa chọn cho một lượt khách có bao nhiêu mục?",
+      "required_placeholders": [
+        "counts",
+        "n"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "591edb1063ebcf01107ad58cc2622ced69f2f9050b6a5fa3018e8bbb77c185b0",
+      "cognitive_level": "recognition",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    },
+    {
+      "template_id": "EA0004",
+      "presentation_id": "ea0004_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Ban tổ chức ghi nhận {n} cặp đôi, mỗi cặp gồm một người nhóm A và một người nhóm B. Một lượt giao lưu ghép một người từ mỗi nhóm, nhưng không ghép lại cặp đôi đã ghi nhận. Ban tổ chức có thể ghi bao nhiêu lượt ghép khác nhau?",
+      "required_placeholders": [
+        "n"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "e0f3e1c2179173b61e4ddc9ad0e867708170fbfba1b9f27599d32724eebd3e6f",
+      "cognitive_level": "understanding",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    },
+    {
+      "template_id": "EA0012",
+      "presentation_id": "ea0012_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Một câu lạc bộ có {n} thành viên phân biệt. Ban tổ chức lập danh sách mọi đôi bạn gồm hai thành viên khác nhau; đổi vị trí hai tên không tạo đôi bạn mới. Danh sách cần bao nhiêu mục?",
+      "required_placeholders": [
+        "n"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e",
+      "cognitive_level": "recognition",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    },
+    {
+      "template_id": "EA0013",
+      "presentation_id": "ea0013_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Ban tổ chức lên lịch cho {team_count} đội bóng. Mỗi cặp đội gặp nhau đúng {matches_per_pair} trận. Lịch thi đấu cần bao nhiêu ô dành cho các trận?",
+      "required_placeholders": [
+        "matches_per_pair",
+        "team_count"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c",
+      "cognitive_level": "recognition",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    },
+    {
+      "template_id": "EA0015",
+      "presentation_id": "ea0015_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Một bảng vẽ đa giác có {vertex_count} đỉnh. Mỗi thao tác chọn một đỉnh làm điểm đầu rồi một đỉnh khác làm điểm cuối để tạo vectơ. Đổi điểm đầu và điểm cuối là thao tác khác; không gộp các cặp đỉnh tạo vectơ bằng nhau. Danh sách mọi thao tác cần bao nhiêu mục?",
+      "required_placeholders": [
+        "vertex_count"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "5a58ea1d1bc17038d1ffda6c1287c802f1b30b556b900016847562335a03473c",
+      "cognitive_level": "recognition",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    },
+    {
+      "template_id": "EA0017",
+      "presentation_id": "ea0017_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Một tủ trưng bày có {n} món đồ phân biệt. Người phụ trách lập danh sách mọi phương án đặt tất cả món đồ thành một hàng; các vị trí trong hàng được phân biệt. Danh sách cần bao nhiêu phương án?",
+      "required_placeholders": [
+        "n"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "a8771c0c44d1fae0121c3d41468f0bc6056c8b9dad41595fe0c8acd24679411e",
+      "cognitive_level": "recognition",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    },
+    {
+      "template_id": "EA0018",
+      "presentation_id": "ea0018_context_proposed",
+      "generate_type": "indirect",
+      "pattern": "Người phụ trách lập sơ đồ xếp {n} người phân biệt thành một hàng. Hai người được chỉ định là A và B không được đứng cạnh nhau. Danh sách mọi sơ đồ hợp lệ có bao nhiêu mục?",
+      "required_placeholders": [
+        "n"
+      ],
+      "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+      "mathematical_invariants": [
+        "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+        "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+      ],
+      "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+      "source_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef",
+      "cognitive_level": "understanding",
+      "verification_status": "proposed",
+      "verification_reference": null,
+      "cognitive_level_preserved": false,
+      "cognitive_review_reference": null
+    }
+  ]
+}

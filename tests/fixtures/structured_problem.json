@@ -1,0 +1,45 @@
+{
+  "source_id": "SYNTHETIC_COMBINATION_01",
+  "data_kind": "synthetic_fixture",
+  "verification_status": "verified",
+  "verification_reference": "Synthetic unit-test example C(8,3)=56; not canonical M3 data",
+  "mathematical_structure": "combination",
+  "parameters": {"n": 8, "k": 3},
+  "constraints": {"order_matters": false, "replacement_allowed": false},
+  "verified_answer": "56",
+  "verified_solution": [
+    "Chọn nhóm không xét thứ tự và không hoàn lại nên dùng tổ hợp.",
+    "Số nhóm bằng C(8,3) = 56."
+  ],
+  "source_context_id": "students",
+  "supported_contexts": [
+    {
+      "context_id": "students",
+      "presentations": [
+        {
+          "generate_type": "direct",
+          "template": "Trong {n} học sinh phân biệt, chọn {k} học sinh lập một nhóm, không xét thứ tự và không hoàn lại. Có bao nhiêu nhóm?",
+          "required_phrases": ["{n} học sinh", "{k} học sinh", "không xét thứ tự", "không hoàn lại"],
+          "forbidden_phrases": ["có xét thứ tự", "có hoàn lại", "ít nhất", "nhiều nhất"]
+        },
+        {
+          "generate_type": "indirect",
+          "template": "Một lớp có {n} học sinh phân biệt. Cô giáo lập danh sách tất cả nhóm gồm {k} học sinh, không xét thứ tự và không hoàn lại. Hãy xác định số nhóm trong danh sách.",
+          "required_phrases": ["{n} học sinh", "{k} học sinh", "không xét thứ tự", "không hoàn lại", "Hãy xác định số nhóm trong danh sách"],
+          "forbidden_phrases": ["có xét thứ tự", "có hoàn lại", "Có bao nhiêu", "ít nhất", "nhiều nhất"]
+        }
+      ]
+    },
+    {
+      "context_id": "books",
+      "presentations": [
+        {
+          "generate_type": "direct",
+          "template": "Có {n} quyển sách phân biệt. Chọn {k} quyển sách làm một bộ, không xét thứ tự và không hoàn lại. Có bao nhiêu bộ sách?",
+          "required_phrases": ["{n} quyển sách", "{k} quyển sách", "không xét thứ tự", "không hoàn lại"],
+          "forbidden_phrases": ["học sinh", "có xét thứ tự", "có hoàn lại", "ít nhất", "nhiều nhất"]
+        }
+      ]
+    }
+  ]
+}

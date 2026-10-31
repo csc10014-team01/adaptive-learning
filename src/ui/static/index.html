@@ -26,7 +26,7 @@
     </section>
 
     <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-    <div id="demo-notice" class="notice warning" hidden>Chế độ demo: đề được ghép từ câu hỏi có sẵn, không gọi Qwen và chưa cá nhân hóa. “Xem kế hoạch” vẫn sử dụng planner thật.</div>
+    <div id="demo-notice" class="notice warning" hidden>Chế độ Demo/Fixture: dùng cùng planner và chính sách chọn nguồn. Câu có sẵn giữ nguyên; câu từ mẫu hiển thị đề đã gán tham số. Không gọi AI hoặc tự xác nhận tương đương ngữ nghĩa.</div>
 
     <div class="studio-grid">
       <aside class="controls">
@@ -37,19 +37,10 @@
             <select id="student" required><option value="">Kết nối để tải danh sách</option></select>
             <div id="profile" class="profile"><p class="muted">Mastery và evidence sẽ xuất hiện khi bạn chọn học sinh.</p></div>
             <label for="topic">Chủ đề</label><select id="topic" required><option value="">Chưa tải chủ đề</option></select>
-            <label for="mode">Cách tạo đề</label><select id="mode"><option value="adaptive">Cá nhân hóa theo hồ sơ</option><option value="standard">Đề chuẩn theo yêu cầu</option></select>
+            <p class="field-help">Kỹ năng cần ôn và độ khó được xác định tự động từ mastery và evidence. Chỉ dùng khung chẩn đoán mặc định khi chưa có kỹ năng nào đủ evidence.</p>
             <div class="two-col"><div><label for="question-count">Số câu</label><input id="question-count" type="number" min="1" max="10" step="1" value="4" required></div><div><label for="duration">Thời gian (phút)</label><input id="duration" type="number" min="1" max="180" step="1" value="45" required></div></div>
-            <label class="check-row" for="lock-levels"><input type="checkbox" id="lock-levels"><span>Tự chọn phân bố độ khó</span></label>
-            <p class="field-help" id="level-help">Để planner tự phân bổ theo chế độ đã chọn.</p>
-            <div id="level-inputs" class="level-inputs" hidden>
-              <div><label for="recognition">Nhận biết</label><input id="recognition" type="number" min="0" max="100" step="1" value="25" disabled></div>
-              <div><label for="understanding">Thông hiểu</label><input id="understanding" type="number" min="0" max="100" step="1" value="35" disabled></div>
-              <div><label for="application">Vận dụng</label><input id="application" type="number" min="0" max="100" step="1" value="30" disabled></div>
-              <div><label for="advanced_application">Vận dụng cao</label><input id="advanced_application" type="number" min="0" max="100" step="1" value="10" disabled></div>
-              <p id="level-total">Tổng: 100%</p>
-            </div>
             <div class="actions"><button type="button" id="plan-button" class="secondary">Xem kế hoạch</button><button type="submit" id="generate-button" class="primary">Tạo đề <span aria-hidden="true">↗</span></button></div>
-            <p class="field-help">Xem kế hoạch chọn câu trước khi gọi AI. Mọi đề mới đều cần giáo viên kiểm tra.</p>
+            <p class="field-help">Câu hỏi có sẵn được giữ nguyên. Chỉ câu sinh từ mẫu có nút Tạo lại. Mọi đề mới đều cần giáo viên kiểm tra.</p>
           </fieldset>
         </form>
         <form id="retrieve-form" class="panel retrieve"><label for="exam-id">Mở đề đã lưu</label><div class="inline-form"><input id="exam-id" placeholder="Nhập mã EX_… hoặc FE_…" autocomplete="off" required><button id="retrieve-button" type="submit" class="secondary" disabled>Mở</button></div></form>

@@ -6,9 +6,9 @@ from math import isclose
 
 @dataclass(frozen=True)
 class PlannerPolicyConfig:
-    version: str = "mvp-personalization-v2"
+    version: str = "mvp-personalization-v4-coordinated-difficulty"
     min_evidence: int = 3
-    mastery_target: float = 3.0
+    mastery_target: float = 2.0
     max_focus_skills: int = 2
     one_focus_share: float = 0.4
     two_focus_share: float = 0.6
@@ -16,11 +16,12 @@ class PlannerPolicyConfig:
     default_levels: tuple[float, ...] = (25, 35, 30, 10)
     # Exclusive upper bounds; the final bound includes the maximum mastery (4).
     mastery_levels: tuple[tuple[float, tuple[float, ...]], ...] = (
-        (1.5, (50, 35, 15, 0)),
-        (2.5, (25, 45, 25, 5)),
-        (3.0, (10, 30, 45, 15)),
-        (3.5, (5, 20, 50, 25)),
-        (float("inf"), (0, 10, 50, 40)),
+        (1.5, (50, 40, 10, 0)),
+        (2.0, (35, 45, 20, 0)),
+        (2.5, (25, 40, 30, 5)),
+        (3.0, (20, 35, 35, 10)),
+        (3.5, (15, 30, 40, 15)),
+        (float("inf"), (10, 25, 45, 20)),
     )
 
     def __post_init__(self):

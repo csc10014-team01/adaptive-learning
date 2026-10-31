@@ -1,5 +1,17 @@
 # Rule-based exam planner MVP
 
+Update 2026-10-27: the teacher-facing mode/percentage controls and the independent
+fake assembler described below are superseded by
+[automatic profile-driven difficulty](../report/automatic_difficulty_fix.md).
+Public creation/preview accepts adaptive only and rejects manual percentages.
+The old internal models/helpers remain a compatibility boundary, not teacher controls.
+
+Update 2026-10-29: [source quota investigation](../report/diagnostic_quota_investigation.md)
+supersedes the skill-first source fallback described below. Source matching now
+preserves feasible exam difficulty totals before relaxing skill cells, and emits
+typed capacity, shortage, and substitution diagnostics. The personalized allocation,
+nine-skill catalogue, 0–4 mastery policy and L1/L2 Template preference are preserved.
+
 The planner implements the supplied `Exam_Planner_Implementation_Prompt_MVP.md`.
 It reads profiles and selects existing source questions without grading, writing
 mastery/evidence, generating mathematics, or calling a model.

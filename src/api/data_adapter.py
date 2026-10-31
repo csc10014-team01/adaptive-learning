@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 from pathlib import Path
 from threading import RLock
@@ -14,10 +15,13 @@ from src.api.schemas import (
     Answer, CognitiveLevel, ContractModel, ExamResponse, GradeLevel, Identifier, SkillLabel,
     StudentProfileResponse, StudentSummary, Text, Topic,
 )
+from src.ai.problem_spec import ProblemSpec, render_template
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_FIXTURES = ROOT / "data" / "sample" / "api_demo"
-DEFAULT_BANK = ROOT / "data" / "sample" / "dataset" / "question_bank.db"
+# User-confirmed Data Lead database in this workspace. M3_QUESTION_DB remains
+# the deployment override; algorithm modules never hardcode database paths.
+DEFAULT_BANK = ROOT.parents[1] / "pre-work" / "data" / "sample" / "dataset" / "question_bank.db"
 
 
 class ApiFailure(Exception):
@@ -46,6 +50,7 @@ class FixtureQuestion(ContractModel):
     answer: Answer
     solution_steps: list[Text] = Field(min_length=1)
     rubric_criteria: list[Text] = Field(min_length=1)
+    problem_spec: ProblemSpec | None = None
 
     @model_validator(mode="after")
     def valid_skill_links(self):
@@ -56,6 +61,18 @@ class FixtureQuestion(ContractModel):
             self.primary_skill_id = self.skill_ids[0]
         if self.primary_skill_id is not None and self.primary_skill_id not in self.skill_ids:
             raise ValueError("primary_skill_id must belong to skill_ids")
+        if self.problem_spec is not None and (
+            self.problem_spec.source_id != self.question_id
+            or self.problem_spec.verified_answer != self.answer.correct_answer
+            or self.problem_spec.verified_solution != self.solution_steps
+        ):
+            raise ValueError("ProblemSpec must match the source identity, answer and solution steps")
+        if self.problem_spec is not None:
+            spec = self.problem_spec
+            context = next(c for c in spec.supported_contexts if c.context_id == spec.source_context_id)
+            direct = next(p for p in context.presentations if p.generate_type == "direct")
+            if self.content != render_template(direct.template, spec.parameters):
+                raise ValueError("ProblemSpec direct source presentation must match source content")
         return self
 
 
@@ -76,6 +93,33 @@ class StaticDataAdapter:
         self._profiles: dict[str, StudentProfileResponse] | None = None
         self._questions: list[FixtureQuestion] | None = None
         self._sources: tuple[dict[str, set[str]], set[str]] | None = None
+        self._templates = []
+        self.template_warnings = []
+        self.question_warnings = []
+        self.question_diagnostics = []
+        self._presentation_registry = None
+
+    @property
+    def presentation_registry(self):
+        from src.ai.template_presentations import DEFAULT_PRESENTATIONS, TemplatePresentations
+        path = Path(os.getenv("TEMPLATE_PRESENTATIONS_FILE", str(DEFAULT_PRESENTATIONS)))
+        if not path.is_absolute():
+            path = ROOT / path
+        try:
+            registry = self._presentation_registry or TemplatePresentations.load(path)
+            enabled = os.getenv("KORO_EXPERIMENTAL_INDIRECT")
+            if enabled is not None:
+                if enabled.lower() not in ("0", "1", "true", "false"):
+                    raise ValueError("KORO_EXPERIMENTAL_INDIRECT must be 0/1/true/false")
+                registry = registry.model_copy(update={"experimental_indirect": enabled.lower() in ("1", "true")})
+            return registry
+        except (OSError, ValueError) as exc:
+            raise ApiFailure(500, "PRESENTATION_CONFIG_ERROR", "Cannot read valid Template presentation configuration") from exc
+
+    @property
+    def templates(self):
+        """JSON/demo catalogues opt into explicitly supplied templates only."""
+        return self._templates
 
     @property
     def topic(self) -> Topic:
@@ -158,42 +202,48 @@ class StaticDataAdapter:
             return self._sources
 
     def validate_exam_references(self, exam: ExamResponse) -> None:
-        """Check membership and question-skill links before a draft is stored.
+        """Check immutable Questions or recompute Template proofs before storage.
 
-        This establishes referential integrity, not source approval/math correctness.
-        Canonical template rows do not have skill links, so only their identities and
-        global skill membership can be verified without finalizing a new Data schema.
+        Template scope comes from explicit SQL skill links. The type-specific
+        branches preserve content/answers for Questions and revalidate parameters,
+        answer, solution, scope and fingerprints for generated Template instances.
         """
-        known_skills = {skill.skill_id for skill in self.topic.skills}
-        canonical_questions, templates = self._source_catalogue()
-        fixture_questions = None
+        from src.ai.template_instantiator import TemplateInstantiator, template_digest
+        from src.orchestration.source_snapshot import source_digest
+        from src.ai.template_presentations import validate_template_wording
+        known = {s.skill_id for s in self.topic.skills}
+        questions = {q.question_id: q for q in self.questions}
+        templates = {t.template_id: t for t in self.templates}
         for question in exam.questions:
-            skills = set(question.skill_ids)
-            if len(skills) != len(question.skill_ids) or not skills.issubset(known_skills):
-                raise ValueError("Unknown or duplicate returned skill IDs")
-            source = question.source_ref
-            if question.target_skill_id is not None:
-                bank = {q.question_id: q for q in self.questions}
-                original = bank.get(source.id)
-                if original is None or original.primary_skill_id != question.target_skill_id:
-                    raise ValueError("Returned target does not match the source primary skill")
-                if (question.skill_ids != original.skill_ids or question.cognitive_level != original.cognitive_level
-                        or exam.grade_level != original.grade_level or question.topic_tag != original.topic_id):
-                    raise ValueError("Returned question metadata does not match its source")
-            if source.kind == "template":
-                if source.id not in templates:
-                    raise ValueError("Unknown template source reference")
-                continue
-            if source.id in canonical_questions:
-                source_skills = canonical_questions[source.id]
+            if not set(question.skill_ids).issubset(known):
+                raise ValueError("Unknown source skill IDs")
+            ref = question.source_ref
+            if ref.kind == "question":
+                source = questions.get(ref.id)
+                if source is None:
+                    raise ValueError("Question source is not in the eligible bank")
+                if (question.content_latex != source.content or question.answer != source.answer
+                        or question.generate_type != source.generate_type
+                        or [s.explanation for s in question.step_solutions] != source.solution_steps
+                        or question.skill_ids != source.skill_ids or question.cognitive_level != source.cognitive_level
+                        or exam.grade_level != source.grade_level or question.topic_tag != source.topic_id
+                        or (question.target_skill_id is not None and question.target_skill_id != source.primary_skill_id)
+                        or (question.source_digest is not None and question.source_digest != source_digest(source))):
+                    raise ValueError("Immutable Question metadata, answer, solution or content changed")
             else:
-                if fixture_questions is None:
-                    fixture_questions = {q.question_id: set(q.skill_ids) for q in self.questions}
-                if source.id not in fixture_questions:
-                    raise ValueError("Unknown question source reference")
-                source_skills = fixture_questions[source.id]
-            if not skills.issubset(source_skills):
-                raise ValueError("Returned skills do not match the source question")
+                template = templates.get(ref.id)
+                if template is None or question.template_instance is None:
+                    raise ValueError("Template source or instance provenance is missing")
+                instance = TemplateInstantiator().materialize(template, question.template_instance.parameters)
+                if (template.difficulty not in (1, 2) or question.template_instance != instance.record
+                        or question.source_digest != template_digest(template) or question.answer != instance.answer
+                        or [s.explanation for s in question.step_solutions] != instance.solution_steps
+                        or question.skill_ids != template.skill_ids or question.target_skill_id not in template.skill_ids
+                        or question.cognitive_level != template.cognitive_level or question.topic_tag != template.topic_id
+                        or exam.grade_level != template.grade_level):
+                    raise ValueError("Template instance does not reproduce its verified source rules")
+                validate_template_wording(instance, question.content_latex, question.generate_type,
+                    question.template_presentation, self.presentation_registry)
 
     @staticmethod
     def _read(path: Path) -> object:

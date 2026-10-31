@@ -25,6 +25,9 @@ def main():
     if args.no_browser and not token:
         parser.error("Set API_TEACHER_TOKEN when using --no-browser")
     token = token or secrets.token_urlsafe(32)
+    # The local MVP launcher opts into experimental wording. Plain API deployments
+    # remain strict unless explicitly enabled; an explicit 0 always wins.
+    os.environ.setdefault("KORO_EXPERIMENTAL_INDIRECT", "1")
     app = create_app(backend="fake" if args.fake else "qwen", profile_source="m3", teacher_token=token)
     server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=args.port))
     url = f"http://127.0.0.1:{args.port}/"

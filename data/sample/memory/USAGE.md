@@ -1,5 +1,12 @@
 # get_student_profiles
 
+> Bản app-local trong thư mục này là fixture đã seed cho kiểm thử offline, không
+> còn là nguồn hồ sơ mặc định của UI/API. Nguồn mặc định hiện là
+> `pre-work/data/sample/memory/student_profiles_sample.db` từ workspace root.
+> Không chạy seed lên database Data Lead. Quy tắc hiện tại: chưa có evidence thì
+> API trả mastery null, UI hiện `--/4`; có evidence phải giữ đúng mastery SQL.
+> Xem [báo cáo sửa missing mastery](../../../docs/report/missing_student_mastery.md).
+
 ## Hồ sơ thử đa dạng — cập nhật 27/10/2026
 
 `student_profiles_sample.db` có 20 học sinh và 140 dòng `student_skill_mastery`
@@ -9,6 +16,9 @@ thật và không được tính lại từ lịch sử bài làm. Thông tin h�
 và `test_questions` được giữ nguyên.
 
 Nguồn có thể tái tạo: [profile_scenarios.json](profile_scenarios.json).
+Policy cập nhật 28/10/2026: WEAK khi mastery <2.0/4 và có ít nhất 3 evidence.
+Manifest ngày 27/10 vẫn giữ mô tả/expected_strategy của ngưỡng cũ; không đổi điểm,
+evidence hoặc SQL để ép kết quả. Bảng dưới mô tả hành vi theo policy mới.
 Seed offline có backup và transaction:
 
 ```powershell
@@ -25,16 +35,16 @@ kỹ năng hoặc danh sách học sinh không khớp, không tự remap dữ li
 |---|---|---|
 | ST001 | Yếu quy tắc cộng, đủ evidence | Focus một kỹ năng |
 | ST002 | Yếu quy tắc nhân, đủ evidence | Focus một kỹ năng |
-| ST003 | Yếu quy tắc cộng và nhân | Focus hai kỹ năng |
+| ST003 | Cộng 1.7 là WEAK; nhân 2.2 là ACHIEVED | Focus một kỹ năng |
 | ST004 | Yếu quy tắc nhân và hoán vị | Focus hai kỹ năng |
-| ST005 | Yếu quy tắc cộng và hoán vị | Focus hai kỹ năng |
-| ST006 | Ba kỹ năng yếu với điểm khác nhau | Chọn hai kỹ năng yếu nhất |
+| ST005 | Tất cả mastery ≥2.0 và đủ evidence | Advanced Review |
+| ST006 | Hai kỹ năng yếu; mastery 2.4 đã ACHIEVED | Chọn hai kỹ năng yếu nhất |
 | ST007 | Tất cả đã đạt; mastery ở nhiều mức | Advanced Review |
 | ST008 | Tất cả mastery 4.0, nhiều evidence | Advanced Review |
 | ST009 | Trộn achieved, partial và no-data | Diagnostic + Maintenance |
 | ST010 | Mọi kỹ năng chỉ có 1–2 evidence | Diagnostic Review, không gán WEAK |
 | ST011 | Mọi kỹ năng chưa có evidence | Diagnostic Review |
-| ST012 | Mastery 2.99 so với 3.00 | Kiểm tra ngưỡng WEAK/ACHIEVED |
+| ST012 | Mastery 2.99 và 3.00 đều ACHIEVED | Advanced Review |
 | ST013 | Điểm thấp nhưng evidence 2 so với 3 | Chỉ skill đủ evidence được Focus |
 | ST014 | Mastery 0 nhưng có 6 evidence | WEAK, không phải NO_DATA |
 | ST015 | Mastery 1.49 | Kiểm tra dải độ khó thấp |
@@ -49,14 +59,14 @@ câu đủ điều kiện primary. Vì vậy ST017/ST018 vẫn chọn chiến l�
 nhưng có thể không đạt câu Focus nào và trả `personalized=false` cùng warnings.
 Fixture không tự sửa metadata ngân hàng để che thiếu hụt này.
 
-Trong UI, chọn **Cá nhân hóa theo hồ sơ → Xem kế hoạch** để kiểm tra. M3 profiles
+Trong UI, chọn học sinh rồi bấm **Xem kế hoạch** để kiểm tra. M3 profiles
 được đọc mới mỗi request: chọn lại học sinh để tải điểm mới, không cần restart.
-Nếu đang chạy `--fake`, bước tạo đề chỉ ghép câu nguồn; để kiểm tra generation
-cá nhân hóa phải chạy backend Qwen. Chọn Standard luôn dùng đề chuẩn dù hồ sơ
-đủ evidence. Tổng thể fixture có 13 Focus, 4 Diagnostic và 3 Advanced scenarios.
+Demo và Qwen dùng cùng planner cá nhân hóa; Demo trình bày nguyên văn câu nguồn.
+Không còn chế độ Standard hay tỷ lệ độ khó thủ công trên teacher UI/API.
+Theo ngưỡng 2.0/4, bộ dữ liệu hiện có 11 Focus, 4 Diagnostic và 5 Advanced scenarios.
 
 Các mô tả legacy getter ở phần dưới không thay thế policy hiện hành:
-evidence được xét theo từng skill với ngưỡng 3, mastery target 3.0/4.
+evidence được xét theo từng skill với ngưỡng 3, mastery target 2.0/4.
 
 ## 1. Overview
 
