@@ -1,0 +1,1867 @@
+{
+  "data_kind": "actual_confirmed_SQL_with_sample_student_and_mock_Ollama",
+  "database": "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db",
+  "database_hashes_before": {
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db": "81d3727d88183c226451fd1e2d70196214a2486c70642c5d39c53cec6ad8e643",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\MVP1\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "beadded2b39db5c7e3962f272bd1139003361a4d2376abfe2babdce7eac9dede"
+  },
+  "database_hashes_after": {
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db": "81d3727d88183c226451fd1e2d70196214a2486c70642c5d39c53cec6ad8e643",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\MVP1\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "beadded2b39db5c7e3962f272bd1139003361a4d2376abfe2babdce7eac9dede"
+  },
+  "allocation_and_source_preview": {
+    "policy_version": "mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1",
+    "strategy": "focused_practice",
+    "difficulty_locked": false,
+    "skill_classifications": {
+      "A001": "WEAK",
+      "A002": "ACHIEVED",
+      "A003": "ACHIEVED",
+      "A004": "ACHIEVED",
+      "A005": "ACHIEVED",
+      "A006": "ACHIEVED",
+      "A007": "ACHIEVED",
+      "A008": "NO_DATA",
+      "A009": "NO_DATA"
+    },
+    "quota_summary": {
+      "requested_groups": {
+        "focus": 4,
+        "related_review": 3,
+        "balanced_review": 3
+      },
+      "achieved_groups": {
+        "focus": 4,
+        "related_review": 3,
+        "balanced_review": 3
+      },
+      "requested_skills": {
+        "A001": 4,
+        "A005": 1,
+        "A008": 1,
+        "A002": 1,
+        "A003": 1,
+        "A004": 1,
+        "A006": 1,
+        "A007": 0,
+        "A009": 0
+      },
+      "achieved_skills": {
+        "A001": 4,
+        "A005": 0,
+        "A008": 1,
+        "A002": 2,
+        "A003": 1,
+        "A004": 0,
+        "A006": 0,
+        "A007": 0,
+        "A009": 2
+      },
+      "requested_levels": {
+        "recognition": 3,
+        "understanding": 3,
+        "application": 3,
+        "advanced_application": 1
+      },
+      "achieved_levels": {
+        "recognition": 5,
+        "understanding": 2,
+        "application": 2,
+        "advanced_application": 1
+      },
+      "requested_skill_levels": {
+        "A001": {
+          "recognition": 2,
+          "understanding": 1,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A005": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A008": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A002": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A003": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A004": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A006": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 1
+        },
+        "A007": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A009": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        }
+      },
+      "achieved_skill_levels": {
+        "A001": {
+          "recognition": 4,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A005": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A008": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A002": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 1
+        },
+        "A003": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A004": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A006": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A007": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A009": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 2,
+          "advanced_application": 0
+        }
+      }
+    },
+    "warnings": [
+      "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+      "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+      "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Substituted A001/understanding with A001/recognition (QA0001).",
+      "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+      "Substituted A001/application with A001/recognition (QA0002).",
+      "Substituted A005/application with A009/application (QA0077).",
+      "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+      "Substituted A004/application with A009/application (QA0078).",
+      "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+      "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+      "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+    ],
+    "student_id": "ST001",
+    "requested_mode": "adaptive",
+    "personalized": true,
+    "priority_skills": [
+      "A001"
+    ],
+    "target_count": 4,
+    "achieved_target_count": 4,
+    "questions": [
+      {
+        "source_id": "EA0001",
+        "target_skill_id": "A001",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "group": "focus",
+        "targeted": true,
+        "reasons": [
+          "focus: A001 is WEAK; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "template",
+        "source_status": "pending_wording",
+        "template_instance": {
+          "instance_id": "TI_0d25bb6ad7891cfd45274939b0d7d36e0110900baf01572dcb58ed555b858e55",
+          "parameters": {
+            "counts": [
+              5,
+              8,
+              6
+            ]
+          },
+          "signature": "0d25bb6ad7891cfd45274939b0d7d36e0110900baf01572dcb58ed555b858e55",
+          "template_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1"
+        }
+      },
+      {
+        "source_id": "EA0002",
+        "target_skill_id": "A001",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "group": "focus",
+        "targeted": true,
+        "reasons": [
+          "focus: A001 is WEAK; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "template",
+        "source_status": "pending_wording",
+        "template_instance": {
+          "instance_id": "TI_e1f3a6b84bc514044d839ffd9949578d34c3c89ef5b363b43c40b33bf3adbfa2",
+          "parameters": {
+            "n": 3,
+            "counts": [
+              1,
+              12,
+              4
+            ]
+          },
+          "signature": "e1f3a6b84bc514044d839ffd9949578d34c3c89ef5b363b43c40b33bf3adbfa2",
+          "template_digest": "591edb1063ebcf01107ad58cc2622ced69f2f9050b6a5fa3018e8bbb77c185b0"
+        }
+      },
+      {
+        "source_id": "QA0001",
+        "target_skill_id": "A001",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "group": "focus",
+        "targeted": true,
+        "reasons": [
+          "focus: A001 is WEAK; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0002",
+        "target_skill_id": "A001",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "group": "focus",
+        "targeted": true,
+        "reasons": [
+          "focus: A001 is WEAK; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0077",
+        "target_skill_id": "A009",
+        "skill_ids": [
+          "A009"
+        ],
+        "cognitive_level": "application",
+        "group": "balanced_review",
+        "targeted": false,
+        "reasons": [
+          "balanced_review: A009 is NO_DATA; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0073",
+        "target_skill_id": "A008",
+        "skill_ids": [
+          "A008"
+        ],
+        "cognitive_level": "recognition",
+        "group": "related_review",
+        "targeted": false,
+        "reasons": [
+          "related_review: A008 is NO_DATA; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "EA0004",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002",
+          "A009"
+        ],
+        "cognitive_level": "understanding",
+        "group": "related_review",
+        "targeted": false,
+        "reasons": [
+          "related_review: A002 is ACHIEVED; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "template",
+        "source_status": "pending_wording",
+        "template_instance": {
+          "instance_id": "TI_441c3f22dac1d4758fced50b4d3f9c6ee9fc3ef1c38c93e2bde5f0bed4d4285e",
+          "parameters": {
+            "n": 1,
+            "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+          },
+          "signature": "441c3f22dac1d4758fced50b4d3f9c6ee9fc3ef1c38c93e2bde5f0bed4d4285e",
+          "template_digest": "e0f3e1c2179173b61e4ddc9ad0e867708170fbfba1b9f27599d32724eebd3e6f"
+        }
+      },
+      {
+        "source_id": "EA0018",
+        "target_skill_id": "A003",
+        "skill_ids": [
+          "A002",
+          "A003",
+          "A007",
+          "A009"
+        ],
+        "cognitive_level": "understanding",
+        "group": "balanced_review",
+        "targeted": false,
+        "reasons": [
+          "balanced_review: A003 is ACHIEVED; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "template",
+        "source_status": "pending_wording",
+        "template_instance": {
+          "instance_id": "TI_e1dfcb9ed93d9b4632368018348c92c2ef0a44327e56f6bf374e621c4758f46b",
+          "parameters": {
+            "n": 11,
+            "restricted_pair_count": 2,
+            "adjacent_forbidden": true,
+            "people_distinct": true
+          },
+          "signature": "e1dfcb9ed93d9b4632368018348c92c2ef0a44327e56f6bf374e621c4758f46b",
+          "template_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef"
+        }
+      },
+      {
+        "source_id": "QA0078",
+        "target_skill_id": "A009",
+        "skill_ids": [
+          "A009"
+        ],
+        "cognitive_level": "application",
+        "group": "balanced_review",
+        "targeted": false,
+        "reasons": [
+          "balanced_review: A009 is NO_DATA; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0061",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002"
+        ],
+        "cognitive_level": "advanced_application",
+        "group": "related_review",
+        "targeted": false,
+        "reasons": [
+          "related_review: A002 is ACHIEVED; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      }
+    ]
+  },
+  "exam": {
+    "exam_id": "EX_7b3e80dfafa542b0a7f68445e926c967",
+    "student_id": "ST001",
+    "grade_level": 10,
+    "topic_id": "combinatorics",
+    "title": "Đề ôn tập Đại số tổ hợp — Cá nhân hóa",
+    "generation_mode": "adaptive",
+    "total_questions": 10,
+    "duration_minutes": 45,
+    "total_score": 10.0,
+    "status": "pending_teacher_review",
+    "revision": 1,
+    "teacher_review": null,
+    "provenance": {
+      "generator": "qwen",
+      "model": "mock-local-ollama-hybrid-smoke"
+    },
+    "questions": [
+      {
+        "question_id": "QW_cb15040d4490497bab32aaf9862ac66a",
+        "order_index": 1,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "generate_type": "direct",
+        "content_latex": "Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là 5, 8, 6. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "template",
+          "id": "EA0001"
+        },
+        "template_instance": {
+          "instance_id": "TI_0d25bb6ad7891cfd45274939b0d7d36e0110900baf01572dcb58ed555b858e55",
+          "parameters": {
+            "counts": [
+              5,
+              8,
+              6
+            ]
+          },
+          "signature": "0d25bb6ad7891cfd45274939b0d7d36e0110900baf01572dcb58ed555b858e55",
+          "template_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1"
+        },
+        "source_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1",
+        "target_skill_id": "A001",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "19",
+          "explanation": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.\nThay counts=[5, 8, 6] vào quy tắc N = sum(counts). Kết quả: 19."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.",
+            "score": 0.5
+          },
+          {
+            "step_number": 2,
+            "explanation": "Thay counts=[5, 8, 6] vào quy tắc N = sum(counts). Kết quả: 19.",
+            "score": 0.5
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Matches the author-approved presentation; supported counting answer independently checked.",
+            "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "focus: A001 is WEAK; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_474c856e8e1746da8e47aa761a2ac30f",
+        "order_index": 2,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "generate_type": "direct",
+        "content_latex": "Có 3 phương thức thực hiện công việc với số phương án tương ứng là 1, 12, 4. Chỉ chọn một phương thức rồi thực hiện một phương án thuộc phương thức đó. Hỏi có bao nhiêu lựa chọn?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "template",
+          "id": "EA0002"
+        },
+        "template_instance": {
+          "instance_id": "TI_e1f3a6b84bc514044d839ffd9949578d34c3c89ef5b363b43c40b33bf3adbfa2",
+          "parameters": {
+            "n": 3,
+            "counts": [
+              1,
+              12,
+              4
+            ]
+          },
+          "signature": "e1f3a6b84bc514044d839ffd9949578d34c3c89ef5b363b43c40b33bf3adbfa2",
+          "template_digest": "591edb1063ebcf01107ad58cc2622ced69f2f9050b6a5fa3018e8bbb77c185b0"
+        },
+        "source_digest": "591edb1063ebcf01107ad58cc2622ced69f2f9050b6a5fa3018e8bbb77c185b0",
+        "target_skill_id": "A001",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "17",
+          "explanation": "Các phương án thuộc những phương thức khác nhau được xem là các lựa chọn thay thế nhau. Áp dụng quy tắc cộng bằng cách cộng số phương án của tất cả phương thức.\nThay n=3; counts=[1, 12, 4] vào quy tắc N = sum(counts). Kết quả: 17."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Các phương án thuộc những phương thức khác nhau được xem là các lựa chọn thay thế nhau. Áp dụng quy tắc cộng bằng cách cộng số phương án của tất cả phương thức.",
+            "score": 0.5
+          },
+          {
+            "step_number": 2,
+            "explanation": "Thay n=3; counts=[1, 12, 4] vào quy tắc N = sum(counts). Kết quả: 17.",
+            "score": 0.5
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Matches the author-approved presentation; supported counting answer independently checked.",
+            "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "focus: A001 is WEAK; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_480aace5154348eca76933526596858d",
+        "order_index": 3,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "generate_type": "direct",
+        "content_latex": "Bạn Phương có 7 quyển sách Tiếng Anh và 8 quyển sách Văn học, các quyển sách là khác nhau. Hỏi bạn Phương có bao nhiêu cách chọn một quyển sách để đọc?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "question",
+          "id": "QA0001"
+        },
+        "template_instance": null,
+        "source_digest": "5daac2d5962baffc12b44bba3c1d014b08f155b9f5b589bb91bf900da937afa1",
+        "target_skill_id": "A001",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "15 cách",
+          "explanation": "Việc chọn một quyển sách để đọc là thực hiện một trong hai hành động sau:\nChọn một quyển sách tiếng anh: có 7 cách chọn.\nChọn một quyển sách Văn học: có 8 cách chọn.\nVậy có 7+8=15 cách chọn một quyển sách để đọc"
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Việc chọn một quyển sách để đọc là thực hiện một trong hai hành động sau:\nChọn một quyển sách tiếng anh: có 7 cách chọn.\nChọn một quyển sách Văn học: có 8 cách chọn.\nVậy có 7+8=15 cách chọn một quyển sách để đọc",
+            "score": 1.0
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "focus: A001 is WEAK; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_001d56623c74404d87fc02f28d431dc9",
+        "order_index": 4,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A001"
+        ],
+        "cognitive_level": "recognition",
+        "generate_type": "direct",
+        "content_latex": "Một bạn muốn đi từ tỉnh A đến tỉnh B trong một ngày nhất định. Biết rằng trong ngày hôm đó từ\ntỉnh A đến tỉnh B có 14 chuyến ô tô, 5 chuyến tàu. Hỏi bạn đó có bao nhiêu sự lựa chọn để đi từ A đến\nB?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "question",
+          "id": "QA0002"
+        },
+        "template_instance": null,
+        "source_digest": "4c2dbda549a8092496afef493357c3e8a45c870346f9ffbb2bf3961e3a7c319d",
+        "target_skill_id": "A001",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "19 cách",
+          "explanation": "Bạn đó đi từ tỉnh A đến tỉnh B bằng tàu có: 14 cách.\nBạn đó đi từ tỉnh A đến tỉnh B bằng ô tô có: 5 cách.\nVậy bạn đó có: 14+5=19 sự lựa chọn. "
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Bạn đó đi từ tỉnh A đến tỉnh B bằng tàu có: 14 cách.\nBạn đó đi từ tỉnh A đến tỉnh B bằng ô tô có: 5 cách.\nVậy bạn đó có: 14+5=19 sự lựa chọn. ",
+            "score": 1.0
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "focus: A001 is WEAK; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_9f85ee5a1fa54c8ebf8a918c207201f8",
+        "order_index": 5,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A009"
+        ],
+        "cognitive_level": "application",
+        "generate_type": "direct",
+        "content_latex": "Bao nhiêu cách sắp xếp 7 bạn A, B, C, D, E, F, G vào 1 hàng sao cho: a/ A đứng chính giữa? b/ A, B ngồi ở 2 đầu dãy?\na) A đứng chính giữa?\nb) A, B ngồi ở 2 đầu dãy?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "question",
+          "id": "QA0077"
+        },
+        "template_instance": null,
+        "source_digest": "abacb08f0e23f6c9604c41fda4dd9a224cf7534d28729862b20880fa7c07d484",
+        "target_skill_id": "A009",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "6!; 2 * 5!\na) 6! = 720\nb) 2 * 5! = 240",
+          "explanation": "Vì bạn A đứng chính giữa và 6 bạn còn lại sắp xếp tùy ý nên có 6! cách sắp xếp một hàng. Vì bạn A; B đứng 2 đầu dãy nên A; B có 2 cách chọn vị trí đứng. 5 bạn còn lại có 5! cách sắp xếp. Vậy có tất cả 2.5! cách sắp xếp 7 bạn thành 1 hàng sao cho A; B đứng 2 đầu dãy.\na) Cố định bạn A đứng ở vị trí chính giữa. Sáu bạn còn lại có 6! cách sắp xếp. Vậy có 6! = 720 cách.\nb) Xếp A và B vào hai đầu dãy có 2! cách. Năm bạn còn lại có 5! cách sắp xếp. Vậy có 2! * 5! = 240 cách."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Vì bạn A đứng chính giữa và 6 bạn còn lại sắp xếp tùy ý nên có 6! cách sắp xếp một hàng. Vì bạn A; B đứng 2 đầu dãy nên A; B có 2 cách chọn vị trí đứng. 5 bạn còn lại có 5! cách sắp xếp. Vậy có tất cả 2.5! cách sắp xếp 7 bạn thành 1 hàng sao cho A; B đứng 2 đầu dãy.\na) Cố định bạn A đứng ở vị trí chính giữa. Sáu bạn còn lại có 6! cách sắp xếp. Vậy có 6! = 720 cách.\nb) Xếp A và B vào hai đầu dãy có 2! cách. Năm bạn còn lại có 5! cách sắp xếp. Vậy có 2! * 5! = 240 cách.",
+            "score": 1.0
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "balanced_review: A009 is NO_DATA; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_b33661cde5a44f02a84116bd1d2bce20",
+        "order_index": 6,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A008"
+        ],
+        "cognitive_level": "recognition",
+        "generate_type": "direct",
+        "content_latex": "Rút gọn: A = (12! * 5!) / (10! * 6!); B = ((n - 1)! * (n + 1)!) / (n! * (n - 2)!); C = (P(n) - P(n - 1)) / (n - 2)!",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "question",
+          "id": "QA0073"
+        },
+        "template_instance": null,
+        "source_digest": "9cf227c60050ad58c41c7b44e9f527c0d087a3684b67c562aadfaf0e334b7da7",
+        "target_skill_id": "A008",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "22; n^2 - 1; (n - 1)^2",
+          "explanation": "A = 12!5! / (10!6!) = 11.12 / 6 = 22. B = ((n - 1)!(n + 1)!) / (n!(n - 2)!) = (n - 1)(n + 1) = n^2 - 1. C = (P(n) - P(n-1)) / (n - 2)! = (n - 1)^2."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "A = 12!5! / (10!6!) = 11.12 / 6 = 22. B = ((n - 1)!(n + 1)!) / (n!(n - 2)!) = (n - 1)(n + 1) = n^2 - 1. C = (P(n) - P(n-1)) / (n - 2)! = (n - 1)^2.",
+            "score": 1.0
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "related_review: A008 is NO_DATA; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_df6e2aa5cc384a04ae4f0ab3446e28d6",
+        "order_index": 7,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A002",
+          "A009"
+        ],
+        "cognitive_level": "understanding",
+        "generate_type": "direct",
+        "content_latex": "Có 1 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "template",
+          "id": "EA0004"
+        },
+        "template_instance": {
+          "instance_id": "TI_441c3f22dac1d4758fced50b4d3f9c6ee9fc3ef1c38c93e2bde5f0bed4d4285e",
+          "parameters": {
+            "n": 1,
+            "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+          },
+          "signature": "441c3f22dac1d4758fced50b4d3f9c6ee9fc3ef1c38c93e2bde5f0bed4d4285e",
+          "template_digest": "e0f3e1c2179173b61e4ddc9ad0e867708170fbfba1b9f27599d32724eebd3e6f"
+        },
+        "source_digest": "e0f3e1c2179173b61e4ddc9ad0e867708170fbfba1b9f27599d32724eebd3e6f",
+        "target_skill_id": "A002",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "0",
+          "explanation": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.\nThay n=1 vào quy tắc N = n * n - n = n * (n - 1). Kết quả: 0."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.",
+            "score": 0.5
+          },
+          {
+            "step_number": 2,
+            "explanation": "Thay n=1 vào quy tắc N = n * n - n = n * (n - 1). Kết quả: 0.",
+            "score": 0.5
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Matches the author-approved presentation; supported counting answer independently checked.",
+            "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "related_review: A002 is ACHIEVED; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_31d5be0950da4d82857e5cd95ca11e02",
+        "order_index": 8,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A002",
+          "A003",
+          "A007",
+          "A009"
+        ],
+        "cognitive_level": "understanding",
+        "generate_type": "direct",
+        "content_latex": "Có 11 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "template",
+          "id": "EA0018"
+        },
+        "template_instance": {
+          "instance_id": "TI_e1dfcb9ed93d9b4632368018348c92c2ef0a44327e56f6bf374e621c4758f46b",
+          "parameters": {
+            "n": 11,
+            "restricted_pair_count": 2,
+            "adjacent_forbidden": true,
+            "people_distinct": true
+          },
+          "signature": "e1dfcb9ed93d9b4632368018348c92c2ef0a44327e56f6bf374e621c4758f46b",
+          "template_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef"
+        },
+        "source_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef",
+        "target_skill_id": "A003",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "32659200",
+          "explanation": "Có n! cách sắp xếp tất cả mọi người. Để đếm trường hợp A và B đứng cạnh nhau, gộp A và B thành một khối; khối có 2 thứ tự bên trong và cùng n-2 người còn lại tạo thành n-1 đơn vị, có 2*(n-1)! cách. Vậy số cách không đứng cạnh nhau là n! - 2*(n-1)!.\nThay n=11; restricted_pair_count=2 vào quy tắc N = n! - 2 * (n - 1)!. Kết quả: 32659200."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Có n! cách sắp xếp tất cả mọi người. Để đếm trường hợp A và B đứng cạnh nhau, gộp A và B thành một khối; khối có 2 thứ tự bên trong và cùng n-2 người còn lại tạo thành n-1 đơn vị, có 2*(n-1)! cách. Vậy số cách không đứng cạnh nhau là n! - 2*(n-1)!.",
+            "score": 0.5
+          },
+          {
+            "step_number": 2,
+            "explanation": "Thay n=11; restricted_pair_count=2 vào quy tắc N = n! - 2 * (n - 1)!. Kết quả: 32659200.",
+            "score": 0.5
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Matches the author-approved presentation; supported counting answer independently checked.",
+            "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "balanced_review: A003 is ACHIEVED; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_4430b13f1ff748db9d8cb9265b8932dc",
+        "order_index": 9,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A009"
+        ],
+        "cognitive_level": "application",
+        "generate_type": "direct",
+        "content_latex": "Có bao nhiêu cách sắp xếp 10 viên bi đỏ và 10 viên bi xanh vào 1 hàng sao cho không có 2 viên bi nào cùng màu đứng gần nhau?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "question",
+          "id": "QA0078"
+        },
+        "template_instance": null,
+        "source_digest": "7ec6f2925508e94f4e2b7e4499f2ff38f1b2c17e201abccf9e0932fae69de6d0",
+        "target_skill_id": "A009",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "2 * 10! * 10!",
+          "explanation": "Ta đánh số vị trí của hàng bằng các số 1 đến 20. Vì các viên bi cùng màu không đứng gần nhau nên các viên bi cùng màu được đánh số cùng chẵn hoặc cùng lẻ. Cách sắp xếp 10 viên bi đỏ vào 10 vị trí cùng chẵn hoặc cùng lẻ có 10! cách. Cách sắp xếp 10 viên bi xanh vào 10 vị trí còn lại có 10! cách. Vậy có tất cả 2.10!.10! cách sắp xếp 10 viên bi đỏ và 10 viên bi xanh vào 1 hàng sao cho không có 2 viên bi nào cùng màu đứng gần nhau."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Ta đánh số vị trí của hàng bằng các số 1 đến 20. Vì các viên bi cùng màu không đứng gần nhau nên các viên bi cùng màu được đánh số cùng chẵn hoặc cùng lẻ. Cách sắp xếp 10 viên bi đỏ vào 10 vị trí cùng chẵn hoặc cùng lẻ có 10! cách. Cách sắp xếp 10 viên bi xanh vào 10 vị trí còn lại có 10! cách. Vậy có tất cả 2.10!.10! cách sắp xếp 10 viên bi đỏ và 10 viên bi xanh vào 1 hàng sao cho không có 2 viên bi nào cùng màu đứng gần nhau.",
+            "score": 1.0
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "balanced_review: A009 is NO_DATA; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      },
+      {
+        "question_id": "QW_4c905f78e3b74eb6a834a299ff4dd40b",
+        "order_index": 10,
+        "topic_tag": "combinatorics",
+        "skill_ids": [
+          "A002"
+        ],
+        "cognitive_level": "advanced_application",
+        "generate_type": "direct",
+        "content_latex": "Một bàn dài có 2 dãy ghế đối diện nhau, mỗi dãy gồm 6 ghế. Người ta muốn xếp chỗ ngồi cho 6 học sinh trường A và 6 học sinh trường B vào bàn nói trên. Hỏi có bao nhiêu cách xếp chỗ ngồi sao cho bất kì 2 học sinh nào ngồi cạnh nhau hoặc đối diện nhau thì khác trường nhau?",
+        "max_score": 1.0,
+        "source_ref": {
+          "kind": "question",
+          "id": "QA0061"
+        },
+        "template_instance": null,
+        "source_digest": "a2316910f7df9f325aad64480e6aa03203f1497b8acbd6c2deaec492af3761ed",
+        "target_skill_id": "A002",
+        "expression_context_id": null,
+        "answer": {
+          "correct_answer": "1036800 cách",
+          "explanation": "Ta đánh số liên tiếp 12 chỗ ngồi bằng các số từ 1 đến 6 thuộc một dãy và từ 7 đến 12 thuộc một dãy. Số cách xếp lần lượt là 12, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1. Vậy có 12 × 6 × 5^2 × 4^2 × 3^2 × 2^2 × 1 = 1036800 cách xếp."
+        },
+        "step_solutions": [
+          {
+            "step_number": 1,
+            "explanation": "Ta đánh số liên tiếp 12 chỗ ngồi bằng các số từ 1 đến 6 thuộc một dãy và từ 7 đến 12 thuộc một dãy. Số cách xếp lần lượt là 12, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1. Vậy có 12 × 6 × 5^2 × 4^2 × 3^2 × 2^2 × 1 = 1036800 cách xếp.",
+            "score": 1.0
+          }
+        ],
+        "rubric": [
+          {
+            "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+            "sub_score": 1.0
+          }
+        ],
+        "validation": {
+          "auto_status": "needs_review",
+          "teacher_approved": false,
+          "review_notes": [
+            "Source answers and cognitive labels require teacher review.",
+            "Generic scoring rubric requires teacher review.",
+            "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+            "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+            "related_review: A002 is ACHIEVED; strategy=focused_practice.",
+            "Available wrong-question history is partial; completed-question history is not inferred.",
+            "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+            "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+            "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+            "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+            "Substituted A001/understanding with A001/recognition (QA0001).",
+            "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+            "Substituted A001/application with A001/recognition (QA0002).",
+            "Substituted A005/application with A009/application (QA0077).",
+            "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+            "Substituted A004/application with A009/application (QA0078).",
+            "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+            "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+            "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+          ]
+        }
+      }
+    ],
+    "planner_summary": {
+      "policy_version": "mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1",
+      "strategy": "focused_practice",
+      "difficulty_locked": false,
+      "skill_classifications": {
+        "A001": "WEAK",
+        "A002": "ACHIEVED",
+        "A003": "ACHIEVED",
+        "A004": "ACHIEVED",
+        "A005": "ACHIEVED",
+        "A006": "ACHIEVED",
+        "A007": "ACHIEVED",
+        "A008": "NO_DATA",
+        "A009": "NO_DATA"
+      },
+      "quota_summary": {
+        "requested_groups": {
+          "focus": 4,
+          "related_review": 3,
+          "balanced_review": 3
+        },
+        "achieved_groups": {
+          "focus": 4,
+          "related_review": 3,
+          "balanced_review": 3
+        },
+        "requested_skills": {
+          "A001": 4,
+          "A005": 1,
+          "A008": 1,
+          "A002": 1,
+          "A003": 1,
+          "A004": 1,
+          "A006": 1,
+          "A007": 0,
+          "A009": 0
+        },
+        "achieved_skills": {
+          "A001": 4,
+          "A005": 0,
+          "A008": 1,
+          "A002": 2,
+          "A003": 1,
+          "A004": 0,
+          "A006": 0,
+          "A007": 0,
+          "A009": 2
+        },
+        "requested_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "achieved_levels": {
+          "recognition": 5,
+          "understanding": 2,
+          "application": 2,
+          "advanced_application": 1
+        },
+        "requested_skill_levels": {
+          "A001": {
+            "recognition": 2,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A009": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        },
+        "achieved_skill_levels": {
+          "A001": {
+            "recognition": 4,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A009": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 2,
+            "advanced_application": 0
+          }
+        }
+      },
+      "warnings": [
+        "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+        "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+        "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Substituted A001/understanding with A001/recognition (QA0001).",
+        "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+        "Substituted A001/application with A001/recognition (QA0002).",
+        "Substituted A005/application with A009/application (QA0077).",
+        "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+        "Substituted A004/application with A009/application (QA0078).",
+        "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+        "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+        "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+      ]
+    }
+  },
+  "source_counts": {
+    "template": 4,
+    "question": 6
+  },
+  "generation_model_calls": 4,
+  "regeneration": {
+    "old": {
+      "question_id": "QW_cb15040d4490497bab32aaf9862ac66a",
+      "order_index": 1,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A001"
+      ],
+      "cognitive_level": "recognition",
+      "generate_type": "direct",
+      "content_latex": "Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là 5, 8, 6. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "template",
+        "id": "EA0001"
+      },
+      "template_instance": {
+        "instance_id": "TI_0d25bb6ad7891cfd45274939b0d7d36e0110900baf01572dcb58ed555b858e55",
+        "parameters": {
+          "counts": [
+            5,
+            8,
+            6
+          ]
+        },
+        "signature": "0d25bb6ad7891cfd45274939b0d7d36e0110900baf01572dcb58ed555b858e55",
+        "template_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1"
+      },
+      "source_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1",
+      "target_skill_id": "A001",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "19",
+        "explanation": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.\nThay counts=[5, 8, 6] vào quy tắc N = sum(counts). Kết quả: 19."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.",
+          "score": 0.5
+        },
+        {
+          "step_number": 2,
+          "explanation": "Thay counts=[5, 8, 6] vào quy tắc N = sum(counts). Kết quả: 19.",
+          "score": 0.5
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": true,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Matches the author-approved presentation; supported counting answer independently checked.",
+          "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+          "Planner mvp-personalization-v4-coordinated-difficulty+a001-a009-relationships-v1; personalized=True; priority_count=4/4.",
+          "focus: A001 is WEAK; strategy=focused_practice.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+          "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Substituted A001/understanding with A001/recognition (QA0001).",
+          "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+          "Substituted A001/application with A001/recognition (QA0002).",
+          "Substituted A005/application with A009/application (QA0077).",
+          "Question fallback for A008/recognition: selected QA0073; no feasible preferred Template assignment.",
+          "Substituted A004/application with A009/application (QA0078).",
+          "Substituted A006/advanced_application with A002/advanced_application (QA0061).",
+          "Soft skill quotas deviated: requested={'A001': 4, 'A005': 1, 'A008': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A009': 0}, achieved={'A001': 4, 'A005': 0, 'A008': 1, 'A002': 2, 'A003': 1, 'A004': 0, 'A006': 0, 'A007': 0, 'A009': 2}.",
+          "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 5, 'understanding': 2, 'application': 2, 'advanced_application': 1}."
+        ]
+      }
+    },
+    "new": {
+      "question_id": "QT_e5c851dacfcc46539ff44ae96a368dc2",
+      "order_index": 1,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A001"
+      ],
+      "cognitive_level": "recognition",
+      "generate_type": "direct",
+      "content_latex": "Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là 9, 10, 5. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "template",
+        "id": "EA0001"
+      },
+      "template_instance": {
+        "instance_id": "TI_c9163f7988d573a5bc8d45f3c219d1c197a1435e40a8d2627b9d961a60e9857e",
+        "parameters": {
+          "counts": [
+            9,
+            10,
+            5
+          ]
+        },
+        "signature": "c9163f7988d573a5bc8d45f3c219d1c197a1435e40a8d2627b9d961a60e9857e",
+        "template_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1"
+      },
+      "source_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1",
+      "target_skill_id": "A001",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "24",
+        "explanation": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.\nThay counts=[9, 10, 5] vào quy tắc N = sum(counts). Kết quả: 24."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.",
+          "score": 0.5
+        },
+        {
+          "step_number": 2,
+          "explanation": "Thay counts=[9, 10, 5] vào quy tắc N = sum(counts). Kết quả: 24.",
+          "score": 0.5
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Matches the author-approved presentation; supported counting answer independently checked.",
+          "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+          "New Template parameters, answer and solution; teacher review required."
+        ]
+      }
+    },
+    "revision": 3,
+    "status": "pending_teacher_review",
+    "model_calls": 1,
+    "persisted_and_retrieved": true,
+    "unrelated_question_identity_and_scoring_preserved": true
+  }
+}

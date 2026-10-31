@@ -1,0 +1,291 @@
+{
+  "model": "qwen3:1.7b",
+  "mocked": false,
+  "template_id": "EA0017",
+  "semantic_equivalence_verified": false,
+  "cases": [
+    {
+      "case": "direct",
+      "content": "Có 5 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+      "generate_type": "direct",
+      "presentation": {
+        "presentation_id": "sql_direct",
+        "generate_type": "direct",
+        "config_version": "sql-direct-v1",
+        "fingerprint": "5f9a5076e08c92b6b1f249d6f90350842f54a09d313028e04a5d54d4dc269216",
+        "verification_status": "source_direct",
+        "context_id": null
+      },
+      "parameters": {
+        "n": 5,
+        "arrange_all": true,
+        "distinct": true
+      },
+      "authoritative_answer": "120",
+      "validation_status": "pass",
+      "notes": [
+        "Matches the author-approved presentation; supported counting answer independently checked.",
+        "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+      ]
+    },
+    {
+      "case": "indirect_context_a",
+      "content": "Một hội có 5 thành viên khác nhau. Mỗi buổi họp, tất cả thành viên đứng thành một hàng với thứ tự mới. Hỏi số buổi họp tối đa có thể tổ chức mà không có thứ tự nào bị lặp lại?",
+      "generate_type": "indirect",
+      "presentation": {
+        "presentation_id": "experimental_indirect",
+        "generate_type": "indirect",
+        "config_version": "experimental-indirect-v1",
+        "fingerprint": "48b505fcd17ab14b34a321c6266b3aec8d03205e7b7ce331a39d6cdc4a3253dd",
+        "verification_status": "experimental",
+        "context_id": "club"
+      },
+      "parameters": {
+        "n": 5,
+        "arrange_all": true,
+        "distinct": true
+      },
+      "authoritative_answer": "120",
+      "validation_status": "needs_review",
+      "notes": [
+        "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+        "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+        "Answer and solution remain computed by the backend, not Qwen."
+      ]
+    },
+    {
+      "case": "indirect_context_b",
+      "content": "Một cửa hàng có 5 sản phẩm khác nhau. Mỗi trang catalogue hiển thị tất cả 5 sản phẩm đứng thành một hàng với thứ tự khác nhau. Hỏi số trang catalogue tối đa có thể in ra mà không có thứ tự nào bị lặp lại?",
+      "generate_type": "indirect",
+      "presentation": {
+        "presentation_id": "experimental_indirect",
+        "generate_type": "indirect",
+        "config_version": "experimental-indirect-v1",
+        "fingerprint": "1545dfaba7100117742059f4f822435787c20833e913ac00d9a67966e0d9253f",
+        "verification_status": "experimental",
+        "context_id": "display"
+      },
+      "parameters": {
+        "n": 5,
+        "arrange_all": true,
+        "distinct": true
+      },
+      "authoritative_answer": "120",
+      "validation_status": "needs_review",
+      "notes": [
+        "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+        "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+        "Answer and solution remain computed by the backend, not Qwen."
+      ]
+    }
+  ],
+  "hashes_before": {
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db": "12871bbe1b7823d89bfdcc8873c77f73d279f51593d31cdbdcccb6b1b9ac9276",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\MVP1\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "beadded2b39db5c7e3962f272bd1139003361a4d2376abfe2babdce7eac9dede"
+  },
+  "regeneration": {
+    "before": {
+      "question_id": "SMOKE_TEMPLATE",
+      "order_index": 1,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A002",
+        "A003"
+      ],
+      "cognitive_level": "recognition",
+      "generate_type": "direct",
+      "content_latex": "Có 5 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+      "max_score": 10.0,
+      "source_ref": {
+        "kind": "template",
+        "id": "EA0017"
+      },
+      "template_instance": {
+        "instance_id": "TI_7e939edca7a02010ba601fa5d25d8656c453f8c84f3d84269c33bbeb7fe7eb64",
+        "parameters": {
+          "n": 5,
+          "arrange_all": true,
+          "distinct": true
+        },
+        "signature": "7e939edca7a02010ba601fa5d25d8656c453f8c84f3d84269c33bbeb7fe7eb64",
+        "template_digest": "a8771c0c44d1fae0121c3d41468f0bc6056c8b9dad41595fe0c8acd24679411e"
+      },
+      "template_presentation": {
+        "presentation_id": "sql_direct",
+        "generate_type": "direct",
+        "config_version": "sql-direct-v1",
+        "fingerprint": "5f9a5076e08c92b6b1f249d6f90350842f54a09d313028e04a5d54d4dc269216",
+        "verification_status": "source_direct",
+        "context_id": null
+      },
+      "source_digest": "a8771c0c44d1fae0121c3d41468f0bc6056c8b9dad41595fe0c8acd24679411e",
+      "target_skill_id": "A002",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "120",
+        "explanation": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.\nThay n=5 vào quy tắc P(n) = n!. Kết quả: 120."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.",
+          "score": 5.0
+        },
+        {
+          "step_number": 2,
+          "explanation": "Thay n=5 vào quy tắc P(n) = n!. Kết quả: 120.",
+          "score": 5.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Teacher review required",
+          "sub_score": 10.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Matches the author-approved presentation; supported counting answer independently checked.",
+          "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+        ],
+        "blocking_errors": []
+      }
+    },
+    "after": {
+      "question_id": "QT_2779a60b9736419c837996762828b426",
+      "order_index": 1,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A002",
+        "A003"
+      ],
+      "cognitive_level": "recognition",
+      "generate_type": "indirect",
+      "content_latex": "Một câu lạc bộ có 12 thành viên khác nhau. Tại mỗi buổi họp, tất cả thành viên đứng trong một hàng với một thứ tự mới. Hỏi số buổi họp tối đa có thể tổ chức mà không có thứ tự nào bị lặp lại?",
+      "max_score": 10.0,
+      "source_ref": {
+        "kind": "template",
+        "id": "EA0017"
+      },
+      "template_instance": {
+        "instance_id": "TI_9f449b31867c3de46996c8cc0b97e059ec1d2cb050d46e2679b65b51f9170106",
+        "parameters": {
+          "n": 12,
+          "arrange_all": true,
+          "distinct": true
+        },
+        "signature": "9f449b31867c3de46996c8cc0b97e059ec1d2cb050d46e2679b65b51f9170106",
+        "template_digest": "a8771c0c44d1fae0121c3d41468f0bc6056c8b9dad41595fe0c8acd24679411e"
+      },
+      "template_presentation": {
+        "presentation_id": "experimental_indirect",
+        "generate_type": "indirect",
+        "config_version": "experimental-indirect-v1",
+        "fingerprint": "48b505fcd17ab14b34a321c6266b3aec8d03205e7b7ce331a39d6cdc4a3253dd",
+        "verification_status": "experimental",
+        "context_id": "club"
+      },
+      "source_digest": "a8771c0c44d1fae0121c3d41468f0bc6056c8b9dad41595fe0c8acd24679411e",
+      "target_skill_id": "A002",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "479001600",
+        "explanation": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.\nThay n=12 vào quy tắc P(n) = n!. Kết quả: 479001600."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.",
+          "score": 5.0
+        },
+        {
+          "step_number": 2,
+          "explanation": "Thay n=12 vào quy tắc P(n) = n!. Kết quả: 479001600.",
+          "score": 5.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+          "sub_score": 10.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+          "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+          "Answer and solution remain computed by the backend, not Qwen.",
+          "Template instance and presentation provenance rechecked; teacher review required."
+        ],
+        "blocking_errors": []
+      }
+    },
+    "revision": [
+      1,
+      2
+    ],
+    "status": "pending_teacher_review",
+    "experimental": true
+  },
+  "hashes_after": {
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db": "12871bbe1b7823d89bfdcc8873c77f73d279f51593d31cdbdcccb6b1b9ac9276",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\MVP1\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "beadded2b39db5c7e3962f272bd1139003361a4d2376abfe2babdce7eac9dede"
+  },
+  "attempts": [
+    {
+      "generate_type": "direct",
+      "parameters": {
+        "n": 5,
+        "arrange_all": true,
+        "distinct": true
+      },
+      "attempt": 0,
+      "feedback": "",
+      "raw_response": "{\n  \"question\": \"Có 5 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?\"\n}",
+      "elapsed_seconds": 1.454
+    },
+    {
+      "generate_type": "indirect",
+      "parameters": {
+        "n": 5,
+        "arrange_all": true,
+        "distinct": true
+      },
+      "attempt": 0,
+      "feedback": "",
+      "raw_response": "{\n  \"question\": \"Một hội có 5 thành viên khác nhau. Mỗi buổi họp, tất cả thành viên đứng thành một hàng với thứ tự mới. Hỏi số buổi họp tối đa có thể tổ chức mà không có thứ tự nào bị lặp lại?\"\n}",
+      "elapsed_seconds": 7.243
+    },
+    {
+      "generate_type": "indirect",
+      "parameters": {
+        "n": 5,
+        "arrange_all": true,
+        "distinct": true
+      },
+      "attempt": 0,
+      "feedback": "",
+      "raw_response": "{\n  \"question\": \"Một cửa hàng có 5 sản phẩm khác nhau. Mỗi trang catalogue hiển thị tất cả 5 sản phẩm đứng thành một hàng với thứ tự khác nhau. Hỏi số trang catalogue tối đa có thể in ra mà không có thứ tự nào bị lặp lại?\"\n}",
+      "elapsed_seconds": 4.499
+    },
+    {
+      "generate_type": "indirect",
+      "parameters": {
+        "n": 12,
+        "arrange_all": true,
+        "distinct": true
+      },
+      "attempt": 0,
+      "feedback": "",
+      "raw_response": "{\"question\": \"Một câu lạc bộ có 12 thành viên khác nhau. Tại mỗi buổi họp, tất cả thành viên đứng trong một hàng với một thứ tự mới. Hỏi số buổi họp tối đa có thể tổ chức mà không có thứ tự nào bị lặp lại?\"}",
+      "elapsed_seconds": 6.44
+    }
+  ],
+  "canonical_data_unchanged": true,
+  "two_indirect_outputs_are_different": true,
+  "smoke_goals_met": true
+}

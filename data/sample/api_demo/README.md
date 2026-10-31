@@ -3,24 +3,26 @@
 Các file trong thư mục này là **synthetic API demo fixtures**, không phải Profile JSON
 đã được M3 bàn giao, không phải bản sao của các student records `ST*`, và không phải
 question bank đã được teacher review. Chúng được thêm vì repository hiện chỉ có
-SQLite sample + readers, chưa có canonical static Profile JSON với root evidence.
+SQLite sample + readers. Student shape tuân theo format Ánh Dương đã chốt trong
+`data/notes/Format_dictionary.md`; các giá trị và ID demo vẫn là synthetic.
 
 Không sửa hoặc tự export/aggregate các SQLite records để lấp field còn thiếu.
 Canonical M3/AI source code và hai database hiện có được giữ nguyên.
 
 ## Files và mapping
 
-- `student_profiles.json`: raw field `name` map sang public `student_name`;
-  `grade_level` giữ nguyên; root `evidence_count` là synthetic input được khai báo
-  sẵn, thuộc student/topic `combinatorics`, không tính từ history hoặc nested counts.
-  `data_status` và recommended mode derive từ root count 0 / 1–2 / >=3.
+- `student_profiles.json`: mỗi student gồm `student_id`, `name`, `grade_level`,
+  `skill_mastery`, `learning_history`. Profile response giữ nguyên cấu trúc này;
+  students list chỉ trả `student_id`, `name`, `grade_level`.
+  Không có evidence chung, `data_status` hoặc recommended mode.
 - `skill_mastery[].mastery_score`: giữ scale 0–4 theo CHECK của
   `data/sample/memory/student_profiles_sample.db::student_skill_mastery`.
-  Nested evidence thuộc skill, không cộng thành root count.
-- `learning_history`: cùng shape `test_id/wrongs` của `get_test()` trong
-  `data/sample/memory/get_student_profiles.py`; chỉ giữ ở raw fixture, không dùng
-  recalculation hoặc public response. Đây là danh sách câu sai, không phải toàn bộ
-  graded records của mỗi test, nên không suy count từ độ dài `wrongs`.
+  `skill_mastery[].evidence_count` là số nguyên không âm, độc lập cho mỗi skill;
+  API giữ nguyên giá trị, không cộng thành count chung.
+- `learning_history`: mỗi phần tử gồm `test_id`, `wrong_questions` theo format đã
+  chốt. API trả nguyên lịch sử trong profile và chuyển cho generator. Không suy
+  evidence từ số bài hoặc số câu sai. Legacy `get_test()` vẫn dùng `wrongs`; khi nối
+  trực tiếp getter cần chuẩn hóa tên trường trong adapter.
 - `questions.json`: 8 câu demo độc lập có ID `DEMO_Q*`; cognitive labels và scoring
   text là annotation dành cho contract testing, chưa phải approved metadata.
   `content` map sang `content_latex`; API không tự chuyển prose thành LaTeX.
@@ -34,26 +36,41 @@ Canonical M3/AI source code và hai database hiện có được giữ nguyên.
   `topic_id="combinatorics"`.
 
 Chạy API với `FAKE_API_FIXTURE_DIR` để trỏ tới thư mục JSON khác, theo envelope đã
-validate trong `src/api/data_adapter.py`. Khi M3 bàn giao schema khác, sửa adapter
-có chủ đích; không tắt validation hoặc tự bịa root evidence.
+validate trong `src/api/data_adapter.py`. Mỗi student được validate bằng cùng schema
+với profile response. Field ngoài format hoặc thiếu evidence từng skill bị báo lỗi.
 
 ## Giới hạn có chủ đích
 
-Fake chỉ kiểm tra evidence eligibility và ráp fixture đúng requested distribution.
-Fake **không triển khai** real skill-priority algorithm, expression personalization,
-math-rule instantiation, semantic validation hoặc Qwen. Adaptive response chỉ xác
-nhận eligibility/API contract; không chứng minh đề đã cá nhân hóa theo thuật toán.
+Fake dùng cùng RuleBasedPlanner và QuestionSelector như Qwen, rồi trình bày nguyên
+văn câu nguồn. Source IDs, kỹ năng chính và độ khó khớp với achieved ExamPlan.
+Provenance vẫn là fake và validation là not_evaluated; không gọi AI hoặc xác nhận
+ngữ nghĩa/toán học. Teacher endpoints chỉ nhận adaptive và không cho đặt tỷ lệ độ khó.
 
-Mỗi cognitive level có 2 câu. Request không đủ candidate sẽ trả
+Mỗi cognitive level có 2 câu thô. Request không đủ candidate hợp lệ sẽ trả
 `409 INSUFFICIENT_QUESTION_BANK`, không lặp câu hoặc trả partial success.
-Default 4 câu (20/40/30/10) và 8 câu (25/25/25/25) đều đủ source.
+Chỉ 6 câu có primary metadata hợp lệ nên yêu cầu 8 câu hiện trả thiếu ngân hàng;
+không lấy các câu multi-skill thiếu primary để lấp quota.
+Profile nhận khối lớp là số nguyên dương, gồm lớp 11 trong ví dụ Data. Catalogue và
+question fixtures hiện chỉ có lớp 10; sinh đề cho lớp khác nhận 409 vì thiếu câu.
 
 ## Fixture handoff
 
-Data cần cung cấp profile-level evidence theo định nghĩa được nhóm duyệt. Proposal
-trong cuộc review là số question IDs khác nhau đã được đánh giá trong student/topic;
-đúng/sai đều tính, một câu nhiều skills không được cộng lặp ở root count.
-Backend chỉ đọc giá trị chuẩn bị sẵn; không áp dụng proposal này lên legacy DB.
+### Planner primary skills
+
+The rule-based planner requires an explicit primary for multi-skill questions.
+The six sole-skill demo questions now contain `primary_skill_id`. The adapter
+also supports the documented legacy sole-skill migration in memory. No canonical
+SQLite data is modified. `DEMO_Q07` and `DEMO_Q08` still need author-supplied
+primaries and are excluded from planning with warnings; the planner therefore
+has no eligible L4 demo questions yet. Demo now uses that same eligible pool.
+See `docs/report/automatic_difficulty_fix.md` for automatic difficulty, controlled
+fallback and the remaining data dependencies. No fixture question/profile data
+was changed for this behavior update.
+
+Data cung cấp JSON theo student format đã chốt, với evidence cho từng skill.
+Algorithm Lead phối hợp Data Lead chốt cách ghi nhận một evidence, cập nhật mastery
+sau chấm bài và dùng evidence để lập đề. Backend hiện chỉ đọc và chuyển nguyên
+hồ sơ cho service; không tự thêm chính sách bằng tổng/max/count của các skill.
 
 Sources: `docs/notes/N03_algorithm_ai.md` §4, §7;
 `docs/design/wireframes.md` §1.3, §2.2, §3.2;

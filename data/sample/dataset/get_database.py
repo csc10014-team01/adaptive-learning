@@ -1,16 +1,28 @@
 import sqlite3
-import csv
-import json
-import re
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "question_bank.db"
+_MISSING = object()
 
 
-#Hàm trả về tập tất cả question
-def get_all_questions(DB_PATH):
-    conn = sqlite3.connect(DB_PATH)
+def _database_path(database):
+    """Keep the local default while accepting an explicitly supplied database."""
+    return DB_PATH if database is _MISSING else database
+
+
+def _lookup_arguments(database, identifier, argument_name):
+    """Accept legacy lookup(id) and the incoming lookup(database, id) API."""
+    if identifier is _MISSING:
+        if database is _MISSING:
+            raise TypeError(f"Missing required argument: {argument_name}")
+        return DB_PATH, database
+    return _database_path(database), identifier
+
+
+# Hàm trả về tập tất cả question
+def get_all_questions(DB_PATH=_MISSING):
+    conn = sqlite3.connect(_database_path(DB_PATH))
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -27,57 +39,62 @@ def get_all_questions(DB_PATH):
     questions = [dict(row) for row in rows]
 
     for question in questions:
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT part_id, label, content
             FROM question_parts
             WHERE question_id = ?
-        """, (question["question_id"],))
+        """,
+            (question["question_id"],),
+        )
 
         parts = cursor.fetchall()
         question["part"] = [dict(row) for row in parts]
 
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT skill_id
             FROM question_skills
             WHERE question_id = ?
-        """, (question["question_id"],))
+        """,
+            (question["question_id"],),
+        )
         question_skills = cursor.fetchall()
 
         question["skill_ids"] = [row["skill_id"] for row in question_skills]
     conn.close()
     return questions
 
-#Hàm trả về 1 question
-def get_question(DB_PATH, question_id):
+
+# Hàm trả về 1 question
+def get_question(DB_PATH=_MISSING, question_id=_MISSING):
+    DB_PATH, question_id = _lookup_arguments(DB_PATH, question_id, "question_id")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM questions WHERE question_id = ?",
-            (question_id,)
+            "SELECT * FROM questions WHERE question_id = ?", (question_id,)
         ).fetchone()
 
         if not row:
             return None
-        
+
         question = dict(row)
 
         parts = conn.execute(
-            "SELECT * FROM question_parts WHERE question_id = ?",
-            (question_id,)
+            "SELECT * FROM question_parts WHERE question_id = ?", (question_id,)
         ).fetchall()
 
         question["part"] = [dict(row) for row in parts]
 
         return question
-    
-def get_all_answers(DB_PATH):
-    with sqlite3.connect(DB_PATH) as conn:
+
+
+def get_all_answers(DB_PATH=_MISSING):
+    with sqlite3.connect(_database_path(DB_PATH)) as conn:
         conn.row_factory = sqlite3.Row
 
-        rows = conn.execute(
-            "SELECT * FROM answers"
-        ).fetchall()
+        rows = conn.execute("SELECT * FROM answers").fetchall()
 
         answers = [dict(row) for row in rows]
 
@@ -90,7 +107,7 @@ def get_all_answers(DB_PATH):
                 FROM question_parts
                 WHERE question_id = ?
                 """,
-                (question_id,)
+                (question_id,),
             ).fetchall()
 
             parts = []
@@ -99,8 +116,7 @@ def get_all_answers(DB_PATH):
                 part_id = row["part_id"]
 
                 part_rows = conn.execute(
-                    "SELECT * FROM answer_parts WHERE part_id = ?",
-                    (part_id,)
+                    "SELECT * FROM answer_parts WHERE part_id = ?", (part_id,)
                 ).fetchall()
 
                 parts.extend(dict(row) for row in part_rows)
@@ -109,13 +125,14 @@ def get_all_answers(DB_PATH):
 
         return answers
 
-def get_answer(DB_PATH, answer_id):
+
+def get_answer(DB_PATH=_MISSING, answer_id=_MISSING):
+    DB_PATH, answer_id = _lookup_arguments(DB_PATH, answer_id, "answer_id")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM answers WHERE answer_id = ?",
-            (answer_id,)
+            "SELECT * FROM answers WHERE answer_id = ?", (answer_id,)
         ).fetchone()
         if not row:
             return None
@@ -123,8 +140,7 @@ def get_answer(DB_PATH, answer_id):
         answer = dict(row)
         question_id = answer["question_id"]
         cursor = conn.execute(
-            "SELECT part_id FROM question_parts WHERE question_id = ?",
-            (question_id,)
+            "SELECT part_id FROM question_parts WHERE question_id = ?", (question_id,)
         )
         part_ids = cursor.fetchall()
 
@@ -134,8 +150,7 @@ def get_answer(DB_PATH, answer_id):
             part_id = row[0]
 
             rows = conn.execute(
-                "SELECT * FROM answer_parts WHERE part_id = ?",
-                (part_id,)
+                "SELECT * FROM answer_parts WHERE part_id = ?", (part_id,)
             ).fetchall()
 
             parts.extend(dict(row) for row in rows)
@@ -144,8 +159,9 @@ def get_answer(DB_PATH, answer_id):
 
         return answer
 
-def get_all_terminology(DB_PATH):
-    conn = sqlite3.connect(DB_PATH)
+
+def get_all_terminology(DB_PATH=_MISSING):
+    conn = sqlite3.connect(_database_path(DB_PATH))
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -164,19 +180,21 @@ def get_all_terminology(DB_PATH):
 
     return terminology
 
-def get_terminology(DB_PATH, term):
+
+def get_terminology(DB_PATH=_MISSING, term=_MISSING):
+    DB_PATH, term = _lookup_arguments(DB_PATH, term, "term")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM terminology WHERE term = ?",
-            (term,)
+            "SELECT * FROM terminology WHERE term = ?", (term,)
         ).fetchone()
 
         return dict(row) if row else None
 
-def get_all_skills(DB_PATH):
-    conn = sqlite3.connect(DB_PATH)
+
+def get_all_skills(DB_PATH=_MISSING):
+    conn = sqlite3.connect(_database_path(DB_PATH))
     conn.row_factory = sqlite3.Row
 
     cursor = conn.cursor()
@@ -193,23 +211,24 @@ def get_all_skills(DB_PATH):
     conn.close()
     return skills
 
-def get_skill(DB_PATH, skill_id):
+
+def get_skill(DB_PATH=_MISSING, skill_id=_MISSING):
+    DB_PATH, skill_id = _lookup_arguments(DB_PATH, skill_id, "skill_id")
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM skills WHERE skill_id = ?",
-            (skill_id,)
+            "SELECT * FROM skills WHERE skill_id = ?", (skill_id,)
         ).fetchone()
 
         return dict(row) if row else None
 
 
-def get_question_template(DB_PATH):
+def get_question_template(DB_PATH=_MISSING):
     conn = None
 
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(_database_path(DB_PATH))
         conn.row_factory = sqlite3.Row
 
         cursor = conn.cursor()
@@ -231,7 +250,9 @@ def get_question_template(DB_PATH):
         if conn is not None:
             conn.close()
 
-def get_question_template_by_id(DB_PATH, template_id):
+
+def get_question_template_by_id(DB_PATH=_MISSING, template_id=_MISSING):
+    DB_PATH, template_id = _lookup_arguments(DB_PATH, template_id, "template_id")
     conn = None
 
     try:
@@ -239,11 +260,14 @@ def get_question_template_by_id(DB_PATH, template_id):
         conn.row_factory = sqlite3.Row
 
         cursor = conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT *
             FROM question_templates
             WHERE template_id = ?
-        """, (template_id,))
+        """,
+            (template_id,),
+        )
 
         row = cursor.fetchone()
 

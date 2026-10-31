@@ -1,5 +1,73 @@
 # get_student_profiles
 
+> Bản app-local trong thư mục này là fixture đã seed cho kiểm thử offline, không
+> còn là nguồn hồ sơ mặc định của UI/API. Nguồn mặc định hiện là
+> `pre-work/data/sample/memory/student_profiles_sample.db` từ workspace root.
+> Không chạy seed lên database Data Lead. Quy tắc hiện tại: chưa có evidence thì
+> API trả mastery null, UI hiện `--/4`; có evidence phải giữ đúng mastery SQL.
+> Xem [báo cáo sửa missing mastery](../../../docs/report/missing_student_mastery.md).
+
+## Hồ sơ thử đa dạng — cập nhật 27/10/2026
+
+`student_profiles_sample.db` có 20 học sinh và 140 dòng `student_skill_mastery`
+(7 kỹ năng A001–A007 mỗi học sinh). Điểm mastery 0–4 và evidence 0–18 trong lần
+cập nhật này là **dữ liệu giả lập để test planner**, không phải kết quả đánh giá
+thật và không được tính lại từ lịch sử bài làm. Thông tin học sinh, bảng `Tests`
+và `test_questions` được giữ nguyên.
+
+Nguồn có thể tái tạo: [profile_scenarios.json](profile_scenarios.json).
+Policy cập nhật 28/10/2026: WEAK khi mastery <2.0/4 và có ít nhất 3 evidence.
+Manifest ngày 27/10 vẫn giữ mô tả/expected_strategy của ngưỡng cũ; không đổi điểm,
+evidence hoặc SQL để ép kết quả. Bảng dưới mô tả hành vi theo policy mới.
+Seed offline có backup và transaction:
+
+```powershell
+.\.venv\Scripts\python.exe data/sample/memory/seed_sample_profiles.py
+```
+
+Chạy từ repository root. Lệnh chỉ cập nhật mastery/evidence trong database
+sample; ứng dụng vẫn chỉ đọc dữ liệu M3. Bản SQLite trước mỗi thay đổi nằm trong
+`data/sample/memory/backups/`; tên file dùng thời gian UTC. Chạy lại khi dữ liệu
+đã đúng fixture sẽ không ghi lại hoặc tạo thêm backup. Script từ chối danh mục
+kỹ năng hoặc danh sách học sinh không khớp, không tự remap dữ liệu.
+
+| Học sinh | Tình huống | Kết quả khi chọn Adaptive |
+|---|---|---|
+| ST001 | Yếu quy tắc cộng, đủ evidence | Focus một kỹ năng |
+| ST002 | Yếu quy tắc nhân, đủ evidence | Focus một kỹ năng |
+| ST003 | Cộng 1.7 là WEAK; nhân 2.2 là ACHIEVED | Focus một kỹ năng |
+| ST004 | Yếu quy tắc nhân và hoán vị | Focus hai kỹ năng |
+| ST005 | Tất cả mastery ≥2.0 và đủ evidence | Advanced Review |
+| ST006 | Hai kỹ năng yếu; mastery 2.4 đã ACHIEVED | Chọn hai kỹ năng yếu nhất |
+| ST007 | Tất cả đã đạt; mastery ở nhiều mức | Advanced Review |
+| ST008 | Tất cả mastery 4.0, nhiều evidence | Advanced Review |
+| ST009 | Trộn achieved, partial và no-data | Diagnostic + Maintenance |
+| ST010 | Mọi kỹ năng chỉ có 1–2 evidence | Diagnostic Review, không gán WEAK |
+| ST011 | Mọi kỹ năng chưa có evidence | Diagnostic Review |
+| ST012 | Mastery 2.99 và 3.00 đều ACHIEVED | Advanced Review |
+| ST013 | Điểm thấp nhưng evidence 2 so với 3 | Chỉ skill đủ evidence được Focus |
+| ST014 | Mastery 0 nhưng có 6 evidence | WEAK, không phải NO_DATA |
+| ST015 | Mastery 1.49 | Kiểm tra dải độ khó thấp |
+| ST016 | Mastery 1.50 và 2.50 | Kiểm tra biên các dải độ khó |
+| ST017 | Yếu tổ hợp (A004) | Cảnh báo thiếu nguồn primary phù hợp |
+| ST018 | Yếu sơ đồ cây và chỉnh hợp | Cảnh báo thiếu nguồn primary phù hợp |
+| ST019 | Trộn achieved và nhiều kỹ năng thiếu dữ liệu | Diagnostic + Maintenance |
+| ST020 | Mastery 3.49, 3.50 và các mức cao | Advanced Review, kiểm tra biên 3.50 |
+
+Hiện có 53 câu đủ primary annotation: A001=9, A002=42, A003=2; A004–A007 chưa có
+câu đủ điều kiện primary. Vì vậy ST017/ST018 vẫn chọn chiến lược focused_practice
+nhưng có thể không đạt câu Focus nào và trả `personalized=false` cùng warnings.
+Fixture không tự sửa metadata ngân hàng để che thiếu hụt này.
+
+Trong UI, chọn học sinh rồi bấm **Xem kế hoạch** để kiểm tra. M3 profiles
+được đọc mới mỗi request: chọn lại học sinh để tải điểm mới, không cần restart.
+Demo và Qwen dùng cùng planner cá nhân hóa; Demo trình bày nguyên văn câu nguồn.
+Không còn chế độ Standard hay tỷ lệ độ khó thủ công trên teacher UI/API.
+Theo ngưỡng 2.0/4, bộ dữ liệu hiện có 11 Focus, 4 Diagnostic và 5 Advanced scenarios.
+
+Các mô tả legacy getter ở phần dưới không thay thế policy hiện hành:
+evidence được xét theo từng skill với ngưỡng 3, mastery target 2.0/4.
+
 ## 1. Overview
 
 Module này quản lý thông tin hồ sơ học sinh, lịch sử làm bài kiểm tra và mức độ thành thạo các kỹ năng. Dữ liệu được truy xuất từ SQLite database `student_profiles_sample.db`.
@@ -108,14 +176,8 @@ Truy xuất lịch sử bài kiểm tra của một học sinh từ database, đ
 **Ví dụ:**
 ```python
 [
-    {
-        "test_id": "T001",
-        "wrongs": ["QA0003", "QA0007"]
-    },
-    {
-        "test_id": "T002",
-        "wrongs": ["QA0005"]
-    }
+    {"test_id": "T001", "wrongs": ["QA0003", "QA0007"]},
+    {"test_id": "T002", "wrongs": ["QA0005"]},
 ]
 ```
 

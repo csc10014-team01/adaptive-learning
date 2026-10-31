@@ -1,0 +1,1893 @@
+{
+  "database": "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db",
+  "requested_path_exists": false,
+  "sha256_before": "81d3727d88183c226451fd1e2d70196214a2486c70642c5d39c53cec6ad8e643",
+  "sha256_after": "81d3727d88183c226451fd1e2d70196214a2486c70642c5d39c53cec6ad8e643",
+  "sql_counts": {
+    "questions": 111,
+    "question_templates": 18,
+    "skills": 9
+  },
+  "raw_question_difficulties": {
+    "1": 41,
+    "2": 46,
+    "3": 17,
+    "4": 6,
+    "5": 1
+  },
+  "eligible_question_counts": {
+    "A001": {
+      "recognition": 9,
+      "understanding": 0,
+      "application": 0,
+      "advanced_application": 0
+    },
+    "A002": {
+      "recognition": 18,
+      "understanding": 16,
+      "application": 7,
+      "advanced_application": 2
+    },
+    "A003": {
+      "recognition": 6,
+      "understanding": 5,
+      "application": 0,
+      "advanced_application": 0
+    },
+    "A004": {
+      "recognition": 0,
+      "understanding": 0,
+      "application": 0,
+      "advanced_application": 0
+    },
+    "A005": {
+      "recognition": 0,
+      "understanding": 0,
+      "application": 0,
+      "advanced_application": 0
+    },
+    "A006": {
+      "recognition": 0,
+      "understanding": 0,
+      "application": 0,
+      "advanced_application": 0
+    },
+    "A007": {
+      "recognition": 0,
+      "understanding": 0,
+      "application": 0,
+      "advanced_application": 0
+    },
+    "A008": {
+      "recognition": 1,
+      "understanding": 0,
+      "application": 1,
+      "advanced_application": 0
+    },
+    "A009": {
+      "recognition": 1,
+      "understanding": 14,
+      "application": 3,
+      "advanced_application": 0
+    }
+  },
+  "excluded_multi_skill_question_ids": [
+    "QA0019",
+    "QA0025",
+    "QA0027",
+    "QA0036",
+    "QA0038",
+    "QA0044",
+    "QA0045",
+    "QA0048",
+    "QA0050",
+    "QA0054",
+    "QA0055",
+    "QA0057",
+    "QA0059",
+    "QA0060",
+    "QA0062",
+    "QA0063",
+    "QA0064",
+    "QA0067",
+    "QA0068",
+    "QA0071",
+    "QA0072",
+    "QA0075",
+    "QA0082",
+    "QA0084",
+    "QA0092",
+    "QA0101",
+    "QA0102",
+    "QA0107"
+  ],
+  "eligible_l4_question_ids": [
+    "QA0061",
+    "QA0070"
+  ],
+  "templates": [
+    {
+      "id": "EA0001",
+      "skills": [
+        "A001"
+      ],
+      "level": "recognition",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": false
+    },
+    {
+      "id": "EA0002",
+      "skills": [
+        "A001"
+      ],
+      "level": "recognition",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": false
+    },
+    {
+      "id": "EA0003",
+      "skills": [
+        "A002"
+      ],
+      "level": "recognition",
+      "eligible": false,
+      "reason": "Unsupported parameter type or missing explicit value"
+    },
+    {
+      "id": "EA0004",
+      "skills": [
+        "A002",
+        "A009"
+      ],
+      "level": "understanding",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": true
+    },
+    {
+      "id": "EA0005",
+      "skills": [
+        "A001",
+        "A002",
+        "A009"
+      ],
+      "level": "application",
+      "eligible": false,
+      "reason": "MVP permits templates only at L1/L2"
+    },
+    {
+      "id": "EA0006",
+      "skills": [
+        "A002",
+        "A006"
+      ],
+      "level": "application",
+      "eligible": false,
+      "reason": "MVP permits templates only at L1/L2"
+    },
+    {
+      "id": "EA0007",
+      "skills": [
+        "A002",
+        "A009"
+      ],
+      "level": "understanding",
+      "eligible": false,
+      "reason": "Answer rule is not a supported explicit formula"
+    },
+    {
+      "id": "EA0008",
+      "skills": [
+        "A002",
+        "A006",
+        "A009"
+      ],
+      "level": "understanding",
+      "eligible": false,
+      "reason": "Answer rule is not a supported explicit formula"
+    },
+    {
+      "id": "EA0009",
+      "skills": [
+        "A002",
+        "A009"
+      ],
+      "level": "understanding",
+      "eligible": false,
+      "reason": "Answer rule is not a supported explicit formula"
+    },
+    {
+      "id": "EA0010",
+      "skills": [
+        "A002",
+        "A007"
+      ],
+      "level": "understanding",
+      "eligible": false,
+      "reason": "Answer rule is not a supported explicit formula"
+    },
+    {
+      "id": "EA0011",
+      "skills": [
+        "A001",
+        "A003"
+      ],
+      "level": "understanding",
+      "eligible": false,
+      "reason": "Answer rule is not a supported explicit formula"
+    },
+    {
+      "id": "EA0012",
+      "skills": [
+        "A002",
+        "A004"
+      ],
+      "level": "recognition",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": false
+    },
+    {
+      "id": "EA0013",
+      "skills": [
+        "A002",
+        "A004"
+      ],
+      "level": "recognition",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": false
+    },
+    {
+      "id": "EA0014",
+      "skills": [
+        "A003",
+        "A006",
+        "A007",
+        "A009"
+      ],
+      "level": "application",
+      "eligible": false,
+      "reason": "MVP permits templates only at L1/L2"
+    },
+    {
+      "id": "EA0015",
+      "skills": [
+        "A002",
+        "A006"
+      ],
+      "level": "recognition",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": true
+    },
+    {
+      "id": "EA0016",
+      "skills": [
+        "A002",
+        "A006",
+        "A009"
+      ],
+      "level": "application",
+      "eligible": false,
+      "reason": "MVP permits templates only at L1/L2"
+    },
+    {
+      "id": "EA0017",
+      "skills": [
+        "A002",
+        "A003"
+      ],
+      "level": "recognition",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": true
+    },
+    {
+      "id": "EA0018",
+      "skills": [
+        "A002",
+        "A003",
+        "A007",
+        "A009"
+      ],
+      "level": "understanding",
+      "prepared_instances": 10,
+      "eligible": true,
+      "has_requested_cell": true
+    }
+  ],
+  "allocation": {
+    "strategy": "diagnostic_review",
+    "focus": [],
+    "groups": {
+      "diagnostic": [
+        "A001",
+        "A002",
+        "A003",
+        "A004",
+        "A005",
+        "A006",
+        "A007",
+        "A008",
+        "A009"
+      ],
+      "maintenance": []
+    },
+    "group_counts": {
+      "diagnostic": 10,
+      "maintenance": 0
+    },
+    "skill_counts": {
+      "A001": 2,
+      "A002": 1,
+      "A003": 1,
+      "A004": 1,
+      "A005": 1,
+      "A006": 1,
+      "A007": 1,
+      "A008": 1,
+      "A009": 1
+    },
+    "weights": {
+      "A001": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A002": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A003": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A004": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A005": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A006": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A007": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A008": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ],
+      "A009": [
+        25.0,
+        35.0,
+        30.0,
+        10.0
+      ]
+    },
+    "skill_levels": {
+      "A001": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A004": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A005": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 1
+      },
+      "A009": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      }
+    },
+    "levels": {
+      "recognition": 3,
+      "understanding": 3,
+      "application": 3,
+      "advanced_application": 1
+    },
+    "forbidden_levels": {}
+  },
+  "seed": 0,
+  "legacy_achieved_levels": {
+    "recognition": 5,
+    "understanding": 2,
+    "application": 3,
+    "advanced_application": 0
+  },
+  "legacy_slots": [
+    {
+      "slot": 1,
+      "requested_skill": "A001",
+      "requested_level": "understanding",
+      "actual_skill": "A001",
+      "actual_level": "recognition",
+      "source_kind": "question",
+      "source_id": "QA0001",
+      "reason": "requested cell unavailable; old cost prefers same skill over difficulty"
+    },
+    {
+      "slot": 2,
+      "requested_skill": "A001",
+      "requested_level": "application",
+      "actual_skill": "A001",
+      "actual_level": "recognition",
+      "source_kind": "question",
+      "source_id": "QA0002",
+      "reason": "requested cell unavailable; old cost prefers same skill over difficulty"
+    },
+    {
+      "slot": 3,
+      "requested_skill": "A002",
+      "requested_level": "understanding",
+      "actual_skill": "A002",
+      "actual_level": "understanding",
+      "source_kind": "template",
+      "source_id": "EA0004",
+      "reason": "exact cell matched"
+    },
+    {
+      "slot": 4,
+      "requested_skill": "A003",
+      "requested_level": "recognition",
+      "actual_skill": "A003",
+      "actual_level": "recognition",
+      "source_kind": "template",
+      "source_id": "EA0017",
+      "reason": "exact cell matched"
+    },
+    {
+      "slot": 5,
+      "requested_skill": "A004",
+      "requested_level": "application",
+      "actual_skill": "A002",
+      "actual_level": "application",
+      "source_kind": "question",
+      "source_id": "QA0040",
+      "reason": "requested cell unavailable; same-level skill fallback"
+    },
+    {
+      "slot": 6,
+      "requested_skill": "A005",
+      "requested_level": "understanding",
+      "actual_skill": "A003",
+      "actual_level": "understanding",
+      "source_kind": "question",
+      "source_id": "QA0010",
+      "reason": "requested cell unavailable; same-level skill fallback"
+    },
+    {
+      "slot": 7,
+      "requested_skill": "A006",
+      "requested_level": "recognition",
+      "actual_skill": "A006",
+      "actual_level": "recognition",
+      "source_kind": "template",
+      "source_id": "EA0015",
+      "reason": "exact cell matched"
+    },
+    {
+      "slot": 8,
+      "requested_skill": "A007",
+      "requested_level": "application",
+      "actual_skill": "A002",
+      "actual_level": "application",
+      "source_kind": "question",
+      "source_id": "QA0041",
+      "reason": "requested cell unavailable; same-level skill fallback"
+    },
+    {
+      "slot": 9,
+      "requested_skill": "A008",
+      "requested_level": "advanced_application",
+      "actual_skill": "A008",
+      "actual_level": "application",
+      "source_kind": "question",
+      "source_id": "QA0080",
+      "reason": "requested cell unavailable; old cost prefers same skill over difficulty"
+    },
+    {
+      "slot": 10,
+      "requested_skill": "A009",
+      "requested_level": "recognition",
+      "actual_skill": "A009",
+      "actual_level": "recognition",
+      "source_kind": "question",
+      "source_id": "QA0076",
+      "reason": "exact cell matched"
+    }
+  ],
+  "corrected_plan": {
+    "policy_version": "mvp-personalization-v4-coordinated-difficulty",
+    "strategy": "diagnostic_review",
+    "difficulty_locked": false,
+    "skill_classifications": {
+      "A001": "NO_DATA",
+      "A002": "NO_DATA",
+      "A003": "NO_DATA",
+      "A004": "NO_DATA",
+      "A005": "NO_DATA",
+      "A006": "NO_DATA",
+      "A007": "NO_DATA",
+      "A008": "NO_DATA",
+      "A009": "NO_DATA"
+    },
+    "quota_summary": {
+      "requested_groups": {
+        "diagnostic": 10,
+        "maintenance": 0
+      },
+      "achieved_groups": {
+        "diagnostic": 10,
+        "maintenance": 0
+      },
+      "requested_skills": {
+        "A001": 2,
+        "A002": 1,
+        "A003": 1,
+        "A004": 1,
+        "A005": 1,
+        "A006": 1,
+        "A007": 1,
+        "A008": 1,
+        "A009": 1
+      },
+      "achieved_skills": {
+        "A001": 0,
+        "A002": 6,
+        "A003": 2,
+        "A004": 0,
+        "A005": 0,
+        "A006": 1,
+        "A007": 0,
+        "A008": 0,
+        "A009": 1
+      },
+      "requested_levels": {
+        "recognition": 3,
+        "understanding": 3,
+        "application": 3,
+        "advanced_application": 1
+      },
+      "achieved_levels": {
+        "recognition": 3,
+        "understanding": 3,
+        "application": 3,
+        "advanced_application": 1
+      },
+      "requested_skill_levels": {
+        "A001": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A002": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A003": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A004": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A005": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A006": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A007": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A008": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 1
+        },
+        "A009": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        }
+      },
+      "achieved_skill_levels": {
+        "A001": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A002": {
+          "recognition": 0,
+          "understanding": 2,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "A003": {
+          "recognition": 1,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A004": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A005": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A006": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A007": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A008": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A009": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        }
+      }
+    },
+    "warnings": [
+      "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+      "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+      "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+      "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Question fallback for A001/understanding: selected QA0010; no feasible preferred Template assignment.",
+      "Question fallback for A005/understanding: selected QA0017; no feasible preferred Template assignment.",
+      "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment.",
+      "Substituted A001/understanding with A003/understanding (QA0010): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+      "Substituted A001/application with A002/application (QA0040): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+      "Substituted A004/application with A002/application (QA0041): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+      "Substituted A005/understanding with A002/understanding (QA0017): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+      "Substituted A007/application with A002/application (QA0052): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+      "Substituted A008/advanced_application with A002/advanced_application (QA0061): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+      "Soft skill quotas deviated: requested={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}, achieved={'A001': 0, 'A002': 6, 'A003': 2, 'A004': 0, 'A005': 0, 'A006': 1, 'A007': 0, 'A008': 0, 'A009': 1}."
+    ],
+    "selection_diagnostics": {
+      "exact_skill_level_matrix_feasible": false,
+      "exact_exam_levels_feasible": true,
+      "eligible_question_levels": {
+        "recognition": 35,
+        "understanding": 35,
+        "application": 11,
+        "advanced_application": 2
+      },
+      "eligible_template_instance_levels": {
+        "recognition": 20,
+        "understanding": 20,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "cell_shortages": [
+        {
+          "skill_id": "A001",
+          "level": "understanding",
+          "requested": 1,
+          "available": 0,
+          "shortage": 1
+        },
+        {
+          "skill_id": "A001",
+          "level": "application",
+          "requested": 1,
+          "available": 0,
+          "shortage": 1
+        },
+        {
+          "skill_id": "A004",
+          "level": "application",
+          "requested": 1,
+          "available": 0,
+          "shortage": 1
+        },
+        {
+          "skill_id": "A005",
+          "level": "understanding",
+          "requested": 1,
+          "available": 0,
+          "shortage": 1
+        },
+        {
+          "skill_id": "A007",
+          "level": "application",
+          "requested": 1,
+          "available": 0,
+          "shortage": 1
+        },
+        {
+          "skill_id": "A008",
+          "level": "advanced_application",
+          "requested": 1,
+          "available": 0,
+          "shortage": 1
+        }
+      ],
+      "level_shortages": [],
+      "substitutions": [
+        {
+          "slot": 1,
+          "requested_skill": "A001",
+          "requested_level": "understanding",
+          "actual_skill": "A003",
+          "actual_level": "understanding",
+          "source_kind": "question",
+          "source_id": "QA0010",
+          "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+        },
+        {
+          "slot": 2,
+          "requested_skill": "A001",
+          "requested_level": "application",
+          "actual_skill": "A002",
+          "actual_level": "application",
+          "source_kind": "question",
+          "source_id": "QA0040",
+          "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+        },
+        {
+          "slot": 5,
+          "requested_skill": "A004",
+          "requested_level": "application",
+          "actual_skill": "A002",
+          "actual_level": "application",
+          "source_kind": "question",
+          "source_id": "QA0041",
+          "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+        },
+        {
+          "slot": 6,
+          "requested_skill": "A005",
+          "requested_level": "understanding",
+          "actual_skill": "A002",
+          "actual_level": "understanding",
+          "source_kind": "question",
+          "source_id": "QA0017",
+          "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+        },
+        {
+          "slot": 8,
+          "requested_skill": "A007",
+          "requested_level": "application",
+          "actual_skill": "A002",
+          "actual_level": "application",
+          "source_kind": "question",
+          "source_id": "QA0052",
+          "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+        },
+        {
+          "slot": 9,
+          "requested_skill": "A008",
+          "requested_level": "advanced_application",
+          "actual_skill": "A002",
+          "actual_level": "advanced_application",
+          "source_kind": "question",
+          "source_id": "QA0061",
+          "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+        }
+      ],
+      "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+    },
+    "student_id": "ST011",
+    "requested_mode": "adaptive",
+    "personalized": false,
+    "priority_skills": [],
+    "target_count": 0,
+    "achieved_target_count": 0,
+    "questions": [
+      {
+        "source_id": "QA0010",
+        "target_skill_id": "A003",
+        "skill_ids": [
+          "A003"
+        ],
+        "cognitive_level": "understanding",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A003 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0040",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002"
+        ],
+        "cognitive_level": "application",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A002 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "EA0004",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002",
+          "A009"
+        ],
+        "cognitive_level": "understanding",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A002 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "template",
+        "source_status": "pending_wording",
+        "template_instance": {
+          "instance_id": "TI_c852fcf6f65d670a0a312ebd057681dc4c7cfc32357da0a6da7b26dd480ed9e1",
+          "parameters": {
+            "n": 7,
+            "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+          },
+          "signature": "c852fcf6f65d670a0a312ebd057681dc4c7cfc32357da0a6da7b26dd480ed9e1",
+          "template_digest": "e0f3e1c2179173b61e4ddc9ad0e867708170fbfba1b9f27599d32724eebd3e6f"
+        }
+      },
+      {
+        "source_id": "EA0017",
+        "target_skill_id": "A003",
+        "skill_ids": [
+          "A002",
+          "A003"
+        ],
+        "cognitive_level": "recognition",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A003 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "template",
+        "source_status": "pending_wording",
+        "template_instance": {
+          "instance_id": "TI_631a11f96a005c59dd0f3f9f0e133f13db087cdab30028132789e1c8d33cf433",
+          "parameters": {
+            "n": 2,
+            "arrange_all": true,
+            "distinct": true
+          },
+          "signature": "631a11f96a005c59dd0f3f9f0e133f13db087cdab30028132789e1c8d33cf433",
+          "template_digest": "a8771c0c44d1fae0121c3d41468f0bc6056c8b9dad41595fe0c8acd24679411e"
+        }
+      },
+      {
+        "source_id": "QA0041",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002"
+        ],
+        "cognitive_level": "application",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A002 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0017",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002"
+        ],
+        "cognitive_level": "understanding",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A002 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "EA0015",
+        "target_skill_id": "A006",
+        "skill_ids": [
+          "A002",
+          "A006"
+        ],
+        "cognitive_level": "recognition",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A006 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "template",
+        "source_status": "pending_wording",
+        "template_instance": {
+          "instance_id": "TI_0755bdf93a64461a7b6b1fc8606102e8ae72fc23c6746f09a19bbf7fbe341a9e",
+          "parameters": {
+            "vertex_count": 12,
+            "ordered_pair": true,
+            "same_vertex_allowed": false,
+            "counting_unit": "Cặp đỉnh có thứ tự, không gộp các vectơ hình học bằng nhau"
+          },
+          "signature": "0755bdf93a64461a7b6b1fc8606102e8ae72fc23c6746f09a19bbf7fbe341a9e",
+          "template_digest": "5a58ea1d1bc17038d1ffda6c1287c802f1b30b556b900016847562335a03473c"
+        }
+      },
+      {
+        "source_id": "QA0052",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002"
+        ],
+        "cognitive_level": "application",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A002 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0061",
+        "target_skill_id": "A002",
+        "skill_ids": [
+          "A002"
+        ],
+        "cognitive_level": "advanced_application",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A002 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      },
+      {
+        "source_id": "QA0076",
+        "target_skill_id": "A009",
+        "skill_ids": [
+          "A009"
+        ],
+        "cognitive_level": "recognition",
+        "group": "diagnostic",
+        "targeted": false,
+        "reasons": [
+          "diagnostic: A009 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred."
+        ],
+        "source_kind": "question",
+        "source_status": "stored",
+        "template_instance": null
+      }
+    ]
+  },
+  "corrected_slots": [
+    {
+      "slot": 1,
+      "requested_skill": "A001",
+      "requested_level": "understanding",
+      "actual_skill": "A003",
+      "actual_level": "understanding",
+      "source_kind": "question",
+      "source_id": "QA0010",
+      "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+    },
+    {
+      "slot": 2,
+      "requested_skill": "A001",
+      "requested_level": "application",
+      "actual_skill": "A002",
+      "actual_level": "application",
+      "source_kind": "question",
+      "source_id": "QA0040",
+      "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+    },
+    {
+      "slot": 3,
+      "requested_skill": "A002",
+      "requested_level": "understanding",
+      "actual_skill": "A002",
+      "actual_level": "understanding",
+      "source_kind": "template",
+      "source_id": "EA0004",
+      "reason": "exact cell matched"
+    },
+    {
+      "slot": 4,
+      "requested_skill": "A003",
+      "requested_level": "recognition",
+      "actual_skill": "A003",
+      "actual_level": "recognition",
+      "source_kind": "template",
+      "source_id": "EA0017",
+      "reason": "exact cell matched"
+    },
+    {
+      "slot": 5,
+      "requested_skill": "A004",
+      "requested_level": "application",
+      "actual_skill": "A002",
+      "actual_level": "application",
+      "source_kind": "question",
+      "source_id": "QA0041",
+      "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+    },
+    {
+      "slot": 6,
+      "requested_skill": "A005",
+      "requested_level": "understanding",
+      "actual_skill": "A002",
+      "actual_level": "understanding",
+      "source_kind": "question",
+      "source_id": "QA0017",
+      "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+    },
+    {
+      "slot": 7,
+      "requested_skill": "A006",
+      "requested_level": "recognition",
+      "actual_skill": "A006",
+      "actual_level": "recognition",
+      "source_kind": "template",
+      "source_id": "EA0015",
+      "reason": "exact cell matched"
+    },
+    {
+      "slot": 8,
+      "requested_skill": "A007",
+      "requested_level": "application",
+      "actual_skill": "A002",
+      "actual_level": "application",
+      "source_kind": "question",
+      "source_id": "QA0052",
+      "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+    },
+    {
+      "slot": 9,
+      "requested_skill": "A008",
+      "requested_level": "advanced_application",
+      "actual_skill": "A002",
+      "actual_level": "advanced_application",
+      "source_kind": "question",
+      "source_id": "QA0061",
+      "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+    },
+    {
+      "slot": 10,
+      "requested_skill": "A009",
+      "requested_level": "recognition",
+      "actual_skill": "A009",
+      "actual_level": "recognition",
+      "source_kind": "question",
+      "source_id": "QA0076",
+      "reason": "exact cell matched"
+    }
+  ],
+  "artificial_shortage_cases": {
+    "understanding": {
+      "quotas": {
+        "requested_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "achieved_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "requested_skills": {
+          "A001": 2,
+          "A002": 1,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 1,
+          "A008": 1,
+          "A009": 1
+        },
+        "achieved_skills": {
+          "A001": 2,
+          "A002": 5,
+          "A003": 1,
+          "A004": 0,
+          "A005": 0,
+          "A006": 1,
+          "A007": 0,
+          "A008": 0,
+          "A009": 1
+        },
+        "requested_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "achieved_levels": {
+          "recognition": 6,
+          "understanding": 0,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "requested_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        },
+        "achieved_skill_levels": {
+          "A001": {
+            "recognition": 2,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 3,
+            "advanced_application": 1
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        }
+      },
+      "diagnostics": {
+        "exact_skill_level_matrix_feasible": false,
+        "exact_exam_levels_feasible": false,
+        "eligible_question_levels": {
+          "recognition": 35,
+          "understanding": 0,
+          "application": 11,
+          "advanced_application": 2
+        },
+        "eligible_template_instance_levels": {
+          "recognition": 20,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "cell_shortages": [
+          {
+            "skill_id": "A001",
+            "level": "understanding",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A001",
+            "level": "application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A002",
+            "level": "understanding",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A004",
+            "level": "application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A005",
+            "level": "understanding",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A007",
+            "level": "application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A008",
+            "level": "advanced_application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          }
+        ],
+        "level_shortages": [
+          {
+            "level": "understanding",
+            "requested": 3,
+            "available": 0,
+            "achieved": 0,
+            "shortage": 3,
+            "reason": "eligible source capacity exhausted"
+          }
+        ],
+        "substitutions": [
+          {
+            "slot": 1,
+            "requested_skill": "A001",
+            "requested_level": "understanding",
+            "actual_skill": "A001",
+            "actual_level": "recognition",
+            "source_kind": "question",
+            "source_id": "QA0001",
+            "reason": "requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback"
+          },
+          {
+            "slot": 2,
+            "requested_skill": "A001",
+            "requested_level": "application",
+            "actual_skill": "A002",
+            "actual_level": "application",
+            "source_kind": "question",
+            "source_id": "QA0040",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 3,
+            "requested_skill": "A002",
+            "requested_level": "understanding",
+            "actual_skill": "A002",
+            "actual_level": "recognition",
+            "source_kind": "question",
+            "source_id": "QA0011",
+            "reason": "requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback"
+          },
+          {
+            "slot": 5,
+            "requested_skill": "A004",
+            "requested_level": "application",
+            "actual_skill": "A002",
+            "actual_level": "application",
+            "source_kind": "question",
+            "source_id": "QA0041",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 6,
+            "requested_skill": "A005",
+            "requested_level": "understanding",
+            "actual_skill": "A001",
+            "actual_level": "recognition",
+            "source_kind": "question",
+            "source_id": "QA0002",
+            "reason": "requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback"
+          },
+          {
+            "slot": 8,
+            "requested_skill": "A007",
+            "requested_level": "application",
+            "actual_skill": "A002",
+            "actual_level": "application",
+            "source_kind": "question",
+            "source_id": "QA0052",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 9,
+            "requested_skill": "A008",
+            "requested_level": "advanced_application",
+            "actual_skill": "A002",
+            "actual_level": "advanced_application",
+            "source_kind": "question",
+            "source_id": "QA0061",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          }
+        ],
+        "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+      },
+      "warnings": [
+        "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0060: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0064: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0067: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0071: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0072: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+        "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+        "Question fallback for A001/understanding: selected QA0001; no feasible preferred Template assignment.",
+        "Question fallback for A002/understanding: selected QA0011; no feasible preferred Template assignment.",
+        "Question fallback for A005/understanding: selected QA0002; no feasible preferred Template assignment.",
+        "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment.",
+        "Difficulty shortage understanding: requested=3, eligible=0, achieved=0, shortage=3; eligible source capacity exhausted.",
+        "Substituted A001/understanding with A001/recognition (QA0001): requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback.",
+        "Substituted A001/application with A002/application (QA0040): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A002/understanding with A002/recognition (QA0011): requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback.",
+        "Substituted A004/application with A002/application (QA0041): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A005/understanding with A001/recognition (QA0002): requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback.",
+        "Substituted A007/application with A002/application (QA0052): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A008/advanced_application with A002/advanced_application (QA0061): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Soft skill quotas deviated: requested={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}, achieved={'A001': 2, 'A002': 5, 'A003': 1, 'A004': 0, 'A005': 0, 'A006': 1, 'A007': 0, 'A008': 0, 'A009': 1}.",
+        "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 6, 'understanding': 0, 'application': 3, 'advanced_application': 1}."
+      ]
+    },
+    "advanced_application": {
+      "quotas": {
+        "requested_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "achieved_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "requested_skills": {
+          "A001": 2,
+          "A002": 1,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 1,
+          "A008": 1,
+          "A009": 1
+        },
+        "achieved_skills": {
+          "A001": 0,
+          "A002": 5,
+          "A003": 2,
+          "A004": 0,
+          "A005": 0,
+          "A006": 1,
+          "A007": 0,
+          "A008": 1,
+          "A009": 1
+        },
+        "requested_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "achieved_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 4,
+          "advanced_application": 0
+        },
+        "requested_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        },
+        "achieved_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 2,
+            "application": 3,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        }
+      },
+      "diagnostics": {
+        "exact_skill_level_matrix_feasible": false,
+        "exact_exam_levels_feasible": false,
+        "eligible_question_levels": {
+          "recognition": 35,
+          "understanding": 35,
+          "application": 11,
+          "advanced_application": 0
+        },
+        "eligible_template_instance_levels": {
+          "recognition": 20,
+          "understanding": 20,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "cell_shortages": [
+          {
+            "skill_id": "A001",
+            "level": "understanding",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A001",
+            "level": "application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A004",
+            "level": "application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A005",
+            "level": "understanding",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A007",
+            "level": "application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          },
+          {
+            "skill_id": "A008",
+            "level": "advanced_application",
+            "requested": 1,
+            "available": 0,
+            "shortage": 1
+          }
+        ],
+        "level_shortages": [
+          {
+            "level": "advanced_application",
+            "requested": 1,
+            "available": 0,
+            "achieved": 0,
+            "shortage": 1,
+            "reason": "eligible source capacity exhausted"
+          }
+        ],
+        "substitutions": [
+          {
+            "slot": 1,
+            "requested_skill": "A001",
+            "requested_level": "understanding",
+            "actual_skill": "A003",
+            "actual_level": "understanding",
+            "source_kind": "question",
+            "source_id": "QA0010",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 2,
+            "requested_skill": "A001",
+            "requested_level": "application",
+            "actual_skill": "A002",
+            "actual_level": "application",
+            "source_kind": "question",
+            "source_id": "QA0040",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 5,
+            "requested_skill": "A004",
+            "requested_level": "application",
+            "actual_skill": "A002",
+            "actual_level": "application",
+            "source_kind": "question",
+            "source_id": "QA0041",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 6,
+            "requested_skill": "A005",
+            "requested_level": "understanding",
+            "actual_skill": "A002",
+            "actual_level": "understanding",
+            "source_kind": "question",
+            "source_id": "QA0017",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 8,
+            "requested_skill": "A007",
+            "requested_level": "application",
+            "actual_skill": "A002",
+            "actual_level": "application",
+            "source_kind": "question",
+            "source_id": "QA0052",
+            "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+          },
+          {
+            "slot": 9,
+            "requested_skill": "A008",
+            "requested_level": "advanced_application",
+            "actual_skill": "A008",
+            "actual_level": "application",
+            "source_kind": "question",
+            "source_id": "QA0080",
+            "reason": "requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback"
+          }
+        ],
+        "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+      },
+      "warnings": [
+        "Excluded QA0019: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0025: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0027: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0036: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0038: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0044: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0045: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0048: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0050: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0054: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0055: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0057: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0059: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0062: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0063: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0068: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0075: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0082: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0084: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0092: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0101: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0102: multi-skill source requires explicit primary_skill_id.",
+        "Excluded QA0107: multi-skill source requires explicit primary_skill_id.",
+        "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+        "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Question fallback for A001/understanding: selected QA0010; no feasible preferred Template assignment.",
+        "Question fallback for A005/understanding: selected QA0017; no feasible preferred Template assignment.",
+        "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment.",
+        "Difficulty shortage advanced_application: requested=1, eligible=0, achieved=0, shortage=1; eligible source capacity exhausted.",
+        "Substituted A001/understanding with A003/understanding (QA0010): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A001/application with A002/application (QA0040): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A004/application with A002/application (QA0041): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A005/understanding with A002/understanding (QA0017): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A007/application with A002/application (QA0052): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Substituted A008/advanced_application with A008/application (QA0080): requested cell has 0/1 eligible sources; exact exam difficulty infeasible; applied declared Question difficulty fallback.",
+        "Soft skill quotas deviated: requested={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}, achieved={'A001': 0, 'A002': 5, 'A003': 2, 'A004': 0, 'A005': 0, 'A006': 1, 'A007': 0, 'A008': 1, 'A009': 1}.",
+        "Soft level quotas deviated: requested={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}, achieved={'recognition': 3, 'understanding': 3, 'application': 4, 'advanced_application': 0}."
+      ]
+    }
+  }
+}

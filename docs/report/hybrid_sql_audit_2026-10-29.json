@@ -1,0 +1,605 @@
+{
+  "database": "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db",
+  "sha256": "81d3727d88183c226451fd1e2d70196214a2486c70642c5d39c53cec6ad8e643",
+  "tables": {
+    "answer_options": {
+      "sql": "CREATE TABLE answer_options (\n    option_id TEXT PRIMARY KEY,\n    question_id TEXT NOT NULL,\n    option_content TEXT NOT NULL,\n    is_correct INTEGER NOT NULL DEFAULT 0,\n    display_order INTEGER NOT NULL,\n    FOREIGN KEY (question_id)\n        REFERENCES questions(question_id),\n    CHECK (is_correct IN (0, 1))\n    )",
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "questions",
+          "from": "question_id",
+          "to": "question_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ],
+      "count": 0
+    },
+    "answer_parts": {
+      "sql": "CREATE TABLE \"answer_parts\" (\n    part_id TEXT PRIMARY KEY,\n    correct_answer TEXT NOT NULL,\n    explanation TEXT NOT NULL,\n    FOREIGN KEY (part_id)\n        REFERENCES question_parts(part_id)\n)",
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "question_parts",
+          "from": "part_id",
+          "to": "part_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ],
+      "count": 10
+    },
+    "answers": {
+      "sql": "CREATE TABLE answers (answer_id TEXT PRIMARY KEY, question_id TEXT NOT NULL, correct_answer TEXT NOT NULL, explaination TEXT NOT NULL, FOREIGN KEY (question_id) REFERENCES questions (question_id))",
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "questions",
+          "from": "question_id",
+          "to": "question_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ],
+      "count": 111
+    },
+    "question_parts": {
+      "sql": "CREATE TABLE question_parts (\n    part_id TEXT PRIMARY KEY,\n    question_id TEXT NOT NULL,\n    label TEXT NOT NULL,\n    content TEXT NOT NULL,\n    FOREIGN KEY (question_id)\n        REFERENCES questions(question_id),\n    UNIQUE (question_id, label)\n)",
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "questions",
+          "from": "question_id",
+          "to": "question_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ],
+      "count": 10
+    },
+    "question_skills": {
+      "sql": "CREATE TABLE question_skills (\n    question_id TEXT NOT NULL,\n    skill_id TEXT NOT NULL,\n\n    PRIMARY KEY (question_id, skill_id),\n\n    FOREIGN KEY (question_id)\n        REFERENCES questions(question_id),\n\n    FOREIGN KEY (skill_id)\n        REFERENCES skills(skill_id)\n)",
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "skills",
+          "from": "skill_id",
+          "to": "skill_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "questions",
+          "from": "question_id",
+          "to": "question_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match": "NONE"
+        }
+      ],
+      "count": 139
+    },
+    "question_template_skills": {
+      "sql": "CREATE TABLE question_template_skills (\n    template_id TEXT NOT NULL,\n    skill_id TEXT NOT NULL,\n\n    PRIMARY KEY (template_id, skill_id),\n\n    CONSTRAINT fk_qts_template\n        FOREIGN KEY (template_id)\n        REFERENCES question_templates(template_id)\n        ON DELETE CASCADE,\n\n    CONSTRAINT fk_qts_skill\n        FOREIGN KEY (skill_id)\n        REFERENCES skills(skill_id)\n        ON DELETE CASCADE\n)",
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "table": "skills",
+          "from": "skill_id",
+          "to": "skill_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "table": "question_templates",
+          "from": "template_id",
+          "to": "template_id",
+          "on_update": "NO ACTION",
+          "on_delete": "CASCADE",
+          "match": "NONE"
+        }
+      ],
+      "count": 40
+    },
+    "question_templates": {
+      "sql": "CREATE TABLE question_templates (\n                template_id TEXT PRIMARY KEY,\n                template_content TEXT NOT NULL,\n                parameter_rules TEXT NOT NULL,\n                answer_rule TEXT NOT NULL,\n                solution_rule TEXT NOT NULL,\n                difficulty INTEGER NOT NULL\n                    CHECK (difficulty >= 1)\n            )",
+      "foreign_keys": [],
+      "count": 18
+    },
+    "questions": {
+      "sql": "CREATE TABLE \"questions\" (\n    question_id TEXT PRIMARY KEY,\n    question_type TEXT NOT NULL,\n    difficulty INTEGER,\n    content TEXT NOT NULL,\n    grade_level INTEGER,\n    status TEXT NOT NULL\n)",
+      "foreign_keys": [],
+      "count": 111
+    },
+    "skills": {
+      "sql": "CREATE TABLE skills (\n        skill_id TEXT PRIMARY KEY,\n        topic TEXT NOT NULL,\n        name TEXT NOT NULL,\n        grade_level INTEGER,\n        description TEXT NOT NULL\n    )",
+      "foreign_keys": [],
+      "count": 9
+    },
+    "terminology": {
+      "sql": "CREATE TABLE terminology (\n        term TEXT PRIMARY KEY,\n        text TEXT NOT NULL\n    )",
+      "foreign_keys": [],
+      "count": 121
+    }
+  },
+  "skills": [
+    {
+      "skill_id": "A001",
+      "topic": "Đại số tổ hợp",
+      "name": "Quy tắc cộng",
+      "grade_level": 10,
+      "description": "Một công việc được hoàn thành bởi một trong hai hành động. Nếu hành động thứ nhất có m cách thực hiện, hành động thứ hai có n cách thực hiện (các cách thực hiện của cả hai hành động là khác nhau đôi một) thì\ncông việc đó có m+n cách hoàn thành."
+    },
+    {
+      "skill_id": "A002",
+      "topic": "Đại số tổ hợp",
+      "name": "Quy tắc nhân",
+      "grade_level": 10,
+      "description": "Một công việc được hoàn thành bởi hai hành động liên tiếp. Nếu hành động thứ nhất có m cách thực hiện và ứng với mỗi cách thực hiện hành động thứ nhất, có n cách thực hiện hành động thứ hai thì công việc đó có m×n cách hoàn thành."
+    },
+    {
+      "skill_id": "A003",
+      "topic": "Đại số tổ hợp",
+      "name": "Hoán vị",
+      "grade_level": 10,
+      "description": "ho tập hợp A gồm n phần tử (n∈N). Mỗi kết quả của sự sắp xếp thứ tự n phần tử của tập hợp A được gọi là một hoán vị của n phần tử đó. Ký hiệu: P(n) = n!"
+    },
+    {
+      "skill_id": "A004",
+      "topic": "Đại số tổ hợp",
+      "name": "Tổ hợp",
+      "grade_level": 10,
+      "description": "Tập hợp A gồm n phần tử và một số nguyên k với 1 <= k <= n. Mỗi tập con gồm k phần tử được lấy ra từ n phần tử của A được gọi là một tổ hợp chập k của n phần tử đó. Ký hiệu: C(n,k)"
+    },
+    {
+      "skill_id": "A005",
+      "topic": "Đại số tổ hợp",
+      "name": "Sơ đồ hình cây",
+      "grade_level": 10,
+      "description": "Sơ đồ hình cây là sơ đồ bắt đầu tại một nút duy nhất với các nhánh tỏa ra các nút bổ sung. Ta có thể sử dụng sơ đồ hình cây để đếm số cách hoàn thành một công việc khi công việc đó đòi hỏi những hành động liên tiếp."
+    },
+    {
+      "skill_id": "A006",
+      "topic": "Đại số tổ hợp",
+      "name": "Chỉnh hợp",
+      "grade_level": 10,
+      "description": "Cho tập hợp A gồm n phần tử và một số nguyên k với 1 <= k <= n. Kết quả của việc lấy k phần tử từ n phần tử của tập hợp A và sắp xếp chúng theo một thứ tự nào đó được gọi là một chỉnh hợp chập k của n phần tử đã cho. A(k, n)"
+    },
+    {
+      "skill_id": "A007",
+      "topic": "Đại số tổ hợp",
+      "name": "Kết hợp",
+      "grade_level": 10,
+      "description": "Sự kết hợp giữa các phép hoán vị, chỉnh hợp, tổ hợp"
+    },
+    {
+      "skill_id": "A008",
+      "topic": "Đại số tổ hợp",
+      "name": "Kỹ năng tính toán",
+      "grade_level": 10,
+      "description": "Vận dụng các quy tắc biến đổi đại số để rút gọn biểu thức, thu gọn các hạng tử đồng dạng và thực hiện các phép tính cần thiết. Sau đó, học sinh thay giá trị của biến vào biểu thức đã rút gọn, tính toán theo đúng thứ tự phép toán và kiểm tra kết quả."
+    },
+    {
+      "skill_id": "A009",
+      "topic": "Đại số tổ hợp",
+      "name": "Đếm điều kiện có ràng buộc",
+      "grade_level": 10,
+      "description": "Bài toán đếm có điều kiện ràng buộc là bài toán đếm số cách chọn, sắp xếp hoặc phân chia các đối tượng sao cho thỏa mãn một hay nhiều điều kiện cho trước."
+    }
+  ],
+  "templates": [
+    {
+      "template_id": "EA0001",
+      "template_content": "Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là {counts}. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?",
+      "parameter_rules": "{\"counts\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0}, \"min_length\": 2}, \"groups\": {\"type\": \"disjoint_groups\", \"description\": \"Các nhóm phân biệt và không giao nhau\"}}",
+      "answer_rule": "N = sum(counts)",
+      "solution_rule": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.",
+      "difficulty": 1
+    },
+    {
+      "template_id": "EA0002",
+      "template_content": "Có {n} phương thức thực hiện công việc với số phương án tương ứng là {counts}. Chỉ chọn một phương thức rồi thực hiện một phương án thuộc phương thức đó. Hỏi có bao nhiêu lựa chọn?",
+      "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 2}, \"counts\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0}, \"length_equals\": \"n\"}}",
+      "answer_rule": "N = sum(counts)",
+      "solution_rule": "Các phương án thuộc những phương thức khác nhau được xem là các lựa chọn thay thế nhau. Áp dụng quy tắc cộng bằng cách cộng số phương án của tất cả phương thức.",
+      "difficulty": 1
+    },
+    {
+      "template_id": "EA0003",
+      "template_content": "Có nhóm A gồm {n1} đối tượng và nhóm B gồm {n2} đối tượng. Chọn đúng một đối tượng từ mỗi nhóm. Hỏi có bao nhiêu cách chọn?",
+      "parameter_rules": "{\"n1\": {\"type\": \"integer\", \"min\": 1}, \"n2\": {\"type\": \"integer\", \"min\": 1}, \"groups\": {\"type\": \"array\", \"value\": \"Hai nhóm phân biệt\"}}",
+      "answer_rule": "N = n1 * n2",
+      "solution_rule": "Với mỗi lựa chọn ở nhóm A có n2 lựa chọn tương ứng ở nhóm B. Áp dụng quy tắc nhân: N = n1 * n2.",
+      "difficulty": 1
+    },
+    {
+      "template_id": "EA0004",
+      "template_content": "Có {n} cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+      "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 1}, \"groups\": {\"type\": \"object\", \"description\": \"Có n người phân biệt ở nhóm A và n người phân biệt ở nhóm B; các cặp đôi ghép mỗi người A với đúng một người B\"}, \"condition\": {\"type\": \"string\", \"value\": \"Hai người được chọn không thuộc cùng cặp đôi\"}}",
+      "answer_rule": "N = n * n - n = n * (n - 1)",
+      "solution_rule": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.",
+      "difficulty": 2
+    },
+    {
+      "template_id": "EA0005",
+      "template_content": "Đếm các số tự nhiên có {k} chữ số thỏa mãn các điều kiện sau: {digit_conditions}.",
+      "parameter_rules": "{\"k\": {\"type\": \"integer\", \"min\": 1}, \"digit_conditions\": {\"type\": \"array\", \"items\": {\"type\": \"string\", \"min_length\": 1}, \"min_length\": 1, \"description\": \"Các điều kiện về chữ số đầu, chữ số cuối, chữ số khác nhau hoặc thứ tự\"}}",
+      "answer_rule": "Đếm các số có k chữ số thỏa mãn đồng thời mọi điều kiện trong digit_conditions; có thể chia trường hợp khi cần.",
+      "solution_rule": "Xác định các vị trí bị ràng buộc trước, lưu ý chữ số đầu không được bằng 0, rồi đếm các lựa chọn hợp lệ cho các vị trí còn lại. Nếu điều kiện tương tác với nhau, chia thành các trường hợp không giao nhau và cộng kết quả.",
+      "difficulty": 3
+    },
+    {
+      "template_id": "EA0006",
+      "template_content": "Có {n} đối tượng phân biệt. Lập một danh sách có thứ tự gồm {k} đối tượng khác nhau, mỗi đối tượng xuất hiện không quá một lần. Hỏi có bao nhiêu danh sách?",
+      "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 1}, \"k\": {\"type\": \"integer\", \"min\": 1, \"max\": \"n\"}, \"constraints\": [\"n >= k >= 1\", \"Không lặp đối tượng\"]}",
+      "answer_rule": "A(n,k) = n! / (n-k)!",
+      "solution_rule": "Vị trí đầu có n lựa chọn, vị trí thứ hai có n-1 lựa chọn, tiếp tục đến vị trí thứ k có n-k+1 lựa chọn. Do đó A(n,k) = n!/(n-k)!.",
+      "difficulty": 3
+    },
+    {
+      "template_id": "EA0007",
+      "template_content": "Một mã gồm {k} vị trí. Tại vị trí i, có {allowed_symbols} ký hiệu được phép tương ứng với vị trí đó. Hỏi có bao nhiêu mã khác nhau?",
+      "parameter_rules": "{\"k\": {\"type\": \"integer\", \"min\": 1}, \"allowed_symbols\": {\"type\": \"array\", \"items\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}, \"length_equals\": \"k\", \"description\": \"Mỗi phần tử là tập ký hiệu được phép tại vị trí tương ứng\"}, \"repetition\": {\"type\": \"boolean\", \"default\": true, \"description\": \"Cho biết có được dùng lại ký hiệu ở nhiều vị trí hay không\"}, \"independent_choices\": {\"type\": \"boolean\", \"default\": true}}",
+      "answer_rule": "Nếu lựa chọn tại các vị trí độc lập và được phép lặp: N = product(len(allowed_symbols[i]) for i in 1..k). Nếu không được lặp hoặc có điều kiện phụ thuộc, đếm các mã thỏa tất cả điều kiện.",
+      "solution_rule": "Đếm số ký hiệu được phép ở từng vị trí rồi áp dụng quy tắc nhân khi các lựa chọn độc lập và việc lặp ký hiệu được xử lý đúng theo đề. Nếu không cho phép lặp hoặc có điều kiện phụ thuộc, phải điều chỉnh số lựa chọn ở các vị trí sau.",
+      "difficulty": 2
+    },
+    {
+      "template_id": "EA0008",
+      "template_content": "Từ tập chữ số {digits}, lập các số tự nhiên có {k} chữ số khác nhau sao cho số là {parity}. Hỏi có bao nhiêu số?",
+      "parameter_rules": "{\"digits\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0, \"max\": 9}, \"unique_items\": true, \"min_length\": 1}, \"k\": {\"type\": \"integer\", \"min\": 1, \"max\": \"length(digits)\"}, \"parity\": {\"type\": \"string\", \"enum\": [\"chẵn\", \"lẻ\"]}, \"repetition\": {\"type\": \"boolean\", \"value\": false}, \"leading_zero\": {\"type\": \"boolean\", \"value\": false}}",
+      "answer_rule": "Đếm các cách chọn và sắp xếp k chữ số khác nhau từ digits sao cho chữ số đầu khác 0 và chữ số cuối có tính chẵn/lẻ yêu cầu.",
+      "solution_rule": "Xét chữ số cuối trước để thỏa điều kiện chẵn hoặc lẻ. Sau đó chọn và sắp xếp k-1 chữ số còn lại, không lặp; loại các trường hợp chữ số đầu bằng 0. Kiểm tra riêng trường hợp k = 1.",
+      "difficulty": 2
+    },
+    {
+      "template_id": "EA0009",
+      "template_content": "Từ tập chữ số {digits}, lập các số tự nhiên có {k} chữ số, thỏa mãn điều kiện chia hết cho {divisor}. Hỏi có bao nhiêu số?",
+      "parameter_rules": "{\"digits\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0, \"max\": 9}, \"min_length\": 1}, \"k\": {\"type\": \"integer\", \"min\": 1}, \"divisor\": {\"type\": \"integer\", \"min\": 1}, \"repetition_allowed\": {\"type\": \"boolean\"}, \"leading_zero_allowed\": {\"type\": \"boolean\", \"value\": false}}",
+      "answer_rule": "Đếm các số có k chữ số tạo từ digits, thỏa quy tắc lặp chữ số đã cho, chữ số đầu khác 0 và số chia hết cho divisor.",
+      "solution_rule": "Dùng dấu hiệu chia hết phù hợp với divisor để ràng buộc chữ số hoặc các chữ số cuối. Đếm các lựa chọn còn lại theo điều kiện có/không lặp; bảo đảm chữ số đầu khác 0. Với divisor tổng quát, có thể cần liệt kê hoặc kiểm tra từng cấu hình hợp lệ.",
+      "difficulty": 2
+    },
+    {
+      "template_id": "EA0010",
+      "template_content": "Có {n} người phân biệt và {m} nhóm phân biệt. Mỗi người được phân vào đúng một nhóm, mỗi nhóm nhận không quá {capacity} người. Có cho phép nhóm rỗng hay không được nêu bởi {empty_groups}. Hỏi có bao nhiêu cách phân phối?",
+      "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 0}, \"m\": {\"type\": \"integer\", \"min\": 1}, \"capacity\": {\"type\": \"integer\", \"min\": 0}, \"empty_groups\": {\"type\": \"boolean\"}, \"people_distinct\": {\"type\": \"boolean\", \"value\": true}, \"groups_distinct\": {\"type\": \"boolean\", \"value\": true}}",
+      "answer_rule": "Số cách = sum(n! / (x1! * ... * xm!)) trên mọi bộ số nguyên xi thỏa 0 <= xi <= capacity, sum(xi) = n; nếu empty_groups = false thì thêm điều kiện xi >= 1.",
+      "solution_rule": "Gọi xi là số người được phân vào nhóm i. Xét các bộ (x1,...,xm) thỏa tổng bằng n, giới hạn sức chứa và điều kiện nhóm rỗng. Với mỗi bộ, số cách phân người là n!/(x1!...xm!). Cộng các trường hợp hợp lệ. Nếu không có giới hạn sức chứa và mỗi người độc lập chọn một nhóm, kết quả là m^n.",
+      "difficulty": 2
+    },
+    {
+      "template_id": "EA0011",
+      "template_content": "Có {n1} đối tượng phân biệt thuộc nhóm 1 và {n2} đối tượng phân biệt thuộc nhóm 2. Sắp xếp tất cả thành một hàng sao cho hai nhóm xuất hiện xen kẽ. Hỏi có bao nhiêu cách?",
+      "parameter_rules": "{\"n1\": {\"type\": \"integer\", \"min\": 0}, \"n2\": {\"type\": \"integer\", \"min\": 0}, \"distinct\": {\"type\": \"boolean\", \"value\": true}, \"alternating\": {\"type\": \"boolean\", \"value\": true}}",
+      "answer_rule": "Nếu abs(n1-n2) > 1 thì N = 0. Nếu n1 = n2 thì N = 2 * n1! * n2! (với n1,n2 >= 1). Nếu abs(n1-n2) = 1 thì N = n1! * n2!. Trường hợp cả hai bằng 0 có một cách xếp rỗng theo quy ước; nếu chỉ một nhóm rỗng thì N = 1 khi nhóm kia có tối đa một đối tượng, ngược lại N = 0.",
+      "solution_rule": "Trước tiên kiểm tra số lượng hai nhóm: để xen kẽ, độ chênh lệch số lượng không được vượt quá 1. Nếu hai nhóm bằng nhau và đều không rỗng, có hai mẫu vị trí bắt đầu bằng nhóm 1 hoặc nhóm 2; nếu chênh lệch 1, nhóm đông hơn phải ở cả hai đầu nên chỉ có một mẫu. Sau đó hoán vị các đối tượng trong từng nhóm.",
+      "difficulty": 2
+    },
+    {
+      "template_id": "EA0012",
+      "template_content": "Có {n} đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+      "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 2}, \"pair_order_matters\": {\"type\": \"boolean\", \"value\": false}}",
+      "answer_rule": "C(n,2) = n * (n - 1) / 2",
+      "solution_rule": "Chọn 2 đối tượng từ n đối tượng. Có n(n-1) cách chọn có thứ tự; mỗi cặp bị đếm hai lần, nên số cặp là n(n-1)/2.",
+      "difficulty": 1
+    },
+    {
+      "template_id": "EA0013",
+      "template_content": "Có {team_count} đội bóng. Mỗi cặp đội thi đấu với nhau đúng {matches_per_pair} trận. Hỏi có tất cả bao nhiêu trận đấu?",
+      "parameter_rules": "{\"team_count\": {\"type\": \"integer\", \"min\": 2}, \"matches_per_pair\": {\"type\": \"integer\", \"min\": 1}}",
+      "answer_rule": "N = C(team_count, 2) * matches_per_pair = team_count * (team_count - 1) * matches_per_pair / 2",
+      "solution_rule": "Mỗi trận đấu thuộc về một cặp đội. Chọn 2 đội trong team_count đội có C(team_count,2) cách, rồi nhân với số trận mỗi cặp thi đấu.",
+      "difficulty": 1
+    },
+    {
+      "template_id": "EA0014",
+      "template_content": "Từ tập chữ số {digits}, lập các số tự nhiên có {number_length} chữ số khác nhau sao cho hai chữ số {required_digits} đứng cạnh nhau. Hỏi có bao nhiêu số?",
+      "parameter_rules": "{\"digits\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0, \"max\": 9}, \"unique_items\": true, \"min_length\": 2}, \"number_length\": {\"type\": \"integer\", \"min\": 2, \"max\": \"length(digits)\"}, \"required_digits\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0, \"max\": 9}, \"length\": 2, \"unique_items\": true, \"subset_of\": \"digits\"}, \"repetition_allowed\": {\"type\": \"boolean\", \"value\": false}, \"leading_zero_allowed\": {\"type\": \"boolean\", \"value\": false}}",
+      "answer_rule": "Đếm các hoán vị độ dài number_length lấy từ digits, không lặp, có hai chữ số required_digits ở hai vị trí kề nhau và chữ số đầu khác 0.",
+      "solution_rule": "Có thể gộp hai chữ số bắt buộc đứng cạnh nhau thành một khối và xét hai thứ tự bên trong khối. Sau đó sắp xếp khối cùng các chữ số được chọn còn lại; phải loại chính xác các trường hợp chữ số đầu bằng 0, đặc biệt khi 0 thuộc khối hoặc được chọn làm chữ số đầu. Với tham số nhỏ, có thể liệt kê và kiểm tra các hoán vị để xác minh đáp án.",
+      "difficulty": 3
+    },
+    {
+      "template_id": "EA0015",
+      "template_content": "Một đa giác có {vertex_count} đỉnh. Mỗi cặp có thứ tự (A, B) gồm hai đỉnh khác nhau xác định một vectơ AB theo điểm đầu A và điểm cuối B. Có bao nhiêu cặp có thứ tự (A, B) như vậy?",
+      "parameter_rules": "{\"vertex_count\": {\"type\": \"integer\", \"min\": 2}, \"ordered_pair\": {\"type\": \"boolean\", \"value\": true}, \"same_vertex_allowed\": {\"type\": \"boolean\", \"value\": false}, \"counting_unit\": {\"type\": \"string\", \"value\": \"Cặp đỉnh có thứ tự, không gộp các vectơ hình học bằng nhau\"}}",
+      "answer_rule": "N = vertex_count * (vertex_count - 1)",
+      "solution_rule": "Có vertex_count cách chọn điểm đầu A. Với mỗi A, có vertex_count - 1 cách chọn điểm cuối B khác A. Vì đang đếm cặp đỉnh có thứ tự chứ không gộp các vectơ hình học trùng nhau, số trường hợp là vertex_count * (vertex_count - 1).",
+      "difficulty": 1
+    },
+    {
+      "template_id": "EA0016",
+      "template_content": "Từ tập chữ số {digits}, lập các số tự nhiên có {number_length} chữ số khác nhau sao cho số không bắt đầu bằng tiền tố {forbidden_prefix}. Hỏi có bao nhiêu số?",
+      "parameter_rules": "{\"digits\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0, \"max\": 9}, \"unique_items\": true, \"min_length\": 1}, \"number_length\": {\"type\": \"integer\", \"min\": 1, \"max\": \"length(digits)\"}, \"forbidden_prefix\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0, \"max\": 9}, \"min_length\": 1}, \"repetition_allowed\": {\"type\": \"boolean\", \"value\": false}, \"leading_zero_allowed\": {\"type\": \"boolean\", \"value\": false}}",
+      "answer_rule": "N = tổng số số hợp lệ có number_length chữ số, không lặp và chữ số đầu khác 0, trừ số trường hợp trong tập đó bắt đầu bằng forbidden_prefix.",
+      "solution_rule": "Đếm tất cả các số tạo được từ digits có number_length chữ số khác nhau và chữ số đầu khác 0. Tiếp theo đếm những số trong tập này có tiền tố đúng bằng forbidden_prefix, bảo đảm tiền tố có thể tạo từ digits và không vi phạm điều kiện không lặp. Lấy tổng đầu trừ số trường hợp bị loại.",
+      "difficulty": 3
+    },
+    {
+      "template_id": "EA0017",
+      "template_content": "Có {n} phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+      "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 0}, \"arrange_all\": {\"type\": \"boolean\", \"value\": true}, \"distinct\": {\"type\": \"boolean\", \"value\": true}}",
+      "answer_rule": "P(n) = n!",
+      "solution_rule": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.",
+      "difficulty": 1
+    },
+    {
+      "template_id": "EA0018",
+      "template_content": "Có {n} người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?",
+      "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 2}, \"restricted_pair_count\": {\"type\": \"integer\", \"value\": 2}, \"adjacent_forbidden\": {\"type\": \"boolean\", \"value\": true}, \"people_distinct\": {\"type\": \"boolean\", \"value\": true}}",
+      "answer_rule": "N = n! - 2 * (n - 1)!",
+      "solution_rule": "Có n! cách sắp xếp tất cả mọi người. Để đếm trường hợp A và B đứng cạnh nhau, gộp A và B thành một khối; khối có 2 thứ tự bên trong và cùng n-2 người còn lại tạo thành n-1 đơn vị, có 2*(n-1)! cách. Vậy số cách không đứng cạnh nhau là n! - 2*(n-1)!.",
+      "difficulty": 2
+    }
+  ],
+  "question_examples": [
+    {
+      "question_id": "QA0001",
+      "question_type": "essay",
+      "difficulty": 1,
+      "content": "Bạn Phương có 7 quyển sách Tiếng Anh và 8 quyển sách Văn học, các quyển sách là khác nhau. Hỏi bạn Phương có bao nhiêu cách chọn một quyển sách để đọc?",
+      "grade_level": 10,
+      "status": "draft"
+    },
+    {
+      "question_id": "QA0002",
+      "question_type": "essay",
+      "difficulty": 1,
+      "content": "Một bạn muốn đi từ tỉnh A đến tỉnh B trong một ngày nhất định. Biết rằng trong ngày hôm đó từ\ntỉnh A đến tỉnh B có 14 chuyến ô tô, 5 chuyến tàu. Hỏi bạn đó có bao nhiêu sự lựa chọn để đi từ A đến\nB?",
+      "grade_level": 10,
+      "status": "draft"
+    }
+  ],
+  "difficulty_counts": [
+    [
+      1,
+      41
+    ],
+    [
+      2,
+      46
+    ],
+    [
+      3,
+      17
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      5,
+      1
+    ]
+  ],
+  "template_skill_links": [
+    {
+      "template_id": "EA0001",
+      "skill_id": "A001"
+    },
+    {
+      "template_id": "EA0002",
+      "skill_id": "A001"
+    },
+    {
+      "template_id": "EA0003",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0004",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0004",
+      "skill_id": "A009"
+    },
+    {
+      "template_id": "EA0005",
+      "skill_id": "A001"
+    },
+    {
+      "template_id": "EA0005",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0005",
+      "skill_id": "A009"
+    },
+    {
+      "template_id": "EA0006",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0006",
+      "skill_id": "A006"
+    },
+    {
+      "template_id": "EA0007",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0007",
+      "skill_id": "A009"
+    },
+    {
+      "template_id": "EA0008",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0008",
+      "skill_id": "A006"
+    },
+    {
+      "template_id": "EA0008",
+      "skill_id": "A009"
+    },
+    {
+      "template_id": "EA0009",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0009",
+      "skill_id": "A009"
+    },
+    {
+      "template_id": "EA0010",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0010",
+      "skill_id": "A007"
+    },
+    {
+      "template_id": "EA0011",
+      "skill_id": "A001"
+    },
+    {
+      "template_id": "EA0011",
+      "skill_id": "A003"
+    },
+    {
+      "template_id": "EA0012",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0012",
+      "skill_id": "A004"
+    },
+    {
+      "template_id": "EA0013",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0013",
+      "skill_id": "A004"
+    },
+    {
+      "template_id": "EA0014",
+      "skill_id": "A003"
+    },
+    {
+      "template_id": "EA0014",
+      "skill_id": "A006"
+    },
+    {
+      "template_id": "EA0014",
+      "skill_id": "A007"
+    },
+    {
+      "template_id": "EA0014",
+      "skill_id": "A009"
+    },
+    {
+      "template_id": "EA0015",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0015",
+      "skill_id": "A006"
+    },
+    {
+      "template_id": "EA0016",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0016",
+      "skill_id": "A006"
+    },
+    {
+      "template_id": "EA0016",
+      "skill_id": "A009"
+    },
+    {
+      "template_id": "EA0017",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0017",
+      "skill_id": "A003"
+    },
+    {
+      "template_id": "EA0018",
+      "skill_id": "A002"
+    },
+    {
+      "template_id": "EA0018",
+      "skill_id": "A003"
+    },
+    {
+      "template_id": "EA0018",
+      "skill_id": "A007"
+    },
+    {
+      "template_id": "EA0018",
+      "skill_id": "A009"
+    }
+  ],
+  "question_skill_examples": [
+    {
+      "question_id": "QA0001",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0002",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0003",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0004",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0005",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0006",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0007",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0008",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0009",
+      "skill_id": "A001"
+    },
+    {
+      "question_id": "QA0010",
+      "skill_id": "A003"
+    },
+    {
+      "question_id": "QA0011",
+      "skill_id": "A002"
+    },
+    {
+      "question_id": "QA0012",
+      "skill_id": "A002"
+    }
+  ]
+}

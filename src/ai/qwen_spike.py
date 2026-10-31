@@ -3,6 +3,7 @@
 Usage: python src/ai/qwen_spike.py --model qwen3:1.7b --runs 2
 No paid/cloud API. Ollama REST listens locally at 127.0.0.1:11434.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -15,7 +16,7 @@ import subprocess
 import sys
 import threading
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -25,24 +26,40 @@ DEFAULT_OUT = ROOT / "eval" / "results" / "baseline_spike_output.json"
 
 # Two mathematically distinct, teacher-reviewed input structures.
 CASES = [
-    {"case_id": "C01", "task": "choose_group", "n": 8, "k": 3,
-     "objects": "học sinh", "context": "một lớp học",
-     "order_matters": False, "replacement": False},
-    {"case_id": "C02", "task": "assign_roles", "n": 7, "k": 3,
-     "objects": "học sinh", "context": "một câu lạc bộ",
-     "roles": ["trưởng nhóm", "phó nhóm", "thư ký"],
-     "order_matters": True, "replacement": False},
+    {
+        "case_id": "C01",
+        "task": "choose_group",
+        "n": 8,
+        "k": 3,
+        "objects": "học sinh",
+        "context": "một lớp học",
+        "order_matters": False,
+        "replacement": False,
+    },
+    {
+        "case_id": "C02",
+        "task": "assign_roles",
+        "n": 7,
+        "k": 3,
+        "objects": "học sinh",
+        "context": "một câu lạc bộ",
+        "roles": ["trưởng nhóm", "phó nhóm", "thư ký"],
+        "order_matters": True,
+        "replacement": False,
+    },
 ]
 
 OUTPUT_SCHEMA = {
-    "type": "object", "additionalProperties": False,
+    "type": "object",
+    "additionalProperties": False,
     "properties": {
         "question": {"type": "string"},
         "task": {"type": "string", "enum": ["choose_group", "assign_roles"]},
-        "n": {"type": "integer"}, "k": {"type": "integer"},
-        "answer": {"type": "integer"}
+        "n": {"type": "integer"},
+        "k": {"type": "integer"},
+        "answer": {"type": "integer"},
     },
-    "required": ["question", "task", "n", "k", "answer"]
+    "required": ["question", "task", "n", "k", "answer"],
 }
 
 
@@ -82,7 +99,9 @@ def get_json(url: str, timeout: int = 6) -> dict:
 
 def post_json(url: str, payload: dict, timeout: int) -> dict:
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-    req = Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+    req = Request(
+        url, data=body, headers={"Content-Type": "application/json"}, method="POST"
+    )
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8"))
 
@@ -95,9 +114,11 @@ def model_metadata(base_url: str, model: str) -> dict:
             if item.get("name") == model or item.get("model") == model:
                 info["digest"] = item.get("digest")
                 info["size_bytes"] = item.get("size")
-                info["quantization"] = (item.get("details") or {}).get("quantization_level")
+                info["quantization"] = (item.get("details") or {}).get(
+                    "quantization_level"
+                )
                 break
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 -- Metadata collection is best-effort diagnostics.
         info["metadata_error"] = str(exc)
     return info
 
@@ -108,8 +129,15 @@ def gpu_inventory() -> list[dict]:
         return []
     try:
         proc = subprocess.run(
-            ["nvidia-smi", "--query-gpu=name,memory.total", "--format=csv,noheader,nounits"],
-            capture_output=True, text=True, timeout=4, check=True
+            [
+                "nvidia-smi",
+                "--query-gpu=name,memory.total",
+                "--format=csv,noheader,nounits",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=4,
+            check=True,
         )
         found = []
         for line in proc.stdout.splitlines():
@@ -126,7 +154,10 @@ def gpu_used_mib() -> int | None:
     try:
         p = subprocess.run(
             ["nvidia-smi", "--query-gpu=memory.used", "--format=csv,noheader,nounits"],
-            capture_output=True, text=True, timeout=4, check=True
+            capture_output=True,
+            text=True,
+            timeout=4,
+            check=True,
         )
         vals = [int(x.strip()) for x in p.stdout.splitlines() if x.strip().isdigit()]
         return sum(vals) if vals else None
@@ -136,6 +167,7 @@ def gpu_used_mib() -> int | None:
 
 class ResourceMonitor:
     """Sample total system RAM and total Nvidia GPU memory, not model-exclusive usage."""
+
     def __init__(self, interval: float = 0.5):
         self.interval = interval
         self.stop = threading.Event()
@@ -143,6 +175,7 @@ class ResourceMonitor:
         self.psutil = None
         try:
             import psutil
+
             self.psutil = psutil
         except ImportError:
             pass
@@ -184,15 +217,25 @@ class ResourceMonitor:
     def as_dict(self):
         return {
             "ram_system_total_mib": self.ram_total_mib,
-            "ram_system_used_before_mib": round(self.ram_before_mib, 1) if self.ram_before_mib is not None else None,
-            "ram_system_used_peak_mib": round(self.ram_peak_mib, 1) if self.ram_peak_mib is not None else None,
-            "ram_system_peak_delta_mib": round(max(0, self.ram_peak_mib - self.ram_before_mib), 1)
-                if self.ram_peak_mib is not None and self.ram_before_mib is not None else None,
+            "ram_system_used_before_mib": round(self.ram_before_mib, 1)
+            if self.ram_before_mib is not None
+            else None,
+            "ram_system_used_peak_mib": round(self.ram_peak_mib, 1)
+            if self.ram_peak_mib is not None
+            else None,
+            "ram_system_peak_delta_mib": round(
+                max(0, self.ram_peak_mib - self.ram_before_mib), 1
+            )
+            if self.ram_peak_mib is not None and self.ram_before_mib is not None
+            else None,
             "nvidia_vram_used_before_mib": self.gpu_before_mib,
             "nvidia_vram_used_peak_mib": self.gpu_peak_mib,
-            "nvidia_vram_peak_delta_mib": max(0, self.gpu_peak_mib - self.gpu_before_mib)
-                if self.gpu_peak_mib is not None and self.gpu_before_mib is not None else None,
-            "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples."
+            "nvidia_vram_peak_delta_mib": max(
+                0, self.gpu_peak_mib - self.gpu_before_mib
+            )
+            if self.gpu_peak_mib is not None and self.gpu_before_mib is not None
+            else None,
+            "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples.",
         }
 
 
@@ -203,7 +246,9 @@ def validate_ai_output(output: dict, case: dict) -> list[str]:
     if set(output) != {"question", "task", "n", "k", "answer"}:
         problems.append("Unexpected/missing JSON keys")
     for name in ("n", "k", "answer"):
-        if type(output.get(name)) is not int or output.get(name) != (answer_for(case) if name == "answer" else case[name]):
+        if type(output.get(name)) is not int or output.get(name) != (
+            answer_for(case) if name == "answer" else case[name]
+        ):
             problems.append(f"{name} mismatches specification")
     if output.get("task") != case["task"]:
         problems.append("task mismatches specification")
@@ -214,14 +259,24 @@ def validate_ai_output(output: dict, case: dict) -> list[str]:
     return problems
 
 
-def run_case(base_url: str, model: str, case: dict, timeout: int, interval: float) -> dict:
+def run_case(
+    base_url: str, model: str, case: dict, timeout: int, interval: float
+) -> dict:
     payload = {
-        "model": model, "prompt": build_prompt(case), "format": OUTPUT_SCHEMA,
-        "stream": False, "think": False, "keep_alive": "5m",
-        "options": {"temperature": 0, "seed": 42, "num_predict": 250}
+        "model": model,
+        "prompt": build_prompt(case),
+        "format": OUTPUT_SCHEMA,
+        "stream": False,
+        "think": False,
+        "keep_alive": "5m",
+        "options": {"temperature": 0, "seed": 42, "num_predict": 250},
     }
-    record = {"case_id": case["case_id"], "input": case, "expected_answer": answer_for(case),
-              "created_at_utc": datetime.now(timezone.utc).isoformat()}
+    record = {
+        "case_id": case["case_id"],
+        "input": case,
+        "expected_answer": answer_for(case),
+        "created_at_utc": datetime.now(UTC).isoformat(),
+    }
     with ResourceMonitor(interval) as mon:
         start = time.perf_counter()
         try:
@@ -232,21 +287,35 @@ def run_case(base_url: str, model: str, case: dict, timeout: int, interval: floa
                 "load_duration_s": round(response.get("load_duration", 0) / 1e9, 3),
                 "prompt_eval_count": response.get("prompt_eval_count"),
                 "eval_count": response.get("eval_count"),
-                "eval_duration_s": round(response.get("eval_duration", 0) / 1e9, 3)
+                "eval_duration_s": round(response.get("eval_duration", 0) / 1e9, 3),
             }
             try:
                 answer = json.loads(response.get("response", ""))
                 record["model_output"] = answer
                 record["validation_errors"] = validate_ai_output(answer, case)
                 record["json_valid"] = isinstance(answer, dict)
-                record["status"] = "needs_teacher_review" if not record["validation_errors"] else "failed_validation"
+                record["status"] = (
+                    "needs_teacher_review"
+                    if not record["validation_errors"]
+                    else "failed_validation"
+                )
             except (json.JSONDecodeError, TypeError) as exc:
-                record.update({"model_raw_output": response.get("response", ""),
-                               "json_valid": False, "status": "failed_json",
-                               "validation_errors": [f"JSON decode: {exc}"]})
+                record.update(
+                    {
+                        "model_raw_output": response.get("response", ""),
+                        "json_valid": False,
+                        "status": "failed_json",
+                        "validation_errors": [f"JSON decode: {exc}"],
+                    }
+                )
         except (URLError, HTTPError, OSError, ValueError, TimeoutError) as exc:
-            record.update({"api_duration_s": round(time.perf_counter() - start, 3),
-                           "status": "runtime_error", "error": str(exc)})
+            record.update(
+                {
+                    "api_duration_s": round(time.perf_counter() - start, 3),
+                    "status": "runtime_error",
+                    "error": str(exc),
+                }
+            )
     record["resources"] = mon.as_dict()
     return record
 
@@ -265,30 +334,44 @@ def main():
     # Fail cleanly when Ollama is not available; never fabricate an output.
     try:
         get_json(args.base_url + "/api/version")
-    except Exception as exc:
-        print("ERROR: Ollama local service unavailable. Start Ollama, then run 'ollama pull " + args.model + "'.", file=sys.stderr)
+    except Exception as exc:  # noqa: BLE001 -- Report any failed service probe before running the spike.
+        print(
+            "ERROR: Ollama local service unavailable. Start Ollama, then run 'ollama pull "
+            + args.model
+            + "'.",
+            file=sys.stderr,
+        )
         print(str(exc), file=sys.stderr)
         return 2
     report = {
         "experiment": "Issue #6 local Qwen baseline spike",
-        "created_at_utc": datetime.now(timezone.utc).isoformat(),
+        "created_at_utc": datetime.now(UTC).isoformat(),
         "model": args.model,
         "ollama": model_metadata(args.base_url, args.model),
-        "machine": {"os": platform.platform(), "cpu": platform.processor() or platform.machine(),
-                    "python_version": platform.python_version(), "logical_cpu_cores": os.cpu_count(),
-                    "nvidia_gpus": gpu_inventory(), "hostname_redacted": True},
+        "machine": {
+            "os": platform.platform(),
+            "cpu": platform.processor() or platform.machine(),
+            "python_version": platform.python_version(),
+            "logical_cpu_cores": os.cpu_count(),
+            "nvidia_gpus": gpu_inventory(),
+            "hostname_redacted": True,
+        },
         "measurement_limitations": "Only this machine's real run; system-level RAM/VRAM sampling is approximate, not model-specific.",
-        "runs": []
+        "runs": [],
     }
-    for case in CASES[:args.runs]:
+    for case in CASES[: args.runs]:
         print("Running", case["case_id"], "...", flush=True)
         record = run_case(args.base_url, args.model, case, args.timeout, args.interval)
         report["runs"].append(record)
         print("  ", record["status"], "wall:", record.get("api_duration_s"), "s")
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     print("Saved real results to:", args.output)
-    return 0 if all(r["status"] == "needs_teacher_review" for r in report["runs"]) else 1
+    return (
+        0 if all(r["status"] == "needs_teacher_review" for r in report["runs"]) else 1
+    )
 
 
 if __name__ == "__main__":

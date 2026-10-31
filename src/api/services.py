@@ -1,23 +1,26 @@
-"""Replaceable synchronous fake service; this is not the team's real AI Planner."""
+"""Shared allocation helpers and Demo presentation of the actual planner output."""
 
 from __future__ import annotations
 
 from math import floor
 from threading import Lock
 from typing import Protocol
-from uuid import uuid4
 
+from src.adaptation.policy import PlannerPolicyConfig
 from src.api.data_adapter import ApiFailure, StaticDataAdapter
 from src.api.schemas import (
-    LEVELS, ExamQuestion, ExamResponse, GenerateExamRequest, Provenance,
-    RubricCriterion, SolutionStep, SourceReference, StudentProfileResponse,
-    ValidationSummary,
+    LEVELS,
+    ExamResponse,
+    GenerateExamRequest,
+    StudentProfileResponse,
 )
 
 
 class ExamGenerator(Protocol):
     def generate(
-        self, request: GenerateExamRequest, profile: StudentProfileResponse,
+        self,
+        request: GenerateExamRequest,
+        profile: StudentProfileResponse,
     ) -> ExamResponse:
         """Return a complete teacher draft synchronously, or raise ApiFailure."""
         ...
@@ -29,63 +32,48 @@ def allocate_units(total: int, slots: int) -> list[int]:
 
 
 def question_slots(request: GenerateExamRequest) -> dict[str, int]:
-    exact = [getattr(request.difficulty_distribution, level) * request.total_questions / 100 for level in LEVELS]
+    """Legacy internal quota helper; never plan automatic generation with this."""
+    weights = (
+        tuple(getattr(request.difficulty_distribution, level) for level in LEVELS)
+        if request.difficulty_distribution is not None
+        else PlannerPolicyConfig().default_levels
+    )
+    return level_counts(request.total_questions, weights)
+
+
+def level_counts(total: int, weights: tuple[float, ...]) -> dict[str, int]:
+    """Largest remainder with stable L1 → L4 ties."""
+    exact = [weight * total / 100 for weight in weights]
     counts = [floor(value) for value in exact]
     order = sorted(range(len(LEVELS)), key=lambda i: (-(exact[i] - counts[i]), i))
-    for index in order[:request.total_questions - sum(counts)]:
+    for index in order[: total - sum(counts)]:
         counts[index] += 1
     return dict(zip(LEVELS, counts))
 
 
 class FakeExamGenerator:
-    def __init__(self, data: StaticDataAdapter):
+    def __init__(self, data: StaticDataAdapter, *, planner=None):
         self.data = data
+        # Local import avoids the existing planner -> rounding helpers boundary.
+        from src.adaptation.planner import RuleBasedPlanner
 
-    def generate(self, request: GenerateExamRequest, profile: StudentProfileResponse) -> ExamResponse:
-        # Only deterministic fixture assembly. Real skill-priority/expression policies
-        # belong to the replacement AI service, not an invented fake algorithm.
-        selected = []
-        for level, count in question_slots(request).items():
-            candidates = [q for q in self.data.questions if q.cognitive_level == level]
-            if len(candidates) < count:
-                raise ApiFailure(
-                    409, "INSUFFICIENT_QUESTION_BANK",
-                    f"Fixture không đủ câu mức {level}: cần {count}, có {len(candidates)}.",
-                )
-            selected.extend(candidates[:count])
+        self.planner = planner or RuleBasedPlanner(data)
 
-        questions = []
-        for index, (source, units) in enumerate(zip(selected, allocate_units(40, len(selected))), 1):
-            if max(len(source.solution_steps), len(source.rubric_criteria)) > units:
-                raise ApiFailure(409, "INSUFFICIENT_QUESTION_BANK", "Scoring fixture không đáp ứng số câu yêu cầu.")
-            questions.append(ExamQuestion(
-                question_id="FQ_" + uuid4().hex, order_index=index,
-                source_ref=SourceReference(kind="question", id=source.question_id),
-                topic_tag="combinatorics", skill_ids=source.skill_ids,
-                cognitive_level=source.cognitive_level, generate_type=source.generate_type,
-                content_latex=source.content, answer=source.answer, max_score=units / 4,
-                step_solutions=[SolutionStep(
-                    step_number=step, explanation=text, score=part / 4,
-                ) for step, (text, part) in enumerate(zip(
-                    source.solution_steps, allocate_units(units, len(source.solution_steps)),
-                ), 1)],
-                rubric=[RubricCriterion(criteria=text, sub_score=part / 4)
-                        for text, part in zip(source.rubric_criteria, allocate_units(units, len(source.rubric_criteria)))],
-                validation=ValidationSummary(
-                    auto_status="not_evaluated", teacher_approved=False,
-                    review_notes=["Synthetic fake fixture; không gọi Qwen hoặc thực hiện semantic validation."],
-                ),
-            ))
-        return ExamResponse(
-            exam_id="FE_" + uuid4().hex, student_id=profile.student_id,
-            grade_level=profile.grade_level, topic_id="combinatorics",
-            title="Đề ôn tập Đại số tổ hợp — Fake MVP1",
-            generation_mode=request.generation_mode,
-            evidence_count=profile.evidence_count, data_status=profile.data_status,
-            total_questions=request.total_questions, duration_minutes=request.duration_minutes,
-            total_score=10.0, status="pending_teacher_review",
-            provenance=Provenance(generator="fake", model=None), questions=questions,
+    def generate(
+        self, request: GenerateExamRequest, profile: StudentProfileResponse
+    ) -> ExamResponse:
+        from src.orchestration.exam_service import ExamService
+
+        return ExamService(self.data, None, planner=self.planner, fake=True).generate(
+            request, profile
         )
+
+    def regenerate_question(self, exam: ExamResponse, question_id: str) -> ExamResponse:
+        from src.orchestration.exam_service import ExamService
+
+        return ExamService(
+            self.data, None, planner=self.planner, fake=True
+        ).regenerate_question(exam, question_id)
 
 
 class InMemoryExamStore:
@@ -104,3 +92,19 @@ class InMemoryExamStore:
             if exam_id not in self._exams:
                 raise ApiFailure(404, "EXAM_NOT_FOUND", "Không tìm thấy exam draft.")
             return self._exams[exam_id].model_copy(deep=True)
+
+    def replace(self, exam: ExamResponse, *, expected_revision: int) -> None:
+        exam = ExamResponse.model_validate(exam)
+        if exam.revision != expected_revision + 1:
+            raise ValueError("Replacement must advance the revision once")
+        with self._lock:
+            current = self._exams.get(exam.exam_id)
+            if current is None:
+                raise ApiFailure(404, "EXAM_NOT_FOUND", "Exam not found")
+            if current.revision != expected_revision:
+                raise ApiFailure(
+                    409,
+                    "EXAM_REVISION_CONFLICT",
+                    "Reload the latest draft before changing it",
+                )
+            self._exams[exam.exam_id] = exam.model_copy(deep=True)

@@ -1,0 +1,279 @@
+{
+  "authoritative_student_db": "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\memory\\student_profiles_sample.db",
+  "student_count": 20,
+  "skill_count": 9,
+  "stored_mastery_rows": 11,
+  "response_skill_rows": 180,
+  "null_masteries": 169,
+  "all_assessed_sql_values_preserved": true,
+  "classification_counts": {
+    "PARTIAL": 11,
+    "NO_DATA": 169
+  },
+  "strategy_counts": {
+    "diagnostic_review": 20
+  },
+  "students_without_any_evidence": [
+    "ST012",
+    "ST013",
+    "ST014",
+    "ST015",
+    "ST016",
+    "ST017",
+    "ST018",
+    "ST019",
+    "ST020"
+  ],
+  "examples": {
+    "ST001": {
+      "student_id": "ST001",
+      "name": "Nguyen Ngoc Gia Han",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": 2.3,
+          "evidence_count": 1
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A003",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A004",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A005",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A006",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A007",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A008",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A009",
+          "mastery_score": null,
+          "evidence_count": 0
+        }
+      ],
+      "learning_history": [
+        {
+          "test_id": "TA0002",
+          "wrong_questions": [
+            "QA0049"
+          ]
+        },
+        {
+          "test_id": "TA0001",
+          "wrong_questions": [
+            "QA0064"
+          ]
+        }
+      ]
+    },
+    "ST004": {
+      "student_id": "ST004",
+      "name": "Pham Quoc Huy",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A003",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A004",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A005",
+          "mastery_score": 0.0,
+          "evidence_count": 1
+        },
+        {
+          "skill_id": "A006",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A007",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A008",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A009",
+          "mastery_score": null,
+          "evidence_count": 0
+        }
+      ],
+      "learning_history": [
+        {
+          "test_id": "TA0005",
+          "wrong_questions": [
+            "QA0009",
+            "QA0088"
+          ]
+        }
+      ]
+    },
+    "ST011": {
+      "student_id": "ST011",
+      "name": "Tran Minh Khang",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A003",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A004",
+          "mastery_score": 3.0,
+          "evidence_count": 1
+        },
+        {
+          "skill_id": "A005",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A006",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A007",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A008",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A009",
+          "mastery_score": null,
+          "evidence_count": 0
+        }
+      ],
+      "learning_history": []
+    },
+    "ST012": {
+      "student_id": "ST012",
+      "name": "Le Ngoc Han",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A003",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A004",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A005",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A006",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A007",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A008",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A009",
+          "mastery_score": null,
+          "evidence_count": 0
+        }
+      ],
+      "learning_history": []
+    }
+  },
+  "old_seeded_copy": {
+    "path": "D:\\HCMUS\\TDTT\\TH\\Main_Project\\MVP1\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db",
+    "rows": 140,
+    "matches_offline_scenario_manifest_exactly": true,
+    "automatically_used_as_fallback": false
+  },
+  "hashes_before": {
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\memory\\student_profiles_sample.db": "894861fe34ab1ec2ba097a1572c6957dd6b1f200be598f76192645a983f978f4",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db": "12871bbe1b7823d89bfdcc8873c77f73d279f51593d31cdbdcccb6b1b9ac9276",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\MVP1\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "beadded2b39db5c7e3962f272bd1139003361a4d2376abfe2babdce7eac9dede"
+  },
+  "hashes_after": {
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\memory\\student_profiles_sample.db": "894861fe34ab1ec2ba097a1572c6957dd6b1f200be598f76192645a983f978f4",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\pre-work\\data\\sample\\dataset\\question_bank.db": "12871bbe1b7823d89bfdcc8873c77f73d279f51593d31cdbdcccb6b1b9ac9276",
+    "D:\\HCMUS\\TDTT\\TH\\Main_Project\\MVP1\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "beadded2b39db5c7e3962f272bd1139003361a4d2376abfe2babdce7eac9dede"
+  },
+  "all_databases_unchanged": true
+}
