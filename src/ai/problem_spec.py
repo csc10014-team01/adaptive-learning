@@ -31,7 +31,9 @@ def render_template(template: str, parameters: ProblemParameters) -> str:
     values = parameters.model_dump(exclude_none=True)
     for _, field, spec, conversion in Formatter().parse(template):
         if field is not None and (field not in values or spec or conversion):
-            raise ValueError("Templates permit only plain {n} and available {k} placeholders")
+            raise ValueError(
+                "Templates permit only plain {n} and available {k} placeholders"
+            )
     return template.format_map(values)
 
 
@@ -64,7 +66,9 @@ class ProblemSpec(ContractModel):
     mathematical_structure: Structure
     parameters: ProblemParameters
     constraints: ProblemConstraints
-    verified_answer: Annotated[str, Field(strict=True, pattern=r"^(0|[1-9][0-9]{0,200})$")]
+    verified_answer: Annotated[
+        str, Field(strict=True, pattern=r"^(0|[1-9][0-9]{0,200})$")
+    ]
     verified_solution: Annotated[list[Text], Field(min_length=1)]
     source_context_id: Identifier
     supported_contexts: Annotated[list[ProblemContext], Field(min_length=1)]
@@ -72,10 +76,15 @@ class ProblemSpec(ContractModel):
     @model_validator(mode="after")
     def consistent_specification(self):
         n, k = self.parameters.n, self.parameters.k
-        order, replacement = self.constraints.order_matters, self.constraints.replacement_allowed
+        order, replacement = (
+            self.constraints.order_matters,
+            self.constraints.replacement_allowed,
+        )
         if self.mathematical_structure == "permutation":
             if k is not None or not order or replacement:
-                raise ValueError("Permutation requires n only, order and no replacement")
+                raise ValueError(
+                    "Permutation requires n only, order and no replacement"
+                )
         elif k is None or (not replacement and k > n):
             raise ValueError("Selection requires k, with k <= n without replacement")
         if self.mathematical_structure == "combination" and (order or replacement):
@@ -87,15 +96,35 @@ class ProblemSpec(ContractModel):
             raise ValueError("Contexts must be unique and include the source context")
         for context in self.supported_contexts:
             for presentation in context.presentations:
-                fields = {field for _, field, _, _ in Formatter().parse(presentation.template) if field}
+                fields = {
+                    field
+                    for _, field, _, _ in Formatter().parse(presentation.template)
+                    if field
+                }
                 if fields != set(self.parameters.model_dump(exclude_none=True)):
-                    raise ValueError("Every statement must explicitly represent each mathematical parameter")
-                text = render_template(presentation.template, self.parameters).casefold()
-                required = [render_template(p, self.parameters).casefold() for p in presentation.required_phrases]
-                forbidden = [render_template(p, self.parameters).casefold() for p in presentation.forbidden_phrases]
-                if any(p not in text for p in required) or any(p in text for p in forbidden):
-                    raise ValueError("Authored statement contradicts its expression guards")
-        source = next(c for c in self.supported_contexts if c.context_id == self.source_context_id)
+                    raise ValueError(
+                        "Every statement must explicitly represent each mathematical parameter"
+                    )
+                text = render_template(
+                    presentation.template, self.parameters
+                ).casefold()
+                required = [
+                    render_template(p, self.parameters).casefold()
+                    for p in presentation.required_phrases
+                ]
+                forbidden = [
+                    render_template(p, self.parameters).casefold()
+                    for p in presentation.forbidden_phrases
+                ]
+                if any(p not in text for p in required) or any(
+                    p in text for p in forbidden
+                ):
+                    raise ValueError(
+                        "Authored statement contradicts its expression guards"
+                    )
+        source = next(
+            c for c in self.supported_contexts if c.context_id == self.source_context_id
+        )
         if not any(p.generate_type == "direct" for p in source.presentations):
             raise ValueError("Source context requires a direct presentation")
         return self

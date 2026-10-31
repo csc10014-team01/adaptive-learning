@@ -6,16 +6,21 @@ from math import floor
 from threading import Lock
 from typing import Protocol
 
-from src.api.data_adapter import ApiFailure, StaticDataAdapter
 from src.adaptation.policy import PlannerPolicyConfig
+from src.api.data_adapter import ApiFailure, StaticDataAdapter
 from src.api.schemas import (
-    LEVELS, ExamResponse, GenerateExamRequest, StudentProfileResponse,
+    LEVELS,
+    ExamResponse,
+    GenerateExamRequest,
+    StudentProfileResponse,
 )
 
 
 class ExamGenerator(Protocol):
     def generate(
-        self, request: GenerateExamRequest, profile: StudentProfileResponse,
+        self,
+        request: GenerateExamRequest,
+        profile: StudentProfileResponse,
     ) -> ExamResponse:
         """Return a complete teacher draft synchronously, or raise ApiFailure."""
         ...
@@ -28,8 +33,11 @@ def allocate_units(total: int, slots: int) -> list[int]:
 
 def question_slots(request: GenerateExamRequest) -> dict[str, int]:
     """Legacy internal quota helper; never plan automatic generation with this."""
-    weights = (tuple(getattr(request.difficulty_distribution, level) for level in LEVELS)
-               if request.difficulty_distribution is not None else PlannerPolicyConfig().default_levels)
+    weights = (
+        tuple(getattr(request.difficulty_distribution, level) for level in LEVELS)
+        if request.difficulty_distribution is not None
+        else PlannerPolicyConfig().default_levels
+    )
     return level_counts(request.total_questions, weights)
 
 
@@ -38,7 +46,7 @@ def level_counts(total: int, weights: tuple[float, ...]) -> dict[str, int]:
     exact = [weight * total / 100 for weight in weights]
     counts = [floor(value) for value in exact]
     order = sorted(range(len(LEVELS)), key=lambda i: (-(exact[i] - counts[i]), i))
-    for index in order[:total - sum(counts)]:
+    for index in order[: total - sum(counts)]:
         counts[index] += 1
     return dict(zip(LEVELS, counts))
 
@@ -48,15 +56,24 @@ class FakeExamGenerator:
         self.data = data
         # Local import avoids the existing planner -> rounding helpers boundary.
         from src.adaptation.planner import RuleBasedPlanner
+
         self.planner = planner or RuleBasedPlanner(data)
 
-    def generate(self, request: GenerateExamRequest, profile: StudentProfileResponse) -> ExamResponse:
+    def generate(
+        self, request: GenerateExamRequest, profile: StudentProfileResponse
+    ) -> ExamResponse:
         from src.orchestration.exam_service import ExamService
-        return ExamService(self.data, None, planner=self.planner, fake=True).generate(request, profile)
+
+        return ExamService(self.data, None, planner=self.planner, fake=True).generate(
+            request, profile
+        )
 
     def regenerate_question(self, exam: ExamResponse, question_id: str) -> ExamResponse:
         from src.orchestration.exam_service import ExamService
-        return ExamService(self.data, None, planner=self.planner, fake=True).regenerate_question(exam, question_id)
+
+        return ExamService(
+            self.data, None, planner=self.planner, fake=True
+        ).regenerate_question(exam, question_id)
 
 
 class InMemoryExamStore:
@@ -85,5 +102,9 @@ class InMemoryExamStore:
             if current is None:
                 raise ApiFailure(404, "EXAM_NOT_FOUND", "Exam not found")
             if current.revision != expected_revision:
-                raise ApiFailure(409, "EXAM_REVISION_CONFLICT", "Reload the latest draft before changing it")
+                raise ApiFailure(
+                    409,
+                    "EXAM_REVISION_CONFLICT",
+                    "Reload the latest draft before changing it",
+                )
             self._exams[exam.exam_id] = exam.model_copy(deep=True)

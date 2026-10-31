@@ -5,8 +5,8 @@ costs and residual edges can be negative. Stable insertion order breaks ties.
 The planner sends at most ten units through these small networks.
 """
 
+from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Hashable
 
 
 @dataclass
@@ -29,7 +29,12 @@ class MinCostFlow:
 
     @property
     def total_cost(self) -> int:
-        return sum(edge.flow * edge.cost for edges in self.graph for edge in edges if edge.initial_capacity)
+        return sum(
+            edge.flow * edge.cost
+            for edges in self.graph
+            for edge in edges
+            if edge.initial_capacity
+        )
 
     def _node(self, name: Hashable) -> int:
         if name not in self.nodes:
@@ -37,7 +42,9 @@ class MinCostFlow:
             self.graph.append([])
         return self.nodes[name]
 
-    def add_edge(self, source: Hashable, target: Hashable, capacity: int, cost: int = 0) -> Edge:
+    def add_edge(
+        self, source: Hashable, target: Hashable, capacity: int, cost: int = 0
+    ) -> Edge:
         start, end = self._node(source), self._node(target)
         forward = Edge(end, len(self.graph[end]), capacity, cost, capacity)
         reverse = Edge(start, len(self.graph[start]), 0, -cost, 0)
@@ -58,7 +65,10 @@ class MinCostFlow:
                         continue
                     for index, edge in enumerate(edges):
                         distance = distances[node] + edge.cost
-                        if edge.capacity and (distances[edge.target] is None or distance < distances[edge.target]):
+                        if edge.capacity and (
+                            distances[edge.target] is None
+                            or distance < distances[edge.target]
+                        ):
                             distances[edge.target] = distance
                             previous[edge.target] = (node, index)
                             changed = True

@@ -1,14 +1,11 @@
 import sqlite3
-import csv
-import json
-import re
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "question_bank.db"
 
 
-#Hàm trả về tập tất cả question
+# Hàm trả về tập tất cả question
 def get_all_questions():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -27,48 +24,49 @@ def get_all_questions():
     questions = [dict(row) for row in rows]
 
     for question in questions:
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT part_id, label, content
             FROM question_parts
             WHERE question_id = ?
-        """, (question["question_id"],))
+        """,
+            (question["question_id"],),
+        )
 
         parts = cursor.fetchall()
         question["part"] = [dict(row) for row in parts]
     conn.close()
     return questions
 
-#Hàm trả về 1 question
+
+# Hàm trả về 1 question
 def get_question(question_id):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM questions WHERE question_id = ?",
-            (question_id,)
+            "SELECT * FROM questions WHERE question_id = ?", (question_id,)
         ).fetchone()
 
         if not row:
             return None
-        
+
         question = dict(row)
 
         parts = conn.execute(
-            "SELECT * FROM question_parts WHERE question_id = ?",
-            (question_id,)
+            "SELECT * FROM question_parts WHERE question_id = ?", (question_id,)
         ).fetchall()
 
         question["part"] = [dict(row) for row in parts]
 
         return question
-    
+
+
 def get_all_answers():
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
-        rows = conn.execute(
-            "SELECT * FROM answers"
-        ).fetchall()
+        rows = conn.execute("SELECT * FROM answers").fetchall()
 
         answers = [dict(row) for row in rows]
 
@@ -81,7 +79,7 @@ def get_all_answers():
                 FROM question_parts
                 WHERE question_id = ?
                 """,
-                (question_id,)
+                (question_id,),
             ).fetchall()
 
             parts = []
@@ -90,8 +88,7 @@ def get_all_answers():
                 part_id = row["part_id"]
 
                 part_rows = conn.execute(
-                    "SELECT * FROM answer_parts WHERE part_id = ?",
-                    (part_id,)
+                    "SELECT * FROM answer_parts WHERE part_id = ?", (part_id,)
                 ).fetchall()
 
                 parts.extend(dict(row) for row in part_rows)
@@ -100,13 +97,13 @@ def get_all_answers():
 
         return answers
 
+
 def get_answer(answer_id):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM answers WHERE answer_id = ?",
-            (answer_id,)
+            "SELECT * FROM answers WHERE answer_id = ?", (answer_id,)
         ).fetchone()
         if not row:
             return None
@@ -114,8 +111,7 @@ def get_answer(answer_id):
         answer = dict(row)
         question_id = answer["question_id"]
         cursor = conn.execute(
-            "SELECT part_id FROM question_parts WHERE question_id = ?",
-            (question_id,)
+            "SELECT part_id FROM question_parts WHERE question_id = ?", (question_id,)
         )
         part_ids = cursor.fetchall()
 
@@ -125,8 +121,7 @@ def get_answer(answer_id):
             part_id = row[0]
 
             rows = conn.execute(
-                "SELECT * FROM answer_parts WHERE part_id = ?",
-                (part_id,)
+                "SELECT * FROM answer_parts WHERE part_id = ?", (part_id,)
             ).fetchall()
 
             parts.extend(dict(row) for row in rows)
@@ -134,6 +129,7 @@ def get_answer(answer_id):
         answer["part"] = parts
 
         return answer
+
 
 def get_all_terminology():
     conn = sqlite3.connect(DB_PATH)
@@ -155,16 +151,17 @@ def get_all_terminology():
 
     return terminology
 
+
 def get_terminology(term):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM terminology WHERE term = ?",
-            (term,)
+            "SELECT * FROM terminology WHERE term = ?", (term,)
         ).fetchone()
 
         return dict(row) if row else None
+
 
 def get_all_skills():
     conn = sqlite3.connect(DB_PATH)
@@ -184,13 +181,13 @@ def get_all_skills():
     conn.close()
     return skills
 
+
 def get_skill(skill_id):
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
         row = conn.execute(
-            "SELECT * FROM skills WHERE skill_id = ?",
-            (skill_id,)
+            "SELECT * FROM skills WHERE skill_id = ?", (skill_id,)
         ).fetchone()
 
         return dict(row) if row else None
@@ -222,6 +219,7 @@ def get_question_template():
         if conn is not None:
             conn.close()
 
+
 def get_question_template_by_id(template_id):
     conn = None
 
@@ -230,11 +228,14 @@ def get_question_template_by_id(template_id):
         conn.row_factory = sqlite3.Row
 
         cursor = conn.cursor()
-        cursor.execute("""
+        cursor.execute(
+            """
             SELECT *
             FROM question_templates
             WHERE template_id = ?
-        """, (template_id,))
+        """,
+            (template_id,),
+        )
 
         row = cursor.fetchone()
 

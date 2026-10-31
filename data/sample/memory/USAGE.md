@@ -176,14 +176,8 @@ Truy xuất lịch sử bài kiểm tra của một học sinh từ database, đ
 **Ví dụ:**
 ```python
 [
-    {
-        "test_id": "T001",
-        "wrongs": ["QA0003", "QA0007"]
-    },
-    {
-        "test_id": "T002",
-        "wrongs": ["QA0005"]
-    }
+    {"test_id": "T001", "wrongs": ["QA0003", "QA0007"]},
+    {"test_id": "T002", "wrongs": ["QA0005"]},
 ]
 ```
 

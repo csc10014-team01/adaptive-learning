@@ -57,23 +57,11 @@ student = {
     "student_id": "HS001",
     "name": "Nguyễn Văn A",
     "grade_level": 11,
-    "skill_mastery": [
-        {
-            "skill_id": "A001",
-            "mastery_score": 3.4,
-            "evidence_count": 4
-        }
-    ],
+    "skill_mastery": [{"skill_id": "A001", "mastery_score": 3.4, "evidence_count": 4}],
     "learning_history": [
-        {
-            "test_id": "T001",
-            "wrong_questions": ["A002", "A003"]
-        },
-        {
-            "test_id": "T002",
-            "wrong_questions": ["A003", "A004"]
-        }
-    ]
+        {"test_id": "T001", "wrong_questions": ["A002", "A003"]},
+        {"test_id": "T002", "wrong_questions": ["A003", "A004"]},
+    ],
 }
 ```
 

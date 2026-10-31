@@ -11,7 +11,9 @@ from src.api.schemas import ContractModel, Identifier
 class SkillRelationships(ContractModel):
     version: Identifier
     catalogue_ids: list[Identifier]
-    priorities: dict[Identifier, dict[Identifier, Annotated[int, Field(strict=True, ge=1, le=3)]]]
+    priorities: dict[
+        Identifier, dict[Identifier, Annotated[int, Field(strict=True, ge=1, le=3)]]
+    ]
 
     @model_validator(mode="after")
     def known_skills(self):
@@ -30,4 +32,7 @@ class SkillRelationships(ContractModel):
     def rank_review_skills(self, focus: list[str], review: list[str]) -> list[str]:
         def priority(skill):
             return max((self.priorities[f].get(skill, 0) for f in focus), default=0)
-        return sorted((s for s in review if priority(s) > 0), key=lambda s: (-priority(s), s))
+
+        return sorted(
+            (s for s in review if priority(s) > 0), key=lambda s: (-priority(s), s)
+        )
