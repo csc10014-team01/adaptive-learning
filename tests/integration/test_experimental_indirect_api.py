@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from src.ai.template_instantiator import TemplateInstantiator
 from src.api.data_adapter import DEFAULT_BANK
 from src.api.m3_adapter import M3DataAdapter
-from src.api.schemas import ExamQuestion
+from src.api.schemas import ExamQuestion, SkillMastery, StudentProfileResponse
 from tests.integration.test_hybrid_exam_api import application, HEADERS
 from tests.unit.test_experimental_indirect import ExperimentalClient
 from tests.unit.test_planner import make_data, request
@@ -17,12 +17,18 @@ from tests.unit.test_planner import make_data, request
 
 def actual_data(evidence=0):
     actual = M3DataAdapter()
-    data = make_data(bank=actual.questions, skills=[s.skill_id for s in actual.topic.skills])
+    skills = [s.skill_id for s in actual.topic.skills]
+    data = make_data(bank=actual.questions, skills=skills)
     data._templates = actual.templates
-    student = actual.get_profile("ST011")
-    student.skill_mastery[0].evidence_count = evidence  # Isolated in-memory profile, never saved.
-    if evidence > 0:
-        student.skill_mastery[0].mastery_score = 1.0  # Explicit synthetic partial-assessment fixture.
+    # Keep real SQL sources, but never depend on mutable student assessments.
+    student = StudentProfileResponse(
+        student_id="ST011", name="Synthetic diagnostic student", grade_level=10,
+        skill_mastery=[SkillMastery(
+            skill_id=skill, mastery_score=None if evidence == 0 else 1.0,
+            evidence_count=evidence,
+        ) for skill in skills],
+        learning_history=[],
+    )
     data._profiles = {student.student_id: student}
     return data
 
@@ -32,10 +38,21 @@ def test_real_sql_hybrid_diagnostic_generates_indirect_for_no_data_and_partial_a
     monkeypatch.setenv("KORO_EXPERIMENTAL_INDIRECT", "1")
     before = hashlib.sha256(DEFAULT_BANK.read_bytes()).hexdigest()
     data, model = actual_data(evidence), ExperimentalClient()
+    skills = {f"A{i:03}" for i in range(1, 10)}
+    student = data.get_profile("ST011")
+    assert {s.skill_id for s in student.skill_mastery} == skills
+    assert all(s.evidence_count == evidence and s.mastery_score == (None if evidence == 0 else 1.0)
+               for s in student.skill_mastery)
     app, _ = application(tmp_path, data, model)
     with TestClient(app, headers=HEADERS) as client:
         body = request(10, student_id="ST011").model_dump(mode="json")
         planned = client.post("/api/v1/exams/plan", json=body).json()
+        assert planned["strategy"] == "diagnostic_review"
+        assert planned["skill_classifications"] == {
+            skill: "NO_DATA" if evidence == 0 else "PARTIAL" for skill in skills
+        }
+        assert planned["quota_summary"]["requested_levels"] == dict(
+            recognition=3, understanding=3, application=3, advanced_application=1)
         result = client.post("/api/v1/exams/generate", json=body)
         assert result.status_code == 200, result.text
         exam = result.json()
