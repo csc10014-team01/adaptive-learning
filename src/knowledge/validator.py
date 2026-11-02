@@ -14,7 +14,6 @@ Data validation rules:
 - Invalid data raises KnowledgeValidationError.
 """
 
-
 class KnowledgeValidationError(Exception):
     """Raised when knowledge data is invalid."""
 
