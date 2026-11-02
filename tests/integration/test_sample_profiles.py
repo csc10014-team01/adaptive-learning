@@ -17,6 +17,7 @@ from src.api.m3_adapter import M3DataAdapter
 from src.api.schemas import GenerateExamRequest
 
 MANIFEST = json.loads(SCENARIOS.read_text(encoding="utf-8"))
+CATALOGUE = [f"A{i:03}" for i in range(1, 10)]
 
 
 @pytest.mark.parametrize(
@@ -69,6 +70,10 @@ def test_seed_creates_backup_preserves_history_and_is_repeatable(tmp_path):
     database = tmp_path / "sample.db"
     shutil.copyfile(DEFAULT_DATABASE, database)
     with sqlite3.connect(database) as c:
+        student_ids = [
+            row[0]
+            for row in c.execute("SELECT student_id FROM Students ORDER BY student_id")
+        ]
         c.execute(
             "DELETE FROM student_skill_mastery WHERE NOT (student_id='ST001' AND skill_id='A001')"
         )
@@ -77,24 +82,53 @@ def test_seed_creates_backup_preserves_history_and_is_repeatable(tmp_path):
             name: c.execute(f'SELECT * FROM "{name}" ORDER BY rowid').fetchall()
             for name in ("Students", "Tests", "test_questions")
         }
-    result = seed_profiles(database)
+    # The shared seven-skill manifest is a historical offline fixture. Exercise
+    # the current catalogue with an explicitly synthetic, test-only manifest.
+    manifest = {
+        "fixture_kind": "synthetic_planner_testing",
+        "skill_ids": CATALOGUE,
+        "students": [
+            {
+                "student_id": sid,
+                "scores": [0.0, 0.0, 1.5, 1.99, 2.0, 2.5, 3.0, 3.5, 4.0],
+                "evidence": [6, 0, 1, 2, 3, 4, 5, 6, 7],
+            }
+            for sid in student_ids
+        ],
+    }
+    scenarios = tmp_path / "nine_skill_scenarios.json"
+    scenarios.write_text(json.dumps(manifest), encoding="utf-8")
+    expected_mastery = {
+        (student["student_id"], skill): (score, evidence)
+        for student in manifest["students"]
+        for skill, score, evidence in zip(
+            CATALOGUE, student["scores"], student["evidence"], strict=True
+        )
+    }
+    result = seed_profiles(database, scenarios=scenarios)
     assert (
         result["updated"]
         and result["previous_mastery_rows"] == 1
-        and result["mastery_rows"] == 140
+        and result["mastery_rows"] == len(expected_mastery)
     )
     with sqlite3.connect(result["backup"]) as c:
         assert c.execute(
             "SELECT mastery_score,evidence_count FROM student_skill_mastery"
         ).fetchall() == [(2.3, 1)]
     with sqlite3.connect(database) as c:
+        assert {
+            (sid, skill): (score, evidence)
+            for sid, skill, score, evidence in c.execute(
+                "SELECT student_id,skill_id,mastery_score,evidence_count FROM student_skill_mastery"
+            )
+        } == expected_mastery
         for name, rows in original.items():
             assert (
                 c.execute(f'SELECT * FROM "{name}" ORDER BY rowid').fetchall() == rows
             )
         assert not c.execute("PRAGMA foreign_key_check").fetchall()
     before = hashlib.sha256(database.read_bytes()).digest()
-    assert not seed_profiles(database)["updated"]
+    assert not seed_profiles(database, scenarios=scenarios)["updated"]
     assert hashlib.sha256(database.read_bytes()).digest() == before
     assert len(list((tmp_path / "backups").glob("*.db"))) == 1
 
