@@ -1,4 +1,4 @@
-"""Policy loader/API against isolated nine-skill and legacy SQL catalogues."""
+"""Existing policy loader/API against synthetic nine-skill and real legacy data."""
 
 import hashlib
 import json
@@ -143,53 +143,9 @@ def test_explicit_nine_skill_policy_rejects_real_seven_skill_database_before_inf
     }
     transport = EchoTransport()
     store = tmp_path / "not-saved.db"
-    # Deliberately incompatible SQL fixture; the app-local bank now has nine
-    # skills and must not be treated as a frozen seven-skill snapshot.
-    legacy_bank = tmp_path / "seven_skill_bank.db"
-    with sqlite3.connect(legacy_bank) as c:
-        c.executescript("""
-            CREATE TABLE skills(skill_id TEXT PRIMARY KEY, name TEXT, topic TEXT, grade_level INTEGER);
-            CREATE TABLE questions(question_id TEXT PRIMARY KEY, question_type TEXT, difficulty INTEGER,
-                content TEXT, grade_level INTEGER, status TEXT);
-            CREATE TABLE question_skills(question_id TEXT, skill_id TEXT);
-            CREATE TABLE QuestionMainSkill(question_id TEXT PRIMARY KEY, skill_id TEXT);
-            CREATE TABLE answers(answer_id TEXT PRIMARY KEY, question_id TEXT, correct_answer TEXT, explaination TEXT);
-        """)
-        for skill in CATALOGUE[:7]:
-            c.execute(
-                "INSERT INTO skills VALUES (?, ?, ?, ?)",
-                (skill, SKILL_NAMES[skill], "Đại số tổ hợp", 10),
-            )
-            for difficulty, level in enumerate(LEVELS, 1):
-                source = question(skill, level)
-                c.execute(
-                    "INSERT INTO questions VALUES (?, ?, ?, ?, ?, ?)",
-                    (
-                        source.question_id,
-                        "essay",
-                        difficulty,
-                        source.content,
-                        10,
-                        "draft",
-                    ),
-                )
-                c.execute(
-                    "INSERT INTO question_skills VALUES (?, ?)",
-                    (source.question_id, skill),
-                )
-                c.execute(
-                    "INSERT INTO QuestionMainSkill VALUES (?, ?)",
-                    (source.question_id, skill),
-                )
-                c.execute(
-                    "INSERT INTO answers VALUES (?, ?, ?, ?)",
-                    (
-                        "ANSWER_" + source.question_id,
-                        source.question_id,
-                        source.answer.correct_answer,
-                        source.answer.explanation,
-                    ),
-                )
+    from src.api.data_adapter import ROOT
+
+    legacy_bank = ROOT / "data/sample/dataset/question_bank.db"
     # A valid profile for this seven-skill catalogue must reach the policy guard;
     # the canonical nine-skill profiles may correctly fail validation earlier.
     student_path = isolated_students(tmp_path)
@@ -221,7 +177,7 @@ def test_explicit_nine_skill_policy_rejects_real_seven_skill_database_before_inf
                 in result.json()["error"]["message"]
             )
         assert transport.calls == 0 and not store.exists()
-    # The same seven-skill SQL fixture works when the optional policy is unset.
+    # The same real seven-skill sources still work when the optional policy is unset.
     monkeypatch.delenv("SKILL_RELATIONSHIPS_FILE")
     with TestClient(
         create_app(
