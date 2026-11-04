@@ -1,0 +1,55 @@
+{
+  "note": "Illustrative outputs for UC-03 design review only; not actual model predictions or a finalized API contract.",
+  "examples": [
+    {
+      "case": "auto_graded",
+      "student_answer": "Vì thứ tự không quan trọng, chọn 3 bạn trong 8 bạn có C(8,3) = 56 cách.",
+      "output": {
+        "submission_id": "SUB001",
+        "question_instance_id": "QINST001",
+        "snapshot_id": "SNAP001",
+        "status": "GRADED",
+        "grading_method": "DETERMINISTIC",
+        "rubric_results": [
+          {
+            "criterion_id": "r1",
+            "awarded": 0.5,
+            "max": 0.5,
+            "reason": "Uses unordered selection."
+          },
+          {
+            "criterion_id": "r2",
+            "awarded": 0.5,
+            "max": 0.5,
+            "reason": "Correct combination expression C(8,3)."
+          },
+          {
+            "criterion_id": "r3",
+            "awarded": 1.0,
+            "max": 1.0,
+            "reason": "Correct result 56."
+          }
+        ],
+        "final_score": 2.0,
+        "max_score": 2.0,
+        "feedback": "Correct combinatorial approach and calculation.",
+        "grading_policy_version": "draft-v0.1"
+      }
+    },
+    {
+      "case": "needs_teacher_review",
+      "student_answer": "Em chia thành nhiều trường hợp và ra 56, nhưng em không ghi chi tiết.",
+      "output": {
+        "submission_id": "SUB001",
+        "question_instance_id": "QINST002",
+        "snapshot_id": "SNAP001",
+        "status": "NEEDS_TEACHER",
+        "reason_code": "INSUFFICIENT_WORK",
+        "reason_detail": "The final answer matches, but the required reasoning cannot be verified from the submission.",
+        "final_score": null,
+        "feedback": "Teacher to determine partial credit under the approved rubric.",
+        "grading_policy_version": "draft-v0.1"
+      }
+    }
+  ]
+}

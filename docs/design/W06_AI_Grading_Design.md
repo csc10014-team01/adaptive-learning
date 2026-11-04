@@ -116,50 +116,16 @@ Suggested reason codes: `AMBIGUOUS_METHOD`, `UNVERIFIED_EQUIVALENCE`, `INSUFFICI
 
 Separate **technical/configuration failures** (`INVALID_RUBRIC`, missing snapshot, etc.) from **content requiring teacher judgment**. The former may need administrator intervention or retry, not a teacher to guess a grade.
 
-## 6. Example outputs
+## 6. Example outputs (separate JSON file)
 
-### Example A — Auto-graded, 2.0/2.0
+The complete illustrative cases for this design are maintained in a separate file:
 
-Student answer: “Vì thứ tự không quan trọng, chọn 3 bạn trong 8 bạn có C(8,3) = 56 cách.”
+**[`W06_AI_Grading_Examples.json`](../examples/W06_AI_Grading_Examples.json)**
 
-```json
-{
-  "submission_id": "SUB001",
-  "question_instance_id": "QINST001",
-  "snapshot_id": "SNAP001",
-  "status": "GRADED",
-  "grading_method": "DETERMINISTIC",
-  "rubric_results": [
-    {"criterion_id": "r1", "awarded": 0.5, "max": 0.5, "reason": "Uses unordered selection."},
-    {"criterion_id": "r2", "awarded": 0.5, "max": 0.5, "reason": "Correct combination expression C(8,3)."},
-    {"criterion_id": "r3", "awarded": 1.0, "max": 1.0, "reason": "Correct result 56."}
-  ],
-  "final_score": 2.0,
-  "max_score": 2.0,
-  "feedback": "Correct combinatorial approach and calculation.",
-  "grading_policy_version": "draft-v0.1"
-}
-```
+- **Example A — `GRADED`:** A mathematically verified answer receives a final score of `2.0/2.0`, rubric-level credit and feedback.
+- **Example B — `NEEDS_TEACHER`:** The final answer appears correct but the required reasoning is missing; automatic grading must not assign a final score. The record includes `reason_code: "INSUFFICIENT_WORK"` for manual review.
 
-### Example B — Cannot finalize automatically
-
-Student answer: “Em chia thành nhiều trường hợp và ra 56, nhưng em không ghi chi tiết.” The final number is correct, but the approved rubric requires evidence of method; the component cannot verify the omitted reasoning.
-
-```json
-{
-  "submission_id": "SUB001",
-  "question_instance_id": "QINST002",
-  "snapshot_id": "SNAP001",
-  "status": "NEEDS_TEACHER",
-  "reason_code": "INSUFFICIENT_WORK",
-  "reason_detail": "The final answer matches, but the required reasoning cannot be verified from the submission.",
-  "final_score": null,
-  "feedback": "Teacher to determine partial credit under the approved rubric.",
-  "grading_policy_version": "draft-v0.1"
-}
-```
-
-The sample IDs, grading values and example rubric are illustrative. No live AI grading performance is claimed.
+Both cases use synthetic identifiers and illustrative marking values. They are **design examples**, not predictions from a deployed AI grader. The referenced file is intended to be stored in the repository's `examples/` directory while this Markdown file is in `design/`; update the relative link if the team chooses different directories.
 
 ## 7. Validation before saving a final score
 
@@ -223,7 +189,7 @@ The final grading record is the source for the separately developed `MasteryUpda
 - [x] Manual-review conditions and output validation defined.
 - [x] Retry/timeout and unanswered-policy decisions flagged as open.
 - [x] Data/Architecture alignment requirements documented.
-- [x] At least one example for each output pathway.
+- [x] At least one example for each output pathway, supplied in the separate referenced JSON file.
 - [ ] Review against the canonical W06 workflow file and actual repository API/schema (not available for direct inspection in this draft).
 - [ ] N03 Data, N05 Architecture, and Product Lead review.
 
