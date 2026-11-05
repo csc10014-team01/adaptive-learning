@@ -1,274 +1,493 @@
-# Thiết kế dữ liệu chấm bài và quy tắc cập nhật hồ sơ
-**Phương pháp: Dùng Partial Credit Model (PCM) để ước lượng mastery**
-## 1. Các bảng và trường cần thêm
+# Thiết kế dữ liệu chấm bài và cơ chế cập nhật hồ sơ năng lực
+Trình bày: Nguyễn Ngọc Ánh Dương
+## Tóm tắt:
+- Dùng **Partial Credit Model (PCM)** để tính xác xuất đúng bước đó của học sinh dựa trên các bước học sinh làm đúng và độ khó của bước đó.
+- Dùng EAP ability estimation (dichotomous and polytomous IRT models) để tính điểm mong đợi của từng câu.
+- Quy đổi sang mastery_score
+## 1. Mục tiêu
 
-- skills: thêm column rubric chấm điểm: 0 - 4
-Skill: A004 - Combination
-Rubric:{
-    "0": {"description": Chưa nhận diện được phép tổ hợp, "Difficulty": -1.5},
-    "1": {"description": Nhận diện được tình huống chọn nhóm, "Difficulty": -0.5},
-    "2": {"description": Thiết lập đúng biểu thức tổ hợp, "Difficulty": 0.5},
-    "3": {"description": Thực hiện phần lớn phép tính đúng, "Difficulty": 1},
-    "4": {"description": Giải đúng và kết luận đầy đủ, "Difficulty": 1.5}
+Sử dụng **Partial Credit Model (PCM)** để đánh giá mức độ thành thạo của
+học sinh theo từng kỹ năng (`skill_id`) dựa trên kết quả chấm rubric của
+từng câu hỏi.
+
+Thiết kế gồm hai tầng:
+
+1.  **Đánh giá từng câu hỏi:** sử dụng PCM để ước lượng năng lực tiềm ẩn
+    của học sinh từ `observed_level` và `step_difficulties`, sau đó quy
+    đổi về điểm thành thạo trên thang 0--4.
+2.  **Tổng hợp theo kỹ năng:** tổng hợp điểm thành thạo của các câu hỏi
+    cùng đánh giá một kỹ năng để cập nhật `student_skill_mastery`.
+
+> Lưu ý học thuật: PCM nguyên bản thường ước lượng năng lực từ một tập
+> hợp câu hỏi. Thiết kế trong tài liệu này áp dụng PCM ở cấp từng câu
+> hỏi, kết hợp ước lượng Bayesian để xử lý trường hợp mỗi câu chỉ có một
+> kết quả quan sát. Vì vậy, nên mô tả đây là cơ chế chấm điểm dựa trên
+> PCM ở cấp câu hỏi, không phải quy trình ước lượng năng lực PCM nguyên
+> bản trên toàn bài kiểm tra.
+
+------------------------------------------------------------------------
+
+## 2. Cấu trúc dữ liệu
+
+### 2.1. Rubric
+
+Rubric mô tả các mức độ thể hiện có thứ tự từ 0 đến mức tối đa `m`.
+
+Ví dụ rubric 0--4:
+
+``` python
+rubric = {
+    0: "Chưa nhận diện được phép tổ hợp",
+    1: "Nhận diện được tình huống chọn nhóm",
+    2: "Thiết lập đúng biểu thức tổ hợp",
+    3: "Thực hiện phần lớn phép tính đúng",
+    4: "Giải đúng và kết luận đầy đủ"
 }
-Lưu ý: không phải level nào cũng có mức độ khó như nhau
+```
 
-- Tests: test_id, student_id
-- test_questions: test_id, question_id, is_correct, observed_level 
-- Test_mastery_score: test_id, skill_id, mastery_score, sum_of_difficulty, number_of_question
+### 2.2. Step difficulty
 
-observed_level: mức mà học sinh thực tế đạt được.
+Trong PCM, `step_difficulty` là độ khó của **bước chuyển từ mức điểm
+trước sang mức điểm tiếp theo**, không phải độ khó của bản thân mức
+điểm.
 
-## 2. Luồng cơ bản:
-Sau khi học sinh làm test -> giáo viên/AI chấm điểm từng câu và trả về rate_correct co từng question -> Lấy skill của từng question thực hiện cập nhật mastery_score bằng rate_correct và difficulty theo từng test -> lấy trung bình skill đó qua từng test
+Với rubric 0--4, có bốn bước chuyển:
 
-## 3. Cơ chế cập nhật mastery_score
-### 3.1. Mục tiêu
+  Bước   Ý nghĩa
+  ------ ---------
+  1      0 → 1
+  2      1 → 2
+  3      2 → 3
+  4      3 → 4
 
-Xây dựng cơ chế tính toán và cập nhật mức độ thành thạo (mastery_score) của từng học sinh theo từng kỹ năng (skill_id), dựa trên kết quả làm bài kiểm tra được lưu trong database.
+Ví dụ:
 
-Cơ chế này được sử dụng chung cho hai trường hợp:
+``` python
+step_difficulties = [-0.5, 0.5, 1.0, 1.5]
+```
 
-add_test(): Cập nhật mức độ thành thạo khi học sinh có bài kiểm tra mới.
+Các giá trị trên chỉ là dữ liệu giả định để minh họa. Khi triển khai
+thực tế, tham số cần được hiệu chuẩn từ dữ liệu phản hồi của học sinh.
+Các tham số của câu hỏi và bộ tham số tham chiếu phải nằm trên cùng một
+thang đo năng lực.
 
-get_test(): Tính toán lại mức độ thành thạo dựa trên lịch sử các bài kiểm tra đã lưu.
+### 2.3. Các bảng và trường dữ liệu đề xuất
 
-### 3.2. Dữ liệu đầu vào
+-   `QuestionTemplate`: lưu rubric mặc định của câu hỏi thuộc template.
+-   `QuestionRubric`: lưu rubric riêng cho câu hỏi vận dụng hoặc câu hỏi
+    cần rubric tùy chỉnh.
+-   `PCMTemplateParameters`: lưu `template_id`, `step_difficulties`,
+    phiên bản tham số và trạng thái hiệu chuẩn.
+-   `PCMQuestionParameters`: lưu tham số PCM riêng của câu hỏi nếu câu
+    hỏi có rubric độc lập.
+-   `test_questions`: lưu `test_id`, `question_id`, `observed_level`,
+    `question_mastery_score`.
+-   `TestQuestionSkillResult` (chỉ cần nếu một câu đánh giá nhiều
+    skill): lưu `test_id`, `question_id`, `skill_id`, `observed_level`,
+    `theta_eap`, `question_mastery_score`.
+-   `question_skills`: ánh xạ câu hỏi với kỹ năng.
+-   `student_skill_mastery`: lưu `student_id`, `skill_id`,
+    `mastery_score`, `evidence_count`.
 
-Bảng
+Nếu mỗi câu hỏi chỉ đánh giá một skill, có thể lưu kết quả trực tiếp
+trong `test_questions` và không cần `TestQuestionSkillResult`.
 
-Dữ liệu sử dụng
+Cần xác định phiên bản rubric/tham số PCM được sử dụng khi chấm. Nếu
+rubric hoặc step difficulty thay đổi, kết quả cũ có thể cần được tính
+toán lại.
 
-- Tests: test_id, student_id
-- test_questions: test_id, question_id, is_correct, rate_correct
-- questions: question_id, difficulty
-- question_skills: Quan hệ giữa câu hỏi và kỹ năng
-- student_skill_mastery: student_id, skill_id, mastery_score, evidence_count
+------------------------------------------------------------------------
 
-Trong MVP1, hệ thống sử dụng is_correct để đánh giá kết quả trả lời:
+## 3. Cơ chế tính PCM riêng từng câu hỏi
 
-1: Trả lời đúng.
+### 3.1. Dữ liệu đầu vào
 
-0: Trả lời sai.
+Với câu hỏi thứ `i`:
 
-### 3.3. Cơ chế đề xuất tính toán
+-   `observed_level = x_i`: mức rubric học sinh đạt được.
+-   `step_difficulties = [δ_i1, δ_i2, ..., δ_im]`: độ khó của các bước
+    chuyển.
+-   `m`: mức điểm tối đa của rubric.
+-   Prior năng lực: giả định ban đầu về phân phối của `theta_i`.
 
-#### 3.3.1. Mô hình Partial Credit (PCM) tính mastery của từng kỹ năng trong một bài kiểm tra: calculate_test_skill_mastery()
+### 3.2. Stage 1: Tính xác suất theo PCM
+*Công thức này cho phép tính xác suất đạt từng mức rubric khi biết năng lực \(\theta_i\).*
 
-##### 3.3.1.1. Stage 1: Tính xác xuất PCM 
-Đối với một câu hỏi có các bậc điểm được xếp thứ tự từ 0 đến m, xác suất đạt được điểm x là:
+Với một giá trị năng lực thử nghiệm `theta`, xác suất đạt mức `k` là:
 
-\[P(X_i=x\vert{}\theta_i)= \frac{ \exp\left( \sum_{j=1}^{x}(\theta_i-\delta_{ij}) \right) }{ \sum_{k=0}^{m} \exp\left( \sum_{j=1}^{k}(\theta_i-\delta_{ij}) \right) }\]
+\[ P(X_i=k`\mid`{=tex}`\theta`{=tex})= `\frac{
+\exp\left(\sum_{j=1}^{k}(\theta-\delta_{ij})\right)
+}{
+\sum_{r=0}^{m}
+\exp\left(\sum_{j=1}^{r}(\theta-\delta_{ij})\right)
+}`{=tex} \]
+
+Quy ước tổng rỗng tại `k = 0` bằng 0, do đó tử số của mức 0 bằng:
+
+\[ `\exp`{=tex}(0)=1 \]
 
 Trong đó:
 
-- `theta_i`: năng lực của học sinh được ước lượng từ câu hỏi i.
-- `delta_ij`: độ khó của bước j trong câu hỏi i.
-- `x`: điểm số quan sát được.
-- `m`: điểm số tối đa của câu hỏi.
+-   `theta`: năng lực tiềm ẩn đang xét.
+-   `δ_ij`: độ khó của bước chuyển thứ `j` trong câu hỏi `i`.
+-   `k`: mức rubric đang tính xác suất.
+-   `m`: mức rubric tối đa.
 
-Với x = 0, tử số bằng 1.
+### 3.3. Stage 2: Ước lượng năng lực bằng MAP
 
-##### 3.3.1.2. Stage 2: Hàm Log-likelihood
-Cho trước phản hồi quan sát được x_i, hàm log-likelihood là:
+#### Vì sao không dùng MLE trực tiếp?
+Giả sử:
 
-\[\ell_i(\theta_i)= \ln P(X_i=x_i\vert{}\theta_i)\]
+\[ `\theta`{=tex}\_i`\sim `{=tex}N(`\mu`{=tex}\_0,`\sigma`{=tex}\_0\^2)
+\]
 
-Năng lực được ước lượng là:
+Có thể chọn giá trị khởi đầu:
 
-\[\hat{\theta}_i= \arg\max_{\theta_i}\ell_i(\theta_i)\]
+\[ `\mu`{=tex}\_0=0,`\qquad `{=tex}`\sigma`{=tex}\_0=1 \]
 
-Đối với các tiêu chí rubric đa thành phần, hàm hợp lý (likelihood) được xây dựng từ các điểm số quan sát được của các tiêu chí đó.
+Đây là giả định khởi tạo, không phải tham số bắt buộc của PCM. Cần giữ
+nhất quán thang đo giữa prior, step difficulties và bộ tham chiếu.
 
-Việc ước lượng năng lực được thực hiện độc lập cho từng câu hỏi.
+Theo Bayes:
 
--   `theta` (năng lực): giá trị liên tục, chưa nằm sẵn trên thang 0--4.
--   `delta[i, j]` (step difficulty): độ khó của bước chuyển từ mức
-    `j - 1` lên `j` ở câu hỏi `i`.
--   `mastery_score`: trong ví dụ này lưu `theta`; nếu giao diện cần
-    thang 0--4 thì chuyển đổi riêng để hiển thị.
+\[ P(`\theta`{=tex}\_i`\mid `{=tex}X_i=x_i) `\propto`{=tex}
+P(X_i=x_i`\mid`{=tex}`\theta`{=tex}\_i)P(`\theta`{=tex}\_i) \]
 
-> **Lưu ý:** Step difficulty cần được hiệu chuẩn từ dữ liệu phản hồi của
-> nhiều học sinh. Các giá trị dưới đây chỉ là dữ liệu giả định để minh
-> họa thuật toán.
+Hàm log-posterior, bỏ qua hằng số không phụ thuộc vào `theta`, là:
 
-##### 3.3.1.3. Stage 3: Ước lượng năng lực:
-Đối với mỗi câu hỏi:
+\[ `\boxed{
+L_i(\theta)=
+\log P(X_i=x_i\mid\theta)
+-
+\frac{(\theta-\mu_0)^2}{2\sigma_0^2}
+}`{=tex} \]
 
-1. Truy xuất rubric kỹ năng liên quan.
-2. Truy xuất các mức độ đạt được quan sát được của học sinh.
-3. Truy xuất độ khó các bước của rubric.
-4. Xây dựng hàm hợp lý (likelihood) PCM.
-5. Tìm giá trị năng lực tối đa hóa hàm hợp lý.
-6. Lưu trữ năng lực ước lượng dưới dạng `theta_i`.
+Ước lượng MAP:
 
+\[ `\boxed{
+\hat{\theta}_{MAP,i}
+=
+\arg\max_{\theta} L_i(\theta)
+}`{=tex} \]
 
-###### 3.3.1.4. Stage 4: Quy đổi về thang 4:
-Công thức tính điểm năng lực tổng kết được điều chỉnh thông qua hàm chuyển đổi logistic (sigmoid) và phép co giãn tuyến tính để đưa giá trị cuối cùng về khoảng $(1, 4)$:
+MAP tạo ra nghiệm hữu hạn nhờ prior, kể cả khi `observed_level` ở mức
+thấp nhất hoặc cao nhất.
 
-$$\text{mastery\_score} = 1 + 3 \times \frac{\sum_{i=1}^{n} d_i p_i}{\sum_{i=1}^{n} d_i}$$
+Tuy nhiên, một kết quả rubric vẫn là lượng bằng chứng hạn chế. MAP không
+làm cho ước lượng từ một câu trở nên chắc chắn; nó chỉ giúp kết quả ổn
+định hơn bằng giả định prior.
 
-Trong đó, xác suất thành công $p_i$ cho mỗi câu hỏi được định nghĩa bởi hàm logistic:
-$$p_i = \frac{1}{1 + e^{-\theta_i}}$$
+### 3.4. Stage 3: Ước lượng EAP (khuyến nghị khi cần xét độ bất định)
 
----
+Thay vì chỉ sử dụng điểm cực đại MAP, có thể sử dụng trung bình hậu
+nghiệm EAP:
 
-###### 3.3.1.4.2. Ý nghĩa của các thành phần
-* **$p_i$ (Xác suất thành công / Giá trị chuyển đổi):** 
-  * Ánh xạ năng lực $\theta_i$ (vốn nằm trên trục số thực từ $-\infty$ đến $+\infty$) về khoảng giới hạn $(0, 1)$. 
-  * Khi năng lực $\theta_i$ tăng, $p_i$ tiến dần về $1$; khi năng lực thấp, $p_i$ tiến dần về $0$.
-* **Trung bình có trọng số ($\frac{\sum d_i p_i}{\sum d_i}$):**
-  * Sử dụng độ khó $d_i$ làm trọng số cho từng giá trị $p_i$.
-  * Do mọi $p_i \in (0, 1)$, giá trị của biểu thức trung bình có trọng số này cũng sẽ nằm trong khoảng $(0, 1)$.
-* **Phép biến đổi tuyến tính ($1 + 3 \times \dots$):**
-  * Nhân với $3$: Co giãn dải giá trị từ khoảng $(0, 1)$ thành $(0, 3)$.
-  * Cộng thêm $1$: Dịch chuyển dải giá trị lên, kết quả cuối cùng sẽ thuộc khoảng $(1, 4)$.
+\[ `\pi`{=tex}\_i(`\theta`{=tex}`\mid `{=tex}x_i)= `\frac{
+P(X_i=x_i\mid\theta)\phi(\theta;\mu_0,\sigma_0^2)
+}{
+\int_{-\infty}^{+\infty}
+P(X_i=x_i\mid t)\phi(t;\mu_0,\sigma_0^2)\,dt
+}`{=tex} \]
 
----
+Trong đó `φ` là mật độ phân phối chuẩn.
 
-###### 3.3.1.4.3. Diễn giải trực quan cơ chế hoạt động
+Giá trị EAP:
 
-1. **Cơ chế trọng số theo độ khó ($d_i$):**
-   * Các câu hỏi khó hơn ($d_i$ lớn) sẽ có trọng số đóng góp lớn hơn vào tổng điểm năng lực.
-   * Điều này phản ánh thực tế sư phạm: Nếu học sinh giải quyết thành công các câu hỏi khó, điểm mastery sẽ được thưởng cao hơn nhiều so với việc chỉ làm đúng các câu hỏi dễ.
+\[ `\boxed{
+\hat{\theta}_{EAP,i}
+=
+\int_{-\infty}^{+\infty}
+\theta\,\pi_i(\theta\mid x_i)\,d\theta
+}`{=tex} \]
 
-2. **Cân bằng giữa năng lực và thử thách:**
-   * Tử số ($\sum d_i \theta_i$) tổng hợp mức độ thành công của học sinh khi đối mặt với các mức độ thử thách khác nhau.
-   * Mẫu số ($\sum d_i$) đóng vai trò chuẩn hóa, đảm bảo tổng trọng số của toàn bộ các câu hỏi trong kỹ năng được cân đối công bằng.
+-   `theta_map`: giá trị tại cực đại của phân phối hậu nghiệm.
+-   `theta_eap`: trung bình của phân phối hậu nghiệm.
 
-3. **Ý nghĩa của việc nhân hệ số 4:**
-   * Giúp quy đổi giá trị năng lực tổng hợp (thường nằm trên một dải liên tục tùy thuộc vào phân phối IRT/PCM) về lại **thang đo điểm số trực quan (0–4)** của rubric kỹ năng ban đầu, giúp giáo viên và học sinh dễ dàng đọc hiểu kết quả.
+**Đề xuất:** Nếu cần một giá trị theta đại diện để tính mastery, ưu tiên
+`theta_eap`. Nếu MVP cần đơn giản hơn, có thể sử dụng `theta_map`, nhưng
+phải thống nhất cách dùng trong toàn hệ thống.
 
-### 3.3.2. Luồng thuật toán
+Các tích phân có thể được tính gần đúng bằng numerical integration trên
+một khoảng theta đủ rộng, hoặc bằng phương pháp lưới (grid
+approximation).
 
-1.  Lấy các kết quả `observed_level` của học sinh theo một `skill_id`.
-2.  Lấy step difficulty đã hiệu chuẩn của từng câu/bài.
-3.  Với một giá trị thử của `theta`, tính trọng số các mức `S_0` đến
-    `S_4`.
-4.  Chuẩn hóa trọng số để thu được xác suất đạt từng mức.
-5.  Tính log-likelihood của các mức học sinh thực sự đạt.
-6.  Tối ưu để tìm `theta_hat` làm log-likelihood lớn nhất.
-7.  Lưu `theta_hat`; nếu cần, chuyển thành điểm hiển thị 0--4.
+### 3.5. Đề xuất thang đo step_difficulty:
+Độ khó giáo viên chọn	Ý nghĩa	step_difficulty
+0	                    Rất dễ	    -1.5
+1	                    Dễ	        -0.75
+2	                    Trung bình	    0
+3	                    Khó          0.75
+4	                    Rất khó	     1.5
 
-### 3.3.3. Ghi chú triển khai
+\[
+    b_i = 0.75(d_i - 2)
+\]
 
--   `observed_level` là điểm rubric quan sát được; `theta` là năng lực
-    tiềm ẩn được mô hình ước lượng. Hai đại lượng này không giống nhau.
--   Nếu một câu đánh giá nhiều skill, nên có kết quả chấm riêng cho từng
-    skill; một `observed_level` chung không đủ để suy ra năng lực từng
-    skill.
--   Với rất ít câu hoặc chỉ một mức điểm xuất hiện, MLE có thể không ổn
-    định hoặc không có nghiệm hữu hạn. Hệ thống thực tế có thể cần
-    prior/regularization hoặc chờ thêm bằng chứng.
--   PCM không yêu cầu tính trung bình có trọng số `sum_of_difficulty`.
-    Số câu có dữ liệu có thể lưu riêng làm `evidence_count`.
+------------------------------------------------------------------------
 
-#### 3.3.4. Cập nhật evidence_count
+## 4. Quy đổi theta sang question_mastery_score
 
-evidence_count thể hiện tổng số câu hỏi đã được sử dụng làm bằng chứng đánh giá một kỹ năng.
+### 4.1. Expected Score theo chính câu hỏi
 
-                evidence_count_new = SUM(n_j)
+Với xác suất PCM của câu hỏi `i`, điểm kỳ vọng là:
 
-Trong đó n_j là số câu hỏi thuộc kỹ năng đang xét trong bài kiểm tra thứ j.
+\[ `\boxed{
+E(X_i\mid\theta_i)
+=
+\sum_{k=0}^{m}kP_i(X_i=k\mid\theta_i)
+}`{=tex} \]
 
-Mỗi câu hỏi chỉ được tính một lần cho mỗi kỹ năng trong phạm vi dữ liệu đánh giá tương ứng. Nếu một câu hỏi liên quan đến nhiều kỹ năng, câu hỏi đó có thể đóng góp bằng chứng cho từng kỹ năng liên quan.
+Với rubric 0--4:
 
-### 3.3.5. Cơ chế cập nhật database: update_student_skill_mastery()
+\[ E(X_i`\mid`{=tex}`\theta`{=tex}*i) =
+`\sum`{=tex}*{k=0}\^{4}kP_i(X_i=k`\mid`{=tex}`\theta`{=tex}\_i) \]
 
-- Sau khi tính toán, hệ thống kiểm tra sự tồn tại của bản ghi tương ứng trong student_skill_mastery.
-- Kỹ năng đã tồn tại: Cập nhật mastery_score và evidence_count bằng kết quả tổng hợp mới.
-- Kỹ năng chưa tồn tại: Tạo bản ghi mới với student_id, skill_id, mastery_score và evidence_count tương ứng.
+Giá trị nằm trong khoảng `[0, 4]`.
 
-Không cộng trực tiếp điểm mastery mới vào điểm mastery cũ, vì cách này có thể khiến điểm vượt khỏi thang đo quy định.
+Cách này phù hợp khi muốn diễn giải điểm dự kiến trên chính rubric của
+câu hỏi. Tuy nhiên, nếu các câu có step difficulties khác nhau, điểm kỳ
+vọng theo rubric riêng của từng câu có thể không so sánh trực tiếp công
+bằng giữa câu dễ và câu khó.
 
-### 3.3.6. Tích hợp với các hàm hiện tại: 
+### 4.2. Đề xuất chính: Expected Score theo bộ tham chiếu chung
 
-#### 3.3.6.1. Trường hợp add_test()
+Để tổng hợp các câu hỏi có độ khó khác nhau, đề xuất sử dụng một bộ step
+difficulties tham chiếu cố định:
 
-- Thêm bài kiểm tra vào Tests.
-- Thêm các câu hỏi và kết quả trả lời vào test_questions.
-- Sau khi lưu thành công, gọi hàm cập nhật mastery cho student_id và test_id của bài kiểm tra mới.
-- Tính điểm của từng kỹ năng trong bài kiểm tra mới.
-- Tổng hợp với các bài kiểm tra trước đó và cập nhật student_skill_mastery.
+\[ `\delta`{=tex}\_{ref}=\[-1.5,-0.5,0.5,1.5\] \]
 
-Hệ thống chỉ cập nhật mastery sau khi việc thêm bài kiểm tra và các câu hỏi liên quan thành công.
+Các giá trị trên chỉ là ví dụ. Bộ tham chiếu cần được xác định trên cùng
+thang đo năng lực với các tham số câu hỏi và được giữ cố định trong cùng
+một phiên bản hệ thống.
 
-#### 3.3.6.2. Trường hợp rebuild_student_skill_mastery()
+Với bộ tham chiếu, tính xác suất đạt mức `k`:
 
-- Truy xuất danh sách bài kiểm tra của học sinh từ Tests.
-- Duyệt từng test_id và lấy dữ liệu tương ứng trong test_questions.
-- Tính lại mastery của từng kỹ năng theo từng bài kiểm tra nếu câ.
-- Tổng hợp kết quả từ toàn bộ lịch sử.
+\[ P\_{ref}(X=k`\mid`{=tex}`\theta`{=tex})= `\frac{
+\exp\left(\sum_{j=1}^{k}(\theta-\delta_{ref,j})\right)
+}{
+\sum_{r=0}^{m}
+\exp\left(\sum_{j=1}^{r}(\theta-\delta_{ref,j})\right)
+}`{=tex} \]
 
-Cập nhật lại student_skill_mastery.
+#### Phương án: Dùng EAP làm giá trị theta đại diện
 
-Trong trường hợp này, hệ thống phải tính lại từ dữ liệu gốc hoặc ghi đè kết quả cũ, tránh cộng lặp dữ liệu đã được tính trước đó.
+\[ `\boxed{
+question\_mastery_i
+=
+\sum_{k=0}^{m}
+kP_{ref}(X=k\mid\hat{\theta}_{EAP,i})
+}`{=tex} \]
 
-### 3.3.7 Đảm bảo tính nhất quán
+### 4.4. Vì sao cần bộ tham chiếu chung?
 
-Để tránh sai lệch dữ liệu, cần tuân thủ các nguyên tắc:
+Nếu mỗi câu sử dụng bộ step difficulties riêng để tính Expected Score,
+cùng một theta có thể tạo ra điểm khác nhau do độ khó câu hỏi khác nhau.
 
-- Dùng chung công thức tính mastery cho cả add_test() và get_test().
-- Không tính lặp một bài kiểm tra khi cập nhật tăng dần.
-- Sử dụng transaction để đảm bảo tính nhất quán khi ghi database.
-- Chỉ cập nhật mastery_score khi có dữ liệu đánh giá hợp lệ cho kỹ năng.
-- Phân biệt trường hợp chưa có dữ liệu với trường hợp đã có dữ liệu nhưng tất cả câu trả lời đều sai.
+Dùng chung bộ tham chiếu giúp:
 
-## 3.4. Tài liệu học thuật liên quan
-### 3.4.1 Partial Credit Model: 
-**Masters, G. N. (1982). A Rasch Model for Partial Credit Scoring. Psychometrika, 47(2), 149–174.Đây là một trong những tài liệu nền tảng về mô hình chấm điểm từng phần trong đánh giá giáo dục.**
+-   Chuyển theta của các câu về cùng một thang diễn giải.
+-   Hạn chế việc câu dễ tự tạo ra điểm kỳ vọng cao hơn câu khó chỉ do
+    tham số riêng.
+-   Hỗ trợ tổng hợp các câu cùng đánh giá một skill.
 
-Tác giả xây dựng mô hình Rasch mở rộng cho câu hỏi có nhiều mức điểm thay vì chỉ đúng hoặc sai. Các mức điểm được xem là những danh mục có thứ tự, phản ánh các mức độ thể hiện năng lực khác nhau.
+Điều kiện quan trọng: step difficulties của từng câu và bộ tham chiếu
+phải được đặt trên cùng một thang đo. Không thể tùy ý đặt các tham số
+độc lập rồi mặc định chúng có thể so sánh.
 
-Thuật toán này được áp dụng để tính mastery_score
+------------------------------------------------------------------------
 
-#### 3.4.2. Cơ chế hoạt động của Partial Credit Scoring
+## 5. Tổng hợp question_mastery_score theo skill
 
-##### 3.4.2.1. Ví dụ minh họa và Thang điểm
+Sau khi tính được `question_mastery_score` cho từng kết quả đánh giá,
+nhóm các kết quả theo `skill_id`.
 
-Xét bài toán: *Có bao nhiêu cách chọn 2 học sinh từ 5 học sinh, sau đó sắp xếp 2 học sinh đã chọn?*
+Trong MVP, sử dụng trung bình cộng:
 
-**Các bước giải tiêu chuẩn:**
-1. Xác định sử dụng tổ hợp.
-2. Tính số cách chọn 2 học sinh.
-3. Xác định số cách sắp xếp 2 học sinh.
-4. Kết hợp các kết quả để tìm đáp án cuối cùng.
+\[ `\boxed{
+mastery\_score_s=
+\frac{1}{n_s}
+\sum_{i=1}^{n_s}question\_mastery_i
+}`{=tex} \]
 
-**Rubric chấm điểm:**
+Trong đó:
 
-| Điểm | Mức độ thể hiện |
-| :---: | :--- |
-| **0** | Không thể hiện được phương pháp giải phù hợp |
-| **1** | Xác định đúng phương pháp nhưng chưa triển khai chính xác |
-| **2** | Thực hiện đúng phần lớn các bước nhưng còn sai sót |
-| **3** | Hoàn thành lời giải chính xác |
+-   `s`: kỹ năng đang xét.
+-   `n_s`: số kết quả đánh giá hợp lệ của kỹ năng `s`.
+-   `question_mastery_i`: điểm thành thạo của câu hỏi sau khi quy đổi về
+    thang tham chiếu chung.
 
-Biểu diễn dữ liệu điểm số thu được:
+Không nhân thêm `question_difficulty` làm trọng số trong công thức này.
+Độ khó đã tham gia vào quá trình ước lượng theta; việc tiếp tục dùng độ
+khó làm trọng số có thể khiến câu khó được tính ảnh hưởng hai lần.
 
-$$X_i \in \{0, 1, 2, 3\}$$
+Nếu sau này muốn sử dụng trọng số, cần có căn cứ rõ ràng, chẳng hạn độ
+tin cậy của bằng chứng hoặc thiết kế đánh giá. Không nên mặc định câu
+khó luôn có trọng số cao hơn.
 
-##### 3.4.2.2. Bản chất Mô hình Partial Credit (PCM)
+Nếu một câu hỏi đánh giá nhiều skill, cần có kết quả rubric riêng cho
+từng skill. Không dùng một `observed_level` chung để suy ra nhiều năng
+lực khác nhau.
 
-* **Ước lượng xác suất:** PCM không tính điểm bằng cách chia điểm đạt được cho điểm tối đa, mà sử dụng mô hình xác suất để ước lượng năng lực tiềm ẩn của học sinh từ các mức điểm quan sát được.
-* **Mở rộng mô hình Rasch:** Đưa mô hình Rasch (dành cho câu hỏi nhị phân $0/1$) sang áp dụng cho các bài tập có nhiều mức điểm theo thứ tự (Masters).
+------------------------------------------------------------------------
+
+## 6. Cập nhật evidence_count
+
+`evidence_count` là số kết quả đánh giá hợp lệ đã được sử dụng làm bằng
+chứng cho một skill.
+
+\[ `\boxed{
+evidence\_count_s=n_s
+}`{=tex} \]
 
-##### 3.4.2.3. Ý tưởng cốt lõi: Các bước chuyển về năng lực
+Mỗi kết quả đánh giá chỉ được tính một lần cho một skill. Nếu một câu
+đánh giá hai skill và có hai kết quả rubric độc lập, câu đó có thể đóng
+góp một bằng chứng cho mỗi skill.
 
-Mỗi thang điểm đại diện cho một bước chuyển năng lực (*step transition*):
+Cần phân biệt:
 
-* $0 \rightarrow 1$: Bước chuyển 1 (Đạt điểm 1)
-* $1 \rightarrow 2$: Bước chuyển 2 (Đạt điểm 2)
-* $2 \rightarrow 3$: Bước chuyển 3 (Đạt điểm 3)
+-   Không có dữ liệu đánh giá: chưa đủ bằng chứng, không tự động gán
+    mastery bằng 0.
+-   Có dữ liệu và tất cả kết quả đều ở mức 0: đây là bằng chứng hợp lệ
+    về mức thể hiện thấp.
 
-Mỗi bước chuyển này được đặc trưng bởi một tham số độ khó riêng, gọi là **step difficulty** (hoặc *step parameter*).
+------------------------------------------------------------------------
 
-### 3.4.3. Phân tích chấm điểm từng phần: 
-**Masters, G. N. (1988). The Analysis of Partial Credit Scoring. Applied Measurement in Education, 1(4), 279–297.**
-Tài liệu trình bày cách áp dụng mô hình Partial Credit trong thực tế và thảo luận các vấn đề khi diễn giải điểm số từ câu hỏi có nhiều mức điểm.
+## 7. Luồng thuật toán
+
+### 7.1. Khi thêm bài kiểm tra: `add_test()`
+
+``` text
+add_test()
+    |
+    |-- Lưu Test
+    |
+    |-- Lưu TestQuestion và observed_level
+    |
+    |-- Với từng kết quả đánh giá
+    |       |
+    |       |-- Truy xuất rubric
+    |       |-- Truy xuất step_difficulties
+    |       |-- Tính phân phối hậu nghiệm bằng Bayesian PCM
+    |       |-- Tính theta_eap (hoặc theta_map)
+    |       |-- Quy đổi bằng PCM tham chiếu
+    |       |-- Lưu question_mastery_score
+    |
+    |-- Gom các kết quả theo skill_id
+    |
+    |-- Lấy các bằng chứng trước đó của các skill liên quan
+    |
+    |-- Tính lại mastery_score từ toàn bộ bằng chứng
+    |
+    |-- Cập nhật student_skill_mastery
+    |-- Cập nhật evidence_count
+```
 
-### 3.4.4. Nghiên cứu so sánh chấm điểm nhị phân và chấm điểm từng phần: 
-**May et al. (2023). Examining how using dichotomous and partial credit scoring models influence sixth-grade mathematical problem-solving assessment outcomes. School Science and Mathematics, 123(2), 54–67.** 
+Chỉ tính PCM cho các kết quả mới. Các kết quả cũ có thể được tái sử dụng
+nếu rubric, step difficulties, prior và bộ tham chiếu không thay đổi.
 
-Nghiên cứu so sánh hai phương pháp chấm điểm trên bài đánh giá kỹ năng giải quyết vấn đề Toán học lớp 6.
+### 7.2. Khi truy xuất bài kiểm tra: `get_test()`
 
-Kết quả cho thấy các mô hình Rasch chấm nhị phân và chấm điểm từng phần đều có kết quả đo lường khá tương đồng trong bối cảnh nghiên cứu.
+`get_test()` chỉ truy xuất dữ liệu đã lưu, không tự tính lại mastery.
+
+### 7.3. Khi xây dựng lại hồ sơ: `rebuild_student_skill_mastery()`
+
+``` text
+rebuild_student_skill_mastery(student_id)
+    |
+    |-- Lấy toàn bộ kết quả đánh giá hợp lệ
+    |
+    |-- Phân nhóm theo skill_id
+    |
+    |-- Tính lại mastery_score từ các question_mastery_score
+    |
+    |-- Đếm evidence_count
+    |
+    |-- Ghi đè student_skill_mastery
+```
+
+Nếu thay đổi công thức tổng hợp, có thể tái sử dụng
+`question_mastery_score` cũ nếu các tham số PCM không đổi.
+
+Nếu thay đổi rubric, step difficulties, prior hoặc bộ tham chiếu, cần
+tính lại các kết quả chịu ảnh hưởng.
+
+------------------------------------------------------------------------
+
+## 8. Các lưu ý triển khai
+
+1.  **Tính ổn định số học:** Khi tính PCM, nên sử dụng kỹ thuật
+    `log-sum-exp` thay vì tính trực tiếp các số mũ lớn.
+2.  **Giới hạn miền theta:** Khi dùng grid approximation hoặc tối ưu số,
+    chọn miền đủ rộng và kiểm tra kết quả không bị ảnh hưởng đáng kể bởi
+    biên.
+3.  **Phiên bản tham số:** Lưu phiên bản rubric, step difficulties,
+    prior và bộ tham chiếu để có thể tái lập kết quả.
+4.  **Thiếu bằng chứng:** Không nên xem một câu hỏi là phép đo chắc chắn
+    về năng lực. Có thể lưu thêm `evidence_count` và trạng thái độ tin
+    cậy.
+5.  **Hiệu chuẩn:** Các giá trị difficulty giả định chỉ phục vụ MVP và
+    kiểm thử. Khi có dữ liệu đủ lớn, cần hiệu chuẩn tham số và đánh giá
+    độ phù hợp của mô hình.
+6.  **Transaction:** Chỉ cập nhật hồ sơ mastery sau khi dữ liệu bài kiểm
+    tra và kết quả đánh giá được lưu thành công.
+7.  **Tính nhất quán:** `add_test()` và
+    `rebuild_student_skill_mastery()` phải dùng cùng một công thức tổng
+    hợp.
+
+------------------------------------------------------------------------
+
+## 9. Tóm tắt công thức được lựa chọn
+
+### Ước lượng xác suất PCM
+
+\[ P(X_i=k`\mid`{=tex}`\theta`{=tex})= `\frac{
+\exp\left(\sum_{j=1}^{k}(\theta-\delta_{ij})\right)
+}{
+\sum_{r=0}^{m}
+\exp\left(\sum_{j=1}^{r}(\theta-\delta_{ij})\right)
+}`{=tex} \]
+
+### Ước lượng MAP
+
+\[ `\hat{\theta}`{=tex}*{MAP,i} =
+`\arg`{=tex}`\max`{=tex}*{`\theta`{=tex}} `\left[
+\log P(X_i=x_i\mid\theta)
+-
+\frac{(\theta-\mu_0)^2}{2\sigma_0^2}
+\right]`{=tex}\]
+
+### Ước lượng EAP
+
+\[ `\hat{\theta}`{=tex}*{EAP,i} =
+`\int`{=tex}*{-`\infty`{=tex}}\^{+`\infty`{=tex}}
+`\theta`{=tex}`\pi`{=tex}\_i(`\theta`{=tex}`\mid `{=tex}x_i),d`\theta`{=tex}
+\]
+
+### Quy đổi mastery bằng bộ tham chiếu (MVP dùng EAP)
+
+\[ question_mastery_i = `\sum`{=tex}*{k=0}\^{m}
+kP*{ref}(X=k`\mid`{=tex}`\hat{\theta}`{=tex}\_{EAP,i}) \]
+
+### Tổng hợp theo skill
+
+\[ mastery_score_s= `\frac{1}{n_s}`{=tex}
+`\sum`{=tex}\_{i=1}\^{n_s}question_mastery_i \]
+
+### Đếm bằng chứng
+
+\[ evidence_count_s=n_s \]
+
+------------------------------------------------------------------------
+
+## 10. Tài liệu học thuật nền tảng
+
+-   Masters, G. N. (1982). *A Rasch Model for Partial Credit Scoring*.
+    Psychometrika, 47(2), 149--174.
+-   Masters, G. N. (1988). *The Analysis of Partial Credit Scoring*.
+    Applied Measurement in Education, 1(4), 279--297.
+-   EAP ability estimation (dichotomous and polytomous IRT models)
+
+Các tài liệu trên là nền tảng cho PCM và chấm điểm từng phần. Việc dùng
+prior Bayesian, MAP/EAP cho từng câu và bộ tham chiếu chung là các lựa
+chọn thiết kế được đề xuất để phù hợp với kiến trúc của hệ thống; không
+nên quy toàn bộ quy trình này thành thuật toán nguyên bản của Masters.
