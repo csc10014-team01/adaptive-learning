@@ -27,7 +27,7 @@ Bài làm mô phỏng được cung cấp qua dữ liệu mẫu; nguồn dữ li
 - Đánh giá bài làm sử dụng đề bài, câu trả lời, đáp án/lời giải tham chiếu và tiêu chí đánh giá được nhóm thống nhất. Cấu trúc kết quả đánh giá phải được Data, AI và Architecture đối chiếu trước khi triển khai.
 - Hồ sơ mẫu hiện được thiết lập sẵn để thử tính năng sinh đề, nên mastery/evidence có thể không tương ứng với lịch sử bài làm. Khi thiết kế cập nhật hồ sơ, cần xác nhận dữ liệu ban đầu phù hợp với cơ chế đã chọn.
 - Teacher token hiện dùng chung chưa xác định danh tính riêng từng giáo viên; grading và phân quyền theo bản ghi cần được bổ sung ở giai đoạn triển khai.
-- Công thức, cách tính evidence, thời điểm và cơ chế lưu cập nhật hồ sơ đang chờ nhóm thống nhất.
+- Công thức mastery, cách tính evidence và cơ chế cập nhật/lưu hồ sơ đang chờ nhóm thống nhất.
 
 ### 2.2. Nguyên tắc nghiệp vụ theo phạm vi workflow hiện tại
 
@@ -36,7 +36,7 @@ Bài làm mô phỏng được cung cấp qua dữ liệu mẫu; nguồn dữ li
 | BR-01 | Câu được AI đánh giá thành công và vượt kiểm tra đầu ra có kết quả cuối cùng được ghi nhận tự động, không chờ giáo viên duyệt lại. |
 | BR-02 | Câu AI không đánh giá được phải gắn cờ và chuyển giáo viên; không tự tạo kết quả đánh giá để hoàn tất bài. |
 | BR-03 | Chỉ hoàn tất chấm toàn bài khi tất cả câu cần đánh giá đều có kết quả cuối cùng hợp lệ, không còn lỗi chặn và kết quả toàn bài đã được lưu thành công. |
-| BR-04 | Hoàn tất chấm độc lập với cập nhật hồ sơ. Không coi bài đã hoàn tất chấm là bằng chứng mastery/evidence đã được cập nhật; cơ chế cập nhật hồ sơ được bổ sung sau khi thống nhất. |
+| BR-04 | Công thức mastery, cách tính evidence và cơ chế cập nhật/lưu hồ sơ đang chờ nhóm thống nhất. |
 | BR-05 | Chỉ người có quyền mới được xem kết quả hoặc đánh giá câu cần xử lý thủ công. Backend phải kiểm tra quyền trên bản ghi, không chỉ ẩn nút trên giao diện. |
 | BR-06 | Tiêu chí đánh giá bài làm học sinh và rubric đánh giá chất lượng sinh đề là hai tài liệu khác nhau. Mục tiêu 80/100 dành cho chất lượng sinh đề, không dùng để đánh giá bài làm học sinh. |
 
@@ -47,7 +47,7 @@ Bài làm mô phỏng được cung cấp qua dữ liệu mẫu; nguồn dữ li
 | Giáo viên được cấp quyền | Xem tiến độ và kết quả; đánh giá các câu AI không xử lý được đã được chuyển sang chấm thủ công. |
 | Backend | Kiểm tra đầu vào và quyền; gọi AI; kiểm tra đầu ra; lưu kết quả và thông tin lần đánh giá; xác định đủ điều kiện hoàn tất chấm toàn bài. |
 | AI local | Trả kết quả đánh giá và nhận xét theo tiêu chí được thống nhất, hoặc báo không đánh giá được. Không tự thay đổi tiêu chí, quyền truy cập hoặc hồ sơ. |
-| Học sinh | Là chủ thể của bài làm và hồ sơ. Không có quyền sửa kết quả đánh giá hoặc mastery/evidence. Không yêu cầu triển khai màn hình nộp bài trong W06. |
+| Học sinh | Là chủ thể của hồ sơ và bài làm mô phỏng. Toàn bộ MVP chỉ triển khai giao diện giáo viên; dữ liệu học sinh và bài nộp được cung cấp qua dữ liệu mẫu. |
 
 Trước khi bắt đầu chấm, backend phải xác định được:
 
@@ -156,7 +156,7 @@ Khi lưu kết quả toàn bài thành công, chuyển sang `FINALIZED`. Nếu l
 
 ## 7. Cập nhật hồ sơ (chờ thống nhất)
 
-Cập nhật hồ sơ là bước riêng sau quá trình chấm; cơ chế chi tiết chưa được chốt. Workflow này chưa quy định công thức, đơn vị evidence, thời điểm kích hoạt, kho lưu hoặc yêu cầu lưu kết quả chấm và hồ sơ trong cùng một transaction.
+Công thức mastery, cách tính evidence và cơ chế cập nhật/lưu hồ sơ đang chờ nhóm thống nhất. Workflow này chưa quy định đơn vị evidence, thời điểm kích hoạt, kho lưu hoặc yêu cầu lưu kết quả chấm và hồ sơ trong cùng một transaction.
 
 Các nội dung cần thống nhất trước khi bổ sung thiết kế và tiêu chí nghiệm thu:
 
@@ -211,7 +211,7 @@ Ví dụ giả lập có ba câu Q1, Q2, Q3. Ví dụ chỉ mô tả tiến đ�
 
 Nếu lưu kết quả toàn bài ở bước 2 thất bại, bài chưa được công bố `FINALIZED`; các kết quả câu đã lưu vẫn được giữ để thử lại.
 
-Sau khi hoàn tất chấm, kết quả bài làm có thể là đầu vào cho bước cập nhật hồ sơ sẽ được thiết kế sau. Ví dụ này chưa xác định thay đổi mastery/evidence và không khẳng định hồ sơ đã được cập nhật.
+Ví dụ này chỉ minh họa luồng chấm và lưu kết quả. Công thức mastery, cách tính evidence và cơ chế cập nhật/lưu hồ sơ đang chờ nhóm thống nhất; ví dụ chưa xác định thay đổi mastery/evidence hoặc xác nhận hồ sơ đã được cập nhật.
 
 ## 10. Quyết định cần thống nhất trong W06
 
@@ -254,7 +254,7 @@ Checklist review, chưa đánh dấu hoàn thành thay cho các thành viên:
 
 ## Tài liệu đối chiếu trong dự án
 
-- [Kế hoạch và tiến độ trong midterm report](../../Team01_Midterm_Project_Report.docx), mục 4.2–4.3; đối chiếu với cập nhật phạm vi mới nhất của nhóm.
+- [Midterm report](../../Team01_Midterm_Project_Report.docx), mục 1.3–1.4, 2.1, UC-03/UC-04 tại mục 2.3.2 và mục 4.2–4.3; đối chiếu phạm vi MVP, luồng chấm, kết quả và kế hoạch của nhóm.
 - [README](../../README.md): giới hạn hiện tại, database nguồn chỉ đọc, teacher token và UI đang có.
 - [Ghi chú kiến trúc và API](../notes/N04_architecture_api.md): tham khảo kiến trúc/API hiện có; đối chiếu phần grading với phạm vi workflow này.
 - [Contract hiện tại](../../src/api/schemas.py): tham khảo cấu trúc kỹ thuật; cần đối chiếu lại với cấu trúc kết quả đánh giá sẽ thống nhất.
