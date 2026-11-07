@@ -207,8 +207,7 @@ Giá trị EAP:
 
 $$
 \boxed{
-\hat{\theta}_{EAP,i}
-=
+\hat{\theta}_{EAP,i}=
 \int_{-\infty}^{+\infty}
 \theta\,\pi_i(\theta\mid x_i)\,d\theta
 }
@@ -245,8 +244,7 @@ Với xác suất PCM của câu hỏi \(i\), điểm kỳ vọng là:
 
 $$
 \boxed{
-E(X_i\mid\theta_i)
-=
+E(X_i\mid\theta_i)=
 \sum_{k=0}^{m}kP_i(X_i=k\mid\theta_i)
 }
 $$
@@ -254,8 +252,7 @@ $$
 Với rubric 0–4:
 
 $$
-E(X_i\mid\theta_i)
-=
+E(X_i\mid\theta_i)=
 \sum_{k=0}^{4}kP_i(X_i=k\mid\theta_i)
 $$
 
@@ -289,8 +286,7 @@ $$
 
 $$
 \boxed{
-question\_mastery_i
-=
+question\_mastery_i=
 \sum_{k=0}^{m}
 kP_{ref}(X=k\mid\hat{\theta}_{EAP,i})
 }
