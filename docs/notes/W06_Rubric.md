@@ -22,8 +22,8 @@ Tiêu chuẩn này đánh giá tính đúng đắn tuyệt đối về mặt ki�
   * Các giả thiết, dữ kiện cho trong đề bài phải đầy đủ, mạch lạc và không mâu thuẫn lẫn nhau.
   * Bài toán phải có nghiệm hoặc có hướng giải quyết hợp lý trong tập hợp số học phổ thông (chương trình Toán 10), không tồn tại các điều kiện vô lý làm triệt tiêu bản chất bài toán tổ hợp.
 * **C1.2. Tính chính xác của đáp án cuối cùng & phương án nhiễu (15 điểm):**
-  * Kết quả đáp án (`correct_answer`) phải được tính toán chính xác tuyệt đối (ví dụ: áp dụng đúng công thức hoán vị $P_n$, chỉnh hợp $A_n^k$, tổ hợp $C_n^k$, hoặc quy tắc cộng/nhân).
-  * Đối với dạng câu hỏi trắc nghiệm, các phương án nhiễu (distractors) phải hợp lý, phản ánh đúng các lỗi sai phổ biến của học sinh (như nhầm lẫn giữa có thứ tự và không có thứ tự) chứ không được là con số vô nghĩa.
+  * Kết quả đáp án cuối cùng (`correct_answer`) phải được tính toán chính xác tuyệt đối (ví dụ: áp dụng đúng công thức hoán vị $P_n$, chỉnh hợp $A_n^k$, tổ hợp $C_n^k$, hoặc quy tắc cộng/nhân).
+  * Đối với dạng câu hỏi tự luận, hệ thống phải cung cấp khung biểu điểm chi tiết (marking scheme) phân bổ rõ ràng cho từng bước giải (ví dụ: bước nhận dạng toán, bước áp dụng công thức, bước biến đổi trung gian và kết quả), đảm bảo giáo viên hoặc hệ thống chấm tự luận có căn cứ chấm điểm minh bạch.
 * **C1.3. Chất lượng của phần lời giải chi tiết (10 điểm):**
   * Phần hướng dẫn giải (`explanation`) phải trình bày từng bước logic rõ ràng: từ việc nhận diện dạng toán, áp dụng công thức nào, cho đến các bước biến đổi trung gian và kết luận.
   * Lời giải không được bỏ sót bước hoặc nhảy cóc khiến người đọc khó hiểu.
