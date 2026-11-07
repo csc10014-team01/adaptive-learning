@@ -14,7 +14,11 @@
     <a class="brand" href="/" aria-label="Math Studio"><span class="brand-icon">∑</span><span>Math Studio<small>PERSONALIZED ASSESSMENT</small></span></a>
     <div class="top-right"><span class="pill" id="connection-state">Chưa kết nối</span><a href="/docs" target="_blank" rel="noopener">API docs ↗</a></div>
   </header>
-  <main class="workspace">
+
+  <!-- ══════════════════════════════════════════════════════
+       MÀN CHÍNH: CÔNG CỤ TẠO ĐỀ (mặc định)
+  ══════════════════════════════════════════════════════ -->
+  <main class="workspace" id="screen-exam">
     <section class="intro">
       <div><p class="eyebrow">KHÔNG GIAN GIÁO VIÊN</p><h1>Một đề ôn tập.<br><span>Đúng nhu cầu học sinh.</span></h1><p class="intro-note">Chọn hồ sơ, thiết lập yêu cầu và xem bản nháp đề Toán.</p></div>
       <div class="subject-note"><span class="subject-mark">ƒ(x)</span><span>TOÁN LỚP 10<strong>Đại số tổ hợp</strong><small id="runtime-label">Thử nghiệm tạo đề</small></span></div>
@@ -26,7 +30,7 @@
     </section>
 
     <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
-    <div id="demo-notice" class="notice warning" hidden>Chế độ demo: đề được ghép từ câu hỏi có sẵn, không gọi Qwen và chưa cá nhân hóa. “Xem kế hoạch” vẫn sử dụng planner thật.</div>
+    <div id="demo-notice" class="notice warning" hidden>Chế độ demo: đề được ghép từ câu hỏi có sẵn, không gọi Qwen và chưa cá nhân hóa. "Xem kế hoạch" vẫn sử dụng planner thật.</div>
 
     <div class="studio-grid">
       <aside class="controls">
@@ -60,10 +64,152 @@
         <div class="tabs" role="tablist" aria-label="Nội dung kết quả"><button id="exam-tab" type="button" role="tab" aria-selected="true" aria-controls="exam-pane" class="active">Đề ôn tập</button><button id="plan-tab" type="button" role="tab" aria-selected="false" aria-controls="plan-pane" tabindex="-1">Kế hoạch chọn câu</button></div>
         <div id="loading" class="loading" role="status" aria-live="polite" hidden><span class="spinner" aria-hidden="true"></span><div><strong id="loading-title">Đang xử lý…</strong><p><span id="elapsed">0</span> giây · <span id="loading-help">Vui lòng giữ trang mở.</span></p></div></div>
         <div id="exam-pane" role="tabpanel" aria-labelledby="exam-tab"><div class="empty-state"><div class="empty-icon">∑</div><h3>Đề tiếp theo bắt đầu ở đây</h3><p>Chọn một học sinh ở bên trái, xem kế hoạch<br>hoặc tạo đề để kiểm tra luồng hoạt động.</p><div class="empty-steps"><span>01 · Hồ sơ</span><span>02 · Chọn câu</span><span>03 · Bản nháp</span></div></div></div>
-        <div id="plan-pane" role="tabpanel" aria-labelledby="plan-tab" hidden><div class="empty-state"><div class="empty-icon">≡</div><h3>Hiểu lý do chọn từng câu</h3><p>Bấm “Xem kế hoạch” để xem phân bố kỹ năng,<br>độ khó và các câu nguồn mà planner đã chọn.</p></div></div>
+        <div id="plan-pane" role="tabpanel" aria-labelledby="plan-tab" hidden><div class="empty-state"><div class="empty-icon">≡</div><h3>Hiểu lý do chọn từng câu</h3><p>Bấm "Xem kế hoạch" để xem phân bố kỹ năng,<br>độ khó và các câu nguồn mà planner đã chọn.</p></div></div>
       </section>
     </div>
     <footer>Math Studio <span>·</span> AI-Powered Personalized Mathematics Assessment System <span>·</span> Local workspace</footer>
   </main>
+
+  <!-- ══════════════════════════════════════════════════════
+       MÀN HỒ SƠ HỌC SINH  #/students/{id}
+  ══════════════════════════════════════════════════════ -->
+  <main class="sp-layout" id="screen-profile" hidden aria-label="Hồ sơ học sinh">
+
+    <!-- Sidebar -->
+    <nav class="sp-sidebar" aria-label="Điều hướng">
+      <div class="sp-logo"><span class="brand-icon">∑</span><span>Math Studio</span></div>
+      <a class="sp-nav-link" id="sp-nav-exam" href="#/">Tạo đề ôn tập</a>
+      <a class="sp-nav-link active" id="sp-nav-profile" href="#/students/" aria-current="page">Theo dõi học sinh</a>
+    </nav>
+
+    <!-- Main content -->
+    <div class="sp-main">
+      <!-- Back button -->
+      <div class="sp-topbar">
+        <a class="sp-back-btn" href="#/" id="sp-back-btn">◀ Quay lại Danh sách học sinh</a>
+      </div>
+
+      <!-- 403 screen -->
+      <div id="sp-403" class="sp-fullstate" hidden>
+        <div class="sp-fullstate-icon">🔒</div>
+        <h2>Không có quyền truy cập</h2>
+        <p>Teacher token không hợp lệ hoặc phiên làm việc đã hết hạn.</p>
+        <a href="#/" class="btn-primary sp-fullstate-btn">Quay lại và kết nối lại</a>
+      </div>
+
+      <!-- Error screen -->
+      <div id="sp-error" class="sp-fullstate" hidden>
+        <div class="sp-fullstate-icon">⚠️</div>
+        <h2 id="sp-error-title">Không tải được dữ liệu</h2>
+        <p id="sp-error-msg">Đã có lỗi xảy ra khi tải hồ sơ học sinh.</p>
+        <button class="btn-primary sp-fullstate-btn" id="sp-retry-btn">Thử lại</button>
+      </div>
+
+      <!-- Profile content (shown after load) -->
+      <div id="sp-content" hidden>
+
+        <!-- Student header card -->
+        <div class="sp-header-card">
+          <!-- Name + info -->
+          <div class="sp-header-left">
+            <div class="sp-name-badge" id="sp-name-badge">
+              <span id="sp-student-name">—</span>
+            </div>
+            <div class="sp-header-meta">
+              <span id="sp-grade">Lớp —</span>
+              <span class="sp-data-status" id="sp-data-status">
+                <span class="sp-data-dot" id="sp-data-dot"></span>
+                <span id="sp-data-label">Đang tải…</span>
+              </span>
+            </div>
+          </div>
+          <!-- Stats -->
+          <div class="sp-header-stats">
+            <div class="sp-stat">
+              <span class="sp-stat-label">Số bài kiểm tra đã làm</span>
+              <span class="sp-stat-value" id="sp-exam-count">—</span>
+            </div>
+            <div class="sp-stat sp-stat-right">
+              <span class="sp-stat-label">Kỹ năng đủ dữ liệu</span>
+              <span class="sp-stat-value" id="sp-skill-ratio">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skeleton: header -->
+        <div class="sp-header-card sp-skeleton-card" id="sp-skeleton-header" hidden>
+          <div class="sp-header-left">
+            <div class="sk-block sk-name"></div>
+            <div class="sk-block sk-meta"></div>
+          </div>
+          <div class="sp-header-stats">
+            <div class="sk-block sk-stat"></div>
+            <div class="sk-block sk-stat"></div>
+          </div>
+        </div>
+
+        <!-- Two-column body -->
+        <div class="sp-body">
+
+          <!-- Left: Skill chart panel -->
+          <section class="sp-panel sp-chart-panel" aria-labelledby="sp-chart-title">
+            <h3 class="sp-panel-title" id="sp-chart-title">Biểu đồ năng lực theo kỹ năng:</h3>
+
+            <!-- Skeleton rows -->
+            <div id="sp-skeleton-skills" class="sp-skill-list">
+              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
+              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
+              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
+              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
+            </div>
+
+            <!-- Real skill list -->
+            <div id="sp-skill-list" class="sp-skill-list" hidden></div>
+          </section>
+
+          <!-- Right: Assessment panel -->
+          <section class="sp-panel sp-assess-panel" aria-labelledby="sp-assess-title">
+            <h3 class="sp-panel-title" id="sp-assess-title">Đánh giá và khuyến nghị:</h3>
+
+            <!-- Skeleton -->
+            <div id="sp-skeleton-assess">
+              <div class="sk-block sk-assess-line" style="width:55%"></div>
+              <div class="sk-block sk-assess-line" style="width:85%;margin-top:8px"></div>
+              <div class="sk-block sk-assess-line" style="width:70%;margin-top:8px"></div>
+              <div class="sk-block sk-assess-line" style="width:45%;margin-top:24px"></div>
+              <div class="sk-block sk-assess-line" style="width:90%;margin-top:8px"></div>
+            </div>
+
+            <!-- Real assessment -->
+            <div id="sp-assess-content" hidden>
+              <div class="sp-assess-block" id="sp-weak-block">
+                <div class="sp-assess-header sp-assess-warn">
+                  <span class="sp-assess-icon">!</span>
+                  <strong id="sp-weak-title">Cần cải thiện:</strong>
+                </div>
+                <p id="sp-weak-text" class="sp-assess-text"></p>
+              </div>
+              <div class="sp-assess-block" id="sp-rec-block">
+                <div class="sp-assess-header">
+                  <strong>Khuyến nghị ôn tập:</strong>
+                </div>
+                <p id="sp-rec-text" class="sp-assess-text"></p>
+              </div>
+            </div>
+          </section>
+
+        </div><!-- /sp-body -->
+      </div><!-- /sp-content -->
+
+      <!-- CTA bottom bar -->
+      <div class="sp-cta-bar" id="sp-cta-bar" hidden>
+        <button class="sp-cta-btn" id="sp-generate-btn">
+          Tạo đề ôn tập thích ứng ▶
+        </button>
+      </div>
+
+    </div><!-- /sp-main -->
+  </main>
+
 </body>
 </html>
