@@ -97,236 +97,243 @@ rubric hoặc step difficulty thay đổi, kết quả cũ có thể cần đư�
 toán lại.
 
 ------------------------------------------------------------------------
-
 ## 3. Cơ chế tính PCM riêng từng câu hỏi
 
 ### 3.1. Dữ liệu đầu vào
 
-Với câu hỏi thứ `i`:
+Với câu hỏi thứ \(i\):
 
--   `observed_level = x_i`: mức rubric học sinh đạt được.
--   `step_difficulties = [δ_i1, δ_i2, ..., δ_im]`: độ khó của các bước
-    chuyển.
--   `m`: mức điểm tối đa của rubric.
--   Prior năng lực: giả định ban đầu về phân phối của `theta_i`.
+- `observed_level = x_i`: mức rubric học sinh đạt được.
+- `step_difficulties = [\delta_{i1}, \delta_{i2}, \ldots, \delta_{im}]`: độ khó của các bước chuyển.
+- \(m\): mức điểm tối đa của rubric.
+- Prior năng lực: giả định ban đầu về phân phối của \(\theta_i\).
 
 ### 3.2. Stage 1: Tính xác suất theo PCM
-*Công thức này cho phép tính xác suất đạt từng mức rubric khi biết năng lực \(\theta_i\).*
 
-Với một giá trị năng lực thử nghiệm `theta`, xác suất đạt mức `k` là:
+Công thức này cho phép tính xác suất đạt từng mức rubric khi biết năng lực \(\theta_i\).
+
+Với một giá trị năng lực thử nghiệm \(\theta\), xác suất đạt mức \(k\) là:
+
 $$
-\[ P(X_i=k`\mid`{=tex}`\theta`{=tex})= `\frac{
+P(X_i=k\mid\theta)=
+\frac{
 \exp\left(\sum_{j=1}^{k}(\theta-\delta_{ij})\right)
 }{
 \sum_{r=0}^{m}
 \exp\left(\sum_{j=1}^{r}(\theta-\delta_{ij})\right)
-}`{=tex} \]
+}
 $$
-Quy ước tổng rỗng tại `k = 0` bằng 0, do đó tử số của mức 0 bằng:
+
+Quy ước tổng rỗng tại \(k=0\) bằng 0, do đó tử số của mức 0 bằng:
+
 $$
-\[ `\exp`{=tex}(0)=1 \]
+\exp(0)=1
 $$
+
 Trong đó:
 
--   `theta`: năng lực tiềm ẩn đang xét.
--   `δ_ij`: độ khó của bước chuyển thứ `j` trong câu hỏi `i`.
--   `k`: mức rubric đang tính xác suất.
--   `m`: mức rubric tối đa.
+- \(\theta\): năng lực tiềm ẩn đang xét.
+- \(\delta_{ij}\): độ khó của bước chuyển thứ \(j\) trong câu hỏi \(i\).
+- \(k\): mức rubric đang tính xác suất.
+- \(m\): mức rubric tối đa.
 
 ### 3.3. Stage 2: Ước lượng năng lực bằng MAP
 
-#### Vì sao không dùng MLE trực tiếp?
+**Vì sao không dùng MLE trực tiếp?**
+
 Giả sử:
+
 $$
-\[ `\theta`{=tex}\_i`\sim `{=tex}N(`\mu`{=tex}\_0,`\sigma`{=tex}\_0\^2)
-\]
+\theta_i\sim N(\mu_0,\sigma_0^2)
 $$
+
 Có thể chọn giá trị khởi đầu:
+
 $$
-\[ `\mu`{=tex}\_0=0,`\qquad `{=tex}`\sigma`{=tex}\_0=1 \]
+\mu_0=0,\qquad \sigma_0=1
 $$
-Đây là giả định khởi tạo, không phải tham số bắt buộc của PCM. Cần giữ
-nhất quán thang đo giữa prior, step difficulties và bộ tham chiếu.
+
+Đây là giả định khởi tạo, không phải tham số bắt buộc của PCM. Cần giữ nhất quán thang đo giữa prior, step difficulties và bộ tham chiếu.
 
 Theo Bayes:
+
 $$
-\[ P(`\theta`{=tex}\_i`\mid `{=tex}X_i=x_i) `\propto`{=tex}
-P(X_i=x_i`\mid`{=tex}`\theta`{=tex}\_i)P(`\theta`{=tex}\_i) \]
+P(\theta_i\mid X_i=x_i)
+\propto
+P(X_i=x_i\mid\theta_i)P(\theta_i)
 $$
-Hàm log-posterior, bỏ qua hằng số không phụ thuộc vào `theta`, là:
+
+Hàm log-posterior, bỏ qua hằng số không phụ thuộc vào \(\theta\), là:
+
 $$
-\[ `\boxed{
+\boxed{
 L_i(\theta)=
 \log P(X_i=x_i\mid\theta)
--
-\frac{(\theta-\mu_0)^2}{2\sigma_0^2}
-}`{=tex} \]
+-\frac{(\theta-\mu_0)^2}{2\sigma_0^2}
+}
 $$
+
 Ước lượng MAP:
+
 $$
-\[ `\boxed{
+\boxed{
 \hat{\theta}_{MAP,i}
 =
-\arg\max_{\theta} L_i(\theta)
-}`{=tex} \]
+\arg\max_{\theta}L_i(\theta)
+}
 $$
-MAP tạo ra nghiệm hữu hạn nhờ prior, kể cả khi `observed_level` ở mức
-thấp nhất hoặc cao nhất.
 
-Tuy nhiên, một kết quả rubric vẫn là lượng bằng chứng hạn chế. MAP không
-làm cho ước lượng từ một câu trở nên chắc chắn; nó chỉ giúp kết quả ổn
-định hơn bằng giả định prior.
+MAP tạo ra nghiệm hữu hạn nhờ prior, kể cả khi `observed_level` ở mức thấp nhất hoặc cao nhất.
+
+Tuy nhiên, một kết quả rubric vẫn là lượng bằng chứng hạn chế. MAP không làm cho ước lượng từ một câu trở nên chắc chắn; nó chỉ giúp kết quả ổn định hơn bằng giả định prior.
 
 ### 3.4. Stage 3: Ước lượng EAP (khuyến nghị khi cần xét độ bất định)
 
-Thay vì chỉ sử dụng điểm cực đại MAP, có thể sử dụng trung bình hậu
-nghiệm EAP:
+Thay vì chỉ sử dụng điểm cực đại MAP, có thể sử dụng trung bình hậu nghiệm EAP:
+
 $$
-\[ `\pi`{=tex}\_i(`\theta`{=tex}`\mid `{=tex}x_i)= `\frac{
+\pi_i(\theta\mid x_i)=
+\frac{
 P(X_i=x_i\mid\theta)\phi(\theta;\mu_0,\sigma_0^2)
 }{
 \int_{-\infty}^{+\infty}
 P(X_i=x_i\mid t)\phi(t;\mu_0,\sigma_0^2)\,dt
-}`{=tex} \]
+}
 $$
-Trong đó `φ` là mật độ phân phối chuẩn.
+
+Trong đó \(\phi\) là mật độ phân phối chuẩn.
 
 Giá trị EAP:
+
 $$
-\[ `\boxed{
+\boxed{
 \hat{\theta}_{EAP,i}
 =
 \int_{-\infty}^{+\infty}
 \theta\,\pi_i(\theta\mid x_i)\,d\theta
-}`{=tex} \]
+}
 $$
--   `theta_map`: giá trị tại cực đại của phân phối hậu nghiệm.
--   `theta_eap`: trung bình của phân phối hậu nghiệm.
 
-**Đề xuất:** Nếu cần một giá trị theta đại diện để tính mastery, ưu tiên
-`theta_eap`. Nếu MVP cần đơn giản hơn, có thể sử dụng `theta_map`, nhưng
-phải thống nhất cách dùng trong toàn hệ thống.
+- `theta_map`: giá trị tại cực đại của phân phối hậu nghiệm.
+- `theta_eap`: trung bình của phân phối hậu nghiệm.
 
-Các tích phân có thể được tính gần đúng bằng numerical integration trên
-một khoảng theta đủ rộng, hoặc bằng phương pháp lưới (grid
-approximation).
+**Đề xuất:** Nếu cần một giá trị theta đại diện để tính mastery, ưu tiên `theta_eap`. Nếu MVP cần đơn giản hơn, có thể sử dụng `theta_map`, nhưng phải thống nhất cách dùng trong toàn hệ thống.
 
-### 3.5. Đề xuất thang đo step_difficulty:
-Độ khó giáo viên chọn	Ý nghĩa	step_difficulty
-0	                    Rất dễ	    -1.5
-1	                    Dễ	        -0.75
-2	                    Trung bình	    0
-3	                    Khó          0.75
-4	                    Rất khó	     1.5
+Các tích phân có thể được tính gần đúng bằng numerical integration trên một khoảng theta đủ rộng, hoặc bằng phương pháp lưới (grid approximation).
 
-\[
-    b_i = 0.75(d_i - 2)
-\]
+### 3.5. Đề xuất thang đo step_difficulty
 
-------------------------------------------------------------------------
+| Độ khó giáo viên chọn | Ý nghĩa | `step_difficulty` |
+|---:|---|---:|
+| 0 | Rất dễ | -1.5 |
+| 1 | Dễ | -0.75 |
+| 2 | Trung bình | 0 |
+| 3 | Khó | 0.75 |
+| 4 | Rất khó | 1.5 |
+
+Công thức quy đổi:
+
+$$
+b_i=0.75(d_i-2)
+$$
 
 ## 4. Quy đổi theta sang question_mastery_score
 
 ### 4.1. Expected Score theo chính câu hỏi
 
-Với xác suất PCM của câu hỏi `i`, điểm kỳ vọng là:
+Với xác suất PCM của câu hỏi \(i\), điểm kỳ vọng là:
+
 $$
-\[ `\boxed{
+\boxed{
 E(X_i\mid\theta_i)
 =
 \sum_{k=0}^{m}kP_i(X_i=k\mid\theta_i)
-}`{=tex} \]
+}
 $$
-Với rubric 0--4:
-$$
-\[ E(X_i`\mid`{=tex}`\theta`{=tex}*i) =
-`\sum`{=tex}*{k=0}\^{4}kP_i(X_i=k`\mid`{=tex}`\theta`{=tex}\_i) \]
-$$
-Giá trị nằm trong khoảng `[0, 4]`.
 
-Cách này phù hợp khi muốn diễn giải điểm dự kiến trên chính rubric của
-câu hỏi. Tuy nhiên, nếu các câu có step difficulties khác nhau, điểm kỳ
-vọng theo rubric riêng của từng câu có thể không so sánh trực tiếp công
-bằng giữa câu dễ và câu khó.
+Với rubric 0–4:
+
+$$
+E(X_i\mid\theta_i)
+=
+\sum_{k=0}^{4}kP_i(X_i=k\mid\theta_i)
+$$
+
+Giá trị nằm trong khoảng \([0,4]\).
+
+Cách này phù hợp khi muốn diễn giải điểm dự kiến trên chính rubric của câu hỏi. Tuy nhiên, nếu các câu có step difficulties khác nhau, điểm kỳ vọng theo rubric riêng của từng câu có thể không so sánh trực tiếp công bằng giữa câu dễ và câu khó.
 
 ### 4.2. Đề xuất chính: Expected Score theo bộ tham chiếu chung
 
-Để tổng hợp các câu hỏi có độ khó khác nhau, đề xuất sử dụng một bộ step
-difficulties tham chiếu cố định:
-$$
-\[ `\delta`{=tex}\_{ref}=\[-1.5,-0.5,0.5,1.5\] \]
-$$
-Các giá trị trên chỉ là ví dụ. Bộ tham chiếu cần được xác định trên cùng
-thang đo năng lực với các tham số câu hỏi và được giữ cố định trong cùng
-một phiên bản hệ thống.
+Để tổng hợp các câu hỏi có độ khó khác nhau, đề xuất sử dụng một bộ step difficulties tham chiếu cố định:
 
-Với bộ tham chiếu, tính xác suất đạt mức `k`:
 $$
-\[ P\_{ref}(X=k`\mid`{=tex}`\theta`{=tex})= `\frac{
+\delta_{ref}=[-1.5,-0.5,0.5,1.5]
+$$
+
+Các giá trị trên chỉ là ví dụ. Bộ tham chiếu cần được xác định trên cùng thang đo năng lực với các tham số câu hỏi và được giữ cố định trong cùng một phiên bản hệ thống.
+
+Với bộ tham chiếu, tính xác suất đạt mức \(k\):
+
+$$
+P_{ref}(X=k\mid\theta)=
+\frac{
 \exp\left(\sum_{j=1}^{k}(\theta-\delta_{ref,j})\right)
 }{
 \sum_{r=0}^{m}
 \exp\left(\sum_{j=1}^{r}(\theta-\delta_{ref,j})\right)
-}`{=tex} \]
+}
 $$
-#### Phương án: Dùng EAP làm giá trị theta đại diện
+
+**Phương án: Dùng EAP làm giá trị theta đại diện**
+
 $$
-\[ `\boxed{
+\boxed{
 question\_mastery_i
 =
 \sum_{k=0}^{m}
 kP_{ref}(X=k\mid\hat{\theta}_{EAP,i})
-}`{=tex} \]
+}
 $$
+
 ### 4.4. Vì sao cần bộ tham chiếu chung?
 
-Nếu mỗi câu sử dụng bộ step difficulties riêng để tính Expected Score,
-cùng một theta có thể tạo ra điểm khác nhau do độ khó câu hỏi khác nhau.
+Nếu mỗi câu sử dụng bộ step difficulties riêng để tính Expected Score, cùng một theta có thể tạo ra điểm khác nhau do độ khó câu hỏi khác nhau.
 
 Dùng chung bộ tham chiếu giúp:
 
--   Chuyển theta của các câu về cùng một thang diễn giải.
--   Hạn chế việc câu dễ tự tạo ra điểm kỳ vọng cao hơn câu khó chỉ do
-    tham số riêng.
--   Hỗ trợ tổng hợp các câu cùng đánh giá một skill.
+- Chuyển theta của các câu về cùng một thang diễn giải.
+- Hạn chế việc câu dễ tự tạo ra điểm kỳ vọng cao hơn câu khó chỉ do tham số riêng.
+- Hỗ trợ tổng hợp các câu cùng đánh giá một skill.
 
-Điều kiện quan trọng: step difficulties của từng câu và bộ tham chiếu
-phải được đặt trên cùng một thang đo. Không thể tùy ý đặt các tham số
-độc lập rồi mặc định chúng có thể so sánh.
-
-------------------------------------------------------------------------
+**Điều kiện quan trọng:** step difficulties của từng câu và bộ tham chiếu phải được đặt trên cùng một thang đo. Không thể tùy ý đặt các tham số độc lập rồi mặc định chúng có thể so sánh.
 
 ## 5. Tổng hợp question_mastery_score theo skill
 
-Sau khi tính được `question_mastery_score` cho từng kết quả đánh giá,
-nhóm các kết quả theo `skill_id`.
+Sau khi tính được `question_mastery_score` cho từng kết quả đánh giá, nhóm các kết quả theo `skill_id`.
 
 Trong MVP, sử dụng trung bình cộng:
+
 $$
-\[ `\boxed{
+\boxed{
 mastery\_score_s=
 \frac{1}{n_s}
 \sum_{i=1}^{n_s}question\_mastery_i
-}`{=tex} \]
+}
 $$
+
 Trong đó:
 
--   `s`: kỹ năng đang xét.
--   `n_s`: số kết quả đánh giá hợp lệ của kỹ năng `s`.
--   `question_mastery_i`: điểm thành thạo của câu hỏi sau khi quy đổi về
-    thang tham chiếu chung.
+- \(s\): kỹ năng đang xét.
+- \(n_s\): số kết quả đánh giá hợp lệ của kỹ năng \(s\).
+- `question_mastery_i`: điểm thành thạo của câu hỏi sau khi quy đổi về thang tham chiếu chung.
 
-Không nhân thêm `question_difficulty` làm trọng số trong công thức này.
-Độ khó đã tham gia vào quá trình ước lượng theta; việc tiếp tục dùng độ
-khó làm trọng số có thể khiến câu khó được tính ảnh hưởng hai lần.
+Không nhân thêm `question_difficulty` làm trọng số trong công thức này. Độ khó đã tham gia vào quá trình ước lượng theta; việc tiếp tục dùng độ khó làm trọng số có thể khiến câu khó được tính ảnh hưởng hai lần.
 
-Nếu sau này muốn sử dụng trọng số, cần có căn cứ rõ ràng, chẳng hạn độ
-tin cậy của bằng chứng hoặc thiết kế đánh giá. Không nên mặc định câu
-khó luôn có trọng số cao hơn.
+Nếu sau này muốn sử dụng trọng số, cần có căn cứ rõ ràng, chẳng hạn độ tin cậy của bằng chứng hoặc thiết kế đánh giá. Không nên mặc định câu khó luôn có trọng số cao hơn.
 
-Nếu một câu hỏi đánh giá nhiều skill, cần có kết quả rubric riêng cho
-từng skill. Không dùng một `observed_level` chung để suy ra nhiều năng
-lực khác nhau.
+Nếu một câu hỏi đánh giá nhiều skill, cần có kết quả rubric riêng cho từng skill. Không dùng một `observed_level` chung để suy ra nhiều năng lực khác nhau.
+
 
 ------------------------------------------------------------------------
 
