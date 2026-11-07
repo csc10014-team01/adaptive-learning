@@ -177,8 +177,8 @@ $$
 
 $$
 \boxed{
-\hat{\theta}_{MAP,i}
-=
+\hat{\theta}_{MAP,i} =
+
 \arg\max_{\theta}L_i(\theta)
 }
 $$
