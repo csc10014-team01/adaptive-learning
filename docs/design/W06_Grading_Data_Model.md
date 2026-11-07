@@ -101,18 +101,18 @@ toán lại.
 
 ### 3.1. Dữ liệu đầu vào
 
-Với câu hỏi thứ \(i\):
+Với câu hỏi thứ i:
 
 - `observed_level = x_i`: mức rubric học sinh đạt được.
-- `step_difficulties = [\delta_{i1}, \delta_{i2}, \ldots, \delta_{im}]`: độ khó của các bước chuyển.
-- \(m\): mức điểm tối đa của rubric.
-- Prior năng lực: giả định ban đầu về phân phối của \(\theta_i\).
+- `step_difficulties` = [$$\delta_{i1}$$, $$\delta_{i2}$$, $$\ldots$$, $$\delta_{im}$$]: độ khó của các bước chuyển.
+- m: mức điểm tối đa của rubric.
+- Prior năng lực: giả định ban đầu về phân phối của $$\(\theta_i\)$$.
 
 ### 3.2. Stage 1: Tính xác suất theo PCM
 
-Công thức này cho phép tính xác suất đạt từng mức rubric khi biết năng lực \(\theta_i\).
+Công thức này cho phép tính xác suất đạt từng mức rubric khi biết năng lực $$\(\theta_i\)$$.
 
-Với một giá trị năng lực thử nghiệm \(\theta\), xác suất đạt mức \(k\) là:
+Với một giá trị năng lực thử nghiệm $$\(\theta\)$$, xác suất đạt mức k là:
 
 $$
 P(X_i=k\mid\theta)=
@@ -132,10 +132,10 @@ $$
 
 Trong đó:
 
-- \(\theta\): năng lực tiềm ẩn đang xét.
-- \(\delta_{ij}\): độ khó của bước chuyển thứ \(j\) trong câu hỏi \(i\).
-- \(k\): mức rubric đang tính xác suất.
-- \(m\): mức rubric tối đa.
+- $$\(\theta\)$$: năng lực tiềm ẩn đang xét.
+- $$\(\delta_{ij}\)$$: độ khó của bước chuyển thứ j trong câu hỏi i.
+- k: mức rubric đang tính xác suất.
+- m: mức rubric tối đa.
 
 ### 3.3. Stage 2: Ước lượng năng lực bằng MAP
 
@@ -177,7 +177,7 @@ $$
 
 $$
 \boxed{
-\hat{\theta}_{MAP,i} =
+\hat{\theta}_{MAP,i}=
 
 \arg\max_{\theta}L_i(\theta)
 }
@@ -233,15 +233,14 @@ Các tích phân có thể được tính gần đúng bằng numerical integrat
 
 Công thức quy đổi:
 
-$$
 b_i=0.75(d_i-2)
-$$
+
 
 ## 4. Quy đổi theta sang question_mastery_score
 
 ### 4.1. Expected Score theo chính câu hỏi
 
-Với xác suất PCM của câu hỏi \(i\), điểm kỳ vọng là:
+Với xác suất PCM của câu hỏi i, điểm kỳ vọng là:
 
 $$
 \boxed{
@@ -257,7 +256,7 @@ E(X_i\mid\theta_i)=
 \sum_{k=0}^{4}kP_i(X_i=k\mid\theta_i)
 $$
 
-Giá trị nằm trong khoảng \([0,4]\).
+Giá trị nằm trong khoảng [0,4].
 
 Cách này phù hợp khi muốn diễn giải điểm dự kiến trên chính rubric của câu hỏi. Tuy nhiên, nếu các câu có step difficulties khác nhau, điểm kỳ vọng theo rubric riêng của từng câu có thể không so sánh trực tiếp công bằng giữa câu dễ và câu khó.
 
@@ -271,7 +270,7 @@ $$
 
 Các giá trị trên chỉ là ví dụ. Bộ tham chiếu cần được xác định trên cùng thang đo năng lực với các tham số câu hỏi và được giữ cố định trong cùng một phiên bản hệ thống.
 
-Với bộ tham chiếu, tính xác suất đạt mức \(k\):
+Với bộ tham chiếu, tính xác suất đạt mức k:
 
 $$
 P_{ref}(X=k\mid\theta)=
@@ -321,8 +320,8 @@ $$
 
 Trong đó:
 
-- \(s\): kỹ năng đang xét.
-- \(n_s\): số kết quả đánh giá hợp lệ của kỹ năng \(s\).
+- s: kỹ năng đang xét.
+- n_s: số kết quả đánh giá hợp lệ của kỹ năng s.
 - `question_mastery_i`: điểm thành thạo của câu hỏi sau khi quy đổi về thang tham chiếu chung.
 
 Không nhân thêm `question_difficulty` làm trọng số trong công thức này. Độ khó đã tham gia vào quá trình ước lượng theta; việc tiếp tục dùng độ khó làm trọng số có thể khiến câu khó được tính ảnh hưởng hai lần.
