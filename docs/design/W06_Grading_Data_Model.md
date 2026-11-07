@@ -205,10 +205,9 @@ Trong đó \(\phi\) là mật độ phân phối chuẩn.
 
 Giá trị EAP:
 
-$$
-\boxed{
-\hat{\theta}_{EAP,i}
-=
+$$\boxed{
+\hat{\theta}_{EAP,i} =
+
 \int_{-\infty}^{+\infty}
 \theta\,\pi_i(\theta\mid x_i)\,d\theta
 }
