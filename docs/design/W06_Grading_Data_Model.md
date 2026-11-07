@@ -114,18 +114,18 @@ Với câu hỏi thứ `i`:
 *Công thức này cho phép tính xác suất đạt từng mức rubric khi biết năng lực \(\theta_i\).*
 
 Với một giá trị năng lực thử nghiệm `theta`, xác suất đạt mức `k` là:
-
+$$
 \[ P(X_i=k`\mid`{=tex}`\theta`{=tex})= `\frac{
 \exp\left(\sum_{j=1}^{k}(\theta-\delta_{ij})\right)
 }{
 \sum_{r=0}^{m}
 \exp\left(\sum_{j=1}^{r}(\theta-\delta_{ij})\right)
 }`{=tex} \]
-
+$$
 Quy ước tổng rỗng tại `k = 0` bằng 0, do đó tử số của mức 0 bằng:
-
+$$
 \[ `\exp`{=tex}(0)=1 \]
-
+$$
 Trong đó:
 
 -   `theta`: năng lực tiềm ẩn đang xét.
@@ -137,39 +137,39 @@ Trong đó:
 
 #### Vì sao không dùng MLE trực tiếp?
 Giả sử:
-
+$$
 \[ `\theta`{=tex}\_i`\sim `{=tex}N(`\mu`{=tex}\_0,`\sigma`{=tex}\_0\^2)
 \]
-
+$$
 Có thể chọn giá trị khởi đầu:
-
+$$
 \[ `\mu`{=tex}\_0=0,`\qquad `{=tex}`\sigma`{=tex}\_0=1 \]
-
+$$
 Đây là giả định khởi tạo, không phải tham số bắt buộc của PCM. Cần giữ
 nhất quán thang đo giữa prior, step difficulties và bộ tham chiếu.
 
 Theo Bayes:
-
+$$
 \[ P(`\theta`{=tex}\_i`\mid `{=tex}X_i=x_i) `\propto`{=tex}
 P(X_i=x_i`\mid`{=tex}`\theta`{=tex}\_i)P(`\theta`{=tex}\_i) \]
-
+$$
 Hàm log-posterior, bỏ qua hằng số không phụ thuộc vào `theta`, là:
-
+$$
 \[ `\boxed{
 L_i(\theta)=
 \log P(X_i=x_i\mid\theta)
 -
 \frac{(\theta-\mu_0)^2}{2\sigma_0^2}
 }`{=tex} \]
-
+$$
 Ước lượng MAP:
-
+$$
 \[ `\boxed{
 \hat{\theta}_{MAP,i}
 =
 \arg\max_{\theta} L_i(\theta)
 }`{=tex} \]
-
+$$
 MAP tạo ra nghiệm hữu hạn nhờ prior, kể cả khi `observed_level` ở mức
 thấp nhất hoặc cao nhất.
 
@@ -181,25 +181,25 @@ làm cho ước lượng từ một câu trở nên chắc chắn; nó chỉ gi�
 
 Thay vì chỉ sử dụng điểm cực đại MAP, có thể sử dụng trung bình hậu
 nghiệm EAP:
-
+$$
 \[ `\pi`{=tex}\_i(`\theta`{=tex}`\mid `{=tex}x_i)= `\frac{
 P(X_i=x_i\mid\theta)\phi(\theta;\mu_0,\sigma_0^2)
 }{
 \int_{-\infty}^{+\infty}
 P(X_i=x_i\mid t)\phi(t;\mu_0,\sigma_0^2)\,dt
 }`{=tex} \]
-
+$$
 Trong đó `φ` là mật độ phân phối chuẩn.
 
 Giá trị EAP:
-
+$$
 \[ `\boxed{
 \hat{\theta}_{EAP,i}
 =
 \int_{-\infty}^{+\infty}
 \theta\,\pi_i(\theta\mid x_i)\,d\theta
 }`{=tex} \]
-
+$$
 -   `theta_map`: giá trị tại cực đại của phân phối hậu nghiệm.
 -   `theta_eap`: trung bình của phân phối hậu nghiệm.
 
@@ -230,18 +230,18 @@ approximation).
 ### 4.1. Expected Score theo chính câu hỏi
 
 Với xác suất PCM của câu hỏi `i`, điểm kỳ vọng là:
-
+$$
 \[ `\boxed{
 E(X_i\mid\theta_i)
 =
 \sum_{k=0}^{m}kP_i(X_i=k\mid\theta_i)
 }`{=tex} \]
-
+$$
 Với rubric 0--4:
-
+$$
 \[ E(X_i`\mid`{=tex}`\theta`{=tex}*i) =
 `\sum`{=tex}*{k=0}\^{4}kP_i(X_i=k`\mid`{=tex}`\theta`{=tex}\_i) \]
-
+$$
 Giá trị nằm trong khoảng `[0, 4]`.
 
 Cách này phù hợp khi muốn diễn giải điểm dự kiến trên chính rubric của
@@ -253,31 +253,31 @@ bằng giữa câu dễ và câu khó.
 
 Để tổng hợp các câu hỏi có độ khó khác nhau, đề xuất sử dụng một bộ step
 difficulties tham chiếu cố định:
-
+$$
 \[ `\delta`{=tex}\_{ref}=\[-1.5,-0.5,0.5,1.5\] \]
-
+$$
 Các giá trị trên chỉ là ví dụ. Bộ tham chiếu cần được xác định trên cùng
 thang đo năng lực với các tham số câu hỏi và được giữ cố định trong cùng
 một phiên bản hệ thống.
 
 Với bộ tham chiếu, tính xác suất đạt mức `k`:
-
+$$
 \[ P\_{ref}(X=k`\mid`{=tex}`\theta`{=tex})= `\frac{
 \exp\left(\sum_{j=1}^{k}(\theta-\delta_{ref,j})\right)
 }{
 \sum_{r=0}^{m}
 \exp\left(\sum_{j=1}^{r}(\theta-\delta_{ref,j})\right)
 }`{=tex} \]
-
+$$
 #### Phương án: Dùng EAP làm giá trị theta đại diện
-
+$$
 \[ `\boxed{
 question\_mastery_i
 =
 \sum_{k=0}^{m}
 kP_{ref}(X=k\mid\hat{\theta}_{EAP,i})
 }`{=tex} \]
-
+$$
 ### 4.4. Vì sao cần bộ tham chiếu chung?
 
 Nếu mỗi câu sử dụng bộ step difficulties riêng để tính Expected Score,
@@ -302,13 +302,13 @@ Sau khi tính được `question_mastery_score` cho từng kết quả đánh gi
 nhóm các kết quả theo `skill_id`.
 
 Trong MVP, sử dụng trung bình cộng:
-
+$$
 \[ `\boxed{
 mastery\_score_s=
 \frac{1}{n_s}
 \sum_{i=1}^{n_s}question\_mastery_i
 }`{=tex} \]
-
+$$
 Trong đó:
 
 -   `s`: kỹ năng đang xét.
@@ -334,11 +334,11 @@ lực khác nhau.
 
 `evidence_count` là số kết quả đánh giá hợp lệ đã được sử dụng làm bằng
 chứng cho một skill.
-
+$$
 \[ `\boxed{
 evidence\_count_s=n_s
 }`{=tex} \]
-
+$$
 Mỗi kết quả đánh giá chỉ được tính một lần cho một skill. Nếu một câu
 đánh giá hai skill và có hai kết quả rubric độc lập, câu đó có thể đóng
 góp một bằng chứng cho mỗi skill.
