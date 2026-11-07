@@ -1,0 +1,161 @@
+{
+  "source_commit": "1a7147cd4671b42507ac5c5d6a3f525262eb903d",
+  "files": {
+    "src/exam_generator/adaptation/contracts.py": {
+      "source": "src/adaptation/contracts.py",
+      "sha256": "24b95675a09ce669a85a08ee39d0bbdc93b914670f4e9a9b4ce4ab4b182ff503"
+    },
+    "src/exam_generator/adaptation/difficulty_allocator.py": {
+      "source": "src/adaptation/difficulty_allocator.py",
+      "sha256": "690139b2e4787728cc5296251837fd4bcff894b769f0a272e5e05ed91881bc4d"
+    },
+    "src/exam_generator/adaptation/min_cost_flow.py": {
+      "source": "src/adaptation/min_cost_flow.py",
+      "sha256": "672bb55dd7e174cbc00704c0bd4624fe1f1beac67fd8d5b94a781d613aee62a4"
+    },
+    "src/exam_generator/adaptation/planner.py": {
+      "source": "src/adaptation/planner.py",
+      "sha256": "d8e95fe1eff69bd42cc96ac59af4f335fe97b7b3d3f3495d8907654e978ecf99"
+    },
+    "src/exam_generator/adaptation/policy.py": {
+      "source": "src/adaptation/policy.py",
+      "sha256": "07e27d1a518a3ccf85f1fbc27adbc22c6709bdd318554385c7f61fc656480a67"
+    },
+    "src/exam_generator/adaptation/question_selector.py": {
+      "source": "src/adaptation/question_selector.py",
+      "sha256": "95ae19e22a5d5a5d17158e73ed074d5aed9ceb149d56c46263ca568bbd78f623"
+    },
+    "src/exam_generator/adaptation/selection_diagnostics.py": {
+      "source": "src/adaptation/selection_diagnostics.py",
+      "sha256": "c05d84c9ccd349abd27d4aa7795a8b82d886f9abd1885da79015d54ef3d4675d"
+    },
+    "src/exam_generator/adaptation/skill_relationships.py": {
+      "source": "src/adaptation/skill_relationships.py",
+      "sha256": "7bec6e0f63c8be7eaac5edb1f5eb91bcdce46ee3b4ea2e02bc56a8de0905954f"
+    },
+    "src/exam_generator/adaptation/source_selector.py": {
+      "source": "src/adaptation/source_selector.py",
+      "sha256": "d1d2a7282b54d8295b49c8af76b3171d7441022ae7ec6c4805c78f3e70b36a77"
+    },
+    "src/exam_generator/ai/contracts.py": {
+      "source": "src/ai/contracts.py",
+      "sha256": "435d089f4ee49968495787fcad1067395d20c4e5f47387f0bf18886e6f9b25b4"
+    },
+    "src/exam_generator/ai/expression_planner.py": {
+      "source": "src/ai/expression_planner.py",
+      "sha256": "549bdb2d7a486dd69073520e5de6bc44d53961746dbe987a7a1e9450b5c15033"
+    },
+    "src/exam_generator/ai/problem_spec.py": {
+      "source": "src/ai/problem_spec.py",
+      "sha256": "16d5b041d0dd82f832828b82b69182873062507371327c8acbe2935336e9afdd"
+    },
+    "src/exam_generator/ai/prompts.py": {
+      "source": "src/ai/prompts.py",
+      "sha256": "9830c49c2e2e029951432a090096212e30cade3a707f65420f45758cd7f39fdf"
+    },
+    "src/exam_generator/ai/qwen_client.py": {
+      "source": "src/ai/qwen_client.py",
+      "sha256": "13849714bef57efc4ecdf95a6c0a1698964ac733ef35b612be0d283abaf0e710"
+    },
+    "src/exam_generator/ai/template_instantiator.py": {
+      "source": "src/ai/template_instantiator.py",
+      "sha256": "040a9739a8a96ec6c68d83572dcd5450fabad59eb4f00b8709eeec669d14e93f"
+    },
+    "src/exam_generator/ai/template_presentations.py": {
+      "source": "src/ai/template_presentations.py",
+      "sha256": "834857ea90e8d28042494cfde977342df6b43fcb53e161bde067ba993f52bd1d"
+    },
+    "src/exam_generator/api/data_adapter.py": {
+      "source": "src/api/data_adapter.py",
+      "sha256": "9915693e64892d8b90605fa32300f3b9916a2f8a20ecf3f27387d36a0c6cd038"
+    },
+    "src/exam_generator/api/m3_adapter.py": {
+      "source": "src/api/m3_adapter.py",
+      "sha256": "5b94334b1eeca5c00a9bae981f00dadb64612c9b3e521aeba03d3cbf9c3833e9"
+    },
+    "src/exam_generator/api/question_repository.py": {
+      "source": "src/api/question_repository.py",
+      "sha256": "c4650e3979913a2c174b363ffaf6aed7eada1bde2edafc19047f4824497193e1"
+    },
+    "src/exam_generator/api/template_repository.py": {
+      "source": "src/api/template_repository.py",
+      "sha256": "986cdcbf93d334fdb89ef1622425b0279961737567b7546a4428f1a3e651fa4a"
+    },
+    "src/exam_generator/api/schemas.py": {
+      "source": "src/api/schemas.py",
+      "sha256": "b0550e94f4215fd2fd6724c72a6b4f00f4134db0f788b21c0a52947649bb15a4"
+    },
+    "src/exam_generator/api/services.py": {
+      "source": "src/api/services.py",
+      "sha256": "7f636568e9a0625251abf2bac6ff2a60287f7eaf285121d5b1475e77d519bd56"
+    },
+    "src/exam_generator/api/real_generator.py": {
+      "source": "src/api/real_generator.py",
+      "sha256": "c0f849942a02f09e01451f00b3a0f1ba03309df6d928349e09377a7b5be8a356"
+    },
+    "src/exam_generator/orchestration/exam_assembler.py": {
+      "source": "src/orchestration/exam_assembler.py",
+      "sha256": "51088d5a806dddffd8fb74999c9034cbd340aa02c96028998923e5e020bd8418"
+    },
+    "src/exam_generator/orchestration/exam_service.py": {
+      "source": "src/orchestration/exam_service.py",
+      "sha256": "e45407dba286ad23a9bf12c9699b3dfdc6b97c20449f17abaf175b499639671d"
+    },
+    "src/exam_generator/orchestration/question_generation.py": {
+      "source": "src/orchestration/question_generation.py",
+      "sha256": "5b50a35389dddd97fd095f0c0d96dd6798c9ab9c18a7944a43ac59af109616c8"
+    },
+    "src/exam_generator/orchestration/review_service.py": {
+      "source": "src/orchestration/review_service.py",
+      "sha256": "70e54bcfb3730a52417cefa8fd976ba12d47a5c001de986c9ab47b9ee37d2fc9"
+    },
+    "src/exam_generator/orchestration/source_snapshot.py": {
+      "source": "src/orchestration/source_snapshot.py",
+      "sha256": "283503ded29930b420fa844d82583039d0542f5ba63d3d75e8ba46b591412bde"
+    },
+    "src/exam_generator/validation/math_validator.py": {
+      "source": "src/validation/math_validator.py",
+      "sha256": "3b604d38d18420b8a90d1fefcd32098ca4cc4c28a6f735ec6b5da4dab4d46861"
+    },
+    "src/exam_generator/validation/question_validator.py": {
+      "source": "src/validation/question_validator.py",
+      "sha256": "0d972db142e7d9e025889def1a92c36c8d3e41fa110fe3d99b5ba4bac8cb6648"
+    },
+    "config/skill_relationships_a001_a009.json": {
+      "source": "config/skill_relationships_a001_a009.json",
+      "sha256": "bf1741ca53ac49a738a16148ed51e3dfc31ed1a4e695267e0445aa128a50fc02"
+    },
+    "config/template_presentations.json": {
+      "source": "config/template_presentations.json",
+      "sha256": "72b1086cefa0fe6a697793f6e7b6d13190f464ce9b4c2093fea06be0ed397c89"
+    },
+    "src/ui/routes.py": {
+      "source": "src/ui/routes.py",
+      "sha256": "f7ebd7fa212300264c32a1d5e202fd29570c44d47920c7850979b866548cbfd8"
+    },
+    "src/ui/__main__.py": {
+      "source": "src/ui/__main__.py",
+      "sha256": "4df07a4d54162d47a3c81ebbe2eb55fd5ddb5ad631d675ce30194085e403ea56"
+    },
+    "src/ui/static/app.js": {
+      "source": "src/ui/static/app.js",
+      "sha256": "af3fecf43cebf18ffb31d0d3c6542f7ce21322ae30034fdcf321a922da2681f1"
+    },
+    "src/ui/static/index.html": {
+      "source": "src/ui/static/index.html",
+      "sha256": "45ccf2de918dccb121d5fdf2f8a25575c5e1533b0c8b5e83bbb6eeb9a08f8aa6"
+    },
+    "src/ui/static/style.css": {
+      "source": "src/ui/static/style.css",
+      "sha256": "00ea8906b8df1cbbc2ed9bcfe86f01584987fadea704d9202716678ac3ff0ac2"
+    },
+    "src/api/exam_store.py": {
+      "source": "src/api/exam_store.py",
+      "sha256": "ddda34f95afda9c834387602e55204b7f5b29973063b8cad7688509d3f77375b"
+    }
+  },
+  "adaptations": "Private imports use src.exam_generator; three data/config root paths resolve inside the new repository; import sorting and formatting only. Public UI uses student_name.",
+  "target_initial_commit": "38cc46371a50069ba7bf33885d104bd79baa61e3",
+  "source_head": "ad5ca7c",
+  "source_tree": "8256cc3ef8f2386c09b74ee905d910159df8f121"
+}
