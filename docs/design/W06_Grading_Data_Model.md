@@ -177,8 +177,8 @@ $$
 
 $$
 \boxed{
-\hat{\theta}_{MAP,i}
-=
+\hat{\theta}_{MAP,i} =
+
 \arg\max_{\theta}L_i(\theta)
 }
 $$
@@ -207,7 +207,8 @@ Giá trị EAP:
 
 $$
 \boxed{
-\hat{\theta}_{EAP,i}=
+\hat{\theta}_{EAP,i}
+=
 \int_{-\infty}^{+\infty}
 \theta\,\pi_i(\theta\mid x_i)\,d\theta
 }
