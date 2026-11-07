@@ -1,5 +1,7 @@
 # Thiết kế dữ liệu chấm bài và cơ chế cập nhật hồ sơ năng lực
 Trình bày: Nguyễn Ngọc Ánh Dương
+Giải thích công thức EAP
+https://chatgpt.com/c/6aee9623-875c-83ec-b704-b9b042594c5f
 ## Tóm tắt:
 - Dùng **Partial Credit Model (PCM)** để tính xác xuất đúng bước đó của học sinh dựa trên các bước học sinh làm đúng và độ khó của bước đó.
 - Dùng EAP ability estimation (dichotomous and polytomous IRT models) để tính điểm mong đợi của từng câu.
