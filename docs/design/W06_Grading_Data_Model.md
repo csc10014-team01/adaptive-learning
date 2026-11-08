@@ -1,5 +1,9 @@
 # Thiết kế dữ liệu chấm bài và cơ chế cập nhật hồ sơ năng lực
 Trình bày: Nguyễn Ngọc Ánh Dương
+
+Ví dụ chạy tay:
+https://chatgpt.com/c/6af05643-db64-83ec-959a-c552c18801e4
+
 ## Tóm tắt:
 - Dùng **Partial Credit Model (PCM)** để tính xác xuất đúng bước đó của học sinh dựa trên các bước học sinh làm đúng và độ khó của bước đó.
 - Dùng EAP ability estimation (dichotomous and polytomous IRT models) để tính điểm mong đợi của từng câu.
@@ -286,6 +290,7 @@ EAP (Expected A Posteriori) là trung bình của phân phối hậu nghiệm n�
 - Phân phối prior mô tả giả định ban đầu về năng lực.
 
 Giả sử prior:
+
 $$
 \[
 \theta \sim N(\mu_0,\sigma_0^2)
@@ -301,6 +306,7 @@ $$
 Đây là giả định khởi tạo, không phải tham số bắt buộc của PCM. Prior phải nhất quán với thang đo của `step_difficulties` và bộ tham chiếu.
 
 Với kết quả quan sát `x`, mật độ hậu nghiệm chưa chuẩn hóa:
+
 $$
 \[
 p(\theta\mid X=x)
@@ -309,7 +315,9 @@ P(X=x\mid\theta)\,
 \phi(\theta;\mu_0,\sigma_0^2)
 \]
 $$
+
 Trong đó \(\phi\) là mật độ phân phối chuẩn. EAP là:
+
 $$
 \[
 \hat{\theta}_{EAP}=
@@ -324,6 +332,7 @@ P(X=x\mid\theta)\,
 }
 \]
 $$
+
 Có thể tính gần đúng bằng numerical integration hoặc grid approximation trên một miền theta đủ rộng.
 
 ### Prototype
@@ -365,7 +374,7 @@ def estimate_eap(
 
 - `observed_level`: kết quả chấm rubric của học sinh. Giá trị hợp lệ nằm trong `[0, m]`.
 - `step_difficulties`: vector tham số PCM của đúng câu hỏi đang được chấm.
-- `prior_mean`: trung bình prior. Với khởi tạo chuẩn hóa thường dùng `0`.
+- `prior_mean`: trung bình prior. Với khởi tạo chuẩn hóa thường dùng `0`. Và bằng theta_eap của câu hỏi có skill_id đó gần nhất được cập nhật.
 - `prior_std`: độ lệch chuẩn prior. Ví dụ `1.0`; không được bằng hoặc nhỏ hơn 0.
 - `theta_grid`: lưới các giá trị năng lực dùng để xấp xỉ tích phân. Grid cần đủ rộng và đủ mịn để kết quả ổn định.
 
@@ -458,11 +467,13 @@ Trong đó:
 Không nhân thêm `question_difficulty` làm trọng số. Độ khó đã tham gia vào quá trình ước lượng `theta`; tiếp tục dùng độ khó làm trọng số có thể khiến độ khó ảnh hưởng hai lần.
 
 ### `evidence_count`
+
 $$
 \[
 evidence\_count_s=n_s
 \]
 $$
+
 `evidence_count` là số kết quả đánh giá hợp lệ đã được dùng làm bằng chứng cho skill đó.
 
 Cần phân biệt:
@@ -575,6 +586,7 @@ nếu n > 0:
 **Vì sao lấy toàn bộ bằng chứng thay vì chỉ cộng điểm mới vào mastery cũ?**
 
 Nếu chỉ có `mastery_score` và `evidence_count` hiện tại, có thể cập nhật trung bình bằng công thức:
+
 $$
 \[
 M_{new} =
@@ -582,6 +594,7 @@ M_{new} =
 {N_{old}+q}
 \]
 $$
+
 Trong đó `x_j` là các điểm mastery mới. Tuy nhiên, cách này chỉ an toàn khi không có sửa/xóa kết quả cũ, không có trùng dữ liệu và toàn bộ điểm được tính trên cùng phiên bản tham số. Với MVP, truy vấn toàn bộ bằng chứng rồi tính lại sẽ dễ kiểm soát và tránh sai lệch do cập nhật lặp.
 
 Nếu không có bằng chứng hợp lệ, không tạo mastery bằng 0. Có thể giữ nguyên bản ghi hiện tại hoặc đánh dấu trạng thái chưa đủ bằng chứng theo quy ước của hệ thống.
