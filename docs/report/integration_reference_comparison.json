@@ -1,0 +1,26 @@
+{
+  "reference_commit": "1a7147cd4671b42507ac5c5d6a3f525262eb903d",
+  "core_modules_ast_equal": 30,
+  "plan_and_exam_comparisons_passed": 48,
+  "seed": 42,
+  "cases": [
+    "no_data",
+    "partial",
+    "mixed",
+    "one_weak",
+    "two_weak",
+    "achieved"
+  ],
+  "question_counts": [
+    1,
+    4,
+    7,
+    10
+  ],
+  "relationship_modes": [
+    "off",
+    "on"
+  ],
+  "inference": "fake; no claim about real Qwen wording",
+  "import_bindings_equal": true
+}

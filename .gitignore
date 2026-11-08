@@ -231,3 +231,7 @@ __pycache__/
 *.db
 .vscode/
 .idea/
+
+# Generator runtime drafts and isolated pytest scratch (never canonical data)
+/data/runtime/
+/.pytest_tmp_mira/
