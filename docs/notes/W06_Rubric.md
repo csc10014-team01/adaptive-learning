@@ -7,7 +7,9 @@
 ---
 
 ## 1. Nguồn tham khảo & Lý do lựa chọn (References & Rationale)
-- **Nguồn tham khảo:** Khung tiêu chuẩn đánh giá chất lượng câu hỏi giáo dục (EdTech Assessment Frameworks) và phân phối chương trình môn Toán 10 (Chương: Đại số tổ hợp).
+- **Nguồn tham khảo:** 
+  * **Educational Testing Service (ETS, 2014), *ETS Standards for Quality and Fairness*, Chương 7 (*Test Design and Development*), đặc biệt là Tiêu chuẩn 7.4 (*Obtaining Reviews*, tr. 31).** [Tiêu chuẩn 7.4](https://www.ets.org/pdfs/about/standards-quality-fairness.pdf#page=37)
+  * **Phân phối chương trình Toán 10, phần Đại số tổ hợp.**
 - **Lý do chọn tiêu chí:** Đảm bảo các câu hỏi và đề thi do hệ thống sinh ra đạt chất lượng chuyên môn sư phạm, tuyệt đối chính xác về mặt toán học, bám sát kỹ năng mục tiêu và phản ánh đúng định hướng cá nhân hóa theo hồ sơ học sinh.
 
 ---
