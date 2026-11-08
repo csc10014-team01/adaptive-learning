@@ -1,8 +1,14 @@
-# Thiết kế dữ liệu và cơ chế cập nhật `mastery_score` bằng PCM – EAP
+# Thiết kế dữ liệu chấm bài và cơ chế cập nhật hồ sơ năng lực
+Trình bày: Nguyễn Ngọc Ánh Dương
+## Tóm tắt:
+- Dùng **Partial Credit Model (PCM)** để tính xác xuất đúng bước đó của học sinh dựa trên các bước học sinh làm đúng và độ khó của bước đó.
+- Dùng EAP ability estimation (dichotomous and polytomous IRT models) để tính điểm mong đợi của từng câu.
+- Quy đổi sang mastery_score
+## 1. Mục tiêu
 
-## 1. Mục tiêu và phạm vi
-
-Tài liệu mô tả cách lưu dữ liệu chấm rubric, tính năng lực EAP cho **từng câu hỏi trong từng bài kiểm tra (`test`)**, quy đổi thành `question_mastery_score`, sau đó tổng hợp để cập nhật `student_skill_mastery.mastery_score`.
+Sử dụng **Partial Credit Model (PCM)** để đánh giá mức độ thành thạo của
+học sinh theo từng kỹ năng (`skill_id`) dựa trên kết quả chấm rubric của
+từng câu hỏi.
 
 Thiết kế gồm hai tầng:
 
