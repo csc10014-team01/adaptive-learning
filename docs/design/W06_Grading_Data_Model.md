@@ -221,14 +221,14 @@ student_skill_mastery
 ## 4. Hàm tính xác suất PCM
 
 Với câu hỏi `i`, rubric có mức tối đa `m`, vector độ khó chuyển mức là:
-
+$$
 \[
 \boldsymbol{\delta}_i =
 [\delta_{i1}, \delta_{i2}, \ldots, \delta_{im}]
 \]
-
+$$
 Với một giá trị năng lực thử nghiệm \(\theta\), xác suất đạt mức rubric `k` theo PCM:
-
+$$
 \[
 P(X_i=k\mid\theta)=
 \frac{
@@ -238,7 +238,7 @@ P(X_i=k\mid\theta)=
 \exp\left(\sum_{j=1}^{r}(\theta-\delta_{ij})\right)
 }
 \]
-
+$$
 Quy ước tổng rỗng tại `k = 0` bằng 0, do đó tử số của mức 0 bằng `exp(0) = 1`.
 
 ### Prototype
@@ -286,33 +286,33 @@ EAP (Expected A Posteriori) là trung bình của phân phối hậu nghiệm n�
 - Phân phối prior mô tả giả định ban đầu về năng lực.
 
 Giả sử prior:
-
+$$
 \[
 \theta \sim N(\mu_0,\sigma_0^2)
 \]
-
+$$
 Có thể khởi tạo:
-
+$$
 \[
 \mu_0=0,\qquad \sigma_0=1
 \]
+$$
 
 Đây là giả định khởi tạo, không phải tham số bắt buộc của PCM. Prior phải nhất quán với thang đo của `step_difficulties` và bộ tham chiếu.
 
 Với kết quả quan sát `x`, mật độ hậu nghiệm chưa chuẩn hóa:
-
+$$
 \[
 p(\theta\mid X=x)
 \propto
 P(X=x\mid\theta)\,
 \phi(\theta;\mu_0,\sigma_0^2)
 \]
-
+$$
 Trong đó \(\phi\) là mật độ phân phối chuẩn. EAP là:
-
+$$
 \[
-\hat{\theta}_{EAP}
-=
+\hat{\theta}_{EAP}=
 \frac{
 \int_{-\infty}^{+\infty}
 \theta\,P(X=x\mid\theta)\,
@@ -323,7 +323,7 @@ P(X=x\mid\theta)\,
 \phi(\theta;\mu_0,\sigma_0^2)\,d\theta
 }
 \]
-
+$$
 Có thể tính gần đúng bằng numerical integration hoặc grid approximation trên một miền theta đủ rộng.
 
 ### Prototype
@@ -384,20 +384,18 @@ Do đó, cần quy đổi `theta_eap` qua một bộ tham chiếu PCM chung.
 ### 6.2. Bộ tham chiếu chung
 
 Ví dụ với rubric 0–4:
-
+$$
 \[
-\boldsymbol{\delta}_{ref}
-=
+\boldsymbol{\delta}_{ref}=
 [-1.5,-0.5,0.5,1.5]
 \]
-
+$$
 Đây là giá trị minh họa. Bộ tham chiếu thực tế phải cùng thang đo năng lực với các tham số câu hỏi và được giữ cố định trong cùng một phiên bản hệ thống.
 
 Tính xác suất rubric tham chiếu tại `theta_eap`:
-
+$$
 \[
-P_{ref}(X=k\mid\theta_{EAP})
-=
+P_{ref}(X=k\mid\theta_{EAP})=
 \frac{
 \exp\left(\sum_{j=1}^{k}(\theta_{EAP}-\delta_{ref,j})\right)
 }{
@@ -405,16 +403,16 @@ P_{ref}(X=k\mid\theta_{EAP})
 \exp\left(\sum_{j=1}^{r}(\theta_{EAP}-\delta_{ref,j})\right)
 }
 \]
-
+$$
 Điểm mastery của câu hỏi:
-
+$$
 \[
 question\_mastery\_score
 =
 \sum_{k=0}^{m}
 kP_{ref}(X=k\mid\hat{\theta}_{EAP})
 \]
-
+$$
 Với rubric 0–4, điểm nằm trong `[0, 4]`.
 
 **Ý nghĩa:** mỗi câu hỏi có bộ difficulty riêng để ước lượng `theta_eap`, nhưng sau đó mọi `theta_eap` đều được quy đổi bằng cùng một bộ tham chiếu. Nhờ vậy, các kết quả từ câu dễ và câu khó có cùng thang diễn giải trước khi tổng hợp theo skill.
@@ -443,14 +441,14 @@ Nếu một câu đánh giá nhiều skill, mỗi skill phải có kết quả r
 Sau khi có `question_mastery_score`, gom các kết quả hợp lệ theo `skill_id`.
 
 Trong MVP, dùng trung bình cộng:
-
+$$
 \[
 mastery\_score_s
 =
 \frac{1}{n_s}
 \sum_{i=1}^{n_s}question\_mastery_i
 \]
-
+$$
 Trong đó:
 
 - `s`: kỹ năng đang xét.
@@ -460,11 +458,11 @@ Trong đó:
 Không nhân thêm `question_difficulty` làm trọng số. Độ khó đã tham gia vào quá trình ước lượng `theta`; tiếp tục dùng độ khó làm trọng số có thể khiến độ khó ảnh hưởng hai lần.
 
 ### `evidence_count`
-
+$$
 \[
 evidence\_count_s=n_s
 \]
-
+$$
 `evidence_count` là số kết quả đánh giá hợp lệ đã được dùng làm bằng chứng cho skill đó.
 
 Cần phân biệt:
@@ -577,13 +575,13 @@ nếu n > 0:
 **Vì sao lấy toàn bộ bằng chứng thay vì chỉ cộng điểm mới vào mastery cũ?**
 
 Nếu chỉ có `mastery_score` và `evidence_count` hiện tại, có thể cập nhật trung bình bằng công thức:
-
+$$
 \[
 M_{new} =
 \frac{M_{old}N_{old}+\sum_{j=1}^{q}x_j}
 {N_{old}+q}
 \]
-
+$$
 Trong đó `x_j` là các điểm mastery mới. Tuy nhiên, cách này chỉ an toàn khi không có sửa/xóa kết quả cũ, không có trùng dữ liệu và toàn bộ điểm được tính trên cùng phiên bản tham số. Với MVP, truy vấn toàn bộ bằng chứng rồi tính lại sẽ dễ kiểm soát và tránh sai lệch do cập nhật lặp.
 
 Nếu không có bằng chứng hợp lệ, không tạo mastery bằng 0. Có thể giữ nguyên bản ghi hiện tại hoặc đánh dấu trạng thái chưa đủ bằng chứng theo quy ước của hệ thống.
