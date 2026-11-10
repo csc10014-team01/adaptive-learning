@@ -1,8 +1,8 @@
 import sqlite3
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "question_bank.db"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+DB_PATH = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
 
 
 #Hàm trả về tập tất cả question
@@ -300,3 +300,6 @@ def get_question_template_by_id(DB_PATH, template_id):
     finally:
         if conn is not None:
             conn.close()
+
+for i in get_all_answers(DB_PATH):
+    print(i)
