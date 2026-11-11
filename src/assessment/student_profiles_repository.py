@@ -2,7 +2,8 @@ import sqlite3
 from pathlib import Path
 from helper_functions import check_required_fields, check_duplicate
 from grading_repository import get_test, update_status
-
+from question_repository import get_question, get_answer
+import json
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR/"data"/"sample"/"memory"/"student_profiles_sample.db"
 
@@ -88,7 +89,7 @@ def add_student(DB_PATH, student: dict) -> bool:
         raise RuntimeError(f"Cannot add student: {e}")
 
 
-def get_all_student() -> list[dict[str, object]] | None:
+def get_all_student(DB_PATH) -> list[dict[str, object]] | None:
 
     """
     
@@ -186,7 +187,7 @@ def get_all_student() -> list[dict[str, object]] | None:
 
             # Lấy lịch sử các bài kiểm tra của học sinh
 
-            student["learning_history"] = get_test(student["student_id"])
+            student["learning_history"] = get_test(DB_PATH, student["student_id"])
             
             # Lấy mức độ thành thạo kỹ năng
             mastery_rows = cursor.execute("""
@@ -207,7 +208,7 @@ def get_all_student() -> list[dict[str, object]] | None:
     finally:
         conn.close()
 
-def get_student_by_id(student_id: str) -> dict | None:
+def get_student_by_id(DB_PATH, student_id: str) -> dict | None:
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
@@ -231,7 +232,7 @@ def get_student_by_id(student_id: str) -> dict | None:
 
         # Lấy lịch sử các bài kiểm tra của học sinh
 
-        student["learning_history"] = get_test(student["student_id"])
+        student["learning_history"] = get_test(DB_PATH, student["student_id"])
         
 
         # Lấy mức độ thành thạo kỹ năng
@@ -250,3 +251,37 @@ def get_student_by_id(student_id: str) -> dict | None:
 
     finally:
         conn.close()
+
+        
+DB_PATH1 = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
+
+def test(student_id: str):
+    conn = sqlite3.connect(DB_PATH1)
+    conn.row_factory = sqlite3.Row
+
+    try:
+        cursor = conn.cursor()
+
+        student = get_student_by_id(DB_PATH , student_id)
+        question = []
+        answer = []
+        for order in range(0, 4):
+            q = get_question(DB_PATH1 , student["learning_history"][0]["question_mastery_score"][order]["question_id"])
+            question.append(q)
+            answer.append(q["rubric"])
+        learning_history = student["learning_history"][0]
+        print(json.dumps(learning_history, indent=4, ensure_ascii=False))
+        
+        for q in question:
+            print("question_id: ", q["question_id"])
+            print("content: ", q["content"])
+            print("correct_answer: ")
+            i = 0
+            print(json.dumps(answer[i], indent=4, ensure_ascii=False))
+            print()
+
+            i = i+1
+    finally:
+        conn.close()
+
+#test("ST001")

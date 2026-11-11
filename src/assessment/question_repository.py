@@ -1,6 +1,7 @@
 import sqlite3
 from pathlib import Path
 from helper_functions import check_required_fields, check_duplicate, serialize_json
+import json
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
 
@@ -22,7 +23,9 @@ def validate_question(DB_PATH, question: dict) -> bool:
         "difficulty",
         "content",
         "grade_level",
-        "status"
+        "status",
+        "rubric",
+        "step_difficulties"
     ]
 
     if not check_required_fields(question, required_fields):
@@ -265,14 +268,15 @@ def get_all_questions(DB_PATH):
 
     # Lấy dữ liệu từ bảng Questions
     cursor.execute("""
-        SELECT question_id, question_type, difficulty,
-            content, grade_level, status
+        SELECT *
         FROM questions
     """)
 
     rows = cursor.fetchall()
     # Chuyển mỗi dòng SQL thành Dictionary
     questions = [dict(row) for row in rows]
+    for item in questions:
+        item["rubric"] = json.loads(item["rubric"])
 
     for question in questions:
         cursor.execute("""
@@ -311,8 +315,7 @@ def get_question(DB_PATH, question_id):
 
         # Lấy thông tin question
         row = conn.execute("""
-            SELECT question_id, question_type, difficulty,
-                   content, grade_level, status
+            SELECT *
             FROM questions
             WHERE question_id = ?
         """, (question_id,)).fetchone()
@@ -321,6 +324,7 @@ def get_question(DB_PATH, question_id):
             return None
 
         question = dict(row)
+        question["rubric"] = json.loads(question["rubric"])
 
         # Lấy danh sách question parts
         parts = conn.execute("""
@@ -394,6 +398,7 @@ def get_all_answers(DB_PATH):
         return answers
 
 def get_answer(DB_PATH, answer_id):
+    """Lấy đáp án đúng"""
     with sqlite3.connect(DB_PATH) as conn:
         conn.row_factory = sqlite3.Row
 
