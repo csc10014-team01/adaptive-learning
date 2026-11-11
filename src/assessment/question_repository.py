@@ -490,6 +490,9 @@ def get_skill(DB_PATH, skill_id):
 
 
 def get_all_question_templates(DB_PATH):
+    """
+    """
+
     conn = None
 
     try:
@@ -551,6 +554,3 @@ def get_question_template_by_id(DB_PATH, template_id):
     finally:
         if conn is not None:
             conn.close()
-
-for i in get_all_question_templates(DB_PATH):
-    print(i["rubric"])
