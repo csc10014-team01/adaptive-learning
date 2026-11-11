@@ -1,8 +1,259 @@
 import sqlite3
 from pathlib import Path
-
+from helper_functions import check_required_fields, check_duplicate, serialize_json
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
+
+# =========================
+# QUESTIONS
+# =========================
+
+def validate_question(DB_PATH, question: dict) -> bool:
+    """
+    Kiểm tra:
+    - Đủ trường bắt buộc.
+    - Dữ liệu hợp lệ.
+    - question_id chưa tồn tại.
+    """
+
+    required_fields = [
+        "question_id",
+        "question_type",
+        "difficulty",
+        "content",
+        "grade_level",
+        "status"
+    ]
+
+    if not check_required_fields(question, required_fields):
+        return False
+
+    if not isinstance(question["question_id"], str) or not question["question_id"].strip():
+        return False
+
+    if not isinstance(question["content"], str) or not question["content"].strip():
+        return False
+
+    if not isinstance(question["difficulty"], (int, float)):
+        return False
+
+    if not isinstance(question["grade_level"], (int, str)):
+        return False
+
+    if check_duplicate(
+        DB_PATH, "questions", "question_id", question["question_id"]
+    ):
+        return False
+
+    return True
+
+
+def add_question(DB_PATH, question: dict) -> bool:
+    """Thêm câu hỏi vào bảng questions."""
+
+    if not validate_question(DB_PATH, question):
+        return False
+
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                INSERT INTO questions (
+                    question_id,
+                    question_type,
+                    difficulty,
+                    content,
+                    grade_level,
+                    status
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                question["question_id"],
+                question["question_type"],
+                question["difficulty"],
+                question["content"],
+                question["grade_level"],
+                question["status"]
+            ))
+
+        return True
+
+    except sqlite3.Error as e:
+        raise RuntimeError(f"Cannot add question: {e}")
+
+
+# =========================
+# ANSWERS
+# =========================
+
+def validate_answer(DB_PATH, answer: dict) -> bool:
+    """
+    Kiểm tra:
+    - Đủ trường bắt buộc.
+    - question_id tồn tại.
+    - answer_id chưa tồn tại.
+    """
+
+    required_fields = [
+        "answer_id",
+        "question_id",
+        "correct_answer",
+        "explanation"
+    ]
+
+    if not check_required_fields(answer, required_fields):
+        return False
+
+    if not isinstance(answer["answer_id"], str) or not answer["answer_id"].strip():
+        return False
+
+    if check_duplicate(
+        DB_PATH, "answers", "answer_id", answer["answer_id"]
+    ):
+        return False
+
+    # Kiểm tra question_id có tồn tại không
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT 1 FROM questions
+                WHERE question_id = ?
+                LIMIT 1
+            """, (answer["question_id"],))
+
+            if cursor.fetchone() is None:
+                return False
+
+    except sqlite3.Error as e:
+        raise RuntimeError(f"Database error: {e}")
+
+    return True
+
+
+def add_answer(DB_PATH, answer: dict) -> bool:
+    """Thêm đáp án vào bảng answers."""
+
+    if not validate_answer(DB_PATH, answer):
+        return False
+
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                INSERT INTO answers (
+                    answer_id,
+                    question_id,
+                    correct_answer,
+                    explanation
+                )
+                VALUES (?, ?, ?, ?)
+            """, (
+                answer["answer_id"],
+                answer["question_id"],
+                answer["correct_answer"],
+                answer["explanation"]
+            ))
+
+        return True
+
+    except sqlite3.Error as e:
+        raise RuntimeError(f"Cannot add answer: {e}")
+
+
+# =========================
+# QUESTION TEMPLATES
+# =========================
+
+def validate_template(DB_PATH, template: dict) -> bool:
+    """
+    Kiểm tra:
+    - Đủ trường bắt buộc.
+    - Các trường dữ liệu có kiểu hợp lệ.
+    - template_id chưa tồn tại.
+    """
+
+    required_fields = [
+        "template_id",
+        "template_content",
+        "parameter_rule",
+        "answer_rule",
+        "difficulty",
+        "rubric",
+        "step_difficulties"
+    ]
+
+    if not check_required_fields(template, required_fields):
+        return False
+
+    if not isinstance(template["template_id"], str) or not template["template_id"].strip():
+        return False
+
+    if not isinstance(template["template_content"], str):
+        return False
+
+    if not isinstance(template["difficulty"], (int, float)):
+        return False
+
+    if not isinstance(template["rubric"], list):
+        return False
+
+    if not isinstance(template["step_difficulties"], list):
+        return False
+
+    if not isinstance(template["parameter_rule"], (dict, list)):
+        return False
+
+    if not isinstance(template["answer_rule"], (dict, list)):
+        return False
+
+    if check_duplicate(
+        DB_PATH, "question_templates", "template_id",
+        template["template_id"]
+    ):
+        return False
+
+    return True
+
+
+def add_template(DB_PATH, template: dict) -> bool:
+    """Thêm template vào bảng question_templates."""
+
+    if not validate_template(DB_PATH, template):
+        return False
+
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                INSERT INTO question_templates (
+                    template_id,
+                    template_content,
+                    parameter_rule,
+                    answer_rule,
+                    difficulty,
+                    rubric,
+                    step_difficulties
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (
+                template["template_id"],
+                template["template_content"],
+                serialize_json(template["parameter_rule"]),
+                serialize_json(template["answer_rule"]),
+                template["difficulty"],
+                serialize_json(template["rubric"]),
+                serialize_json(template["step_difficulties"])
+            ))
+
+        return True
+
+    except sqlite3.Error as e:
+        raise RuntimeError(f"Cannot add template: {e}")
 
 
 #Hàm trả về tập tất cả question
@@ -301,5 +552,5 @@ def get_question_template_by_id(DB_PATH, template_id):
         if conn is not None:
             conn.close()
 
-for i in get_all_answers(DB_PATH):
-    print(i)
+for i in get_all_question_templates(DB_PATH):
+    print(i["rubric"])

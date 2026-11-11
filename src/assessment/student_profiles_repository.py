@@ -1,13 +1,171 @@
 import sqlite3
 from pathlib import Path
-
+from helper_functions import check_required_fields, check_duplicate
 from grading_repository import get_test, update_status
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR/"data"/"sample"/"memory"/"student_profiles_sample.db"
 
 
+def validate_student(DB_PATH, student: dict) -> bool:
+    """
+    Kiểm tra:
+    - Đủ trường bắt buộc: student_id, grade_level, name, birthday.
+    - Kiểu dữ liệu hợp lệ.
+    - student_id chưa tồn tại trong database.
+    """
+
+    required_fields = [
+        "student_id",
+        "grade_level",
+        "name",
+        "birthday"
+    ]
+
+    if not check_required_fields(student, required_fields):
+        return False
+
+    if not isinstance(student["student_id"], str) or not student["student_id"].strip():
+        return False
+
+    if not isinstance(student["name"], str) or not student["name"].strip():
+        return False
+
+    if not isinstance(student["grade_level"], int):
+        return False
+
+    if not isinstance(student["birthday"], str) or not student["birthday"].strip():
+        return False
+
+    # Kiểm tra định dạng birthday: YYYY-MM-DD
+    from datetime import datetime
+
+    try:
+        datetime.strptime(student["birthday"], "%Y-%m-%d")
+    except ValueError:
+        return False
+
+    # Kiểm tra student_id trùng
+    if check_duplicate(
+        DB_PATH,
+        "students",
+        "student_id",
+        student["student_id"]
+    ):
+        return False
+
+    return True
+
+
+def add_student(DB_PATH, student: dict) -> bool:
+    """Thêm sinh viên vào bảng students."""
+
+    if not validate_student(DB_PATH, student):
+        return False
+
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                INSERT INTO students (
+                    student_id,
+                    grade_level,
+                    name,
+                    birthday
+                )
+                VALUES (?, ?, ?, ?)
+            """, (
+                student["student_id"],
+                student["grade_level"],
+                student["name"],
+                student["birthday"]
+            ))
+
+        return True
+
+    except sqlite3.Error as e:
+        raise RuntimeError(f"Cannot add student: {e}")
+
+
 def get_all_student() -> list[dict[str, object]] | None:
+
+    """
+    
+{
+    'student_id': 'ST001', 
+    'grade_level': 10, 
+    'name': 'Nguyen Ngoc Gia Han', 
+    'birthday': '2010-08-11', 
+    'learning_history': [
+        {
+            'test_id': 'TA0001', 
+            'wrongs': ['QA0064'], 
+            'question_mastery_score': [
+                {
+                    'question_id': 'QA0007', 
+                    'question_mastery_score': None
+                }, 
+                
+                {
+                    'question_id': 'QA0038', 
+                    'question_mastery_score': None
+                }, 
+                
+                {
+                    'question_id': 'QA0064', 
+                    'question_mastery_score': None
+                },
+                
+                {
+                    'question_id': 'QA0102', 
+                    'question_mastery_score': None
+                }
+            ]
+        }, 
+            {
+            'test_id': 'TA0002',
+            'wrongs': ['QA0049'], 
+            'question_mastery_score': [
+                {
+                    'question_id': 'QA0015', 
+                    'question_mastery_score': None
+                }, 
+                
+                {
+                    'question_id': 'QA0049', 
+                    'question_mastery_score': None
+                }, 
+                
+                {
+                    'question_id': 'QA0083', 
+                    'question_mastery_score': None
+                }, 
+                
+                {
+                    'question_id': 'QA0108', 
+                    'question_mastery_score': None
+                }
+            ]
+        }
+    ], 
+    'skill_mastery': [
+        {
+            'skill_id': 'A001', 
+            'mastery_score': 2.3, 
+            'evidence_count': 1
+        }, 
+        
+        {
+            'skill_id': 'A002', 
+            'mastery_score': 2.0, 
+            'evidence_count': 1
+        }, 
+        ...   
+    ]
+}
+    """
+
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
@@ -28,7 +186,7 @@ def get_all_student() -> list[dict[str, object]] | None:
 
             # Lấy lịch sử các bài kiểm tra của học sinh
 
-            student["learning_history"] = get_test(student)
+            student["learning_history"] = get_test(student["student_id"])
             
             # Lấy mức độ thành thạo kỹ năng
             mastery_rows = cursor.execute("""
@@ -73,7 +231,7 @@ def get_student_by_id(student_id: str) -> dict | None:
 
         # Lấy lịch sử các bài kiểm tra của học sinh
 
-        student["learning_history"] = get_test(student)
+        student["learning_history"] = get_test(student["student_id"])
         
 
         # Lấy mức độ thành thạo kỹ năng

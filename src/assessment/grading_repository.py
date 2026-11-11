@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR / "data"/"sample"/"memory"/ "student_profiles_sample.db"
 
 
@@ -16,6 +16,7 @@ def update_status(student: dict) -> None:
  
    
 def add_test(test: dict, student: dict, test_questions) -> None:
+    """ Chỉ thêm test vào sql, chưa cập nhật mastery_score """
     conn = sqlite3.connect(DB_PATH)
 
     try:
@@ -63,7 +64,6 @@ def add_test(test: dict, student: dict, test_questions) -> None:
 
         student["learning_history"].append(test)
         update_status(student)
-
     except sqlite3.Error as e:
         conn.rollback()
         print(f"Cannot add test: {e}")
@@ -71,7 +71,35 @@ def add_test(test: dict, student: dict, test_questions) -> None:
     finally:
         conn.close()
 
-def get_test(student: dict) -> list[dict[str, str | list[str]]]:
+def get_test(student_id: str) -> list[dict]:
+    """
+    {
+    'test_id': 'TA0001', 
+    'wrongs': ['QA0064'], 
+    'question_mastery_score': 
+        [
+            {
+                'question_id': 'QA0007', 
+                'question_mastery_score': None
+            }, 
+
+            {
+                'question_id': 'QA0038', 
+                'question_mastery_score': None
+            }, 
+
+            {
+            'question_id': 'QA0064',
+            'question_mastery_score': None
+            }, 
+            
+            {
+            'question_id': 'QA0102', 
+            'question_mastery_score': None
+            }
+        ]
+    } 
+    """
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
@@ -83,7 +111,7 @@ def get_test(student: dict) -> list[dict[str, str | list[str]]]:
             SELECT test_id
             FROM Tests
             WHERE student_id = ?
-        """, (student["student_id"],)).fetchall()
+        """, (student_id,)).fetchall()
 
         learning_history = []
 
@@ -99,11 +127,22 @@ def get_test(student: dict) -> list[dict[str, str | list[str]]]:
                 ORDER BY question_order
             """, (test_id,)).fetchall()
 
+            # Lấy mastery score của từng câu hỏi trong bài kiểm tra
+            mastery_score = cursor.execute("""
+                SELECT question_id, question_mastery_score
+                FROM test_questions
+                WHERE test_id = ?
+                ORDER BY question_order
+            """, (test_id,)).fetchall()
+
             learning_history.append({
                 "test_id": test_id,
                 "wrongs": [
                     item["question_id"]
                     for item in wrong_rows
+                ],
+                "question_mastery_score": [
+                    dict(row) for row in mastery_score
                 ]
             })
 
