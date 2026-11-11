@@ -77,12 +77,31 @@ b = 0.75(d - 2)
 Trong đó `d` là độ khó giáo viên chọn và `b` là giá trị difficulty trên thang PCM. Nếu mỗi bước có độ khó riêng, thực hiện phép quy đổi cho từng bước để tạo thành vector `step_difficulties`.
 
 ## 3. Thiết kế dữ liệu
+### Bổ sung thay đổi sau thiết kế:
 
-Các bảng dưới đây là cấu trúc logic đề xuất. Có thể điều chỉnh tên cột theo convention của dự án.
+#### question_templates, questions: 
+Thêm cột rubric viết dưới dạng json, step_difficulties
+
+#### `test_questions`
+
+Lưu câu hỏi được đưa vào bài kiểm tra và kết quả chấm của học sinh.
+
+- `test_id`
+- `question_id`
+- `observed_level`: mức rubric học sinh đạt được.
+- `theta_eap`: năng lực EAP ước lượng từ kết quả câu hỏi này.
+- `question_mastery_score`: điểm thành thạo sau khi quy đổi qua bộ tham chiếu.
+- `pcm_parameter_version`: phiên bản tham số PCM đã sử dụng.
+- `reference_parameter_version`: phiên bản bộ tham chiếu đã sử dụng.
+- `prior_version`: phiên bản prior đã sử dụng.
+
+Nếu mỗi câu chỉ đánh giá một kỹ năng, có thể lưu `skill_id` trực tiếp trong `TestQuestion` hoặc truy xuất thông qua `question_skills`.
+
+
 
 ### 3.1. Nhóm dữ liệu câu hỏi và tham số PCM
 
-#### `QuestionTemplate`
+#### `RubricTemplate` lấy từ bảng question_templates
 
 Lưu thông tin template câu hỏi và rubric mặc định.
 
@@ -90,18 +109,19 @@ Các trường liên quan:
 
 - `template_id`: khóa định danh template.
 - `rubric`: cấu hình các mức rubric mặc định, nếu rubric được lưu dạng JSON.
-- `max_level`: mức rubric tối đa, ví dụ `4`.
+- `step_difficulties`
+- `max_level`: mức rubric tối đa là len(step_difficulties).
 
-#### `QuestionRubric`
+#### `QuestionRubric` lấy từ bảng questions
 
 Chỉ cần khi câu hỏi có rubric riêng hoặc rubric tùy chỉnh.
 
 - `question_id`: câu hỏi áp dụng rubric.
 - `rubric`: mô tả các mức rubric.
-- `max_level`: mức tối đa của rubric.
-- `version`: phiên bản rubric.
+- `step_difficulties`
+- `max_level`: mức rubric tối đa là len(step_difficulties).
 
-#### `PCMTemplateParameters`
+#### `PCMTemplateParameters` (tạm thời chưa có bảng này, dùng trực tiếp các thông số trê question_templates)
 
 Lưu tham số PCM dùng chung cho các câu hỏi thuộc template.
 
@@ -110,7 +130,7 @@ Lưu tham số PCM dùng chung cho các câu hỏi thuộc template.
 - `version`
 - `calibration_status`: trạng thái hiệu chuẩn tham số.
 
-#### `PCMQuestionParameters`
+#### `PCMQuestionParameters`  (tạm thời chưa có bảng này, dùng trực tiếp các thông số trê questions)
 
 Chỉ cần khi một câu hỏi có bộ tham số PCM riêng, độc lập với template.
 
@@ -129,7 +149,7 @@ Lưu thông tin bài kiểm tra.
 
 - `test_id`
 - `student_id`
-- `created_at` / `submitted_at`
+- `created_at`
 - Các trường thông tin bài kiểm tra khác của hệ thống.
 
 #### `TestQuestion`
@@ -158,7 +178,7 @@ Nếu một câu hỏi đánh giá nhiều skill, cần có kết quả rubric �
 
 Trong trường hợp một câu có thể đánh giá nhiều skill, nên dùng bảng kết quả chi tiết sau.
 
-#### `TestQuestionSkillResult`
+#### `TestQuestionSkillResult` (Tạm thời chưa xét đến cập nhật question_mastery_score theo từng skill nên không có bảng này)
 
 Mỗi dòng đại diện cho một kết quả đánh giá của một câu hỏi đối với một skill.
 
