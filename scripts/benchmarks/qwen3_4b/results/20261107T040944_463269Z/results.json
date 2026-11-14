@@ -1,0 +1,1843 @@
+{
+  "metadata": {
+    "started_utc": "20261107T040944_463269Z",
+    "python": "3.12.7 (main, Nov 22 2024, 20:28:41)  [GCC UCRT 14.2.0 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "arguments": {
+      "base_url": "http://localhost:11434",
+      "models": [
+        "qwen3:4b-q4_K_M"
+      ],
+      "thinking": "both",
+      "num_predict": [
+        256
+      ],
+      "num_ctx": 4096,
+      "temperature": 0,
+      "seed": 42,
+      "runs": 2,
+      "timeout": 90.0,
+      "category": "all",
+      "cases": [
+        "EA0012_direct",
+        "P04",
+        "P10"
+      ],
+      "cold": true,
+      "dry_run": false
+    },
+    "configurations": [
+      {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      }
+    ],
+    "source_bank": {
+      "source": "../../pre-work/data/sample/dataset/question_bank.db (relative to application root)",
+      "table": "question_templates",
+      "sha256": "4175ad9f5ed3c60e5b97ce2c79dca874247d4fd313e793ce84c2c50423d28997",
+      "note": "Read-only snapshot; authored rules are not blanket teacher certification. Concrete fixture answers are independently enumerated.",
+      "templates": [
+        {
+          "template_id": "EA0001",
+          "template_content": "Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là {counts}. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"counts\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0}, \"min_length\": 3}, \"groups\": {\"type\": \"disjoint_groups\", \"description\": \"Các nhóm phân biệt và không giao nhau\"}}",
+          "answer_rule": "N = sum(counts)",
+          "solution_rule": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0003",
+          "template_content": "Có nhóm A gồm {n1} đối tượng và nhóm B gồm {n2} đối tượng. Chọn đúng một đối tượng từ mỗi nhóm. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"n1\": {\"type\": \"integer\", \"min\": 3}, \"n2\": {\"type\": \"integer\", \"min\": 3}, \"groups\": {\"type\": \"array\", \"value\": \"Hai nhóm phân biệt\"}}",
+          "answer_rule": "N = n1 * n2",
+          "solution_rule": "Với mỗi lựa chọn ở nhóm A có n2 lựa chọn tương ứng ở nhóm B. Áp dụng quy tắc nhân: N = n1 * n2.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0004",
+          "template_content": "Có {n} cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 3}, \"groups\": {\"type\": \"object\", \"description\": \"Có n người phân biệt ở nhóm A và n người phân biệt ở nhóm B; các cặp đôi ghép mỗi người A với đúng một người B\"}, \"condition\": {\"type\": \"string\", \"value\": \"Hai người được chọn không thuộc cùng cặp đôi\"}}",
+          "answer_rule": "N = n * n - n = n * (n - 1)",
+          "solution_rule": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.",
+          "difficulty": 2
+        },
+        {
+          "template_id": "EA0012",
+          "template_content": "Có {n} đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 2}, \"pair_order_matters\": {\"type\": \"boolean\", \"value\": false}}",
+          "answer_rule": "C(n,2) = n * (n - 1) / 2",
+          "solution_rule": "Chọn 2 đối tượng từ n đối tượng. Có n(n-1) cách chọn có thứ tự; mỗi cặp bị đếm hai lần, nên số cặp là n(n-1)/2.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0017",
+          "template_content": "Có {n} phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 3}, \"arrange_all\": {\"type\": \"boolean\", \"value\": true}, \"distinct\": {\"type\": \"boolean\", \"value\": true}}",
+          "answer_rule": "P(n) = n!",
+          "solution_rule": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.",
+          "difficulty": 1
+        }
+      ]
+    },
+    "case_count": 3,
+    "models": {
+      "qwen3:4b-q4_K_M": {
+        "tag": {
+          "name": "qwen3:4b-q4_K_M",
+          "model": "qwen3:4b-q4_K_M",
+          "modified_at": "2026-11-07T09:45:25.7390625+07:00",
+          "size": 2620788260,
+          "digest": "2bfd38a7daaf4b1037efe517ccb73d1a3bbd4822cf89f1a82be1569050a114e0",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen3",
+            "families": [
+              "qwen3"
+            ],
+            "parameter_size": "4.0B",
+            "quantization_level": "Q4_K_M",
+            "context_length": 40960,
+            "embedding_length": 2560,
+            "runner": "ggml"
+          },
+          "capabilities": [
+            "completion",
+            "tools",
+            "thinking"
+          ]
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "thinking"
+        ],
+        "thinking": {
+          "values": [
+            false,
+            true
+          ],
+          "default": true
+        },
+        "parameters": "repeat_penalty                 1\nstop                           \"<|im_start|>\"\nstop                           \"<|im_end|>\"\ntemperature                    0.6\ntop_k                          20\ntop_p                          0.95"
+      }
+    },
+    "fixture_sha256": "87704de1f234a1c9491365f91183fe265de41b55ebc1b429449032a31f2f7096",
+    "code_sha256": {
+      "cases.py": "060df12d6e73e9bb0e48db2da534723e5dbcc2adb9377b988b28a6bbce8a6325",
+      "contracts.py": "912f4e4ddf3b9ec3988f0ca013996febc52e13c5fb6dd8aaff9c97cff2f16ca8",
+      "reporting.py": "927987a9c45524a16c68a2de1e3ef9131edfc2fc9a0d89b4b742c28c754aadce",
+      "runner.py": "e5857cc2c501f7719c75a2ea5f6548656d38611ab1da5d5b475e64139fb9097b",
+      "scoring.py": "8eda41689a84188b59e074486887f1eecdd13d4764f31161a6045c1bbefba9d2",
+      "test_benchmark.py": "e3aecaf1138d4de258be3d5c01a9dab29f2847523eac47c53237588c9d377793"
+    },
+    "ollama_version": {
+      "version": "0.40.15"
+    },
+    "post_inference_validation": {
+      "utc": "2026-11-07T04:17:01.450567+00:00",
+      "scoring_sha256": "71e7e87b3e4296442e97dafd8320d2a359cf10db3cfbdd2287a7244a0841a7bd",
+      "changed_record_count": 0,
+      "note": "Rechecked saved structured outputs with final offline scoring code; prompts, inference outputs, timing and provider metrics unchanged."
+    }
+  },
+  "summary": [
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "category": "phraser",
+      "phase": "cold",
+      "requests": 2,
+      "json_success_rate": 1.0,
+      "schema_success_rate": 1.0,
+      "statuses": {
+        "needs_review": 2
+      },
+      "mean_wall_seconds": 9.773335599922575,
+      "median_wall_seconds": 9.773335599922575,
+      "mean_tokens_per_second": 14.798389663581851,
+      "duration_means_ns": {
+        "total_duration": 7733259600,
+        "load_duration": 3693470750,
+        "prompt_eval_duration": 2477359000,
+        "eval_duration": 1554238000
+      },
+      "numeric_check_pass_rate": 1.0,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 0,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "cold_observed": 2
+      },
+      "violations": {
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự": 2
+      }
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "category": "phraser",
+      "phase": "warmup",
+      "requests": 1,
+      "json_success_rate": 1.0,
+      "schema_success_rate": 1.0,
+      "statuses": {
+        "needs_review": 1
+      },
+      "mean_wall_seconds": 3.691716599976644,
+      "median_wall_seconds": 3.691716599976644,
+      "mean_tokens_per_second": 15.02380292951093,
+      "duration_means_ns": {
+        "total_duration": 1622112000,
+        "load_duration": 10410300,
+        "prompt_eval_duration": 72626000,
+        "eval_duration": 1530904000
+      },
+      "numeric_check_pass_rate": 1.0,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 0,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 1
+      },
+      "violations": {
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự": 1
+      }
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "category": "phraser",
+      "phase": "warm",
+      "requests": 2,
+      "json_success_rate": 1.0,
+      "schema_success_rate": 1.0,
+      "statuses": {
+        "needs_review": 2
+      },
+      "mean_wall_seconds": 3.578311049961485,
+      "median_wall_seconds": 3.578311049961485,
+      "mean_tokens_per_second": 15.950601798062287,
+      "duration_means_ns": {
+        "total_duration": 1543744250,
+        "load_duration": 14197550,
+        "prompt_eval_duration": 67674000,
+        "eval_duration": 1441961500
+      },
+      "numeric_check_pass_rate": 1.0,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 0,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 2
+      },
+      "violations": {
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự": 2
+      }
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "category": "parser",
+      "phase": "warm",
+      "requests": 4,
+      "json_success_rate": 1.0,
+      "schema_success_rate": 1.0,
+      "statuses": {
+        "pass_labeled": 2,
+        "incorrect_result": 2
+      },
+      "mean_wall_seconds": 12.265142449934501,
+      "median_wall_seconds": 12.02237294986844,
+      "mean_tokens_per_second": 13.383831185641093,
+      "duration_means_ns": {
+        "total_duration": 10207681250,
+        "load_duration": 13405250,
+        "prompt_eval_duration": 1706432999.75,
+        "eval_duration": 8475551250
+      },
+      "numeric_check_pass_rate": null,
+      "step_accuracy": 0.6666666666666666,
+      "expression_accuracy": 1.0,
+      "purpose_accuracy": 1.0,
+      "reference_accuracy": 1.0,
+      "flag_accuracy": 0.6666666666666666,
+      "step_coverage": 1.0,
+      "labeled_case_success_rate": 0.5,
+      "alternative_success_rate": 1.0,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 4,
+      "unevaluable_requests": 0,
+      "model_review_rate": 0.0,
+      "required_review_rate": 0.5,
+      "residency": {
+        "warm_observed": 4
+      },
+      "violations": {
+        "flags:1": 2,
+        "invented_or_nonmathematical_lines:[2, 3]": 2,
+        "missing_teacher_review": 2
+      }
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "category": "parser",
+      "phase": "warmup",
+      "requests": 1,
+      "json_success_rate": 1.0,
+      "schema_success_rate": 1.0,
+      "statuses": {
+        "incorrect_result": 1
+      },
+      "mean_wall_seconds": 16.44764979998581,
+      "median_wall_seconds": 16.44764979998581,
+      "mean_tokens_per_second": 13.692495458383997,
+      "duration_means_ns": {
+        "total_duration": 14378159100,
+        "load_duration": 12708000,
+        "prompt_eval_duration": 5144624000,
+        "eval_duration": 9202121000
+      },
+      "numeric_check_pass_rate": null,
+      "step_accuracy": 0.0,
+      "expression_accuracy": 1.0,
+      "purpose_accuracy": 1.0,
+      "reference_accuracy": 1.0,
+      "flag_accuracy": 0.0,
+      "step_coverage": 1.0,
+      "labeled_case_success_rate": 0.0,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 2,
+      "unevaluable_requests": 0,
+      "model_review_rate": 0.0,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 1
+      },
+      "violations": {
+        "flags:1": 1,
+        "invented_or_nonmathematical_lines:[2, 3]": 1,
+        "missing_teacher_review": 1
+      }
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "category": "phraser",
+      "phase": "cold",
+      "requests": 2,
+      "json_success_rate": 0.0,
+      "schema_success_rate": 0.0,
+      "statuses": {
+        "invalid_json": 2
+      },
+      "mean_wall_seconds": 24.928721949923784,
+      "median_wall_seconds": 24.928721949923784,
+      "mean_tokens_per_second": 14.033959538512239,
+      "duration_means_ns": {
+        "total_duration": 22884053900,
+        "load_duration": 2168537650,
+        "prompt_eval_duration": 2466542000,
+        "eval_duration": 18241467500
+      },
+      "numeric_check_pass_rate": 0.0,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 2,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "cold_observed": 2
+      },
+      "violations": {}
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "category": "phraser",
+      "phase": "warmup",
+      "requests": 1,
+      "json_success_rate": 0.0,
+      "schema_success_rate": 0.0,
+      "statuses": {
+        "invalid_json": 1
+      },
+      "mean_wall_seconds": 20.741453799884766,
+      "median_wall_seconds": 20.741453799884766,
+      "mean_tokens_per_second": 13.779288523661192,
+      "duration_means_ns": {
+        "total_duration": 18684788500,
+        "load_duration": 12826000,
+        "prompt_eval_duration": 67517000,
+        "eval_duration": 18578608000
+      },
+      "numeric_check_pass_rate": 0.0,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 1,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 1
+      },
+      "violations": {}
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "category": "phraser",
+      "phase": "warm",
+      "requests": 2,
+      "json_success_rate": 0.0,
+      "schema_success_rate": 0.0,
+      "statuses": {
+        "invalid_json": 2
+      },
+      "mean_wall_seconds": 20.628211250063032,
+      "median_wall_seconds": 20.628211250063032,
+      "mean_tokens_per_second": 13.85341738361319,
+      "duration_means_ns": {
+        "total_duration": 18588876900,
+        "load_duration": 14533200,
+        "prompt_eval_duration": 68085000,
+        "eval_duration": 18479911000
+      },
+      "numeric_check_pass_rate": 0.0,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 2,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 2
+      },
+      "violations": {}
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "category": "parser",
+      "phase": "warm",
+      "requests": 4,
+      "json_success_rate": 0.0,
+      "schema_success_rate": 0.0,
+      "statuses": {
+        "invalid_json": 4
+      },
+      "mean_wall_seconds": 23.208363824989647,
+      "median_wall_seconds": 22.09657185000833,
+      "mean_tokens_per_second": 13.197725729421332,
+      "duration_means_ns": {
+        "total_duration": 21149728400,
+        "load_duration": 14183900,
+        "prompt_eval_duration": 1726042500,
+        "eval_duration": 19397955750
+      },
+      "numeric_check_pass_rate": null,
+      "step_accuracy": 0.0,
+      "expression_accuracy": 0.0,
+      "purpose_accuracy": 0.0,
+      "reference_accuracy": 0.0,
+      "flag_accuracy": 0.0,
+      "step_coverage": 0.0,
+      "labeled_case_success_rate": 0.0,
+      "alternative_success_rate": 0.0,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 4,
+      "model_review_rate": 0.0,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 4
+      },
+      "violations": {}
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "category": "parser",
+      "phase": "warmup",
+      "requests": 1,
+      "json_success_rate": 0.0,
+      "schema_success_rate": 0.0,
+      "statuses": {
+        "invalid_json": 1
+      },
+      "mean_wall_seconds": 27.022232099901885,
+      "median_wall_seconds": 27.022232099901885,
+      "mean_tokens_per_second": 13.10636454789826,
+      "duration_means_ns": {
+        "total_duration": 24972545300,
+        "load_duration": 12973200,
+        "prompt_eval_duration": 5400256000,
+        "eval_duration": 19532495000
+      },
+      "numeric_check_pass_rate": null,
+      "step_accuracy": 0.0,
+      "expression_accuracy": 0.0,
+      "purpose_accuracy": 0.0,
+      "reference_accuracy": 0.0,
+      "flag_accuracy": 0.0,
+      "step_coverage": 0.0,
+      "labeled_case_success_rate": 0.0,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 1,
+      "model_review_rate": 0.0,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 1
+      },
+      "violations": {}
+    }
+  ],
+  "paired_modes": [
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "EA0012_direct",
+      "phase": "cold",
+      "repeat": 0,
+      "off_seconds": 11.202106399927288,
+      "on_seconds": 24.896095999982208,
+      "off_status": "needs_review",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -13.69398960005492,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": false,
+      "both_schema_valid": false
+    },
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "EA0012_direct",
+      "phase": "warm",
+      "repeat": 0,
+      "off_seconds": 3.5578181999735534,
+      "on_seconds": 20.74160230020061,
+      "off_status": "needs_review",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -17.183784100227058,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": false,
+      "both_schema_valid": false
+    },
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "P04",
+      "phase": "warm",
+      "repeat": 0,
+      "off_seconds": 14.682438699994236,
+      "on_seconds": 26.920871099922806,
+      "off_status": "pass_labeled",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -12.23843239992857,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": false,
+      "both_schema_valid": false
+    },
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "P10",
+      "phase": "warm",
+      "repeat": 0,
+      "off_seconds": 12.589316099882126,
+      "on_seconds": 21.833737599896267,
+      "off_status": "incorrect_result",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -9.244421500014141,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": true,
+      "both_schema_valid": false
+    },
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "EA0012_direct",
+      "phase": "cold",
+      "repeat": 1,
+      "off_seconds": 8.344564799917862,
+      "on_seconds": 24.96134789986536,
+      "off_status": "needs_review",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -16.616783099947497,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": false,
+      "both_schema_valid": false
+    },
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "P10",
+      "phase": "warm",
+      "repeat": 1,
+      "off_seconds": 11.455429799854755,
+      "on_seconds": 21.719440500019118,
+      "off_status": "incorrect_result",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -10.264010700164363,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": true,
+      "both_schema_valid": false
+    },
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "P04",
+      "phase": "warm",
+      "repeat": 1,
+      "off_seconds": 10.333385200006887,
+      "on_seconds": 22.359406100120395,
+      "off_status": "pass_labeled",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -12.026020900113508,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": false,
+      "both_schema_valid": false
+    },
+    {
+      "model": "qwen3:4b-q4_K_M",
+      "num_predict": 256,
+      "case_id": "EA0012_direct",
+      "phase": "warm",
+      "repeat": 1,
+      "off_seconds": 3.5988038999494165,
+      "on_seconds": 20.514820199925452,
+      "off_status": "needs_review",
+      "on_status": "invalid_json",
+      "off_minus_on_seconds": -16.916016299976036,
+      "nonthinking_labeled_regression": false,
+      "alternative_nonthinking_regression": false,
+      "uncertainty_nonthinking_regression": false,
+      "both_schema_valid": false
+    }
+  ],
+  "consistency": [
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "runs": 2,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 2
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "P04",
+      "runs": 2,
+      "distinct_outputs": 1,
+      "statuses": {
+        "pass_labeled": 2
+      },
+      "all_labeled_ok": true
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "P10",
+      "runs": 2,
+      "distinct_outputs": 1,
+      "statuses": {
+        "incorrect_result": 2
+      },
+      "all_labeled_ok": false
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "EA0012_direct",
+      "runs": 2,
+      "distinct_outputs": 1,
+      "statuses": {
+        "invalid_json": 2
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "P04",
+      "runs": 2,
+      "distinct_outputs": 1,
+      "statuses": {
+        "invalid_json": 2
+      },
+      "all_labeled_ok": false
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "P10",
+      "runs": 2,
+      "distinct_outputs": 1,
+      "statuses": {
+        "invalid_json": 2
+      },
+      "all_labeled_ok": false
+    }
+  ],
+  "records": [
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "cold",
+      "repeat": 0,
+      "residency": "cold_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ad752cd180320ad022aba4eca3ecb888a082cf354e8cdb64054c793b39e438f0",
+      "wall_seconds": 11.202106399927288,
+      "total_duration": 9163702500,
+      "load_duration": 5220968200,
+      "prompt_eval_duration": 2375728000,
+      "eval_duration": 1559040000,
+      "eval_count": 23,
+      "prompt_eval_count": 193,
+      "prompt_eval_cached_count": 0,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?\"}",
+      "tokens_per_second": 14.752668308702791,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warmup",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ad752cd180320ad022aba4eca3ecb888a082cf354e8cdb64054c793b39e438f0",
+      "wall_seconds": 3.691716599976644,
+      "total_duration": 1622112000,
+      "load_duration": 10410300,
+      "prompt_eval_duration": 72626000,
+      "eval_duration": 1530904000,
+      "eval_count": 23,
+      "prompt_eval_count": 193,
+      "prompt_eval_cached_count": 192,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?\"}",
+      "tokens_per_second": 15.02380292951093,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ad752cd180320ad022aba4eca3ecb888a082cf354e8cdb64054c793b39e438f0",
+      "wall_seconds": 3.5578181999735534,
+      "total_duration": 1536269200,
+      "load_duration": 14355200,
+      "prompt_eval_duration": 66858000,
+      "eval_duration": 1445689000,
+      "eval_count": 23,
+      "prompt_eval_count": 193,
+      "prompt_eval_cached_count": 192,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?\"}",
+      "tokens_per_second": 15.909369165844106,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "P04",
+      "category": "parser",
+      "scenario": "correct_alternative_sum",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": true,
+      "expected_step_count": 2,
+      "requires_review": false,
+      "model_review": false,
+      "request_sha256": "e6e4f8f262291ecdbf6f6e1ae71339ea65133876937504a21cf4a50359abff37",
+      "wall_seconds": 14.682438699994236,
+      "total_duration": 12643598400,
+      "load_duration": 14574600,
+      "prompt_eval_duration": 5294436000,
+      "eval_duration": 7314012000,
+      "eval_count": 100,
+      "prompt_eval_count": 433,
+      "prompt_eval_cached_count": 3,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\n  \"steps\": [\n    {\"line\": 1, \"expression\": \"7+6+5+4+3+2+1=28\", \"purpose\": \"count\", \"reference\": 0, \"flags\": [\"alternative\"]},\n    {\"line\": 2, \"expression\": \"N=28\", \"purpose\": \"conclude\", \"reference\": 3, \"flags\": []}\n  ],\n  \"review\": false\n}",
+      "tokens_per_second": 13.672386646344032,
+      "truncated": false,
+      "output": {
+        "steps": [
+          {
+            "line": 1,
+            "expression": "7+6+5+4+3+2+1=28",
+            "purpose": "count",
+            "reference": 0,
+            "flags": [
+              "alternative"
+            ]
+          },
+          {
+            "line": 2,
+            "expression": "N=28",
+            "purpose": "conclude",
+            "reference": 3,
+            "flags": []
+          }
+        ],
+        "review": false
+      },
+      "status": "pass_labeled",
+      "violations": [],
+      "extracted_step_count": 2,
+      "covered_step_count": 2,
+      "correct_steps": 2,
+      "correct_expressions": 2,
+      "correct_purposes": 2,
+      "correct_references": 2,
+      "correct_flags": 2,
+      "labeled_ok": true,
+      "alternative_ok": true,
+      "false_acceptance_proxy": false,
+      "missed_uncertainty": 0,
+      "math_correct": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "P10",
+      "category": "parser",
+      "scenario": "ambiguous_requires_teacher",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 1,
+      "requires_review": true,
+      "model_review": false,
+      "request_sha256": "8d09f331c9679ddbadf192f7d9a16b66579cddbc0e3438e242903dfd50af7c2d",
+      "wall_seconds": 12.589316099882126,
+      "total_duration": 10534816400,
+      "load_duration": 13192800,
+      "prompt_eval_duration": 519376999,
+      "eval_duration": 9992780000,
+      "eval_count": 126,
+      "prompt_eval_count": 407,
+      "prompt_eval_cached_count": 376,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\n  \"steps\": [\n    {\"line\": 1, \"expression\": \"8*?=56\", \"purpose\": \"count\", \"reference\": 0, \"flags\": [\"alternative\"]},\n    {\"line\": 2, \"expression\": \"56/2=28\", \"purpose\": \"exclude\", \"reference\": 2, \"flags\": []},\n    {\"line\": 3, \"expression\": \"N=28\", \"purpose\": \"conclude\", \"reference\": 3, \"flags\": []}\n  ],\n  \"review\": false\n}",
+      "tokens_per_second": 12.609103772924051,
+      "truncated": false,
+      "output": {
+        "steps": [
+          {
+            "line": 1,
+            "expression": "8*?=56",
+            "purpose": "count",
+            "reference": 0,
+            "flags": [
+              "alternative"
+            ]
+          },
+          {
+            "line": 2,
+            "expression": "56/2=28",
+            "purpose": "exclude",
+            "reference": 2,
+            "flags": []
+          },
+          {
+            "line": 3,
+            "expression": "N=28",
+            "purpose": "conclude",
+            "reference": 3,
+            "flags": []
+          }
+        ],
+        "review": false
+      },
+      "status": "incorrect_result",
+      "violations": [
+        "flags:1",
+        "invented_or_nonmathematical_lines:[2, 3]",
+        "missing_teacher_review"
+      ],
+      "extracted_step_count": 3,
+      "covered_step_count": 1,
+      "correct_steps": 0,
+      "correct_expressions": 1,
+      "correct_purposes": 1,
+      "correct_references": 1,
+      "correct_flags": 0,
+      "labeled_ok": false,
+      "alternative_ok": null,
+      "false_acceptance_proxy": false,
+      "missed_uncertainty": 2,
+      "math_correct": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "cold",
+      "repeat": 1,
+      "residency": "cold_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ad752cd180320ad022aba4eca3ecb888a082cf354e8cdb64054c793b39e438f0",
+      "wall_seconds": 8.344564799917862,
+      "total_duration": 6302816700,
+      "load_duration": 2165973300,
+      "prompt_eval_duration": 2578990000,
+      "eval_duration": 1549436000,
+      "eval_count": 23,
+      "prompt_eval_count": 193,
+      "prompt_eval_cached_count": 0,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?\"}",
+      "tokens_per_second": 14.84411101846091,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "P10",
+      "category": "parser",
+      "scenario": "ambiguous_requires_teacher",
+      "phase": "warmup",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 1,
+      "requires_review": true,
+      "model_review": false,
+      "request_sha256": "8d09f331c9679ddbadf192f7d9a16b66579cddbc0e3438e242903dfd50af7c2d",
+      "wall_seconds": 16.44764979998581,
+      "total_duration": 14378159100,
+      "load_duration": 12708000,
+      "prompt_eval_duration": 5144624000,
+      "eval_duration": 9202121000,
+      "eval_count": 126,
+      "prompt_eval_count": 407,
+      "prompt_eval_cached_count": 3,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\n  \"steps\": [\n    {\"line\": 1, \"expression\": \"8*?=56\", \"purpose\": \"count\", \"reference\": 0, \"flags\": [\"alternative\"]},\n    {\"line\": 2, \"expression\": \"56/2=28\", \"purpose\": \"exclude\", \"reference\": 2, \"flags\": []},\n    {\"line\": 3, \"expression\": \"N=28\", \"purpose\": \"conclude\", \"reference\": 3, \"flags\": []}\n  ],\n  \"review\": false\n}",
+      "tokens_per_second": 13.692495458383997,
+      "truncated": false,
+      "output": {
+        "steps": [
+          {
+            "line": 1,
+            "expression": "8*?=56",
+            "purpose": "count",
+            "reference": 0,
+            "flags": [
+              "alternative"
+            ]
+          },
+          {
+            "line": 2,
+            "expression": "56/2=28",
+            "purpose": "exclude",
+            "reference": 2,
+            "flags": []
+          },
+          {
+            "line": 3,
+            "expression": "N=28",
+            "purpose": "conclude",
+            "reference": 3,
+            "flags": []
+          }
+        ],
+        "review": false
+      },
+      "status": "incorrect_result",
+      "violations": [
+        "flags:1",
+        "invented_or_nonmathematical_lines:[2, 3]",
+        "missing_teacher_review"
+      ],
+      "extracted_step_count": 3,
+      "covered_step_count": 1,
+      "correct_steps": 0,
+      "correct_expressions": 1,
+      "correct_purposes": 1,
+      "correct_references": 1,
+      "correct_flags": 0,
+      "labeled_ok": false,
+      "alternative_ok": null,
+      "false_acceptance_proxy": false,
+      "missed_uncertainty": 2,
+      "math_correct": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "P10",
+      "category": "parser",
+      "scenario": "ambiguous_requires_teacher",
+      "phase": "warm",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 1,
+      "requires_review": true,
+      "model_review": false,
+      "request_sha256": "8d09f331c9679ddbadf192f7d9a16b66579cddbc0e3438e242903dfd50af7c2d",
+      "wall_seconds": 11.455429799854755,
+      "total_duration": 9389226000,
+      "load_duration": 10834600,
+      "prompt_eval_duration": 74218000,
+      "eval_duration": 9295727000,
+      "eval_count": 126,
+      "prompt_eval_count": 407,
+      "prompt_eval_cached_count": 406,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\n  \"steps\": [\n    {\"line\": 1, \"expression\": \"8*?=56\", \"purpose\": \"count\", \"reference\": 0, \"flags\": [\"alternative\"]},\n    {\"line\": 2, \"expression\": \"56/2=28\", \"purpose\": \"exclude\", \"reference\": 2, \"flags\": []},\n    {\"line\": 3, \"expression\": \"N=28\", \"purpose\": \"conclude\", \"reference\": 3, \"flags\": []}\n  ],\n  \"review\": false\n}",
+      "tokens_per_second": 13.55461493221563,
+      "truncated": false,
+      "output": {
+        "steps": [
+          {
+            "line": 1,
+            "expression": "8*?=56",
+            "purpose": "count",
+            "reference": 0,
+            "flags": [
+              "alternative"
+            ]
+          },
+          {
+            "line": 2,
+            "expression": "56/2=28",
+            "purpose": "exclude",
+            "reference": 2,
+            "flags": []
+          },
+          {
+            "line": 3,
+            "expression": "N=28",
+            "purpose": "conclude",
+            "reference": 3,
+            "flags": []
+          }
+        ],
+        "review": false
+      },
+      "status": "incorrect_result",
+      "violations": [
+        "flags:1",
+        "invented_or_nonmathematical_lines:[2, 3]",
+        "missing_teacher_review"
+      ],
+      "extracted_step_count": 3,
+      "covered_step_count": 1,
+      "correct_steps": 0,
+      "correct_expressions": 1,
+      "correct_purposes": 1,
+      "correct_references": 1,
+      "correct_flags": 0,
+      "labeled_ok": false,
+      "alternative_ok": null,
+      "false_acceptance_proxy": false,
+      "missed_uncertainty": 2,
+      "math_correct": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "P04",
+      "category": "parser",
+      "scenario": "correct_alternative_sum",
+      "phase": "warm",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": true,
+      "expected_step_count": 2,
+      "requires_review": false,
+      "model_review": false,
+      "request_sha256": "e6e4f8f262291ecdbf6f6e1ae71339ea65133876937504a21cf4a50359abff37",
+      "wall_seconds": 10.333385200006887,
+      "total_duration": 8263084200,
+      "load_duration": 15019000,
+      "prompt_eval_duration": 937701000,
+      "eval_duration": 7299686000,
+      "eval_count": 100,
+      "prompt_eval_count": 433,
+      "prompt_eval_cached_count": 376,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\n  \"steps\": [\n    {\"line\": 1, \"expression\": \"7+6+5+4+3+2+1=28\", \"purpose\": \"count\", \"reference\": 0, \"flags\": [\"alternative\"]},\n    {\"line\": 2, \"expression\": \"N=28\", \"purpose\": \"conclude\", \"reference\": 3, \"flags\": []}\n  ],\n  \"review\": false\n}",
+      "tokens_per_second": 13.699219391080657,
+      "truncated": false,
+      "output": {
+        "steps": [
+          {
+            "line": 1,
+            "expression": "7+6+5+4+3+2+1=28",
+            "purpose": "count",
+            "reference": 0,
+            "flags": [
+              "alternative"
+            ]
+          },
+          {
+            "line": 2,
+            "expression": "N=28",
+            "purpose": "conclude",
+            "reference": 3,
+            "flags": []
+          }
+        ],
+        "review": false
+      },
+      "status": "pass_labeled",
+      "violations": [],
+      "extracted_step_count": 2,
+      "covered_step_count": 2,
+      "correct_steps": 2,
+      "correct_expressions": 2,
+      "correct_purposes": 2,
+      "correct_references": 2,
+      "correct_flags": 2,
+      "labeled_ok": true,
+      "alternative_ok": true,
+      "false_acceptance_proxy": false,
+      "missed_uncertainty": 0,
+      "math_correct": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ad752cd180320ad022aba4eca3ecb888a082cf354e8cdb64054c793b39e438f0",
+      "wall_seconds": 3.5988038999494165,
+      "total_duration": 1551219300,
+      "load_duration": 14039900,
+      "prompt_eval_duration": 68490000,
+      "eval_duration": 1438234000,
+      "eval_count": 23,
+      "prompt_eval_count": 193,
+      "prompt_eval_cached_count": 192,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?\"}",
+      "tokens_per_second": 15.99183443028047,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "cold",
+      "repeat": 0,
+      "residency": "cold_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "84ecdeacb668ba059fe5076f54bc3f0980a159667f0ba0b2bcd8baae336d3a68",
+      "wall_seconds": 24.896095999982208,
+      "total_duration": 22874352600,
+      "load_duration": 2159721000,
+      "prompt_eval_duration": 2461211000,
+      "eval_duration": 18246143000,
+      "eval_count": 256,
+      "prompt_eval_count": 187,
+      "prompt_eval_cached_count": 0,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 1015,
+      "raw_response": "",
+      "tokens_per_second": 14.03036247167415,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warmup",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "84ecdeacb668ba059fe5076f54bc3f0980a159667f0ba0b2bcd8baae336d3a68",
+      "wall_seconds": 20.741453799884766,
+      "total_duration": 18684788500,
+      "load_duration": 12826000,
+      "prompt_eval_duration": 67517000,
+      "eval_duration": 18578608000,
+      "eval_count": 256,
+      "prompt_eval_count": 187,
+      "prompt_eval_cached_count": 186,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 1015,
+      "raw_response": "",
+      "tokens_per_second": 13.779288523661192,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "84ecdeacb668ba059fe5076f54bc3f0980a159667f0ba0b2bcd8baae336d3a68",
+      "wall_seconds": 20.74160230020061,
+      "total_duration": 18688641800,
+      "load_duration": 15166900,
+      "prompt_eval_duration": 69437000,
+      "eval_duration": 18594947000,
+      "eval_count": 256,
+      "prompt_eval_count": 187,
+      "prompt_eval_cached_count": 186,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 1015,
+      "raw_response": "",
+      "tokens_per_second": 13.767180944371608,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "P04",
+      "category": "parser",
+      "scenario": "correct_alternative_sum",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": true,
+      "expected_step_count": 2,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ed3321754ea8baa85e1ae1f00d380a7efed95757f4872685db11468abf8ac60a",
+      "wall_seconds": 26.920871099922806,
+      "total_duration": 24865159600,
+      "load_duration": 15585400,
+      "prompt_eval_duration": 5562055000,
+      "eval_duration": 19276456000,
+      "eval_count": 256,
+      "prompt_eval_count": 427,
+      "prompt_eval_cached_count": 3,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 912,
+      "raw_response": "",
+      "tokens_per_second": 13.280449476812542,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "P10",
+      "category": "parser",
+      "scenario": "ambiguous_requires_teacher",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 1,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "a8931699575c62e6b815b4aff364d978a935ffa36bf13c6bc2e1dff7679d5172",
+      "wall_seconds": 21.833737599896267,
+      "total_duration": 19782766900,
+      "load_duration": 12943900,
+      "prompt_eval_duration": 425605000,
+      "eval_duration": 19332442000,
+      "eval_count": 256,
+      "prompt_eval_count": 401,
+      "prompt_eval_cached_count": 376,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 951,
+      "raw_response": "",
+      "tokens_per_second": 13.241989811737183,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "cold",
+      "repeat": 1,
+      "residency": "cold_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "84ecdeacb668ba059fe5076f54bc3f0980a159667f0ba0b2bcd8baae336d3a68",
+      "wall_seconds": 24.96134789986536,
+      "total_duration": 22893755200,
+      "load_duration": 2177354300,
+      "prompt_eval_duration": 2471873000,
+      "eval_duration": 18236792000,
+      "eval_count": 256,
+      "prompt_eval_count": 187,
+      "prompt_eval_cached_count": 0,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 1015,
+      "raw_response": "",
+      "tokens_per_second": 14.037556605350327,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "P10",
+      "category": "parser",
+      "scenario": "ambiguous_requires_teacher",
+      "phase": "warmup",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 1,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "a8931699575c62e6b815b4aff364d978a935ffa36bf13c6bc2e1dff7679d5172",
+      "wall_seconds": 27.022232099901885,
+      "total_duration": 24972545300,
+      "load_duration": 12973200,
+      "prompt_eval_duration": 5400256000,
+      "eval_duration": 19532495000,
+      "eval_count": 256,
+      "prompt_eval_count": 401,
+      "prompt_eval_cached_count": 3,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 891,
+      "raw_response": "",
+      "tokens_per_second": 13.10636454789826,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "P10",
+      "category": "parser",
+      "scenario": "ambiguous_requires_teacher",
+      "phase": "warm",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 1,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "a8931699575c62e6b815b4aff364d978a935ffa36bf13c6bc2e1dff7679d5172",
+      "wall_seconds": 21.719440500019118,
+      "total_duration": 19681055300,
+      "load_duration": 14469900,
+      "prompt_eval_duration": 73270000,
+      "eval_duration": 19580873000,
+      "eval_count": 256,
+      "prompt_eval_count": 401,
+      "prompt_eval_cached_count": 400,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 949,
+      "raw_response": "",
+      "tokens_per_second": 13.073982962863811,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "P04",
+      "category": "parser",
+      "scenario": "correct_alternative_sum",
+      "phase": "warm",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": true,
+      "expected_step_count": 2,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ed3321754ea8baa85e1ae1f00d380a7efed95757f4872685db11468abf8ac60a",
+      "wall_seconds": 22.359406100120395,
+      "total_duration": 20269931800,
+      "load_duration": 13736400,
+      "prompt_eval_duration": 843240000,
+      "eval_duration": 19402052000,
+      "eval_count": 256,
+      "prompt_eval_count": 427,
+      "prompt_eval_cached_count": 376,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 928,
+      "raw_response": "",
+      "tokens_per_second": 13.194480666271794,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=true|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 1,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": false,
+      "schema_ok": false,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "84ecdeacb668ba059fe5076f54bc3f0980a159667f0ba0b2bcd8baae336d3a68",
+      "wall_seconds": 20.514820199925452,
+      "total_duration": 18489112000,
+      "load_duration": 13899500,
+      "prompt_eval_duration": 66733000,
+      "eval_duration": 18364875000,
+      "eval_count": 256,
+      "prompt_eval_count": 187,
+      "prompt_eval_cached_count": 186,
+      "done_reason": "length",
+      "thinking_present": true,
+      "thinking_characters": 1015,
+      "raw_response": "",
+      "tokens_per_second": 13.93965382285477,
+      "truncated": true,
+      "status": "invalid_json",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    }
+  ]
+}

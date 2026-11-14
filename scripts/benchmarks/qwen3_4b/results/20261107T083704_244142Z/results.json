@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "started_utc": "20261107T083704_244142Z",
+    "python": "3.14.4 (tags/v3.14.4:23116f9, Apr  7 2026, 14:10:54) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "arguments": {
+      "base_url": "http://localhost:11434",
+      "models": [
+        "qwen3:4b-q4_K_M"
+      ],
+      "thinking": "both",
+      "num_predict": [
+        256
+      ],
+      "num_ctx": 4096,
+      "temperature": 0,
+      "seed": 42,
+      "runs": 3,
+      "timeout": 120,
+      "category": "all",
+      "cases": null,
+      "cold": false,
+      "dry_run": true
+    },
+    "configurations": [
+      {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      {
+        "id": "qwen3:4b-q4_K_M|think=true|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": true,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      }
+    ],
+    "source_bank": {
+      "source": "../../pre-work/data/sample/dataset/question_bank.db (relative to application root)",
+      "table": "question_templates",
+      "sha256": "4175ad9f5ed3c60e5b97ce2c79dca874247d4fd313e793ce84c2c50423d28997",
+      "note": "Read-only snapshot; authored rules are not blanket teacher certification. Concrete fixture answers are independently enumerated.",
+      "templates": [
+        {
+          "template_id": "EA0001",
+          "template_content": "Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là {counts}. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"counts\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0}, \"min_length\": 3}, \"groups\": {\"type\": \"disjoint_groups\", \"description\": \"Các nhóm phân biệt và không giao nhau\"}}",
+          "answer_rule": "N = sum(counts)",
+          "solution_rule": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0003",
+          "template_content": "Có nhóm A gồm {n1} đối tượng và nhóm B gồm {n2} đối tượng. Chọn đúng một đối tượng từ mỗi nhóm. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"n1\": {\"type\": \"integer\", \"min\": 3}, \"n2\": {\"type\": \"integer\", \"min\": 3}, \"groups\": {\"type\": \"array\", \"value\": \"Hai nhóm phân biệt\"}}",
+          "answer_rule": "N = n1 * n2",
+          "solution_rule": "Với mỗi lựa chọn ở nhóm A có n2 lựa chọn tương ứng ở nhóm B. Áp dụng quy tắc nhân: N = n1 * n2.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0004",
+          "template_content": "Có {n} cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 3}, \"groups\": {\"type\": \"object\", \"description\": \"Có n người phân biệt ở nhóm A và n người phân biệt ở nhóm B; các cặp đôi ghép mỗi người A với đúng một người B\"}, \"condition\": {\"type\": \"string\", \"value\": \"Hai người được chọn không thuộc cùng cặp đôi\"}}",
+          "answer_rule": "N = n * n - n = n * (n - 1)",
+          "solution_rule": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.",
+          "difficulty": 2
+        },
+        {
+          "template_id": "EA0012",
+          "template_content": "Có {n} đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 2}, \"pair_order_matters\": {\"type\": \"boolean\", \"value\": false}}",
+          "answer_rule": "C(n,2) = n * (n - 1) / 2",
+          "solution_rule": "Chọn 2 đối tượng từ n đối tượng. Có n(n-1) cách chọn có thứ tự; mỗi cặp bị đếm hai lần, nên số cặp là n(n-1)/2.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0017",
+          "template_content": "Có {n} phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 3}, \"arrange_all\": {\"type\": \"boolean\", \"value\": true}, \"distinct\": {\"type\": \"boolean\", \"value\": true}}",
+          "answer_rule": "P(n) = n!",
+          "solution_rule": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.",
+          "difficulty": 1
+        }
+      ]
+    },
+    "case_count": 22,
+    "models": {},
+    "fixture_sha256": "d9e43243963fcf7ee2de1ec5629cb9af842e5e5edae19e0853c51faa3ded1617",
+    "code_sha256": {
+      "cases.py": "060df12d6e73e9bb0e48db2da534723e5dbcc2adb9377b988b28a6bbce8a6325",
+      "contracts.py": "912f4e4ddf3b9ec3988f0ca013996febc52e13c5fb6dd8aaff9c97cff2f16ca8",
+      "reporting.py": "927987a9c45524a16c68a2de1e3ef9131edfc2fc9a0d89b4b742c28c754aadce",
+      "runner.py": "e5857cc2c501f7719c75a2ea5f6548656d38611ab1da5d5b475e64139fb9097b",
+      "scoring.py": "71e7e87b3e4296442e97dafd8320d2a359cf10db3cfbdd2287a7244a0841a7bd",
+      "test_benchmark.py": "450b62f44c560c7d3e66881db974831fe8e1ef4e9bfdfded236cb9757b9983b8"
+    },
+    "dry_run": true
+  },
+  "summary": [],
+  "paired_modes": [],
+  "consistency": [],
+  "records": []
+}
