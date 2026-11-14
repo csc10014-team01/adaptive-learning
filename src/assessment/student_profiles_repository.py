@@ -251,37 +251,3 @@ def get_student_by_id(DB_PATH, student_id: str) -> dict | None:
 
     finally:
         conn.close()
-
-        
-DB_PATH1 = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
-
-def test(student_id: str):
-    conn = sqlite3.connect(DB_PATH1)
-    conn.row_factory = sqlite3.Row
-
-    try:
-        cursor = conn.cursor()
-
-        student = get_student_by_id(DB_PATH , student_id)
-        question = []
-        answer = []
-        for order in range(0, 4):
-            q = get_question(DB_PATH1 , student["learning_history"][0]["question_mastery_score"][order]["question_id"])
-            question.append(q)
-            answer.append(q["rubric"])
-        learning_history = student["learning_history"][0]
-        print(json.dumps(learning_history, indent=4, ensure_ascii=False))
-        
-        for q in question:
-            print("question_id: ", q["question_id"])
-            print("content: ", q["content"])
-            print("correct_answer: ")
-            i = 0
-            print(json.dumps(answer[i], indent=4, ensure_ascii=False))
-            print()
-
-            i = i+1
-    finally:
-        conn.close()
-
-#test("ST001")

@@ -2,12 +2,23 @@ import sqlite3
 from pathlib import Path
 from helper_functions import check_required_fields, check_duplicate, serialize_json
 import json
+import re
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
 
 # =========================
 # QUESTIONS
 # =========================
+
+
+def parse_json(text):
+    if not text:
+        return None
+
+    text = re.sub(r',\s*([}\]])', r'\1', text)
+
+    return json.loads(text)
+
 
 def validate_question(DB_PATH, question: dict) -> bool:
     """
@@ -68,16 +79,20 @@ def add_question(DB_PATH, question: dict) -> bool:
                     difficulty,
                     content,
                     grade_level,
-                    status
+                    status,
+                    rubric,
+                    step_difficulties
                 )
-                VALUES (?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 question["question_id"],
                 question["question_type"],
                 question["difficulty"],
                 question["content"],
                 question["grade_level"],
-                question["status"]
+                question["status"],
+                question["rubric"],
+                question["step_difficulties"]
             ))
 
         return True
@@ -521,6 +536,9 @@ def get_all_question_templates(DB_PATH):
 
             template["skills"] = [dict(row) for row in template_id]
 
+            template["rubric"] = parse_json(template["rubric"])
+            template["parameter_rules"] = parse_json(template["parameter_rules"])
+
         return templates
 
     except sqlite3.Error as e:
@@ -531,7 +549,7 @@ def get_all_question_templates(DB_PATH):
         if conn is not None:
             conn.close()
 
-def get_question_template_by_id(DB_PATH, template_id):
+def get_question_template_by_id(DB_PATH, template_id) -> dict | None:
     conn = None
 
     try:
@@ -550,7 +568,11 @@ def get_question_template_by_id(DB_PATH, template_id):
         if row is None:
             return None
 
-        return dict(row)
+        template = dict(row)
+        template["rubric"] = parse_json(template["rubric"])
+        template["parameter_rules"] = parse_json(template["parameter_rules"])
+
+        return template
 
     except sqlite3.Error as e:
         print(f"Lỗi khi đọc question_templates: {e}")
