@@ -1,5 +1,9 @@
 # Thiết kế dữ liệu chấm bài và cơ chế cập nhật hồ sơ năng lực
 Trình bày: Nguyễn Ngọc Ánh Dương
+
+Ví dụ chạy tay:
+https://chatgpt.com/c/6af05643-db64-83ec-959a-c552c18801e4
+
 ## Tóm tắt:
 - Dùng **Partial Credit Model (PCM)** để tính xác xuất đúng bước đó của học sinh dựa trên các bước học sinh làm đúng và độ khó của bước đó.
 - Dùng EAP ability estimation (dichotomous and polytomous IRT models) để tính điểm mong đợi của từng câu.
@@ -73,12 +77,31 @@ b = 0.75(d - 2)
 Trong đó `d` là độ khó giáo viên chọn và `b` là giá trị difficulty trên thang PCM. Nếu mỗi bước có độ khó riêng, thực hiện phép quy đổi cho từng bước để tạo thành vector `step_difficulties`.
 
 ## 3. Thiết kế dữ liệu
+### Bổ sung thay đổi sau thiết kế:
 
-Các bảng dưới đây là cấu trúc logic đề xuất. Có thể điều chỉnh tên cột theo convention của dự án.
+#### question_templates, questions: 
+Thêm cột rubric viết dưới dạng json, step_difficulties
+
+#### `test_questions`
+
+Lưu câu hỏi được đưa vào bài kiểm tra và kết quả chấm của học sinh.
+
+- `test_id`
+- `question_id`
+- `observed_level`: mức rubric học sinh đạt được.
+- `theta_eap`: năng lực EAP ước lượng từ kết quả câu hỏi này.
+- `question_mastery_score`: điểm thành thạo sau khi quy đổi qua bộ tham chiếu.
+- `pcm_parameter_version`: phiên bản tham số PCM đã sử dụng.
+- `reference_parameter_version`: phiên bản bộ tham chiếu đã sử dụng.
+- `prior_version`: phiên bản prior đã sử dụng.
+
+Nếu mỗi câu chỉ đánh giá một kỹ năng, có thể lưu `skill_id` trực tiếp trong `TestQuestion` hoặc truy xuất thông qua `question_skills`.
+
+
 
 ### 3.1. Nhóm dữ liệu câu hỏi và tham số PCM
 
-#### `QuestionTemplate`
+#### `RubricTemplate` lấy từ bảng question_templates
 
 Lưu thông tin template câu hỏi và rubric mặc định.
 
@@ -86,18 +109,19 @@ Các trường liên quan:
 
 - `template_id`: khóa định danh template.
 - `rubric`: cấu hình các mức rubric mặc định, nếu rubric được lưu dạng JSON.
-- `max_level`: mức rubric tối đa, ví dụ `4`.
+- `step_difficulties`
+- `max_level`: mức rubric tối đa là len(step_difficulties).
 
-#### `QuestionRubric`
+#### `QuestionRubric` lấy từ bảng questions
 
 Chỉ cần khi câu hỏi có rubric riêng hoặc rubric tùy chỉnh.
 
 - `question_id`: câu hỏi áp dụng rubric.
 - `rubric`: mô tả các mức rubric.
-- `max_level`: mức tối đa của rubric.
-- `version`: phiên bản rubric.
+- `step_difficulties`
+- `max_level`: mức rubric tối đa là len(step_difficulties).
 
-#### `PCMTemplateParameters`
+#### `PCMTemplateParameters` (tạm thời chưa có bảng này, dùng trực tiếp các thông số trê question_templates)
 
 Lưu tham số PCM dùng chung cho các câu hỏi thuộc template.
 
@@ -106,7 +130,7 @@ Lưu tham số PCM dùng chung cho các câu hỏi thuộc template.
 - `version`
 - `calibration_status`: trạng thái hiệu chuẩn tham số.
 
-#### `PCMQuestionParameters`
+#### `PCMQuestionParameters`  (tạm thời chưa có bảng này, dùng trực tiếp các thông số trê questions)
 
 Chỉ cần khi một câu hỏi có bộ tham số PCM riêng, độc lập với template.
 
@@ -125,7 +149,7 @@ Lưu thông tin bài kiểm tra.
 
 - `test_id`
 - `student_id`
-- `created_at` / `submitted_at`
+- `created_at`
 - Các trường thông tin bài kiểm tra khác của hệ thống.
 
 #### `TestQuestion`
@@ -154,7 +178,7 @@ Nếu một câu hỏi đánh giá nhiều skill, cần có kết quả rubric �
 
 Trong trường hợp một câu có thể đánh giá nhiều skill, nên dùng bảng kết quả chi tiết sau.
 
-#### `TestQuestionSkillResult`
+#### `TestQuestionSkillResult` (Tạm thời chưa xét đến cập nhật question_mastery_score theo từng skill nên không có bảng này)
 
 Mỗi dòng đại diện cho một kết quả đánh giá của một câu hỏi đối với một skill.
 
@@ -286,6 +310,7 @@ EAP (Expected A Posteriori) là trung bình của phân phối hậu nghiệm n�
 - Phân phối prior mô tả giả định ban đầu về năng lực.
 
 Giả sử prior:
+
 $$
 \[
 \theta \sim N(\mu_0,\sigma_0^2)
@@ -301,6 +326,7 @@ $$
 Đây là giả định khởi tạo, không phải tham số bắt buộc của PCM. Prior phải nhất quán với thang đo của `step_difficulties` và bộ tham chiếu.
 
 Với kết quả quan sát `x`, mật độ hậu nghiệm chưa chuẩn hóa:
+
 $$
 \[
 p(\theta\mid X=x)
@@ -309,7 +335,9 @@ P(X=x\mid\theta)\,
 \phi(\theta;\mu_0,\sigma_0^2)
 \]
 $$
+
 Trong đó \(\phi\) là mật độ phân phối chuẩn. EAP là:
+
 $$
 \[
 \hat{\theta}_{EAP}=
@@ -324,6 +352,7 @@ P(X=x\mid\theta)\,
 }
 \]
 $$
+
 Có thể tính gần đúng bằng numerical integration hoặc grid approximation trên một miền theta đủ rộng.
 
 ### Prototype
@@ -365,7 +394,7 @@ def estimate_eap(
 
 - `observed_level`: kết quả chấm rubric của học sinh. Giá trị hợp lệ nằm trong `[0, m]`.
 - `step_difficulties`: vector tham số PCM của đúng câu hỏi đang được chấm.
-- `prior_mean`: trung bình prior. Với khởi tạo chuẩn hóa thường dùng `0`.
+- `prior_mean`: trung bình prior. Với khởi tạo chuẩn hóa thường dùng `0`. Và bằng theta_eap của câu hỏi có skill_id đó gần nhất được cập nhật.
 - `prior_std`: độ lệch chuẩn prior. Ví dụ `1.0`; không được bằng hoặc nhỏ hơn 0.
 - `theta_grid`: lưới các giá trị năng lực dùng để xấp xỉ tích phân. Grid cần đủ rộng và đủ mịn để kết quả ổn định.
 
@@ -458,11 +487,13 @@ Trong đó:
 Không nhân thêm `question_difficulty` làm trọng số. Độ khó đã tham gia vào quá trình ước lượng `theta`; tiếp tục dùng độ khó làm trọng số có thể khiến độ khó ảnh hưởng hai lần.
 
 ### `evidence_count`
+
 $$
 \[
 evidence\_count_s=n_s
 \]
 $$
+
 `evidence_count` là số kết quả đánh giá hợp lệ đã được dùng làm bằng chứng cho skill đó.
 
 Cần phân biệt:
@@ -575,6 +606,7 @@ nếu n > 0:
 **Vì sao lấy toàn bộ bằng chứng thay vì chỉ cộng điểm mới vào mastery cũ?**
 
 Nếu chỉ có `mastery_score` và `evidence_count` hiện tại, có thể cập nhật trung bình bằng công thức:
+
 $$
 \[
 M_{new} =
@@ -582,6 +614,7 @@ M_{new} =
 {N_{old}+q}
 \]
 $$
+
 Trong đó `x_j` là các điểm mastery mới. Tuy nhiên, cách này chỉ an toàn khi không có sửa/xóa kết quả cũ, không có trùng dữ liệu và toàn bộ điểm được tính trên cùng phiên bản tham số. Với MVP, truy vấn toàn bộ bằng chứng rồi tính lại sẽ dễ kiểm soát và tránh sai lệch do cập nhật lặp.
 
 Nếu không có bằng chứng hợp lệ, không tạo mastery bằng 0. Có thể giữ nguyên bản ghi hiện tại hoặc đánh dấu trạng thái chưa đủ bằng chứng theo quy ước của hệ thống.
