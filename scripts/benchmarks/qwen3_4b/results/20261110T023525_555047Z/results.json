@@ -1,0 +1,942 @@
+{
+  "metadata": {
+    "started_utc": "20261110T023525_555047Z",
+    "python": "3.12.7 (main, Nov 22 2024, 20:28:41)  [GCC UCRT 14.2.0 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "arguments": {
+      "base_url": "http://localhost:11434",
+      "models": [
+        "qwen3:4b-q4_K_M"
+      ],
+      "thinking": "off",
+      "num_predict": [
+        256
+      ],
+      "num_ctx": 4096,
+      "temperature": 0,
+      "seed": 42,
+      "runs": 1,
+      "timeout": 120,
+      "category": "phraser",
+      "cases": null,
+      "cold": false,
+      "dry_run": false
+    },
+    "configurations": [
+      {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      }
+    ],
+    "source_bank": {
+      "source": "../../pre-work/data/sample/dataset/question_bank.db (relative to application root)",
+      "table": "question_templates",
+      "sha256": "4175ad9f5ed3c60e5b97ce2c79dca874247d4fd313e793ce84c2c50423d28997",
+      "note": "Read-only snapshot; authored rules are not blanket teacher certification. Concrete fixture answers are independently enumerated.",
+      "templates": [
+        {
+          "template_id": "EA0001",
+          "template_content": "Có các nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là {counts}. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"counts\": {\"type\": \"array\", \"items\": {\"type\": \"integer\", \"min\": 0}, \"min_length\": 3}, \"groups\": {\"type\": \"disjoint_groups\", \"description\": \"Các nhóm phân biệt và không giao nhau\"}}",
+          "answer_rule": "N = sum(counts)",
+          "solution_rule": "Vì chỉ chọn một đối tượng từ đúng một trong các nhóm phân biệt, áp dụng quy tắc cộng: cộng số đối tượng của tất cả các nhóm.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0003",
+          "template_content": "Có nhóm A gồm {n1} đối tượng và nhóm B gồm {n2} đối tượng. Chọn đúng một đối tượng từ mỗi nhóm. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"n1\": {\"type\": \"integer\", \"min\": 3}, \"n2\": {\"type\": \"integer\", \"min\": 3}, \"groups\": {\"type\": \"array\", \"value\": \"Hai nhóm phân biệt\"}}",
+          "answer_rule": "N = n1 * n2",
+          "solution_rule": "Với mỗi lựa chọn ở nhóm A có n2 lựa chọn tương ứng ở nhóm B. Áp dụng quy tắc nhân: N = n1 * n2.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0004",
+          "template_content": "Có {n} cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 3}, \"groups\": {\"type\": \"object\", \"description\": \"Có n người phân biệt ở nhóm A và n người phân biệt ở nhóm B; các cặp đôi ghép mỗi người A với đúng một người B\"}, \"condition\": {\"type\": \"string\", \"value\": \"Hai người được chọn không thuộc cùng cặp đôi\"}}",
+          "answer_rule": "N = n * n - n = n * (n - 1)",
+          "solution_rule": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.",
+          "difficulty": 2
+        },
+        {
+          "template_id": "EA0012",
+          "template_content": "Có {n} đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 2}, \"pair_order_matters\": {\"type\": \"boolean\", \"value\": false}}",
+          "answer_rule": "C(n,2) = n * (n - 1) / 2",
+          "solution_rule": "Chọn 2 đối tượng từ n đối tượng. Có n(n-1) cách chọn có thứ tự; mỗi cặp bị đếm hai lần, nên số cặp là n(n-1)/2.",
+          "difficulty": 1
+        },
+        {
+          "template_id": "EA0017",
+          "template_content": "Có {n} phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+          "parameter_rules": "{\"n\": {\"type\": \"integer\", \"min\": 3}, \"arrange_all\": {\"type\": \"boolean\", \"value\": true}, \"distinct\": {\"type\": \"boolean\", \"value\": true}}",
+          "answer_rule": "P(n) = n!",
+          "solution_rule": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.",
+          "difficulty": 1
+        }
+      ]
+    },
+    "case_count": 10,
+    "models": {
+      "qwen3:4b-q4_K_M": {
+        "tag": {
+          "name": "qwen3:4b-q4_K_M",
+          "model": "qwen3:4b-q4_K_M",
+          "modified_at": "2026-11-07T09:45:25.7390625+07:00",
+          "size": 2620788260,
+          "digest": "2bfd38a7daaf4b1037efe517ccb73d1a3bbd4822cf89f1a82be1569050a114e0",
+          "details": {
+            "parent_model": "",
+            "format": "gguf",
+            "family": "qwen3",
+            "families": [
+              "qwen3"
+            ],
+            "parameter_size": "4.0B",
+            "quantization_level": "Q4_K_M",
+            "context_length": 40960,
+            "embedding_length": 2560,
+            "runner": "ggml"
+          },
+          "capabilities": [
+            "completion",
+            "tools",
+            "thinking"
+          ]
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "thinking"
+        ],
+        "thinking": {
+          "values": [
+            false,
+            true
+          ],
+          "default": true
+        },
+        "parameters": "temperature                    0.6\ntop_k                          20\ntop_p                          0.95\nrepeat_penalty                 1\nstop                           \"<|im_start|>\"\nstop                           \"<|im_end|>\""
+      }
+    },
+    "fixture_sha256": "6011472b5997b490ed844f50daad47e52865feddbc547a87ee3102f456257326",
+    "code_sha256": {
+      "cases.py": "060df12d6e73e9bb0e48db2da534723e5dbcc2adb9377b988b28a6bbce8a6325",
+      "contracts.py": "912f4e4ddf3b9ec3988f0ca013996febc52e13c5fb6dd8aaff9c97cff2f16ca8",
+      "reporting.py": "927987a9c45524a16c68a2de1e3ef9131edfc2fc9a0d89b4b742c28c754aadce",
+      "runner.py": "e5857cc2c501f7719c75a2ea5f6548656d38611ab1da5d5b475e64139fb9097b",
+      "scoring.py": "71e7e87b3e4296442e97dafd8320d2a359cf10db3cfbdd2287a7244a0841a7bd",
+      "test_benchmark.py": "450b62f44c560c7d3e66881db974831fe8e1ef4e9bfdfded236cb9757b9983b8"
+    },
+    "ollama_version": {
+      "version": "0.40.15"
+    }
+  },
+  "summary": [
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "category": "phraser",
+      "phase": "warmup",
+      "requests": 1,
+      "json_success_rate": 1.0,
+      "schema_success_rate": 1.0,
+      "statuses": {
+        "needs_review": 1
+      },
+      "mean_wall_seconds": 7.860684799961746,
+      "median_wall_seconds": 7.860684799961746,
+      "mean_tokens_per_second": 13.786843476102929,
+      "duration_means_ns": {
+        "total_duration": 5808539600,
+        "load_duration": 14594400,
+        "prompt_eval_duration": 3040287000,
+        "eval_duration": 2683718000
+      },
+      "numeric_check_pass_rate": 1.0,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 0,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 1
+      },
+      "violations": {
+        "missing_constraint_guard:không giao nhau": 1
+      }
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "category": "phraser",
+      "phase": "warm",
+      "requests": 10,
+      "json_success_rate": 1.0,
+      "schema_success_rate": 1.0,
+      "statuses": {
+        "needs_review": 8,
+        "incorrect_result": 2
+      },
+      "mean_wall_seconds": 5.805948539916426,
+      "median_wall_seconds": 5.962762149749324,
+      "mean_tokens_per_second": 13.626043145527564,
+      "duration_means_ns": {
+        "total_duration": 3745772020,
+        "load_duration": 15510450,
+        "prompt_eval_duration": 869073800,
+        "eval_duration": 2840578000
+      },
+      "numeric_check_pass_rate": 0.9,
+      "step_accuracy": null,
+      "expression_accuracy": null,
+      "purpose_accuracy": null,
+      "reference_accuracy": null,
+      "flag_accuracy": null,
+      "step_coverage": null,
+      "labeled_case_success_rate": null,
+      "alternative_success_rate": null,
+      "false_acceptance_proxy_count": 0,
+      "missed_uncertainty_count": 0,
+      "unevaluable_requests": 0,
+      "model_review_rate": null,
+      "required_review_rate": 1.0,
+      "residency": {
+        "warm_observed": 10
+      },
+      "violations": {
+        "missing_constraint_guard:một đối tượng": 1,
+        "indirect_asks_direct_operation": 2,
+        "changed_numeric_facts": 1,
+        "missing_constraint_guard:mỗi nhóm": 1,
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự": 1,
+        "missing_constraint_guard:tất cả|toàn bộ": 2
+      }
+    }
+  ],
+  "paired_modes": [],
+  "consistency": [
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0001_direct",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0001_indirect",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "incorrect_result": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0003_direct",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0003_indirect",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "incorrect_result": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0004_direct",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0004_indirect",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_indirect",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0017_direct",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0017_indirect",
+      "runs": 1,
+      "distinct_outputs": 1,
+      "statuses": {
+        "needs_review": 1
+      },
+      "all_labeled_ok": null
+    }
+  ],
+  "records": [
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0001_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warmup",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "cb50e6bb8c0a52d5641604207d360e87d89e7ba3760c94a4d1b922387ae01a7f",
+      "wall_seconds": 7.860684799961746,
+      "total_duration": 5808539600,
+      "load_duration": 14594400,
+      "prompt_eval_duration": 3040287000,
+      "eval_duration": 2683718000,
+      "eval_count": 37,
+      "prompt_eval_count": 217,
+      "prompt_eval_cached_count": 3,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cách chọn một đối tượng từ một trong các nhóm có số lượng đối tượng lần lượt là 3, 4, 5?\"}",
+      "tokens_per_second": 13.786843476102929,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cách chọn một đối tượng từ một trong các nhóm có số lượng đối tượng lần lượt là 3, 4, 5?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:không giao nhau"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0001_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "cb50e6bb8c0a52d5641604207d360e87d89e7ba3760c94a4d1b922387ae01a7f",
+      "wall_seconds": 6.374037500005215,
+      "total_duration": 4302201500,
+      "load_duration": 6975500,
+      "prompt_eval_duration": 125280000,
+      "eval_duration": 4155649000,
+      "eval_count": 56,
+      "prompt_eval_count": 217,
+      "prompt_eval_cached_count": 216,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có ba nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là 3, 4, 5. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?\"}",
+      "tokens_per_second": 13.47563280729436,
+      "truncated": false,
+      "output": {
+        "question": "Có ba nhóm phân biệt, không giao nhau, với số lượng đối tượng lần lượt là 3, 4, 5. Chọn đúng một đối tượng từ một trong các nhóm. Hỏi có bao nhiêu cách chọn?"
+      },
+      "status": "needs_review",
+      "violations": [],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0001_indirect",
+      "category": "phraser",
+      "scenario": "indirect",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "92ee94e93e919d3fa55be34a9da434cd8f078acf1ca834c203b6a29df6588c79",
+      "wall_seconds": 6.426062299869955,
+      "total_duration": 4358047500,
+      "load_duration": 8587700,
+      "prompt_eval_duration": 844707000,
+      "eval_duration": 3489116000,
+      "eval_count": 45,
+      "prompt_eval_count": 252,
+      "prompt_eval_cached_count": 202,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cách chọn một cuốn sách mỗi ngày từ một trong các ngăn không giao nhau, biết mỗi ngăn có lần lượt 3, 4, 5 cuốn sách?\"}",
+      "tokens_per_second": 12.897249618528017,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cách chọn một cuốn sách mỗi ngày từ một trong các ngăn không giao nhau, biết mỗi ngăn có lần lượt 3, 4, 5 cuốn sách?"
+      },
+      "status": "incorrect_result",
+      "violations": [
+        "missing_constraint_guard:một đối tượng",
+        "indirect_asks_direct_operation"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0003_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "da857e16308c164d39d46db1e9248d61c92784cef25f0409aed9a9c4bec9dfea",
+      "wall_seconds": 6.261634899768978,
+      "total_duration": 4213074400,
+      "load_duration": 33746600,
+      "prompt_eval_duration": 1150515000,
+      "eval_duration": 2997268000,
+      "eval_count": 42,
+      "prompt_eval_count": 205,
+      "prompt_eval_cached_count": 134,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có nhóm A gồm 3 đối tượng và nhóm B gồm 4 đối tượng. Chọn đúng một đối tượng từ mỗi nhóm. Hỏi có bao nhiêu cách chọn?\"}",
+      "tokens_per_second": 14.012760954309057,
+      "truncated": false,
+      "output": {
+        "question": "Có nhóm A gồm 3 đối tượng và nhóm B gồm 4 đối tượng. Chọn đúng một đối tượng từ mỗi nhóm. Hỏi có bao nhiêu cách chọn?"
+      },
+      "status": "needs_review",
+      "violations": [],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0003_indirect",
+      "category": "phraser",
+      "scenario": "indirect",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "7b8362e8bec747468aad7b61962fb543b78fa370c3db67cc66a2c999e612d879",
+      "wall_seconds": 4.864733499940485,
+      "total_duration": 2808950500,
+      "load_duration": 14455900,
+      "prompt_eval_duration": 886838000,
+      "eval_duration": 1894339000,
+      "eval_count": 26,
+      "prompt_eval_count": 239,
+      "prompt_eval_cached_count": 190,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cách chọn một đối tượng từ nhóm A và một đối tượng từ nhóm B?\"}",
+      "tokens_per_second": 13.725104112833025,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cách chọn một đối tượng từ nhóm A và một đối tượng từ nhóm B?"
+      },
+      "status": "incorrect_result",
+      "violations": [
+        "changed_numeric_facts",
+        "missing_constraint_guard:mỗi nhóm",
+        "indirect_asks_direct_operation"
+      ],
+      "numeric_ok": false,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0004_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "95d5e37bd5bf9906a183d0c95801a6bd662e14a2afebee8cf27854a68669e514",
+      "wall_seconds": 7.785935300402343,
+      "total_duration": 5719515500,
+      "load_duration": 7173200,
+      "prompt_eval_duration": 1275654000,
+      "eval_duration": 4409092000,
+      "eval_count": 59,
+      "prompt_eval_count": 217,
+      "prompt_eval_cached_count": 134,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có 5 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Hỏi có bao nhiêu cách chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho?\"}",
+      "tokens_per_second": 13.381439988097323,
+      "truncated": false,
+      "output": {
+        "question": "Có 5 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Hỏi có bao nhiêu cách chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho?"
+      },
+      "status": "needs_review",
+      "violations": [],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0004_indirect",
+      "category": "phraser",
+      "scenario": "indirect",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "35f52bb8b274c12e2707d28eb459d4373a268f88c17c45f6fdf7f4c309f2d7b6",
+      "wall_seconds": 6.91998039977625,
+      "total_duration": 4846130600,
+      "load_duration": 23982500,
+      "prompt_eval_duration": 813123000,
+      "eval_duration": 3993821000,
+      "eval_count": 51,
+      "prompt_eval_count": 251,
+      "prompt_eval_cached_count": 202,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có 5 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Hỏi có bao nhiêu ảnh chụp một người A và một người B không phải là một cặp đôi đã cho?\"}",
+      "tokens_per_second": 12.769726034291471,
+      "truncated": false,
+      "output": {
+        "question": "Có 5 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Hỏi có bao nhiêu ảnh chụp một người A và một người B không phải là một cặp đôi đã cho?"
+      },
+      "status": "needs_review",
+      "violations": [],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "ad752cd180320ad022aba4eca3ecb888a082cf354e8cdb64054c793b39e438f0",
+      "wall_seconds": 4.636529199779034,
+      "total_duration": 2591248200,
+      "load_duration": 6976700,
+      "prompt_eval_duration": 938363000,
+      "eval_duration": 1604618000,
+      "eval_count": 23,
+      "prompt_eval_count": 193,
+      "prompt_eval_cached_count": 135,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?\"}",
+      "tokens_per_second": 14.333629561677608,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cặp có thể tạo ra từ 8 đối tượng phân biệt?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:không phân biệt thứ tự|không xét thứ tự"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0012_indirect",
+      "category": "phraser",
+      "scenario": "indirect",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "cb2e3dbc92506f51d58b97c7103edf839816205b464e28a545776b2d22bf46fc",
+      "wall_seconds": 5.663889399729669,
+      "total_duration": 3611442000,
+      "load_duration": 21728300,
+      "prompt_eval_duration": 908513000,
+      "eval_duration": 2663765000,
+      "eval_count": 36,
+      "prompt_eval_count": 231,
+      "prompt_eval_cached_count": 178,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu thẻ cần thiết để ghi tất cả các cặp khác nhau từ 8 đối tượng phân biệt, không xét thứ tự?\"}",
+      "tokens_per_second": 13.514705689127982,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu thẻ cần thiết để ghi tất cả các cặp khác nhau từ 8 đối tượng phân biệt, không xét thứ tự?"
+      },
+      "status": "needs_review",
+      "violations": [],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0017_direct",
+      "category": "phraser",
+      "scenario": "direct",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "a771bd85531dcbd218797acedd02895216e4c196d4905cd2b4968f31e2faf56b",
+      "wall_seconds": 4.582678500097245,
+      "total_duration": 2529569900,
+      "load_duration": 14369400,
+      "prompt_eval_duration": 852810000,
+      "eval_duration": 1649905000,
+      "eval_count": 23,
+      "prompt_eval_count": 187,
+      "prompt_eval_cached_count": 135,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cách sắp xếp 5 phần tử phân biệt thành một hàng?\"}",
+      "tokens_per_second": 13.94019655677145,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cách sắp xếp 5 phần tử phân biệt thành một hàng?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:tất cả|toàn bộ"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    },
+    {
+      "config_id": "qwen3:4b-q4_K_M|think=false|limit=256",
+      "case_id": "EA0017_indirect",
+      "category": "phraser",
+      "scenario": "indirect",
+      "phase": "warm",
+      "repeat": 0,
+      "residency": "warm_observed",
+      "config": {
+        "id": "qwen3:4b-q4_K_M|think=false|limit=256",
+        "model": "qwen3:4b-q4_K_M",
+        "think": false,
+        "num_predict": 256,
+        "temperature": 0,
+        "num_ctx": 4096,
+        "seed": 42
+      },
+      "json_ok": true,
+      "schema_ok": true,
+      "alternative_case": false,
+      "expected_step_count": 0,
+      "requires_review": true,
+      "model_review": null,
+      "request_sha256": "6fd64853e80c514ed0044288bc777b8b7e73b5d0e458f0e10a270deae024cbeb",
+      "wall_seconds": 4.544004399795085,
+      "total_duration": 2477540100,
+      "load_duration": 17108700,
+      "prompt_eval_duration": 894935000,
+      "eval_duration": 1548207000,
+      "eval_count": 22,
+      "prompt_eval_count": 223,
+      "prompt_eval_cached_count": 172,
+      "done_reason": "stop",
+      "thinking_present": false,
+      "thinking_characters": 0,
+      "raw_response": "{\"question\":\"Có bao nhiêu cách xếp 5 phần tử phân biệt thành một hàng?\"}",
+      "tokens_per_second": 14.209986132345351,
+      "truncated": false,
+      "output": {
+        "question": "Có bao nhiêu cách xếp 5 phần tử phân biệt thành một hàng?"
+      },
+      "status": "needs_review",
+      "violations": [
+        "missing_constraint_guard:tất cả|toàn bộ"
+      ],
+      "numeric_ok": true,
+      "math_correct": null,
+      "answer_preservation": "requires_manual_review",
+      "manual_checks": [
+        "natural Vietnamese",
+        "full constraint preservation",
+        "no invented assumptions",
+        "same counted set and answer",
+        "direct/indirect cognitive intent"
+      ]
+    }
+  ]
+}

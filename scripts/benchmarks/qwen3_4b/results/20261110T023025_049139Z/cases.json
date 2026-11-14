@@ -1,0 +1,670 @@
+[
+  {
+    "id": "P01",
+    "category": "parser",
+    "scenario": "correct_reference",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "8*7=56 cặp có thứ tự.",
+      "56/2=28 vì mỗi cặp đếm hai lần.",
+      "N=28."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8*7=56"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          1
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "56/2=28"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          2
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      },
+      {
+        "line": 3,
+        "expressions": [
+          "N=28"
+        ],
+        "purposes": [
+          "conclude"
+        ],
+        "references": [
+          3
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": true
+  },
+  {
+    "id": "P02",
+    "category": "parser",
+    "scenario": "correct_split_steps",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "Có 8 cách chọn đầu tiên.",
+      "Có 7 cách chọn đối tượng còn lại.",
+      "8*7=56 cặp có thứ tự.",
+      "56/2=28 cặp không thứ tự."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          1
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "7"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          1
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      },
+      {
+        "line": 3,
+        "expressions": [
+          "8*7=56"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          1
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      },
+      {
+        "line": 4,
+        "expressions": [
+          "56/2=28"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          2
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": true
+  },
+  {
+    "id": "P03",
+    "category": "parser",
+    "scenario": "correct_reordered_steps",
+    "source_template": "EA0003",
+    "question": "Nhóm A có 3 đối tượng, nhóm B có 4 đối tượng. Chọn đúng một đối tượng từ mỗi nhóm.",
+    "answer_rule": "N=n1*n2",
+    "verified_answer": 12,
+    "reference": [
+      "3: lựa chọn ở A",
+      "4: lựa chọn ở B",
+      "3*4=12: quy tắc nhân"
+    ],
+    "lines": [
+      "Nhóm B có 4 lựa chọn.",
+      "Nhóm A có 3 lựa chọn.",
+      "3*4=12 cặp."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "4"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          2
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "3"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          1
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      },
+      {
+        "line": 3,
+        "expressions": [
+          "3*4=12"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          3
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": true
+  },
+  {
+    "id": "P04",
+    "category": "parser",
+    "scenario": "correct_alternative_sum",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "Theo đối tượng nhỏ hơn: 7+6+5+4+3+2+1=28 cặp.",
+      "N=28."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "7+6+5+4+3+2+1=28"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "alternative"
+        ],
+        "allowed_flags": [
+          "alternative"
+        ]
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "N=28"
+        ],
+        "purposes": [
+          "conclude"
+        ],
+        "references": [
+          3
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": true,
+    "reasoning_valid": true
+  },
+  {
+    "id": "P05",
+    "category": "parser",
+    "scenario": "incorrect_arithmetic",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "8*7=54 cặp có thứ tự.",
+      "54/2=27 cặp."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8*7=54"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          1
+        ],
+        "required_flags": [
+          "arithmetic"
+        ],
+        "allowed_flags": [
+          "arithmetic"
+        ]
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "54/2=27"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          2
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": false
+  },
+  {
+    "id": "P06",
+    "category": "parser",
+    "scenario": "incorrect_formula",
+    "source_template": "EA0003",
+    "question": "Nhóm A có 3 đối tượng, nhóm B có 4 đối tượng. Chọn đúng một đối tượng từ mỗi nhóm.",
+    "answer_rule": "N=n1*n2",
+    "verified_answer": 12,
+    "reference": [
+      "3: lựa chọn ở A",
+      "4: lựa chọn ở B",
+      "3*4=12: quy tắc nhân"
+    ],
+    "lines": [
+      "Chọn một từ mỗi nhóm nên dùng quy tắc cộng: 3+4=7."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "3+4=7"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "formula"
+        ],
+        "allowed_flags": [
+          "formula"
+        ]
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": false
+  },
+  {
+    "id": "P07",
+    "category": "parser",
+    "scenario": "misunderstood_constraint",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "Cho phép chọn lại cùng đối tượng nên 8*8=64.",
+      "64/2=32 cặp."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8*8=64"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "constraint"
+        ],
+        "allowed_flags": [
+          "constraint"
+        ]
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "64/2=32"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          2
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": false
+  },
+  {
+    "id": "P08",
+    "category": "parser",
+    "scenario": "correct_answer_invalid_reasoning",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "Có 8*7=56 cặp không xét thứ tự.",
+      "Bỏ tùy ý một nửa: 56/2=28.",
+      "N=28."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8*7=56"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "constraint"
+        ],
+        "allowed_flags": [
+          "constraint"
+        ]
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "56/2=28"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "formula"
+        ],
+        "allowed_flags": [
+          "formula"
+        ]
+      },
+      {
+        "line": 3,
+        "expressions": [
+          "N=28"
+        ],
+        "purposes": [
+          "conclude"
+        ],
+        "references": [
+          3
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": false
+  },
+  {
+    "id": "P09",
+    "category": "parser",
+    "scenario": "incomplete_explanation",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "8*7=56 cặp có thứ tự; em chưa biết tiếp theo."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8*7=56"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          1
+        ],
+        "required_flags": [
+          "incomplete"
+        ],
+        "allowed_flags": [
+          "incomplete"
+        ]
+      }
+    ],
+    "review_required": true,
+    "alternative": false,
+    "reasoning_valid": null
+  },
+  {
+    "id": "P10",
+    "category": "parser",
+    "scenario": "ambiguous_requires_teacher",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "8*?=56, rồi chia gì đó được 28."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8*?=56"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "ambiguous"
+        ],
+        "allowed_flags": [
+          "ambiguous"
+        ]
+      }
+    ],
+    "review_required": true,
+    "alternative": false,
+    "reasoning_valid": null
+  },
+  {
+    "id": "P11",
+    "category": "parser",
+    "scenario": "correct_alternative_complement",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "Có 8^2=64 cặp kể cả trùng đối tượng.",
+      "Bỏ 8 cặp trùng và chia hai: (64-8)/2=28."
+    ],
+    "expected_steps": [
+      {
+        "line": 1,
+        "expressions": [
+          "8^2=64"
+        ],
+        "purposes": [
+          "count"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "alternative"
+        ],
+        "allowed_flags": [
+          "alternative"
+        ]
+      },
+      {
+        "line": 2,
+        "expressions": [
+          "(64-8)/2=28"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          0
+        ],
+        "required_flags": [
+          "alternative"
+        ],
+        "allowed_flags": [
+          "alternative"
+        ]
+      }
+    ],
+    "review_required": false,
+    "alternative": true,
+    "reasoning_valid": true
+  },
+  {
+    "id": "P12",
+    "category": "parser",
+    "scenario": "ignore_nonmathematical_comment",
+    "source_template": "EA0012",
+    "question": "Có 8 đối tượng phân biệt. Chọn một cặp gồm hai đối tượng khác nhau, không phân biệt thứ tự.",
+    "answer_rule": "C(n,2)=n*(n-1)/2",
+    "verified_answer": 28,
+    "reference": [
+      "8*7=56: đếm cặp có thứ tự",
+      "56/2=28: loại đếm hai lần",
+      "N=28: kết luận"
+    ],
+    "lines": [
+      "Em thấy bài này thú vị.",
+      "8*7/2=28 cặp."
+    ],
+    "expected_steps": [
+      {
+        "line": 2,
+        "expressions": [
+          "8*7/2=28"
+        ],
+        "purposes": [
+          "combine"
+        ],
+        "references": [
+          2
+        ],
+        "required_flags": [],
+        "allowed_flags": []
+      }
+    ],
+    "review_required": false,
+    "alternative": false,
+    "reasoning_valid": true
+  }
+]
