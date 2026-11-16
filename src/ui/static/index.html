@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/ui/assets/style.css">
   <script src="/ui/assets/app.js" defer></script>
 </head>
-<body>
+<body data-view="home">
   <header class="topbar">
     <a class="brand" href="/" aria-label="Math Studio"><span class="brand-icon">∑</span><span>Math Studio<small>PERSONALIZED ASSESSMENT</small></span></a>
     <div class="top-right"><span class="pill" id="connection-state">Chưa kết nối</span><a href="/docs" target="_blank" rel="noopener">API docs ↗</a></div>
@@ -18,7 +18,7 @@
   <!-- ══════════════════════════════════════════════════════
        MÀN CHÍNH: CÔNG CỤ TẠO ĐỀ (mặc định)
   ══════════════════════════════════════════════════════ -->
-  <main class="workspace" id="screen-exam">
+  <main class="workspace" id="view-home" data-view="home">
     <section class="intro">
       <div><p class="eyebrow">KHÔNG GIAN GIÁO VIÊN</p><h1>Một đề ôn tập.<br><span>Đúng nhu cầu học sinh.</span></h1><p class="intro-note">Chọn hồ sơ, thiết lập yêu cầu và xem bản nháp đề Toán.</p></div>
       <div class="subject-note"><span class="subject-mark">ƒ(x)</span><span>TOÁN LỚP 10<strong>Đại số tổ hợp</strong><small id="runtime-label">Thử nghiệm tạo đề</small></span></div>
@@ -39,6 +39,7 @@
           <fieldset id="exam-fields" disabled>
             <label for="student">Học sinh <span id="student-count" class="muted"></span></label>
             <select id="student" required><option value="">Kết nối để tải danh sách</option></select>
+            <a id="open-profile" class="field-help" href="#/">Xem hồ sơ chi tiết →</a>
             <div id="profile" class="profile"><p class="muted">Mastery và evidence sẽ xuất hiện khi bạn chọn học sinh.</p></div>
             <label for="topic">Chủ đề</label><select id="topic" required><option value="">Chưa tải chủ đề</option></select>
             <label for="mode">Cách tạo đề</label><select id="mode"><option value="adaptive">Cá nhân hóa theo hồ sơ</option><option value="standard">Đề chuẩn theo yêu cầu</option></select>
@@ -70,146 +71,290 @@
     <footer>Math Studio <span>·</span> AI-Powered Personalized Mathematics Assessment System <span>·</span> Local workspace</footer>
   </main>
 
-  <!-- ══════════════════════════════════════════════════════
-       MÀN HỒ SƠ HỌC SINH  #/students/{id}
-  ══════════════════════════════════════════════════════ -->
-  <main class="sp-layout" id="screen-profile" hidden aria-label="Hồ sơ học sinh">
+  <!-- ═══════════════════════════════════════════════════════════
+       BỘ ICON (SVG sprite, kiểu Lucide, ISC license). Dùng: <svg class="ic"><use href="#i-..."/></svg>
+  ═══════════════════════════════════════════════════════════ -->
+  <svg class="ic-sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-tri-left" viewBox="0 0 24 24"><path d="M17 4v16L5 12z"/></symbol>
+      <symbol id="i-tri-right" viewBox="0 0 24 24"><path d="M7 4v16l12-8z"/></symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></symbol>
+      <symbol id="i-wand" viewBox="0 0 24 24"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    </defs>
+  </svg>
 
-    <!-- Sidebar -->
-    <nav class="sp-sidebar" aria-label="Điều hướng">
-      <div class="sp-logo"><span class="brand-icon">∑</span><span>Math Studio</span></div>
-      <a class="sp-nav-link" id="sp-nav-exam" href="#/">Tạo đề ôn tập</a>
-      <a class="sp-nav-link active" id="sp-nav-profile" href="#/students/" aria-current="page">Theo dõi học sinh</a>
-    </nav>
+  <!-- ═══════════════════════════════════════════════════════════
+       KHUNG CHUNG CỦA 3 MÀN: #fg-shell
+       Màn hiện tại do JS đặt tại  document.body.dataset.view  (home | profile | config | draft)
+       Mỗi màn là một <section data-view="..."> trong .fg-card
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="fg-shell" id="fg-shell" data-nav="track" hidden>
+    <aside class="fg-side">
+      <div class="fg-logo" role="img" aria-label="Logo">Logo</div>
+      <nav class="fg-nav" aria-label="Điều hướng chính">
+        <a class="fg-nav-item" id="nav-create" href="#/"><span>Tạo đề ôn tập</span></a>
+        <a class="fg-nav-item" id="nav-track" href="#/"><span>Theo dõi học sinh</span></a>
+      </nav>
+    </aside>
 
-    <!-- Main content -->
-    <div class="sp-main">
-      <!-- Back button -->
-      <div class="sp-topbar">
-        <a class="sp-back-btn" href="#/" id="sp-back-btn">◀ Quay lại Danh sách học sinh</a>
+    <div class="fg-card">
+      <div class="fg-topbar">
+        <a class="fg-pill fg-back" id="fg-back" href="#/"><svg class="ic ic-fill" width="22" height="22"><use href="#i-tri-left"/></svg><span id="fg-back-text">Quay lại</span></a>
+        <ol class="fg-steps" id="fg-steps" aria-label="Các bước" hidden>
+          <li id="step-1"><svg class="ic" width="16" height="16" id="step-1-icon"><use href="#i-check-circle"/></svg><a id="step-1-link" href="#/">1. Cấu hình</a></li>
+          <li class="fg-step-line" aria-hidden="true"></li>
+          <li id="step-2">2. Xem lại đề</li>
+        </ol>
       </div>
 
-      <!-- 403 screen -->
-      <div id="sp-403" class="sp-fullstate" hidden>
-        <div class="sp-fullstate-icon">🔒</div>
+      <!-- Trạng thái toàn màn: không có quyền / lỗi tải -->
+      <div class="fg-full" id="fg-forbidden" role="alert" hidden>
+        <svg class="ic" width="44" height="44"><use href="#i-lock"/></svg>
         <h2>Không có quyền truy cập</h2>
-        <p>Teacher token không hợp lệ hoặc phiên làm việc đã hết hạn.</p>
-        <a href="#/" class="btn-primary sp-fullstate-btn">Quay lại và kết nối lại</a>
+        <p id="fg-forbidden-msg">Teacher token không hợp lệ hoặc phiên làm việc đã hết hạn.</p>
+        <a class="fg-pill fg-pill-solid" href="#/">Quay lại và kết nối lại</a>
+      </div>
+      <div class="fg-full" id="fg-error" role="alert" hidden>
+        <svg class="ic" width="44" height="44"><use href="#i-alert"/></svg>
+        <h2 id="fg-error-title">Không tải được dữ liệu</h2>
+        <p id="fg-error-msg">Đã có lỗi xảy ra.</p>
+        <button type="button" class="fg-pill fg-pill-solid" id="fg-error-retry">Thử lại</button>
       </div>
 
-      <!-- Error screen -->
-      <div id="sp-error" class="sp-fullstate" hidden>
-        <div class="sp-fullstate-icon">⚠️</div>
-        <h2 id="sp-error-title">Không tải được dữ liệu</h2>
-        <p id="sp-error-msg">Đã có lỗi xảy ra khi tải hồ sơ học sinh.</p>
-        <button class="btn-primary sp-fullstate-btn" id="sp-retry-btn">Thử lại</button>
-      </div>
-
-      <!-- Profile content (shown after load) -->
-      <div id="sp-content" hidden>
-
-        <!-- Student header card -->
-        <div class="sp-header-card">
-          <!-- Name + info -->
-          <div class="sp-header-left">
-            <div class="sp-name-badge" id="sp-name-badge">
-              <span id="sp-student-name">—</span>
+      <!-- ═════════ MÀN 1: HỒ SƠ HỌC SINH  #/students/{id} ═════════ -->
+      <section class="fg-view" id="view-profile" data-view="profile" aria-label="Hồ sơ học sinh" hidden>
+        <div class="fg-skel" id="pf-skel" aria-hidden="true">
+          <div class="fg-sk" style="height:110px"></div>
+          <div class="fg-panels" style="margin-top:36px"><div class="fg-sk" style="height:420px"></div><div class="fg-sk" style="height:420px"></div></div>
+        </div>
+        <div class="fg-body" id="pf-body">
+          <div class="fg-headcard">
+            <div class="fg-name" id="pf-name">—</div>
+            <div class="fg-info">
+              <div class="fg-grade" id="pf-grade">Lớp —</div>
+              <div class="fg-datastatus"><svg class="ic" width="15" height="15" id="pf-data-icon"><use href="#i-check-circle"/></svg><span id="pf-data-label">—</span></div>
             </div>
-            <div class="sp-header-meta">
-              <span id="sp-grade">Lớp —</span>
-              <span class="sp-data-status" id="sp-data-status">
-                <span class="sp-data-dot" id="sp-data-dot"></span>
-                <span id="sp-data-label">Đang tải…</span>
-              </span>
+            <div class="fg-vline" aria-hidden="true"></div>
+            <div class="fg-stats">
+              <div class="fg-stat"><span class="fg-stat-l">Số bài kiểm tra đã làm</span><span class="fg-stat-v" id="pf-exams">—</span></div>
+              <div class="fg-stat"><span class="fg-stat-l">Kỹ năng đủ dữ liệu</span><span class="fg-stat-v" id="pf-ratio">—</span></div>
             </div>
           </div>
-          <!-- Stats -->
-          <div class="sp-header-stats">
-            <div class="sp-stat">
-              <span class="sp-stat-label">Số bài kiểm tra đã làm</span>
-              <span class="sp-stat-value" id="sp-exam-count">—</span>
-            </div>
-            <div class="sp-stat sp-stat-right">
-              <span class="sp-stat-label">Kỹ năng đủ dữ liệu</span>
-              <span class="sp-stat-value" id="sp-skill-ratio">—</span>
-            </div>
+
+          <div class="fg-panels">
+            <section class="fg-panel" aria-labelledby="pf-t1">
+              <h2 class="fg-panel-title" id="pf-t1">Biểu đồ năng lực theo kỹ năng:</h2>
+              <div class="fg-panel-in" id="pf-skills"></div>
+            </section>
+            <section class="fg-panel" aria-labelledby="pf-t2">
+              <h2 class="fg-panel-title" id="pf-t2">Đánh giá và khuyến nghị:</h2>
+              <div class="fg-panel-in fg-stack">
+                <div class="fg-note fg-note-warn" id="pf-weak"><h3 id="pf-weak-title">[!] Cần cải thiện:</h3><p id="pf-weak-text"></p></div>
+                <div class="fg-note" id="pf-rec"><h3>Khuyến nghị ôn tập:</h3><p id="pf-rec-text"></p></div>
+              </div>
+            </section>
+          </div>
+
+          <details class="fg-log" id="pf-log">
+            <summary>Lịch sử bài kiểm tra (<span id="pf-log-count">0</span>)</summary>
+            <ol id="pf-log-list"></ol>
+          </details>
+
+          <div class="fg-footer fg-footer-end">
+            <button type="button" class="fg-pill fg-cta" id="pf-generate"><span>Tạo đề ôn tập thích ứng</span><svg class="ic ic-fill" width="22" height="22"><use href="#i-tri-right"/></svg></button>
           </div>
         </div>
+      </section>
 
-        <!-- Skeleton: header -->
-        <div class="sp-header-card sp-skeleton-card" id="sp-skeleton-header" hidden>
-          <div class="sp-header-left">
-            <div class="sk-block sk-name"></div>
-            <div class="sk-block sk-meta"></div>
+      <!-- ═════════ MÀN 2: CẤU HÌNH SINH ĐỀ  #/students/{id}/generate ═════════ -->
+      <section class="fg-view" id="view-config" data-view="config" aria-label="Cấu hình sinh đề" hidden>
+        <div class="fg-skel" id="cf-skel" aria-hidden="true">
+          <div class="fg-sk" style="height:36px;width:360px;margin-bottom:26px"></div>
+          <div class="fg-sk" style="height:110px"></div>
+          <div class="fg-cols" style="margin-top:30px"><div class="fg-sk" style="height:440px"></div><div class="fg-sk" style="height:440px"></div></div>
+        </div>
+        <div class="fg-body" id="cf-body">
+          <h1 class="fg-title">Tạo đề ôn tập thích ứng</h1>
+          <div class="fg-headcard fg-headcard-cfg">
+            <span class="fg-label-pill">Cấu hình sinh đề Toán tự luận cho:</span>
+            <div class="fg-headright">
+              <div class="fg-name" id="cf-name">—</div>
+              <div class="fg-info">
+                <div class="fg-grade" id="cf-grade">Lớp —</div>
+                <div class="fg-datastatus"><svg class="ic" width="15" height="15" id="cf-data-icon"><use href="#i-check-circle"/></svg><span id="cf-data-label">—</span></div>
+              </div>
+            </div>
           </div>
-          <div class="sp-header-stats">
-            <div class="sk-block sk-stat"></div>
-            <div class="sk-block sk-stat"></div>
+
+          <div class="fg-cols">
+            <div class="fg-stack fg-col-main">
+              <!-- 1. Chế độ -->
+              <section class="fg-card-in" aria-labelledby="cf-s1">
+                <h3 class="fg-sec" id="cf-s1"><span class="fg-num">1</span>Chế độ sinh đề</h3>
+                <div class="fg-modes" role="radiogroup" aria-label="Chế độ sinh đề">
+                  <label class="fg-mode is-selected" data-mode="adaptive">
+                    <input type="radio" name="cf-mode" value="adaptive" checked>
+                    <span class="fg-radio" aria-hidden="true"></span>
+                    <span class="fg-mode-t"><strong>Thích ứng theo lỗ hổng kiến thức</strong><small>Ưu tiên kỹ năng cần củng cố từ hồ sơ học sinh.</small></span>
+                  </label>
+                  <label class="fg-mode is-disabled" data-mode="default_blueprint">
+                    <input type="radio" name="cf-mode" value="default_blueprint" disabled>
+                    <span class="fg-radio" aria-hidden="true"></span>
+                    <span class="fg-mode-t"><strong>Sử dụng khung chuẩn <em class="fg-soon">Sắp có</em></strong><small>Phân bố câu hỏi theo cấu trúc đề có sẵn.</small></span>
+                  </label>
+                </div>
+              </section>
+              <!-- 2. Số câu, thời lượng -->
+              <section class="fg-card-in" aria-labelledby="cf-s2">
+                <h3 class="fg-sec" id="cf-s2"><span class="fg-num">2</span>Cấu hình số câu và thời lượng</h3>
+                <div class="fg-fields">
+                  <div class="fg-field">
+                    <label for="cf-questions">Số lượng câu hỏi</label>
+                    <div class="fg-stepper">
+                      <button type="button" id="cf-q-minus" aria-label="Giảm số câu"><svg class="ic" width="16" height="16"><use href="#i-minus"/></svg></button>
+                      <span class="fg-stepval"><input id="cf-questions" type="text" inputmode="numeric" value="4" maxlength="3" aria-describedby="cf-questions-err"><span>câu</span></span>
+                      <button type="button" id="cf-q-plus" aria-label="Tăng số câu"><svg class="ic" width="16" height="16"><use href="#i-plus"/></svg></button>
+                    </div>
+                    <p class="fg-err" id="cf-questions-err" role="alert"></p>
+                  </div>
+                  <div class="fg-field">
+                    <label for="cf-duration">Thời gian làm bài</label>
+                    <div class="fg-stepper">
+                      <button type="button" id="cf-d-minus" aria-label="Giảm thời gian"><svg class="ic" width="16" height="16"><use href="#i-minus"/></svg></button>
+                      <span class="fg-stepval"><input id="cf-duration" type="text" inputmode="numeric" value="45" maxlength="3" aria-describedby="cf-duration-err"><span>phút</span></span>
+                      <button type="button" id="cf-d-plus" aria-label="Tăng thời gian"><svg class="ic" width="16" height="16"><use href="#i-plus"/></svg></button>
+                    </div>
+                    <p class="fg-err" id="cf-duration-err" role="alert"></p>
+                  </div>
+                </div>
+              </section>
+              <!-- 3. Phân bố mức độ (chỉ đọc) -->
+              <section class="fg-card-in" id="cf-dist" aria-labelledby="cf-s3">
+                <div class="fg-dist-head">
+                  <h3 class="fg-sec" id="cf-s3"><span class="fg-num">3</span>Phân bố mức độ</h3>
+                  <span class="fg-tag">Được đề xuất</span>
+                  <span class="fg-total" id="cf-dist-total">Tổng: —</span>
+                </div>
+                <div class="fg-bar" id="cf-dist-bar" aria-hidden="true"></div>
+                <div class="fg-cells" id="cf-dist-cells"></div>
+              </section>
+            </div>
+
+            <aside class="fg-card-in fg-side-card" aria-labelledby="cf-st">
+              <h3 class="fg-side-title" id="cf-st"><svg class="ic" width="21" height="21"><use href="#i-clipboard"/></svg>Chiến lược ôn tập</h3>
+              <dl class="fg-kv">
+                <div><dt>Môn học</dt><dd id="cf-sum-subject">Toán · Lớp 10</dd></div>
+                <div><dt>Hình thức</dt><dd>Tự luận</dd></div>
+                <div><dt>Số câu hỏi</dt><dd id="cf-sum-q">—</dd></div>
+                <div><dt>Thời lượng</dt><dd id="cf-sum-d">—</dd></div>
+              </dl>
+              <hr class="fg-hr">
+              <div class="fg-stack fg-stack-sm">
+                <h4 class="fg-sub">Trọng tâm ôn tập</h4>
+                <div class="fg-chips" id="cf-focus"></div>
+                <p class="fg-text" id="cf-strategy-text"></p>
+              </div>
+              <div class="fg-fit" id="cf-fit">
+                <div class="fg-fit-t"><svg class="ic" width="15" height="15"><use href="#i-sparkles"/></svg><span id="cf-fit-title">Phù hợp với hồ sơ hiện tại</span></div>
+                <p id="cf-fit-text"></p>
+                <ul id="cf-fit-list" hidden></ul>
+              </div>
+              <p class="fg-status" id="cf-plan-status" role="status"></p>
+              <button type="button" class="fg-linkbtn" id="cf-plan-retry" hidden>Thử lại</button>
+            </aside>
+          </div>
+
+          <div class="fg-alert is-error" id="cf-alert" role="alert" hidden>
+            <div class="fg-alert-msg" id="cf-alert-msg"></div>
+            <button type="button" class="fg-linkbtn" id="cf-retry">Thử lại với cấu hình này</button>
+          </div>
+          <div class="fg-busy" id="cf-busy" role="status" aria-live="polite" hidden><span class="fg-spin" aria-hidden="true"></span><span>Đang tạo đề… <span id="cf-elapsed">0</span> giây. Vui lòng giữ trang mở.</span></div>
+
+          <div class="fg-footer">
+            <button type="button" class="fg-pill fg-ghost" id="cf-cancel"><svg class="ic" width="18" height="18"><use href="#i-x"/></svg><span>Hủy</span></button>
+            <button type="button" class="fg-pill fg-cta" id="cf-start" disabled><span id="cf-start-text">Bắt đầu tạo đề</span><svg class="ic" width="20" height="20"><use href="#i-wand"/></svg></button>
           </div>
         </div>
+      </section>
 
-        <!-- Two-column body -->
-        <div class="sp-body">
-
-          <!-- Left: Skill chart panel -->
-          <section class="sp-panel sp-chart-panel" aria-labelledby="sp-chart-title">
-            <h3 class="sp-panel-title" id="sp-chart-title">Biểu đồ năng lực theo kỹ năng:</h3>
-
-            <!-- Skeleton rows -->
-            <div id="sp-skeleton-skills" class="sp-skill-list">
-              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
-              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
-              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
-              <div class="sp-skill-row sk-row"><div class="sk-block sk-skill-label"></div><div class="sp-skill-bar-wrap"><div class="sk-block sk-bar"></div></div><div class="sk-block sk-pct"></div></div>
+      <!-- ═════════ MÀN 3: BẢN NHÁP & XEM TRƯỚC  #/students/{id}/exams/{examId} ═════════ -->
+      <section class="fg-view" id="view-draft" data-view="draft" aria-label="Xem lại đề ôn tập" hidden>
+        <div class="fg-skel" id="dr-skel" aria-hidden="true">
+          <div class="fg-sk" style="height:36px;width:420px;margin-bottom:26px"></div>
+          <div class="fg-sk" style="height:78px"></div>
+          <div class="fg-cols" style="margin-top:30px"><div class="fg-sk" style="height:460px"></div><div class="fg-sk" style="height:460px"></div></div>
+        </div>
+        <div class="fg-body" id="dr-body">
+          <h1 class="fg-title">Xem lại đề ôn tập thích ứng</h1>
+          <p class="fg-meta" id="dr-meta"></p>
+          <div class="fg-headcard fg-headcard-dr">
+            <span class="fg-for">Đề ôn tập dành cho</span>
+            <div class="fg-name fg-name-sm" id="dr-name">—</div>
+            <div class="fg-info fg-info-sm">
+              <div class="fg-grade" id="dr-grade">Lớp —</div>
+              <div class="fg-datastatus"><svg class="ic" width="14" height="14" id="dr-data-icon"><use href="#i-check-circle"/></svg><span id="dr-data-label">—</span></div>
             </div>
+            <div class="fg-vline fg-vline-sm" aria-hidden="true"></div>
+            <div class="fg-info fg-info-sm"><div class="fg-subject" id="dr-subject">Toán · Lớp 10</div><div class="fg-subject-sub" id="dr-subject-sub"></div></div>
+          </div>
 
-            <!-- Real skill list -->
-            <div id="sp-skill-list" class="sp-skill-list" hidden></div>
-          </section>
+          <div class="fg-alert" id="dr-alert" role="alert" hidden><div class="fg-alert-msg" id="dr-alert-msg"></div></div>
 
-          <!-- Right: Assessment panel -->
-          <section class="sp-panel sp-assess-panel" aria-labelledby="sp-assess-title">
-            <h3 class="sp-panel-title" id="sp-assess-title">Đánh giá và khuyến nghị:</h3>
-
-            <!-- Skeleton -->
-            <div id="sp-skeleton-assess">
-              <div class="sk-block sk-assess-line" style="width:55%"></div>
-              <div class="sk-block sk-assess-line" style="width:85%;margin-top:8px"></div>
-              <div class="sk-block sk-assess-line" style="width:70%;margin-top:8px"></div>
-              <div class="sk-block sk-assess-line" style="width:45%;margin-top:24px"></div>
-              <div class="sk-block sk-assess-line" style="width:90%;margin-top:8px"></div>
-            </div>
-
-            <!-- Real assessment -->
-            <div id="sp-assess-content" hidden>
-              <div class="sp-assess-block" id="sp-weak-block">
-                <div class="sp-assess-header sp-assess-warn">
-                  <span class="sp-assess-icon">!</span>
-                  <strong id="sp-weak-title">Cần cải thiện:</strong>
+          <div class="fg-cols fg-cols-dr">
+            <div class="fg-stack fg-qlist" id="dr-questions"></div>
+            <aside class="fg-stack fg-aside-dr">
+              <div class="fg-card-in fg-side-card" aria-labelledby="dr-st">
+                <h3 class="fg-side-title" id="dr-st"><svg class="ic" width="21" height="21"><use href="#i-clipboard"/></svg>Tóm tắt đề ôn tập</h3>
+                <dl class="fg-kv fg-kv-sm">
+                  <div><dt>Môn học</dt><dd id="dr-sum-subject">Toán · Lớp 10</dd></div>
+                  <div><dt>Hình thức</dt><dd>Tự luận</dd></div>
+                  <div><dt>Số câu · Thời lượng</dt><dd id="dr-sum-qd">—</dd></div>
+                  <div><dt>Tổng điểm</dt><dd id="dr-sum-score">—</dd></div>
+                </dl>
+                <hr class="fg-hr">
+                <div class="fg-stack fg-stack-sm">
+                  <h4 class="fg-sub">Phân bố mức độ</h4>
+                  <div class="fg-bar fg-bar-sm" id="dr-dist-bar" aria-hidden="true"></div>
+                  <dl class="fg-kv fg-kv-sm" id="dr-dist-list"></dl>
                 </div>
-                <p id="sp-weak-text" class="sp-assess-text"></p>
-              </div>
-              <div class="sp-assess-block" id="sp-rec-block">
-                <div class="sp-assess-header">
-                  <strong>Khuyến nghị ôn tập:</strong>
+                <hr class="fg-hr">
+                <div class="fg-stack fg-stack-sm">
+                  <h4 class="fg-sub">Chiến lược ôn tập</h4>
+                  <div class="fg-chips" id="dr-focus"></div>
+                  <p class="fg-text" id="dr-strategy-text"></p>
                 </div>
-                <p id="sp-rec-text" class="sp-assess-text"></p>
+                <div class="fg-fit" id="dr-fit">
+                  <div class="fg-fit-t"><svg class="ic" width="15" height="15"><use href="#i-sparkles"/></svg><span id="dr-fit-title">Phù hợp với hồ sơ hiện tại</span></div>
+                  <p id="dr-fit-text"></p>
+                  <ul id="dr-fit-list" hidden></ul>
+                </div>
               </div>
-            </div>
-          </section>
+              <div class="fg-aside-actions">
+                <button type="button" class="fg-chip-btn" id="dr-regen-all"><svg class="ic" width="15" height="15"><use href="#i-refresh"/></svg><span>Tạo lại toàn bộ đề</span></button>
+                <a class="fg-chip-btn" id="dr-edit" href="#/"><svg class="ic" width="15" height="15"><use href="#i-pencil"/></svg><span>Chỉnh sửa cấu hình</span></a>
+              </div>
+            </aside>
+          </div>
 
-        </div><!-- /sp-body -->
-      </div><!-- /sp-content -->
-
-      <!-- CTA bottom bar -->
-      <div class="sp-cta-bar" id="sp-cta-bar" hidden>
-        <button class="sp-cta-btn" id="sp-generate-btn">
-          Tạo đề ôn tập thích ứng ▶
-        </button>
-      </div>
-
-    </div><!-- /sp-main -->
-  </main>
+          <div class="fg-footer">
+            <button type="button" class="fg-pill fg-ghost fg-pill-sm" id="dr-save"><svg class="ic" width="18" height="18"><use href="#i-save"/></svg><span>Lưu bản nháp</span></button>
+            <button type="button" class="fg-pill fg-cta fg-pill-sm" id="dr-deliver" disabled title="Chưa có chức năng giao đề cho học sinh"><span>Giao đề</span><svg class="ic ic-fill" width="20" height="20"><use href="#i-tri-right"/></svg></button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 
 </body>
 </html>
