@@ -144,6 +144,8 @@ async function connect() {
     $("topic").replaceChildren(...state.topics.map((t) => { const o = el("option", t.topic_name); o.value = t.topic_id; return o; }));
     $("student-count").textContent = `(${state.students.length} hồ sơ)`;
     state.connected = true;
+    /* Cập nhật href link hồ sơ ngay sau khi populate danh sách */
+    if (state.students.length) $("open-profile").href = `#/students/${enc(state.students[0].student_id)}`;
     $("connection-state").textContent = "Đã kết nối backend";
     $("connection-state").classList.add("connected");
     $("connection-title").textContent = "Phiên làm việc đã kết nối";
@@ -268,7 +270,11 @@ function acceptExam(exam) {
 
 /* ── Exam tool event listeners ── */
 $("connect-form").addEventListener("submit", (e) => { e.preventDefault(); operation("Đang kết nối và tải hồ sơ…", connect); });
-$("student").addEventListener("change", () => { clearResults(); operation("Đang tải hồ sơ học sinh…", loadProfile); });
+$("student").addEventListener("change", () => {
+  const id = $("student").value;
+  if (id) $("open-profile").href = `#/students/${enc(id)}`;
+  clearResults(); operation("Đang tải hồ sơ học sinh…", loadProfile);
+});
 $("topic").addEventListener("change", () => { clearResults(); operation("Đang tải dữ liệu kỹ năng…", loadProfile); });
 $("exam-form").addEventListener("input", () => { clearResults(); syncLevels(); });
 $("plan-button").addEventListener("click", () => {
@@ -578,7 +584,10 @@ async function loadProfileView(studentId) {
     renderProfile(profile, profile.topics, profile.plan);
     setLoading("profile", false);
   } catch (err) {
-    if (seq === pf.seq && view.current === "profile") handleLoadError(err);
+    if (seq === pf.seq && view.current === "profile") {
+      setLoading("profile", false); // ẩn skeleton trước khi hiện lỗi
+      handleLoadError(err);
+    }
   }
 }
 $("pf-generate").addEventListener("click", () => { if (view.studentId) location.hash = `#/students/${enc(view.studentId)}/generate`; });

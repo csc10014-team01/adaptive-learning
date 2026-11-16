@@ -130,6 +130,11 @@ td:first-child,th:first-child{padding-left:12px}
 footer{font-size:10px;color:#8a958d;padding:30px 0 8px;text-align:center}
 footer span{padding:0 9px}
 .exam-heading+.notice{margin-top:18px}
+/* Link nổi bật để mở 3 màn Figma từ màn home */
+.open-profile-link{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 4px;padding:11px 16px;background:var(--soft);border:1px solid #c8d8c3;border-radius:9px;color:var(--green);font-size:12px;font-weight:600;text-decoration:none;transition:background .15s}
+.open-profile-link:hover{background:#dde8d7;text-decoration:none}
+fieldset[disabled] .open-profile-link{opacity:.45;pointer-events:none;cursor:not-allowed}
+.open-profile-arrow{font-size:15px;line-height:1}
 
 
 /* ═══════════════════════════════════════════════════════════
