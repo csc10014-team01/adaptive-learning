@@ -323,7 +323,7 @@ const DEFAULTS = {questions: 4, duration: 45};
 const VIEW_NAMES = ["profile", "config", "draft"];
 
 const view = {current: "home", studentId: null};
-const draftCtx = {request: null}; // body của lần sinh đề gần nhất, dùng cho "Tạo lại toàn bộ đề"
+const draftCtx = {request: null, examId: null}; // body của lần sinh đề gần nhất, dùng cho "Tạo lại toàn bộ đề"
 
 /* ── Tiện ích ── */
 const enc = encodeURIComponent;
@@ -339,10 +339,44 @@ function svgIcon(id, size = 13, cls = "ic") {
   return svg;
 }
 const skillNameIn = (topics, id) => topics.flatMap((t) => t.skills).find((s) => s.skill_id === id)?.name || id;
-const planBody = (studentId, totalQuestions, durationMinutes) => ({
-  student_id: studentId, generation_mode: "adaptive", selected_topic_ids: ["combinatorics"],
-  total_questions: totalQuestions, duration_minutes: durationMinutes, difficulty_distribution: null, // phân bố do planner quyết định
+function generationBody(config) {
+  const body = {
+    student_id: config.student_id,
+    generation_mode: config.mode ?? config.generation_mode ?? "adaptive",
+    selected_topic_ids: config.selected_topic_ids ?? ["combinatorics"],
+    total_questions: config.num_questions ?? config.total_questions,
+    duration_minutes: config.duration ?? config.duration_minutes,
+    difficulty_distribution: config.difficulty_distribution ?? null,
+  };
+  if (!body.student_id || !["adaptive", "default_blueprint", "standard"].includes(body.generation_mode)) throw new Error("Invalid student or generation mode.");
+  if (!Number.isInteger(body.total_questions) || body.total_questions < 1 || body.total_questions > 10) throw new Error("Question count must be an integer from 1 to 10.");
+  if (!Number.isInteger(body.duration_minutes) || body.duration_minutes < 1 || body.duration_minutes > 180) throw new Error("Duration must be an integer from 1 to 180.");
+  if (config.advanced_options) body.advanced_options = {...config.advanced_options};
+  return body;
+}
+const planBody = (studentId, totalQuestions, durationMinutes, mode = "adaptive") => generationBody({
+  student_id: studentId, mode, num_questions: totalQuestions, duration: durationMinutes,
 });
+async function getStudentProfile(studentId) {
+  const [profile, topicsResp, plan] = await Promise.all([
+    api(`/api/v1/students/${enc(studentId)}/profile`), api("/api/v1/topics"),
+    api("/api/v1/exams/plan", {method: "POST", body: planBody(studentId, DEFAULTS.questions, DEFAULTS.duration)}),
+  ]);
+  const skills = topicsResp.items.flatMap((topic) => topic.skills);
+  const sufficient = skills.filter((skill) => ["WEAK", "ACHIEVED"].includes(plan.skill_classifications[skill.skill_id])).length;
+  return {...profile, topics: topicsResp.items, plan, data_status: dataStatus(plan.skill_classifications),
+    completed_tests: profile.learning_history.length, sufficient_skills: sufficient, total_skills: skills.length,
+    sufficient_ratio: skills.length ? sufficient / skills.length : 0, assessment: buildAssessment(plan, topicsResp.items)};
+}
+function getExamPlan(config) {
+  return api("/api/v1/exams/plan", {method: "POST", body: generationBody(config)});
+}
+async function generateDraft(config) {
+  const body = generationBody(config);
+  const exam = await api("/api/v1/exams/generate", {method: "POST", body, timeout: genTimeout()});
+  draftCtx.request = body; draftCtx.examId = exam.exam_id;
+  return exam;
+}
 
 /* Nhãn "Dữ liệu hồ sơ": API không có field này, suy ra từ phân loại kỹ năng của planner */
 function dataStatus(classifications) {
@@ -539,13 +573,9 @@ async function loadProfileView(studentId) {
   const seq = ++pf.seq;
   setLoading("profile", true);
   try {
-    const [profile, topicsResp, plan] = await Promise.all([
-      api(`/api/v1/students/${enc(studentId)}/profile`),
-      api("/api/v1/topics"),
-      api("/api/v1/exams/plan", {method: "POST", body: planBody(studentId, DEFAULTS.questions, DEFAULTS.duration)}),
-    ]);
+    const profile = await getStudentProfile(studentId);
     if (seq !== pf.seq || view.current !== "profile") return;
-    renderProfile(profile, topicsResp.items, plan);
+    renderProfile(profile, profile.topics, profile.plan);
     setLoading("profile", false);
   } catch (err) {
     if (seq === pf.seq && view.current === "profile") handleLoadError(err);
@@ -630,14 +660,14 @@ async function cfRefreshPlan() {
   $("cf-plan-retry").hidden = true;
   cfUpdate();
   try {
-    const plan = await api("/api/v1/exams/plan", {method: "POST", body: cfBody(values)});
-    if (seq !== cf.seq) return; // đã có yêu cầu mới hơn, bỏ kết quả cũ
+    const plan = await getExamPlan(cfBody(values));
+    if (seq !== cf.seq || view.current !== "config") return; // đã có yêu cầu mới hơn, bỏ kết quả cũ
     cf.plan = plan;
     const problem = cfRenderPlan(plan, values);
     cf.status = problem ? "error" : "ok";
     $("cf-plan-status").textContent = problem;
   } catch (err) {
-    if (seq !== cf.seq) return;
+    if (seq !== cf.seq || view.current !== "config") return;
     if (isAuthError(err)) { showFull("forbidden", err.message); return; }
     cf.status = "error";
     $("cf-plan-status").textContent = err.message;
@@ -688,11 +718,11 @@ async function cfStart() {
   const started = Date.now();
   const timer = setInterval(() => { $("cf-elapsed").textContent = String(Math.floor((Date.now() - started) / 1000)); }, 1000);
   try {
-    const exam = await api("/api/v1/exams/generate", {method: "POST", body, timeout: genTimeout()});
+    const exam = await generateDraft(body);
     state.exam = exam;
-    draftCtx.request = body;
     if (view.current === "config" && cf.studentId === studentId) location.hash = `#/students/${enc(studentId)}/exams/${enc(exam.exam_id)}`;
   } catch (err) {
+    if (isAuthError(err)) { showFull("forbidden", err.message); return; }
     setAlert("cf", "error", err.message); // form giữ nguyên, không reset
   } finally {
     clearInterval(timer);
@@ -710,6 +740,7 @@ function cfStep(inputId, delta, limits, fallback) {
 }
 
 function cfOnInput() {
+  ++cf.seq;
   clearTimeout(cf.timer);
   const valid = cfValidate() !== null;
   cf.status = valid ? "loading" : "invalid";
@@ -738,6 +769,7 @@ function questionCard(q, topics) {
   card.dataset.questionId = q.question_id;
   const head = el("div", null, "fg-q-head");
   head.append(el("span", `Câu ${q.order_index}`, "fg-q-n"), el("span", levels[q.cognitive_level] || q.cognitive_level, "fg-chip fg-chip-sm"));
+  head.append(el("span", `${q.max_score} \u0111i\u1ec3m`, "fg-chip fg-chip-sm"));
   const skillId = q.target_skill_id || q.skill_ids[0];
   if (skillId) head.append(el("span", skillNameIn(topics, skillId), "fg-chip fg-chip-sm"));
 
@@ -841,15 +873,20 @@ async function drReplace(questionId) {
 }
 
 async function drRegenerateAll() {
-  if (dr.busy) return;
+  if (dr.busy || !dr.exam) return;
   const exam = dr.exam;
-  const body = draftCtx.request && draftCtx.request.student_id === exam.student_id
+  // Older/reopened drafts do not expose the original percentages. Preserve
+  // their locked level quotas using equivalent percentages from the plan.
+  const lockedLevels = exam.planner_summary?.difficulty_locked
+    ? Object.fromEntries(LEVEL_KEYS.map((key) => [key, 100 * (exam.planner_summary.quota_summary.requested_levels[key] || 0) / exam.total_questions]))
+    : null;
+  const body = draftCtx.request && draftCtx.examId === exam.exam_id
     ? draftCtx.request
-    : {...planBody(exam.student_id, exam.total_questions, exam.duration_minutes), generation_mode: exam.generation_mode, selected_topic_ids: [exam.topic_id]};
+    : {...planBody(exam.student_id, exam.total_questions, exam.duration_minutes), generation_mode: exam.generation_mode, selected_topic_ids: [exam.topic_id], difficulty_distribution: lockedLevels};
   drBusy(true, "Đang tạo lại toàn bộ đề… Qwen có thể cần vài phút.");
   try {
-    const fresh = await api("/api/v1/exams/generate", {method: "POST", body, timeout: genTimeout()});
-    state.exam = fresh; draftCtx.request = body;
+    const fresh = await generateDraft(body);
+    state.exam = fresh;
     if (view.current === "draft") location.hash = `#/students/${enc(fresh.student_id)}/exams/${enc(fresh.exam_id)}`;
   } catch (err) {
     if (isAuthError(err)) { showFull("forbidden", err.message); return; }
@@ -889,6 +926,8 @@ function parseRoute() {
 }
 
 function handleRoute() {
+  ++pf.seq; ++cf.seq; ++cf.loadSeq; ++dr.seq;
+  clearTimeout(cf.timer);
   const route = parseRoute();
   showView(route.name, route.studentId);
   if (route.name === "home") return;
