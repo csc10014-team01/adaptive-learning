@@ -1,0 +1,50 @@
+{
+  "sequence": 7,
+  "started_at": "2026-11-14T17:41:29.715800+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 1,
+  "feedback": "Lần trước không hợp lệ: Indirect copied the Direct statement rather than contextualizing it",
+  "source_id": "TI_17af394801e23d59144f06a4a0fb1fbaa1793b63b7e3934797573b3794234058",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "fail",
+    "question": null,
+    "reasons": [
+      "Indirect copied the Direct statement rather than contextualizing it"
+    ]
+  },
+  "template_id": "EA0013",
+  "template_instance": {
+    "instance_id": "TI_17af394801e23d59144f06a4a0fb1fbaa1793b63b7e3934797573b3794234058",
+    "parameters": {
+      "team_count": 9,
+      "matches_per_pair": 8
+    },
+    "signature": "17af394801e23d59144f06a4a0fb1fbaa1793b63b7e3934797573b3794234058",
+    "template_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "31fec6efa5a6ff17fcfd19df574a55079b78f6d83cb5ce3cc03350847b4f976d",
+    "verification_status": "experimental",
+    "context_id": "display"
+  },
+  "source_text": "Có 9 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Có 9 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?\"}",
+  "elapsed_seconds": 3.25303,
+  "finished_at": "2026-11-14T17:41:32.969927+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 3243302400,
+    "load_duration": 5868700,
+    "prompt_eval_count": 547,
+    "prompt_eval_cached_count": 344,
+    "prompt_eval_duration": 1751011000,
+    "eval_count": 37,
+    "eval_duration": 1474686000
+  }
+}

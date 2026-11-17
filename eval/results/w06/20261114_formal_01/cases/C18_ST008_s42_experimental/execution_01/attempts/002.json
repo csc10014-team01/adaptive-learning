@@ -1,0 +1,53 @@
+{
+  "sequence": 2,
+  "started_at": "2026-11-14T17:41:51.974337+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Một người bán hàng có 7 loại sản phẩm khác nhau. Anh ta muốn sắp xếp tất cả các loại sản phẩm vào một hàng. Hỏi số cách sắp xếp khác nhau có thể thực hiện được?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0017",
+  "template_instance": {
+    "instance_id": "TI_cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+    "parameters": {
+      "n": 7,
+      "arrange_all": true,
+      "distinct": true
+    },
+    "signature": "cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+    "template_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "b81234bc6aaad27fa1604578b98176bf5f036bb36d1af1e4d113f8cd13b6eadc",
+    "verification_status": "experimental",
+    "context_id": "everyday"
+  },
+  "source_text": "Có 7 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Một người bán hàng có 7 loại sản phẩm khác nhau. Anh ta muốn sắp xếp tất cả các loại sản phẩm vào một hàng. Hỏi số cách sắp xếp khác nhau có thể thực hiện được?\"}",
+  "elapsed_seconds": 2.261083,
+  "finished_at": "2026-11-14T17:41:54.239897+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 2239976800,
+    "load_duration": 4375800,
+    "prompt_eval_count": 596,
+    "prompt_eval_cached_count": 595,
+    "prompt_eval_duration": 73018000,
+    "eval_count": 52,
+    "eval_duration": 2097774000
+  }
+}

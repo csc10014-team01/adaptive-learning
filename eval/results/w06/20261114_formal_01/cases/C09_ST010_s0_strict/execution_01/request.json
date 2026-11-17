@@ -1,0 +1,14 @@
+{
+  "student_id": "ST010",
+  "generation_mode": "adaptive",
+  "selected_topic_ids": [
+    "combinatorics"
+  ],
+  "total_questions": 10,
+  "duration_minutes": 45,
+  "difficulty_distribution": null,
+  "advanced_options": {
+    "include_real_world_context": true,
+    "step_scoring_granularity": 0.25
+  }
+}

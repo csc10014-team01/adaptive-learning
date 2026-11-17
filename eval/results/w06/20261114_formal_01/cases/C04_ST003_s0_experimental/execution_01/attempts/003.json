@@ -1,0 +1,50 @@
+{
+  "sequence": 3,
+  "started_at": "2026-11-14T17:39:19.758239+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 1,
+  "feedback": "Lần trước không hợp lệ: Indirect copied the Direct statement rather than contextualizing it",
+  "source_id": "TI_c1c33d69c473e856fd4f7bf204edf5f94a6701380de8dd546c76b7fa9f42a225",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "fail",
+    "question": null,
+    "reasons": [
+      "Indirect copied the Direct statement rather than contextualizing it"
+    ]
+  },
+  "template_id": "EA0004",
+  "template_instance": {
+    "instance_id": "TI_c1c33d69c473e856fd4f7bf204edf5f94a6701380de8dd546c76b7fa9f42a225",
+    "parameters": {
+      "n": 9,
+      "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+    },
+    "signature": "c1c33d69c473e856fd4f7bf204edf5f94a6701380de8dd546c76b7fa9f42a225",
+    "template_digest": "ea492614a2bc2389b18f3010af4e4e35a1e7e3a35753b4fcbd99eea61705f507"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "867340423c2252fb90c2bef6c5ef8abe91a99f948a213432430081a2b7845ce3",
+    "verification_status": "experimental",
+    "context_id": "everyday"
+  },
+  "source_text": "Có 9 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Có 9 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?\"}",
+  "elapsed_seconds": 4.400814,
+  "finished_at": "2026-11-14T17:39:24.160101+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4389613100,
+    "load_duration": 5338500,
+    "prompt_eval_count": 563,
+    "prompt_eval_cached_count": 335,
+    "prompt_eval_duration": 1875877000,
+    "eval_count": 63,
+    "eval_duration": 2497540000
+  }
+}

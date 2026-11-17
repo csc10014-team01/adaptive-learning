@@ -1,0 +1,51 @@
+{
+  "sequence": 4,
+  "started_at": "2026-11-14T17:36:50.157877+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_749699fdaa9944035263705b3ecd70e23e8cfe12079a4b0177564fcb1c3957a7",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 5 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 12 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0013",
+  "template_instance": {
+    "instance_id": "TI_749699fdaa9944035263705b3ecd70e23e8cfe12079a4b0177564fcb1c3957a7",
+    "parameters": {
+      "team_count": 5,
+      "matches_per_pair": 12
+    },
+    "signature": "749699fdaa9944035263705b3ecd70e23e8cfe12079a4b0177564fcb1c3957a7",
+    "template_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "d4d58429ae99b0b7db172c7c52a3b811f77b23627f4f8969931c0aedfc7aac2b",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 5 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 12 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 5 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 12 trận. Hỏi có tất cả bao nhiêu trận đấu?\"\n}",
+  "elapsed_seconds": 2.803826,
+  "finished_at": "2026-11-14T17:36:52.962683+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 2795023700,
+    "load_duration": 5795500,
+    "prompt_eval_count": 316,
+    "prompt_eval_cached_count": 165,
+    "prompt_eval_duration": 1264588000,
+    "eval_count": 40,
+    "eval_duration": 1498691000
+  }
+}

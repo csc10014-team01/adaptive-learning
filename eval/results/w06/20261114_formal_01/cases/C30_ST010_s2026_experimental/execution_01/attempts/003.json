@@ -1,0 +1,50 @@
+{
+  "sequence": 3,
+  "started_at": "2026-11-14T17:44:27.228890+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 1,
+  "feedback": "Lần trước không hợp lệ: Changed or missing numeric facts",
+  "source_id": "TI_cab46a4a6ed619df369a974f19bb96557e3bf5fb845e7f45727b9daed730c23f",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "fail",
+    "question": null,
+    "reasons": [
+      "Indirect still asks the Direct counting operation; ask a contextual outcome instead"
+    ]
+  },
+  "template_id": "EA0012",
+  "template_instance": {
+    "instance_id": "TI_cab46a4a6ed619df369a974f19bb96557e3bf5fb845e7f45727b9daed730c23f",
+    "parameters": {
+      "n": 9,
+      "pair_order_matters": false
+    },
+    "signature": "cab46a4a6ed619df369a974f19bb96557e3bf5fb845e7f45727b9daed730c23f",
+    "template_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "a0ff087cd5896890fafb45fa6c700ae82f3a598f4fbfab756082d87adfd828c9",
+    "verification_status": "experimental",
+    "context_id": "display"
+  },
+  "source_text": "Có 9 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Một người có 9 món đồ khác nhau. Mỗi cặp gồm hai món đồ khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cách chọn hai món đồ để tạo thành một cặp?\"}",
+  "elapsed_seconds": 4.385459,
+  "finished_at": "2026-11-14T17:44:31.615587+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4374291400,
+    "load_duration": 6184300,
+    "prompt_eval_count": 549,
+    "prompt_eval_cached_count": 335,
+    "prompt_eval_duration": 2097235000,
+    "eval_count": 51,
+    "eval_duration": 2257781000
+  }
+}

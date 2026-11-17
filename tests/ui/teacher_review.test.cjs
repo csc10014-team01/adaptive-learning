@@ -263,6 +263,26 @@ async function run() {
     passed++;
   }
   {
+    for (const status of ['HARD_FAIL', 'QUALITY_FAIL', 'RETRYABLE_FAIL']) {
+      const h = harness(); const exam = draft();
+      exam.quality_report = {status, approval_blocked: true, total_score: null, criteria: [], warnings: []};
+      h.present(exam);
+      assert.equal(h.get('approve-exam-button').disabled, true);
+      await h.get('approve-exam-button').fire('click');
+      assert.equal(h.requests.length, 0);
+      assert.ok(h.get('exam-pane').textContent.includes('Chưa đủ bằng chứng để tính điểm W06.'));
+    }
+    passed++;
+  }
+  {
+    const h = harness(); const exam = draft();
+    exam.quality_report = {status: 'NEEDS_REVIEW', approval_blocked: false, total_score: null, criteria: [], warnings: []};
+    h.present(exam);
+    assert.equal(h.get('approve-exam-button').disabled, false);
+    assert.ok(h.get('exam-pane').textContent.includes('Cần giáo viên đánh giá'));
+    passed++;
+  }
+  {
     const h = harness();
     const skills = Array.from({length: 9}, (_, i) => ({skill_id: `A00${i + 1}`, name: `Skill ${i + 1}`}));
     h.state.topics = [{topic_id: 'combinatorics', skills}];

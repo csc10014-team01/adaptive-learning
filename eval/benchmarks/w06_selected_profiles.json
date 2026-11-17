@@ -1,0 +1,3623 @@
+{
+  "selection_version": "w06-profile-selection-v1",
+  "created_at": "2026-11-14T16:57:44.636959+07:00",
+  "purpose": "Controlled end-to-end exam generation evaluation; not a representative learner population",
+  "real_model_inference": false,
+  "personal_names_omitted": true,
+  "planner_policy": {
+    "version": "mvp-personalization-v4-coordinated-difficulty",
+    "min_evidence": 3,
+    "mastery_target": 2.0,
+    "relationships_enabled": false
+  },
+  "request": {
+    "generation_mode": "adaptive",
+    "selected_topic_ids": [
+      "combinatorics"
+    ],
+    "total_questions": 10,
+    "duration_minutes": 45
+  },
+  "seeds": [
+    0,
+    42,
+    2026
+  ],
+  "source_sha256": {
+    "G:\\HK4\\Project\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "92f880a3fedd0d991fe8e36a60bfda7dc8123f7f1f05b70e0330a7b67789861a",
+    "G:\\HK4\\Project\\adaptive-learning\\data\\sample\\dataset\\question_bank.db": "0eb2c2445bed183862de44b1ca4141689ff72e94e935039341496b13d303bba3"
+  },
+  "skills": [
+    {
+      "skill_id": "A001",
+      "name": "Quy tắc cộng"
+    },
+    {
+      "skill_id": "A002",
+      "name": "Quy tắc nhân"
+    },
+    {
+      "skill_id": "A003",
+      "name": "Hoán vị"
+    },
+    {
+      "skill_id": "A004",
+      "name": "Tổ hợp"
+    },
+    {
+      "skill_id": "A005",
+      "name": "Sơ đồ hình cây"
+    },
+    {
+      "skill_id": "A006",
+      "name": "Chỉnh hợp"
+    },
+    {
+      "skill_id": "A007",
+      "name": "Kết hợp"
+    },
+    {
+      "skill_id": "A008",
+      "name": "Kỹ năng tính toán"
+    },
+    {
+      "skill_id": "A009",
+      "name": "Đếm điều kiện có ràng buộc"
+    }
+  ],
+  "audit_summary": {
+    "students": 20,
+    "raw_mastery_rows": 135,
+    "rows_matching_schema_defaults_2_0_and_1": 92,
+    "reliable_skill_rows": 19,
+    "tests": 11,
+    "question_attempts": 40,
+    "students_with_mastery_but_no_stored_tests": [
+      "ST011",
+      "ST012",
+      "ST013",
+      "ST014",
+      "ST015"
+    ],
+    "profiles_with_two_or_more_reliable_weak_skills": [],
+    "selected_focus_counts_by_seed": {
+      "ST016": [
+        {
+          "seed": 0,
+          "requested": 0,
+          "achieved": 0
+        },
+        {
+          "seed": 42,
+          "requested": 0,
+          "achieved": 0
+        },
+        {
+          "seed": 2026,
+          "requested": 0,
+          "achieved": 0
+        }
+      ],
+      "ST003": [
+        {
+          "seed": 0,
+          "requested": 4,
+          "achieved": 4
+        },
+        {
+          "seed": 42,
+          "requested": 4,
+          "achieved": 4
+        },
+        {
+          "seed": 2026,
+          "requested": 4,
+          "achieved": 4
+        }
+      ],
+      "ST004": [
+        {
+          "seed": 0,
+          "requested": 4,
+          "achieved": 1
+        },
+        {
+          "seed": 42,
+          "requested": 4,
+          "achieved": 1
+        },
+        {
+          "seed": 2026,
+          "requested": 4,
+          "achieved": 1
+        }
+      ],
+      "ST008": [
+        {
+          "seed": 0,
+          "requested": 0,
+          "achieved": 0
+        },
+        {
+          "seed": 42,
+          "requested": 0,
+          "achieved": 0
+        },
+        {
+          "seed": 2026,
+          "requested": 0,
+          "achieved": 0
+        }
+      ],
+      "ST010": [
+        {
+          "seed": 0,
+          "requested": 0,
+          "achieved": 0
+        },
+        {
+          "seed": 42,
+          "requested": 0,
+          "achieved": 0
+        },
+        {
+          "seed": 2026,
+          "requested": 0,
+          "achieved": 0
+        }
+      ]
+    }
+  },
+  "selected_profiles": [
+    {
+      "student_id": "ST016",
+      "scenario": "cold_start",
+      "profile_snapshot": {
+        "student_id": "ST016",
+        "grade_level": 10,
+        "skill_mastery": [
+          {
+            "skill_id": "A001",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A002",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A003",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A004",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A005",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A006",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A007",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A008",
+            "mastery_score": null,
+            "evidence_count": 0
+          },
+          {
+            "skill_id": "A009",
+            "mastery_score": null,
+            "evidence_count": 0
+          }
+        ],
+        "learning_history": []
+      },
+      "classifications": {
+        "A001": "NO_DATA",
+        "A002": "NO_DATA",
+        "A003": "NO_DATA",
+        "A004": "NO_DATA",
+        "A005": "NO_DATA",
+        "A006": "NO_DATA",
+        "A007": "NO_DATA",
+        "A008": "NO_DATA",
+        "A009": "NO_DATA"
+      },
+      "offline_plan_previews": [
+        {
+          "seed": 0,
+          "strategy": "diagnostic_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "diagnostic": 10,
+              "maintenance": 0
+            },
+            "achieved_groups": {
+              "diagnostic": 10,
+              "maintenance": 0
+            },
+            "requested_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "achieved_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 3,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 3,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": true,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 20,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [],
+            "level_shortages": [],
+            "substitutions": [],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 42,
+          "strategy": "diagnostic_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "diagnostic": 10,
+              "maintenance": 0
+            },
+            "achieved_groups": {
+              "diagnostic": 10,
+              "maintenance": 0
+            },
+            "requested_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "achieved_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 3,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 3,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": true,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 20,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [],
+            "level_shortages": [],
+            "substitutions": [],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 2026,
+          "strategy": "diagnostic_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "diagnostic": 10,
+              "maintenance": 0
+            },
+            "achieved_groups": {
+              "diagnostic": 10,
+              "maintenance": 0
+            },
+            "requested_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "achieved_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 3,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 3,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": true,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 20,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [],
+            "level_shortages": [],
+            "substitutions": [],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        }
+      ]
+    },
+    {
+      "student_id": "ST003",
+      "scenario": "one_weak_skill_supported_sources",
+      "profile_snapshot": {
+        "student_id": "ST003",
+        "grade_level": 10,
+        "skill_mastery": [
+          {
+            "skill_id": "A001",
+            "mastery_score": 3.2,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A002",
+            "mastery_score": 1.8,
+            "evidence_count": 3
+          },
+          {
+            "skill_id": "A003",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A004",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A005",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A006",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A007",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A008",
+            "mastery_score": 3.5,
+            "evidence_count": 2
+          },
+          {
+            "skill_id": "A009",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          }
+        ],
+        "learning_history": [
+          {
+            "test_id": "TA0004",
+            "wrong_questions": [
+              "QA0105"
+            ]
+          }
+        ]
+      },
+      "classifications": {
+        "A001": "PARTIAL",
+        "A002": "WEAK",
+        "A003": "PARTIAL",
+        "A004": "PARTIAL",
+        "A005": "PARTIAL",
+        "A006": "PARTIAL",
+        "A007": "PARTIAL",
+        "A008": "PARTIAL",
+        "A009": "PARTIAL"
+      },
+      "offline_plan_previews": [
+        {
+          "seed": 0,
+          "strategy": "focused_practice",
+          "priority_skills": [
+            "A002"
+          ],
+          "quota_summary": {
+            "requested_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "achieved_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "requested_skills": {
+              "A002": 4,
+              "A001": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 0,
+              "A009": 0
+            },
+            "achieved_skills": {
+              "A002": 4,
+              "A001": 2,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 0,
+              "A008": 0,
+              "A009": 0
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 0
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 0
+            },
+            "requested_skill_levels": {
+              "A002": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A002": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 1,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 8
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 40,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A007",
+                "level": "recognition",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 10,
+                "requested_skill": "A007",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 42,
+          "strategy": "focused_practice",
+          "priority_skills": [
+            "A002"
+          ],
+          "quota_summary": {
+            "requested_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "achieved_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "requested_skills": {
+              "A002": 4,
+              "A001": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 0,
+              "A009": 0
+            },
+            "achieved_skills": {
+              "A002": 4,
+              "A001": 2,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 0,
+              "A008": 0,
+              "A009": 0
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 0
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 0
+            },
+            "requested_skill_levels": {
+              "A002": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A002": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 1,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 8
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 40,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A007",
+                "level": "recognition",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 10,
+                "requested_skill": "A007",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 2026,
+          "strategy": "focused_practice",
+          "priority_skills": [
+            "A002"
+          ],
+          "quota_summary": {
+            "requested_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "achieved_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "requested_skills": {
+              "A002": 4,
+              "A001": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 0,
+              "A009": 0
+            },
+            "achieved_skills": {
+              "A002": 4,
+              "A001": 2,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 0,
+              "A008": 0,
+              "A009": 0
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 0
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 0
+            },
+            "requested_skill_levels": {
+              "A002": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A002": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 1,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 8
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 40,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A007",
+                "level": "recognition",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 10,
+                "requested_skill": "A007",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        }
+      ]
+    },
+    {
+      "student_id": "ST004",
+      "scenario": "one_very_weak_skill_scarce_sources",
+      "profile_snapshot": {
+        "student_id": "ST004",
+        "grade_level": 10,
+        "skill_mastery": [
+          {
+            "skill_id": "A001",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A002",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A003",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A004",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A005",
+            "mastery_score": 0.2,
+            "evidence_count": 3
+          },
+          {
+            "skill_id": "A006",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A007",
+            "mastery_score": 3.6,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A008",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A009",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          }
+        ],
+        "learning_history": [
+          {
+            "test_id": "TA0005",
+            "wrong_questions": [
+              "QA0009",
+              "QA0088"
+            ]
+          }
+        ]
+      },
+      "classifications": {
+        "A001": "PARTIAL",
+        "A002": "PARTIAL",
+        "A003": "PARTIAL",
+        "A004": "PARTIAL",
+        "A005": "WEAK",
+        "A006": "PARTIAL",
+        "A007": "PARTIAL",
+        "A008": "PARTIAL",
+        "A009": "PARTIAL"
+      },
+      "offline_plan_previews": [
+        {
+          "seed": 0,
+          "strategy": "focused_practice",
+          "priority_skills": [
+            "A005"
+          ],
+          "quota_summary": {
+            "requested_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "achieved_groups": {
+              "focus": 1,
+              "review": 9
+            },
+            "requested_skills": {
+              "A005": 4,
+              "A001": 1,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 0,
+              "A009": 0
+            },
+            "achieved_skills": {
+              "A005": 1,
+              "A001": 5,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A006": 1,
+              "A007": 0,
+              "A008": 0,
+              "A009": 0
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 2,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 2,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A005": {
+                "recognition": 2,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 2,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 10,
+              "understanding": 0,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A005",
+                "level": "recognition",
+                "requested": 2,
+                "available": 0,
+                "shortage": 2
+              },
+              {
+                "skill_id": "A005",
+                "level": "understanding",
+                "requested": 2,
+                "available": 1,
+                "shortage": 1
+              },
+              {
+                "skill_id": "A007",
+                "level": "advanced_application",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 1,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 2,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0002",
+                "reason": "requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 3,
+                "requested_skill": "A005",
+                "requested_level": "understanding",
+                "actual_skill": "A001",
+                "actual_level": "understanding",
+                "source_kind": "question",
+                "source_id": "QA0005",
+                "reason": "requested cell has 1/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 10,
+                "requested_skill": "A007",
+                "requested_level": "advanced_application",
+                "actual_skill": "A001",
+                "actual_level": "advanced_application",
+                "source_kind": "question",
+                "source_id": "QA0027",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 42,
+          "strategy": "focused_practice",
+          "priority_skills": [
+            "A005"
+          ],
+          "quota_summary": {
+            "requested_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "achieved_groups": {
+              "focus": 1,
+              "review": 9
+            },
+            "requested_skills": {
+              "A005": 4,
+              "A001": 1,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 0,
+              "A009": 0
+            },
+            "achieved_skills": {
+              "A005": 1,
+              "A001": 5,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A006": 1,
+              "A007": 0,
+              "A008": 0,
+              "A009": 0
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 2,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 2,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A005": {
+                "recognition": 2,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 2,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 10,
+              "understanding": 0,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A005",
+                "level": "recognition",
+                "requested": 2,
+                "available": 0,
+                "shortage": 2
+              },
+              {
+                "skill_id": "A005",
+                "level": "understanding",
+                "requested": 2,
+                "available": 1,
+                "shortage": 1
+              },
+              {
+                "skill_id": "A007",
+                "level": "advanced_application",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 1,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 2,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0002",
+                "reason": "requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 3,
+                "requested_skill": "A005",
+                "requested_level": "understanding",
+                "actual_skill": "A001",
+                "actual_level": "understanding",
+                "source_kind": "question",
+                "source_id": "QA0005",
+                "reason": "requested cell has 1/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 10,
+                "requested_skill": "A007",
+                "requested_level": "advanced_application",
+                "actual_skill": "A001",
+                "actual_level": "advanced_application",
+                "source_kind": "question",
+                "source_id": "QA0027",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 2026,
+          "strategy": "focused_practice",
+          "priority_skills": [
+            "A005"
+          ],
+          "quota_summary": {
+            "requested_groups": {
+              "focus": 4,
+              "review": 6
+            },
+            "achieved_groups": {
+              "focus": 1,
+              "review": 9
+            },
+            "requested_skills": {
+              "A005": 4,
+              "A001": 1,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 0,
+              "A009": 0
+            },
+            "achieved_skills": {
+              "A005": 1,
+              "A001": 5,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A006": 1,
+              "A007": 0,
+              "A008": 0,
+              "A009": 0
+            },
+            "requested_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 2,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 3,
+              "understanding": 4,
+              "application": 2,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A005": {
+                "recognition": 2,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A001": {
+                "recognition": 2,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 10,
+              "understanding": 0,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A005",
+                "level": "recognition",
+                "requested": 2,
+                "available": 0,
+                "shortage": 2
+              },
+              {
+                "skill_id": "A005",
+                "level": "understanding",
+                "requested": 2,
+                "available": 1,
+                "shortage": 1
+              },
+              {
+                "skill_id": "A007",
+                "level": "advanced_application",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 1,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 2,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0002",
+                "reason": "requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 3,
+                "requested_skill": "A005",
+                "requested_level": "understanding",
+                "actual_skill": "A001",
+                "actual_level": "understanding",
+                "source_kind": "question",
+                "source_id": "QA0005",
+                "reason": "requested cell has 1/2 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 10,
+                "requested_skill": "A007",
+                "requested_level": "advanced_application",
+                "actual_skill": "A001",
+                "actual_level": "advanced_application",
+                "source_kind": "question",
+                "source_id": "QA0027",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        }
+      ]
+    },
+    {
+      "student_id": "ST008",
+      "scenario": "mixed_partial_and_achieved",
+      "profile_snapshot": {
+        "student_id": "ST008",
+        "grade_level": 10,
+        "skill_mastery": [
+          {
+            "skill_id": "A001",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A002",
+            "mastery_score": 2.9,
+            "evidence_count": 3
+          },
+          {
+            "skill_id": "A003",
+            "mastery_score": 4.0,
+            "evidence_count": 5
+          },
+          {
+            "skill_id": "A004",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A005",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A006",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A007",
+            "mastery_score": 1.6,
+            "evidence_count": 2
+          },
+          {
+            "skill_id": "A008",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          },
+          {
+            "skill_id": "A009",
+            "mastery_score": 2.0,
+            "evidence_count": 1
+          }
+        ],
+        "learning_history": [
+          {
+            "test_id": "TA0009",
+            "wrong_questions": [
+              "QA0107"
+            ]
+          }
+        ]
+      },
+      "classifications": {
+        "A001": "PARTIAL",
+        "A002": "ACHIEVED",
+        "A003": "ACHIEVED",
+        "A004": "PARTIAL",
+        "A005": "PARTIAL",
+        "A006": "PARTIAL",
+        "A007": "PARTIAL",
+        "A008": "PARTIAL",
+        "A009": "PARTIAL"
+      },
+      "offline_plan_previews": [
+        {
+          "seed": 0,
+          "strategy": "diagnostic_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "diagnostic": 6,
+              "maintenance": 4
+            },
+            "achieved_groups": {
+              "diagnostic": 6,
+              "maintenance": 4
+            },
+            "requested_skills": {
+              "A001": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 0,
+              "A002": 2,
+              "A003": 2
+            },
+            "achieved_skills": {
+              "A001": 3,
+              "A004": 1,
+              "A005": 0,
+              "A006": 0,
+              "A007": 1,
+              "A008": 1,
+              "A009": 0,
+              "A002": 2,
+              "A003": 2
+            },
+            "requested_levels": {
+              "recognition": 2,
+              "understanding": 3,
+              "application": 4,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 2,
+              "understanding": 3,
+              "application": 4,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 10,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A005",
+                "level": "recognition",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              },
+              {
+                "skill_id": "A006",
+                "level": "understanding",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 3,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 4,
+                "requested_skill": "A006",
+                "requested_level": "understanding",
+                "actual_skill": "A001",
+                "actual_level": "understanding",
+                "source_kind": "question",
+                "source_id": "QA0008",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 42,
+          "strategy": "diagnostic_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "diagnostic": 6,
+              "maintenance": 4
+            },
+            "achieved_groups": {
+              "diagnostic": 6,
+              "maintenance": 4
+            },
+            "requested_skills": {
+              "A001": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 0,
+              "A002": 2,
+              "A003": 2
+            },
+            "achieved_skills": {
+              "A001": 3,
+              "A004": 1,
+              "A005": 0,
+              "A006": 0,
+              "A007": 1,
+              "A008": 1,
+              "A009": 0,
+              "A002": 2,
+              "A003": 2
+            },
+            "requested_levels": {
+              "recognition": 2,
+              "understanding": 3,
+              "application": 4,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 2,
+              "understanding": 3,
+              "application": 4,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 10,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A005",
+                "level": "recognition",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              },
+              {
+                "skill_id": "A006",
+                "level": "understanding",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 3,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 4,
+                "requested_skill": "A006",
+                "requested_level": "understanding",
+                "actual_skill": "A001",
+                "actual_level": "understanding",
+                "source_kind": "question",
+                "source_id": "QA0008",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 2026,
+          "strategy": "diagnostic_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "diagnostic": 6,
+              "maintenance": 4
+            },
+            "achieved_groups": {
+              "diagnostic": 6,
+              "maintenance": 4
+            },
+            "requested_skills": {
+              "A001": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 0,
+              "A002": 2,
+              "A003": 2
+            },
+            "achieved_skills": {
+              "A001": 3,
+              "A004": 1,
+              "A005": 0,
+              "A006": 0,
+              "A007": 1,
+              "A008": 1,
+              "A009": 0,
+              "A002": 2,
+              "A003": 2
+            },
+            "requested_levels": {
+              "recognition": 2,
+              "understanding": 3,
+              "application": 4,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 2,
+              "understanding": 3,
+              "application": 4,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 1,
+                "understanding": 2,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": false,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 10,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [
+              {
+                "skill_id": "A005",
+                "level": "recognition",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              },
+              {
+                "skill_id": "A006",
+                "level": "understanding",
+                "requested": 1,
+                "available": 0,
+                "shortage": 1
+              }
+            ],
+            "level_shortages": [],
+            "substitutions": [
+              {
+                "slot": 3,
+                "requested_skill": "A005",
+                "requested_level": "recognition",
+                "actual_skill": "A001",
+                "actual_level": "recognition",
+                "source_kind": "question",
+                "source_id": "QA0001",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              },
+              {
+                "slot": 4,
+                "requested_skill": "A006",
+                "requested_level": "understanding",
+                "actual_skill": "A001",
+                "actual_level": "understanding",
+                "source_kind": "question",
+                "source_id": "QA0008",
+                "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+              }
+            ],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        }
+      ]
+    },
+    {
+      "student_id": "ST010",
+      "scenario": "all_skills_achieved_at_policy_threshold",
+      "profile_snapshot": {
+        "student_id": "ST010",
+        "grade_level": 10,
+        "skill_mastery": [
+          {
+            "skill_id": "A001",
+            "mastery_score": 2.6,
+            "evidence_count": 6
+          },
+          {
+            "skill_id": "A002",
+            "mastery_score": 2.0,
+            "evidence_count": 5
+          },
+          {
+            "skill_id": "A003",
+            "mastery_score": 3.8,
+            "evidence_count": 3
+          },
+          {
+            "skill_id": "A004",
+            "mastery_score": 2.2,
+            "evidence_count": 3
+          },
+          {
+            "skill_id": "A005",
+            "mastery_score": 2.0,
+            "evidence_count": 4
+          },
+          {
+            "skill_id": "A006",
+            "mastery_score": 2.0,
+            "evidence_count": 4
+          },
+          {
+            "skill_id": "A007",
+            "mastery_score": 3.0,
+            "evidence_count": 3
+          },
+          {
+            "skill_id": "A008",
+            "mastery_score": 3.4,
+            "evidence_count": 3
+          },
+          {
+            "skill_id": "A009",
+            "mastery_score": 2.0,
+            "evidence_count": 3
+          }
+        ],
+        "learning_history": [
+          {
+            "test_id": "TA0011",
+            "wrong_questions": [
+              "QA0016",
+              "QA0065"
+            ]
+          }
+        ]
+      },
+      "classifications": {
+        "A001": "ACHIEVED",
+        "A002": "ACHIEVED",
+        "A003": "ACHIEVED",
+        "A004": "ACHIEVED",
+        "A005": "ACHIEVED",
+        "A006": "ACHIEVED",
+        "A007": "ACHIEVED",
+        "A008": "ACHIEVED",
+        "A009": "ACHIEVED"
+      },
+      "offline_plan_previews": [
+        {
+          "seed": 0,
+          "strategy": "advanced_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "advanced_review": 10
+            },
+            "achieved_groups": {
+              "advanced_review": 10
+            },
+            "requested_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "achieved_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "requested_levels": {
+              "recognition": 2,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 2,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": true,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 30,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [],
+            "level_shortages": [],
+            "substitutions": [],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 42,
+          "strategy": "advanced_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "advanced_review": 10
+            },
+            "achieved_groups": {
+              "advanced_review": 10
+            },
+            "requested_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "achieved_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "requested_levels": {
+              "recognition": 2,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 2,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": true,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 30,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [],
+            "level_shortages": [],
+            "substitutions": [],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        },
+        {
+          "seed": 2026,
+          "strategy": "advanced_review",
+          "priority_skills": [],
+          "quota_summary": {
+            "requested_groups": {
+              "advanced_review": 10
+            },
+            "achieved_groups": {
+              "advanced_review": 10
+            },
+            "requested_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "achieved_skills": {
+              "A001": 2,
+              "A002": 1,
+              "A003": 1,
+              "A004": 1,
+              "A005": 1,
+              "A006": 1,
+              "A007": 1,
+              "A008": 1,
+              "A009": 1
+            },
+            "requested_levels": {
+              "recognition": 2,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "achieved_levels": {
+              "recognition": 2,
+              "understanding": 4,
+              "application": 3,
+              "advanced_application": 1
+            },
+            "requested_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              }
+            },
+            "achieved_skill_levels": {
+              "A001": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A002": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A003": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A004": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A005": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A006": {
+                "recognition": 1,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 0
+              },
+              "A007": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 1,
+                "advanced_application": 0
+              },
+              "A008": {
+                "recognition": 0,
+                "understanding": 0,
+                "application": 0,
+                "advanced_application": 1
+              },
+              "A009": {
+                "recognition": 0,
+                "understanding": 1,
+                "application": 0,
+                "advanced_application": 0
+              }
+            }
+          },
+          "selection_diagnostics": {
+            "exact_skill_level_matrix_feasible": true,
+            "exact_exam_levels_feasible": true,
+            "eligible_question_levels": {
+              "recognition": 39,
+              "understanding": 47,
+              "application": 21,
+              "advanced_application": 14
+            },
+            "eligible_template_instance_levels": {
+              "recognition": 30,
+              "understanding": 20,
+              "application": 0,
+              "advanced_application": 0
+            },
+            "cell_shortages": [],
+            "level_shortages": [],
+            "substitutions": [],
+            "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+          }
+        }
+      ]
+    }
+  ]
+}
