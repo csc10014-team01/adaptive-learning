@@ -2,7 +2,7 @@
 
 - **Author:** Lê Thị Hoài Thương (QA & Evaluation Lead)
 - **Status:** Review Required
-- **Target Scope:** Đánh giá chi tiết chất lượng chuyên môn nội dung đề thi / câu hỏi sinh ra dựa trên Use cases UC-01, UC-02 (Phần Đại số tổ hợp - Toán 10).
+- **Target Scope:** Đánh giá chất lượng nội dung của từng câu hỏi và toàn bộ đề thi sinh ra theo Use cases UC-01, UC-02 (Phần Đại số tổ hợp - Toán 10).
 
 ---
 
@@ -17,6 +17,29 @@
 ## 2. Tiêu chuẩn đánh giá chi tiết & Trọng số (Detailed Scoring Criteria & Weighting)
 
 Tổng điểm tối đa: **100 điểm**. Ngưỡng đạt mục tiêu (Target Passing Score): **>= 80/100 điểm**.
+
+### 2.1. Phạm vi và đơn vị đánh giá
+
+Phân biệt ba đối tượng để xác định nội dung cần kiểm tra và ý nghĩa của kết quả:
+
+| Đối tượng | Nội dung đánh giá | Cách sử dụng kết quả |
+| :--- | :--- | :--- |
+| **Từng câu hỏi** | Đề bài, đáp án, các bước giải, kỹ năng, mức độ khó, ngôn ngữ và hiển thị. | Chấm từng câu ở mức 0–4 theo các tiêu chí cấp câu hỏi, ghi căn cứ, rồi lấy trung bình theo từng tiêu chí để quy đổi điểm. |
+| **Toàn bộ đề** | Số câu, phân phối kỹ năng và độ khó, tính độc lập, trùng lặp, mức phù hợp với hồ sơ và lịch sử học tập. | Chấm trực tiếp các tiêu chí cấp đề; kết hợp với điểm tổng hợp từ từng câu để tính C1–C4 và kết luận Pass/Fail. |
+| **Hệ thống** | Thời gian chạy, tài nguyên sử dụng, xử lý lỗi, khả năng phục vụ nhiều yêu cầu, lưu/tải đề, sinh lại câu, duyệt đề và trải nghiệm sử dụng. | Đánh giá bằng các bài test và chỉ số riêng; báo cáo riêng với điểm rubric nội dung. |
+
+**Ý nghĩa của điểm rubric:**
+
+- **Đơn vị nhận điểm tổng trên thang 100 là một đề thi.** Mức chấm từng câu là đầu vào để tính điểm các tiêu chí cấp câu hỏi; các câu đóng góp ngang nhau trong mỗi tiêu chí áp dụng.
+- Đề đạt **≥80/100 và không có hard-fail**, sau khi đã chấm đủ các tiêu chí áp dụng, được kết luận đạt yêu cầu chất lượng nội dung theo rubric.
+- Điểm rubric nội dung chưa đủ để kết luận hệ thống đạt yêu cầu về tốc độ, độ ổn định, khả năng mở rộng hoặc tính dễ sử dụng. Các mặt này cần kết quả test và chỉ số riêng.
+
+**Phân loại tiêu chí theo cấp chấm:**
+
+| Cấp chấm | Tiêu chí | Cách tổng hợp |
+| :--- | :--- | :--- |
+| **Cấp câu hỏi** | C1.1, C1.2, C1.3, C2.1, C2.2, C3.1, C3.3 | Chấm từng câu ở mức nguyên 0–4; lấy trung bình theo từng tiêu chí rồi quy đổi theo điểm tối đa của tiêu chí đó. |
+| **Cấp đề** | C3.2, C4.1, C4.2, C4.3 | Chấm trực tiếp toàn bộ đề ở mức nguyên 0–4 rồi quy đổi theo điểm tối đa của từng tiêu chí. |
 
 ### C1. Tính chính xác và logic toán học (Trọng số: 35% - Tối đa 35 điểm)
 Tiêu chuẩn này đánh giá tính đúng đắn tuyệt đối về mặt kiến thức toán học của câu hỏi, phương án lựa chọn và phần lời giải.
@@ -36,7 +59,7 @@ Tiêu chuẩn này đánh giá mức độ bám sát chương trình học và t
   * Nội dung câu hỏi phải phản ánh chính xác kỹ năng được chỉ định (`skill_id`) trong chương trình Toán 10 phần Đại số tổ hợp (như quy tắc đếm, hoán vị, chỉnh hợp, tổ hợp, nhị thức Newton).
   * Không xuất hiện hiện tượng lạc đề, lan man sang các chủ đề hình học, đại số đại cương hoặc chương trình lớp khác.
 * **C2.2. Tính phù hợp của mức độ khó (10 điểm):**
-  * Độ khó của câu hỏi phải phản ánh đúng năng lực học sinh theo phân loại mức độ nhận thức (từ nhận biết, thông hiểu cho đến vận dụng/vận dụng cao).
+  * Nội dung và yêu cầu suy luận thực tế của từng câu phải khớp mức nhận thức được chỉ định: Nhận biết, Thông hiểu, Vận dụng hoặc Vận dụng cao.
   * Tránh trường hợp gắn nhãn câu hỏi là mức độ khó nhưng thực chất chỉ là áp dụng công thức cơ bản một bước, hoặc ngược lại.
 
 ### C3. Chất lượng ngôn ngữ & Cấu trúc đề (Trọng số: 20% - Tối đa 20 điểm)
@@ -56,26 +79,35 @@ Tiêu chuẩn này đánh giá mức độ chính xác của đề thi khi đư�
   * Đối với học sinh có điểm thành thạo thấp (`mastery_score` thấp) ở một kỹ năng cụ thể, đề thi phải ưu tiên phân bổ các câu hỏi tập trung vào kỹ năng đó nhằm giúp học sinh củng cố phần kiến thức còn hổng.
   * Đối với học sinh có mức độ thành thạo cao, đề thi cần tăng tỷ lệ câu hỏi ở mức độ vận dụng cao để phát huy năng lực.
 * **C4.2. Tính đúng đắn của việc phân phối tỷ lệ câu hỏi (6 điểm):**
-  * Đánh giá việc phân bổ tỷ lệ các mức độ khó có phản ánh đúng trạng thái năng lực của học sinh trong hồ sơ hay không.
+  * Đối chiếu số câu ở từng mức độ khó của toàn bộ đề với kế hoạch cá nhân hóa được lập từ hồ sơ học sinh, kể cả quy tắc làm tròn và xử lý thiếu nguồn đã chốt. Mức độ khó thực tế phải được kiểm tra theo C2.2.
 * **C4.3. Tính nhất quán với lịch sử học tập (6 điểm):**
   * Đề thi sinh ra phải tận dụng được dữ liệu từ lịch sử làm bài trước đó, tránh lặp lại các bài toán học sinh đã thành thạo hoặc bỏ sót các lỗi tư duy học sinh từng mắc phải.
 
-### 2.1. Thang chấm cho từng tiêu chí con
+### 2.2. Thang chấm cho từng tiêu chí con
 
-Mỗi tiêu chí con được chấm ở một mức nguyên **0–4** theo bảng dưới đây. Điểm quy đổi của tiêu chí con được tính bằng **mức chấm / 4 × điểm tối đa**; điểm C1–C4 là tổng điểm quy đổi của các tiêu chí con tương ứng. Ví dụ, C4.2 tối đa 6 điểm: mức 2 được 3 điểm, mức 3 được 4,5 điểm, mức 4 được 6 điểm; không tự cho 5/6 điểm ngoài thang này.
+Mỗi lần chấm một câu hoặc toàn bộ đề theo một tiêu chí con, chọn một mức nguyên **0–4** trong bảng tương ứng. Với tiêu chí cấp câu hỏi, lấy trung bình mức chấm của các câu rồi quy đổi điểm. Với tiêu chí cấp đề, quy đổi trực tiếp từ mức chấm của đề. Điểm C1–C4 là tổng điểm quy đổi của các tiêu chí con tương ứng; công thức ở mục 3.2.
 
-Chấm trên **toàn bộ đề**, ghi rõ mã câu hoặc bằng chứng dẫn đến mức chấm. Chỉ cho mức cao nhất khi tất cả yêu cầu của mức đó được đáp ứng. Nếu có hard-fail ở bất kỳ câu nào, áp dụng mục 3 trước; các mức điểm dưới đây không được dùng để bù lỗi hard-fail.
+Ghi mức chấm và căn cứ theo từng câu đối với tiêu chí cấp câu hỏi; ghi căn cứ của toàn đề đối với tiêu chí cấp đề. Chỉ cho mức cao nhất khi tất cả yêu cầu của mức đó được đáp ứng. Nếu có hard-fail ở bất kỳ câu nào, áp dụng mục 3 trước; không dùng điểm trung bình để bù lỗi hard-fail.
+
+**A. Thang chấm cấp câu hỏi — áp dụng riêng cho từng câu**
 
 | Tiêu chí con (điểm tối đa) | Mức 0 | Mức 1 | Mức 2 | Mức 3 | Mức 4 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **C1.1. Đề bài (10)** | Thiếu dữ kiện cốt lõi hoặc mâu thuẫn, không xác định được bài toán. | Phải sửa hoặc bổ sung dữ kiện mới giải được. | Có chi tiết mơ hồ cần làm rõ trước khi giải. | Đủ dữ kiện, chỉ có thông tin thừa không ảnh hưởng cách hiểu. | Đầy đủ, nhất quán, rõ đối tượng và điều kiện đếm. |
-| **C1.2. Đáp án và phương án nhiễu (15)** | Không có đáp án nào hoặc có đáp án sai bản chất toán học; trường hợp sai bản chất là hard-fail. | Các đáp án hiện có đúng nhưng phần lớn câu còn thiếu đáp án hoặc phương án nhiễu bắt buộc. | Các đáp án hiện có đúng; còn thiếu đáp án hoặc phương án nhiễu bắt buộc ở ít nhất một câu, không quá một nửa số câu. | Tất cả câu có đáp án đúng và đủ phương án nếu có; còn lỗi trình bày nhỏ về kết luận hoặc đơn vị, không làm thay đổi ý nghĩa toán học. | Tất cả đáp án được kiểm chứng, đúng đại lượng, đủ điều kiện và đơn vị nếu có; với trắc nghiệm, đáp án đúng duy nhất và phương án nhiễu hợp lý. |
+| **C1.2. Đáp án và phương án nhiễu (15)** | Không có đáp án hoặc đáp án sai bản chất toán học; trường hợp sai bản chất là hard-fail. | Có đáp án đúng nhưng chưa cung cấp bộ phương án bắt buộc của câu trắc nghiệm. | Đáp án đúng; còn thiếu điều kiện trình bày cần thiết hoặc bộ phương án nhiễu chưa đầy đủ/hợp lý, chưa làm sai bản chất toán học. | Đáp án đúng và đủ phương án nếu có; còn lỗi trình bày nhỏ về kết luận hoặc đơn vị, không làm thay đổi ý nghĩa toán học. | Đáp án được kiểm chứng, đúng đại lượng, đủ điều kiện và đơn vị nếu có; với trắc nghiệm, đáp án đúng duy nhất và phương án nhiễu hợp lý. |
 | **C1.3. Các bước giải (10)** | Không có các bước giải hoặc có lỗi sai về kiến thức toán học cơ bản; trường hợp sai bản chất là hard-fail. | Chỉ nêu công thức/đáp số hoặc thiếu phần lớn các bước cần thiết. | Hướng giải đúng nhưng thiếu bước suy luận hoặc tính toán quan trọng, người đọc phải tự bổ sung mới kiểm tra được kết quả. | Đủ bước và tính toán đúng, nhưng còn thiếu giải thích vì sao chọn cách đếm hoặc công thức. | Các bước đúng, đủ, có thứ tự; giải thích được lựa chọn phương pháp và điều kiện áp dụng; kết luận khớp đáp án. |
-| **C2.1. Kỹ năng mục tiêu (15)** | Có câu ngoài phạm vi Đại số tổ hợp Toán 10 → hard-fail. | Phần lớn câu không kiểm tra kỹ năng được gắn. | Có ít nhất một câu gắn sai kỹ năng chính, dù vẫn thuộc chủ đề. | Kỹ năng chính đúng; còn thiếu hoặc thừa nhãn kỹ năng phụ. | Tất cả câu khớp kỹ năng chính/phụ theo catalogue và yêu cầu đề. |
-| **C2.2. Độ khó (10)** | Toàn bộ câu lệch mức yêu cầu. | Phần lớn câu lệch mức yêu cầu. | Không quá một nửa số câu lệch mức yêu cầu. | Các câu chỉ lệch nhẹ; cần chỉnh nhãn ở tối đa một câu, lệch một mức liền kề. | Mức nhận thức và số bước suy luận của tất cả câu khớp nhãn/yêu cầu. |
-| **C3.1. Ngôn ngữ (7)** | Không hiểu được yêu cầu hoặc thuật ngữ sai nghiêm trọng. | Nhiều câu khó hiểu, cần viết lại phần lớn. | Hiểu được nhưng còn lỗi diễn đạt hoặc thuật ngữ ở nhiều câu. | Chỉ có lỗi chính tả, lặp từ hoặc diễn đạt nhỏ, không đổi nghĩa. | Tiếng Việt rõ ràng, đúng thuật ngữ, không đa nghĩa. |
+| **C2.1. Kỹ năng mục tiêu (15)** | Câu hỏi ngoài phạm vi Đại số tổ hợp Toán 10 → hard-fail. | Kỹ năng chính được gắn sai và không có nhãn kỹ năng phụ phù hợp nội dung câu hỏi. | Kỹ năng chính được gắn sai, nhưng có kỹ năng phụ phù hợp nội dung. | Kỹ năng chính đúng; còn thiếu hoặc thừa nhãn kỹ năng phụ. | Kỹ năng chính/phụ khớp catalogue, nội dung câu hỏi và kỹ năng được yêu cầu. |
+| **C2.2. Độ khó (10)** | Mức nhận thức thực tế lệch 3 mức so với mức được chỉ định. | Mức nhận thức thực tế lệch 2 mức. | Mức nhận thức thực tế lệch 1 mức liền kề. | Cùng mức nhận thức được chỉ định, nhưng yêu cầu suy luận còn hơi nhẹ hoặc nặng so với mô tả mức đã chốt. | Mức nhận thức và yêu cầu suy luận thực tế khớp mức được chỉ định. |
+| **C3.1. Ngôn ngữ (7)** | Không hiểu được yêu cầu hoặc thuật ngữ sai nghiêm trọng. | Câu hỏi khó hiểu, cần viết lại phần lớn. | Hiểu được nhưng còn nhiều lỗi diễn đạt hoặc thuật ngữ. | Chỉ có lỗi chính tả, lặp từ hoặc diễn đạt nhỏ, không đổi nghĩa. | Tiếng Việt rõ ràng, đúng thuật ngữ, không đa nghĩa. |
+| **C3.3. Hiển thị (6)** | Công thức hoặc nội dung cốt lõi của câu không đọc được trên giao diện. | Nhiều lỗi hiển thị trong câu cản trở làm bài. | Còn ít nhất một lỗi công thức/xuống dòng cần sửa để đọc đúng. | Chỉ có lỗi khoảng cách hoặc căn chỉnh nhỏ, không ảnh hưởng đọc hiểu. | Toàn bộ nội dung và công thức của câu hiển thị rõ trên giao diện được kiểm tra. |
+
+Ở C2.2, thứ tự bốn mức nhận thức là **Nhận biết → Thông hiểu → Vận dụng → Vận dụng cao**. Ví dụ, từ Nhận biết đến Vận dụng là lệch 2 mức. Ở C1.2, câu tự luận chỉ xét đáp án và các yêu cầu liên quan; không bắt buộc có phương án nhiễu.
+
+**B. Thang chấm cấp đề — chấm trực tiếp toàn bộ đề**
+
+| Tiêu chí con (điểm tối đa) | Mức 0 | Mức 1 | Mức 2 | Mức 3 | Mức 4 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
 | **C3.2. Độc lập, không trùng lặp (7)** | Câu hỏi làm lộ đáp án của nhau hoặc lặp lại phần lớn nội dung. | Có nhiều câu cùng cấu trúc, chỉ thay số/ngữ cảnh. | Có một cặp câu cùng cấu trúc, chỉ thay số/ngữ cảnh. | Có câu cùng dạng nhưng khác điều kiện hoặc thao tác suy luận; không làm lộ đáp án. | Các câu độc lập; cách hỏi/điều kiện đếm đa dạng, không có cặp chỉ đổi số/ngữ cảnh. |
-| **C3.3. Hiển thị (6)** | Công thức hoặc nội dung cốt lõi không đọc được trên giao diện. | Nhiều lỗi hiển thị cản trở làm bài. | Còn ít nhất một lỗi công thức/xuống dòng cần sửa để đọc đúng. | Chỉ có lỗi khoảng cách hoặc căn chỉnh nhỏ, không ảnh hưởng đọc hiểu. | Tất cả nội dung và công thức hiển thị rõ trên giao diện được kiểm tra. |
 | **C4.1. Thành thạo kỹ năng (8)** | Phân bổ hoàn toàn đi ngược nhóm kỹ năng ưu tiên của hồ sơ. | Phần lớn câu ưu tiên sai nhóm kỹ năng. | Có ưu tiên kỹ năng yếu nhưng số câu chưa khớp kế hoạch đã chốt. | Đúng nhóm và số câu ưu tiên, nhưng có câu chưa phù hợp nhu cầu củng cố. | Đúng nhóm/số câu ưu tiên và nội dung phù hợp mức thành thạo có bằng chứng. |
 | **C4.2. Phân phối độ khó (6)** | Không phản ánh hồ sơ hoặc kế hoạch độ khó. | Nhiều ô phân phối lệch kế hoạch. | Có phân hóa theo hồ sơ nhưng từ hai câu trở lên sai ô độ khó. | Chỉ một câu sai ô độ khó so với kế hoạch. | Số câu từng mức khớp kế hoạch, kể cả quy tắc làm tròn và xử lý thiếu nguồn đã chốt. |
 | **C4.3. Lịch sử học tập (6)** | Bỏ qua lịch sử, lặp lại các bài đã thành thạo và không xử lý lỗi đã ghi nhận. | Phần lớn lựa chọn trái với mục tiêu ôn tập từ lịch sử. | Chỉ xử lý được một phần: tránh lặp bài hoặc tập trung lỗi cũ. | Xử lý được cả hai nhưng còn một trường hợp chưa phù hợp. | Dùng đúng lịch sử sẵn có, tránh bài đã thành thạo và tạo cơ hội sửa lỗi đã ghi nhận. |
@@ -111,55 +143,84 @@ Nếu một mô tả mức điểm dẫn đến lỗi chuyên môn nghiêm trọ
 
      Nếu tỷ lệ cần điều chỉnh **dưới 30%**, trừ điểm C4.2 nhưng chưa loại đề theo điều kiện này.
 
+**Áp dụng khi chấm từng câu:**
+
+- Nếu bất kỳ câu nào có lỗi toán học hoặc lạc chủ đề thuộc điều kiện hard-fail, **toàn bộ đề nhận 0/100 và Fail**, dù điểm trung bình của các câu còn lại cao.
+- Lỗi trùng lặp và sai phân phối độ khó cá nhân hóa được kiểm tra trên toàn bộ đề theo các ngưỡng ở trên.
+- Ghi riêng **mức chấm 0–4** và **trạng thái hard-fail** cùng lý do. Mức 0 không tự động đồng nghĩa với hard-fail; phải đối chiếu điều kiện vi phạm.
+
 ### 3.1. Xử lý tiêu chí không áp dụng (N/A)
 
 **N/A nghĩa là “không áp dụng”.** Tiêu chí được đánh dấu N/A sẽ không tham gia tính điểm; không coi là bị chấm 0 điểm.
 
 **1. Chọn cách xử lý theo từng trường hợp**
 
-Trước khi chấm, xác định ở cấp **tiêu chí con** (ví dụ C4.3) và ghi rõ lý do. Dùng bảng sau để phân biệt trường hợp không áp dụng với trường hợp có lỗi hoặc chưa được kiểm tra:
+Trước khi chấm, xác định ở cấp **tiêu chí con** (ví dụ C4.3) và ghi rõ lý do. Với tiêu chí cấp câu hỏi, ghi N/A theo đúng ô **câu hỏi × tiêu chí** nếu thực sự không áp dụng. Mặc định, bảy tiêu chí cấp câu hỏi được kiểm tra trên mọi câu. Dùng bảng sau để phân biệt trường hợp không áp dụng với trường hợp có lỗi hoặc chưa được kiểm tra:
 
 | Trường hợp | Cách xử lý |
 | :--- | :--- |
 | Đề chuẩn chung (`default_blueprint`), không yêu cầu cá nhân hóa | **N/A:** C4.1, C4.2 và C4.3. |
 | Học sinh thực sự chưa có lịch sử học tập | **Có thể N/A:** C4.3. Vẫn chấm C4.1 và C4.2 theo kế hoạch dành cho hồ sơ đó. |
-| Đề tự luận không có phương án nhiễu | **Vẫn chấm C1.2:** kiểm tra đáp án, bỏ qua phần phương án nhiễu. Không đánh dấu N/A cho cả tiêu chí. |
-| Đầu ra thiếu các bước giải | **Trừ điểm C1.3**, không dùng N/A để bỏ qua phần còn thiếu. |
-| Chưa kiểm tra hiển thị trên giao diện | Ghi C3.3 là **Chưa đánh giá**, không phải N/A. Cần kiểm tra và bổ sung bằng chứng trước khi kết luận Pass. |
+| Đề tự luận không có phương án nhiễu | **Vẫn chấm C1.2:** kiểm tra đáp án, bỏ qua phần phương án nhiễu. |
+| Một câu thiếu đáp án hoặc các bước giải | **Trừ điểm C1.2 hoặc C1.3 của câu đó**, không dùng N/A để bỏ qua phần còn thiếu. |
+| Chưa kiểm tra hiển thị của một câu trên giao diện | Ghi ô C3.3 của câu đó là **Chưa đánh giá**, không phải N/A. Cần kiểm tra và bổ sung bằng chứng trước khi kết luận Pass cho đề. |
 
 Không dùng N/A để bỏ qua lỗi, chức năng còn thiếu hoặc bằng chứng chưa thu thập.
 
 **2. Tính điểm**
 
-- Bỏ tiêu chí N/A khỏi cả **điểm đạt được** và **điểm tối đa** khi tính tổng.
+- Với tiêu chí cấp câu hỏi, chỉ loại ô N/A hợp lệ khỏi phép tính trung bình của tiêu chí đó. Nếu còn câu áp dụng, vẫn giữ nguyên điểm tối đa của tiêu chí khi quy đổi.
+- Ô **Chưa đánh giá** không được tự ý loại khỏi mẫu số để tính kết quả hoàn chỉnh. Cần chấm đủ các ô áp dụng trước khi tổng hợp, trừ trường hợp đã xác định đề hard-fail.
+- Nếu toàn bộ tiêu chí thực sự không áp dụng, bỏ tiêu chí đó khỏi cả **điểm đạt được** và **điểm tối đa** khi tính tổng. Nếu tất cả câu đều N/A hợp lệ ở cùng một tiêu chí cấp câu hỏi, tiêu chí đó là N/A cho toàn đề.
 - Quy đổi phần còn lại về thang **100 điểm** theo công thức ở mục 3.2.
 - Không chuyển điểm tối đa của tiêu chí N/A sang C1 hoặc C2.
 
 **3. Ghi kết quả và áp dụng hard-fail**
 
-- Liệt kê rõ **tiêu chí nào là N/A và vì sao**.
+- Liệt kê rõ **câu hỏi/tiêu chí nào là N/A và vì sao**, kèm số câu áp dụng dùng để lấy trung bình ở từng tiêu chí cấp câu hỏi.
 - Báo cáo riêng nhóm đề có đánh giá C4 và nhóm không áp dụng C4. Điểm của nhóm không áp dụng C4 **không chứng minh khả năng cá nhân hóa**.
 - Chỉ áp dụng hard-fail về cá nhân hóa cho đề có yêu cầu cá nhân hóa. Vẫn kiểm tra các hard-fail khác theo phạm vi tương ứng.
 
 ### 3.2. Cách tính điểm từng đề và điểm trung bình
 
-**1. Tính điểm từng tiêu chí con**
+**1. Tính điểm tiêu chí cấp câu hỏi**
 
-Mỗi tiêu chí con được chấm ở mức **0–4**, sau đó quy đổi theo điểm tối đa của tiêu chí đó:
+Áp dụng cho **C1.1, C1.2, C1.3, C2.1, C2.2, C3.1 và C3.3**:
 
-$$p_j = \frac{r_j}{4} \times m_j$$
+1. Chấm từng câu ở mức nguyên **0–4** theo cùng một tiêu chí.
+2. Lấy trung bình mức chấm của các câu áp dụng. Mỗi câu đóng góp ngang nhau; xử lý N/A và Chưa đánh giá theo mục 3.1.
+3. Quy đổi mức trung bình theo điểm tối đa của tiêu chí đó.
 
-Trong đó: $r_j$ là mức chấm, $m_j$ là điểm tối đa và $p_j$ là điểm quy đổi của tiêu chí con $j$.
+> **Mức chấm trung bình = Tổng mức chấm của các câu áp dụng ÷ Số câu áp dụng**
 
-**2. Tính tổng điểm của đề**
+> **Điểm tiêu chí = Mức chấm trung bình ÷ 4 × Điểm tối đa của tiêu chí**
 
-- **Tất cả tiêu chí đều áp dụng:** cộng điểm C1, C2, C3 và C4.
+**Ví dụ:** C1.3 tối đa 10 điểm, ba câu được chấm lần lượt ở mức 3, 4 và 4:
 
-$$\text{Total Score} = C_1 + C_2 + C_3 + C_4$$
+- Mức chấm trung bình: **(3 + 4 + 4) ÷ 3 = 3,6666…**
+- Điểm C1.3: **[(3 + 4 + 4) ÷ 3] ÷ 4 × 10 = 9,1666…/10**
 
-- **Có tiêu chí N/A:** chỉ cộng các tiêu chí áp dụng, rồi quy đổi về thang 100. Gọi $A$ là tập các tiêu chí con áp dụng:
+Giữ nguyên giá trị đầy đủ để tính tiếp; không làm tròn mức trung bình về số nguyên hoặc dùng số hiển thị đã làm tròn để tính điểm.
 
-$$\text{Total Score} = 100 \times \frac{\sum_{j \in A} p_j}{\sum_{j \in A} m_j}$$
+**2. Tính điểm tiêu chí cấp đề**
+
+Áp dụng cho **C3.2, C4.1, C4.2 và C4.3**. Chấm trực tiếp toàn bộ đề ở mức nguyên **0–4**, sau đó quy đổi:
+
+> **Điểm tiêu chí = Mức chấm của đề ÷ 4 × Điểm tối đa của tiêu chí**
+
+**Ví dụ:** C4.2 tối đa 6 điểm, đề đạt mức 3 thì điểm C4.2 là **3 ÷ 4 × 6 = 4,5/6**.
+
+**3. Tính tổng điểm của đề**
+
+Trước hết, cộng điểm các tiêu chí con trong từng nhóm để có điểm C1, C2, C3 và C4. Nhóm C3 gồm hai tiêu chí tổng hợp từ từng câu (C3.1, C3.3) và một tiêu chí chấm toàn đề (C3.2).
+
+- **Tất cả tiêu chí đều áp dụng:** cộng điểm bốn nhóm.
+
+> **Tổng điểm đề = Điểm nhóm C1 + Điểm nhóm C2 + Điểm nhóm C3 + Điểm nhóm C4**
+
+- **Có tiêu chí N/A cho toàn đề:** cộng điểm và điểm tối đa của các tiêu chí còn áp dụng, rồi quy đổi về thang 100.
+
+> **Tổng điểm đề = Tổng điểm đạt của các tiêu chí áp dụng ÷ Tổng điểm tối đa của các tiêu chí áp dụng × 100**
 
 **Ví dụ khi C4 hoàn toàn N/A:**
 
@@ -171,11 +232,11 @@ $$\text{Total Score} = 100 \times \frac{\sum_{j \in A} p_j}{\sum_{j \in A} m_j}$
 | C4 | N/A | Không tính |
 | **Tổng** | **72** | **80** |
 
-$$\text{Total Score} = 100 \times \frac{72}{80} = 90/100$$
+**Tổng điểm đề = 72 ÷ 80 × 100 = 90/100**
 
 Khi báo cáo, ghi đủ: **điểm thô 72/80**, **C4.1–C4.3 là N/A** và **điểm chuẩn hóa 90/100**. Nếu không có tiêu chí nào áp dụng thì không tính điểm.
 
-**3. Kết luận Pass/Fail và làm tròn điểm**
+**4. Kết luận Pass/Fail và làm tròn điểm**
 
 | Trường hợp | Kết luận |
 | :--- | :--- |
@@ -184,17 +245,18 @@ Khi báo cáo, ghi đủ: **điểm thô 72/80**, **C4.1–C4.3 là N/A** và **
 | Không có hard-fail, đã chấm đủ các tiêu chí áp dụng và tổng điểm <80/100 | **Fail**. |
 | Còn tiêu chí áp dụng chưa được chấm, chưa phát hiện hard-fail | **Chưa đánh giá đầy đủ**; chưa được kết luận Pass. |
 
-- Không làm tròn điểm thành phần.
-- Chỉ làm tròn điểm hiển thị cuối cùng đến **hai chữ số thập phân**.
+- Không làm tròn mức chấm trung bình hoặc điểm trung gian để tính tiếp.
+- Điểm hiển thị có thể làm tròn đến **hai chữ số thập phân**; khi tính tổng vẫn dùng giá trị đầy đủ. Ví dụ, hiển thị 9,17/10 nhưng không dùng 9,17 thay cho kết quả đầy đủ của phép tính ở trên.
 - Quyết định Pass/Fail theo **điểm chưa làm tròn**.
 
-**4. Tính điểm trung bình của các đề**
+**5. Tính điểm trung bình của các đề**
 
-Với $n$ đề đã đánh giá đầy đủ, gọi $S_i$ là điểm tổng của đề thứ $i$:
+Chỉ tổng hợp các đề đã đánh giá đầy đủ và các đề đã xác định hard-fail:
 
-$$\bar{S} = \frac{\sum_{i=1}^{n} S_i}{n}$$
+> **Điểm trung bình các đề = Tổng điểm của các đề đã có kết luận ÷ Số đề đã có kết luận**
 
-- Đề hard-fail có $S_i = 0$ và **vẫn được tính vào số đề $n$**.
+- Đề hard-fail có điểm tổng **0/100** và **vẫn được tính vào số đề dùng để lấy trung bình**.
+- Không đưa đề còn thiếu đánh giá và chưa xác định hard-fail vào phép tính; báo cáo riêng số đề này.
 - Báo cáo kèm số đề được chấm, số đề Pass/Fail, số hard-fail và các trường hợp chưa đánh giá.
 - Điểm trung bình **≥80/100 không có nghĩa là mọi đề đều Pass**.
 
@@ -272,16 +334,39 @@ $$\bar{S} = \frac{\sum_{i=1}^{n} S_i}{n}$$
 
 ### 4.2. Đánh giá chi tiết theo thang 0–4
 
-| Tiêu chí con | Mức chấm | Điểm quy đổi | Căn cứ trong ví dụ giả định |
+Với C3.3, giả định bản hiển thị của cả ba câu đã được kiểm tra và không có lỗi.
+
+**A. Chấm riêng từng câu — mức nguyên 0–4**
+
+| Tiêu chí con | Câu 1 | Câu 2 | Câu 3 | Căn cứ trong ví dụ giả định |
+| :--- | :---: | :---: | :---: | :--- |
+| C1.1 | 4 | 4 | 4 | Dữ kiện và điều kiện rõ; Câu 2 đã ấn định giới tính cho từng chức vụ. |
+| C1.2 | 4 | 4 | 4 | Đáp án 60 số, 300 cách, 720 cách đúng với đại lượng và điều kiện từng câu, được kiểm chứng bằng các phép tính tương ứng. |
+| C1.3 | 3 | 4 | 4 | Câu 1 đủ bước tính nhưng chưa giải thích vì sao đổi thứ tự chữ số tạo số khác và vì sao dùng chỉnh hợp thay vì tổ hợp. Câu 2 giải thích quy tắc nhân; Câu 3 giải thích gom khối và cách tránh đếm thiếu/trùng. |
+| C2.1 | 4 | 4 | 4 | Kỹ năng chính/phụ của từng câu khớp catalogue và kỹ năng được yêu cầu. |
+| C2.2 | 4 | 4 | 4 | Hai câu đầu khớp mức Thông hiểu; Câu 3 cần gom khối và xét hoán vị trong khối, khớp mức Vận dụng trong ví dụ giả định. |
+| C3.1 | 4 | 4 | 4 | Câu chữ rõ nghĩa; không còn mơ hồ về vai trò lớp trưởng/lớp phó. |
+| C3.3 | 4 | 4 | 4 | Theo giả định, bản hiển thị của từng câu đã được kiểm tra và không có lỗi. |
+
+**B. Tổng hợp các tiêu chí cấp câu hỏi**
+
+| Tiêu chí con | Mức chấm trung bình | Điểm tối đa | Điểm quy đổi hiển thị |
+| :--- | ---: | ---: | ---: |
+| C1.1 | 4 | 10 | 10 |
+| C1.2 | 4 | 15 | 15 |
+| C1.3 | 3,6666… | 10 | 9,17 |
+| C2.1 | 4 | 15 | 15 |
+| C2.2 | 4 | 10 | 10 |
+| C3.1 | 4 | 7 | 7 |
+| C3.3 | 4 | 6 | 6 |
+
+Điểm C1.3 được tính từ **[(3 + 4 + 4) ÷ 3] ÷ 4 × 10 = 9,1666…/10**. Bảng chỉ làm tròn phần hiển thị; các bước tính tiếp vẫn dùng giá trị đầy đủ.
+
+**C. Chấm trực tiếp các tiêu chí cấp đề**
+
+| Tiêu chí con | Mức chấm của đề | Điểm quy đổi | Căn cứ trong ví dụ giả định |
 | :--- | :---: | ---: | :--- |
-| C1.1 | 4 | 10 | Dữ kiện và điều kiện rõ; Câu 2 đã ấn định giới tính cho từng chức vụ. |
-| C1.2 | 4 | 15 | Đáp án 60 số, 300 cách, 720 cách đúng với đại lượng và điều kiện từng câu, được kiểm chứng bằng các phép tính tương ứng. |
-| C1.3 | 3 | 7,5 | Đủ bước tính; Câu 1 chưa giải thích rõ vì sao đổi thứ tự các chữ số tạo số khác và vì sao dùng chỉnh hợp thay vì tổ hợp. |
-| C2.1 | 4 | 15 | Kỹ năng chính/phụ khớp catalogue và kế hoạch minh họa. |
-| C2.2 | 4 | 10 | Hai câu áp dụng cách đếm cơ bản; câu còn lại cần gom khối và xét hoán vị trong khối, phù hợp mức nhận thức giả định. |
-| C3.1 | 4 | 7 | Câu chữ rõ nghĩa; không còn mơ hồ về vai trò lớp trưởng/lớp phó. |
 | C3.2 | 4 | 7 | Ba câu độc lập, không có cặp chỉ thay số/ngữ cảnh. |
-| C3.3 | 4 | 6 | Theo giả định bản render đã được kiểm tra và không có lỗi. |
 | C4.1 | 4 | 8 | Hai slot ưu tiên tập trung đúng A006 và A002 theo kế hoạch giả định. |
 | C4.2 | 4 | 6 | Đúng kế hoạch giả định: 2 câu Thông hiểu, 1 câu Vận dụng. |
 | C4.3 | 4 | 6 | Câu 1 tập trung lỗi về thứ tự; không lặp lại bài A004 đã thành thạo trong lịch sử giả định. |
@@ -292,15 +377,15 @@ $$\bar{S} = \frac{\sum_{i=1}^{n} S_i}{n}$$
 
 | Nhóm tiêu chí | Điểm đạt | Điểm tối đa |
 | :--- | ---: | ---: |
-| C1 — Chính xác và logic toán học | 32,5 | 35 |
+| C1 — Chính xác và logic toán học | 34,17 | 35 |
 | C2 — Sư phạm và kỹ năng mục tiêu | 25 | 25 |
 | C3 — Ngôn ngữ và cấu trúc đề | 20 | 20 |
 | C4 — Cá nhân hóa | 20 | 20 |
-| **Tổng** | **97,5** | **100** |
+| **Tổng** | **99,17** | **100** |
 
-$$\text{Total Score} = 32{,}5 + 25 + 20 + 20 = 97{,}5/100$$
+Điểm tổng chưa làm tròn được tính bằng **10 + 15 + [(3 + 4 + 4) ÷ 3 ÷ 4 × 10] + 25 + 20 + 20 = 99,1666…/100**. Điểm hiển thị cuối cùng là **99,17/100**.
 
 **Kết luận trong ví dụ giả định:**
 
-- **Kết quả:** 97,5/100, không có hard-fail → **Pass** theo rubric.
+- **Kết quả:** 99,17/100, không có hard-fail → **Pass** theo rubric.
 - **Điểm cần cải thiện:** Giải thích rõ lựa chọn chỉnh hợp ở bước 1 của Câu 1.
