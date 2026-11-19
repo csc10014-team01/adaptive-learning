@@ -1,0 +1,217 @@
+{
+  "W07_AI_GRADING": {
+    "description": "Demo AI grading: automatic grading, teacher review, insufficient data",
+    "test_id": "TA0001",
+    "student_id": "ST001",
+    "submissions": [
+      {
+        "question_id": "QA0007",
+        "answer": [
+          {
+            "step": 1,
+            "description": "Có 4 phương tiện để đi từ tỉnh A đến tỉnh B. Số chuyến tương ứng lần lượt là 10 chuyến ô tô, 5 chuyến tàu hỏa, 3 chuyến tàu thủy và 2 chuyến máy bay."
+          },
+          {
+            "step": 2,
+            "description": "Vì chỉ cần chọn một trong các phương tiện nên áp dụng quy tắc cộng. Ta có 10 + 5 + 3 + 2 = 20 cách đi."
+          }
+        ],
+        "expected_result": {
+            "grading_status": "AI_GRADED",
+            "requires_teacher": false,
+            "overall_result": "CORRECT",
+            "final_answer_correct": true,
+            "step_results": [
+                {
+                "step": 1,
+                "result": "CORRECT",
+                "feedback": "Xác định chính xác số chuyến của từng phương tiện: ô tô có 10 chuyến, tàu hỏa có 5 chuyến, tàu thủy có 3 chuyến và máy bay có 2 chuyến. Đây là bước xác định các trường hợp lựa chọn cần thiết để áp dụng quy tắc cộng."
+                },
+                {
+                "step": 2,
+                "result": "CORRECT",
+                "feedback": "Áp dụng chính xác quy tắc cộng vì học sinh chỉ cần chọn một trong các phương tiện để đi từ tỉnh A đến tỉnh B. Phép tính 10 + 5 + 3 + 2 = 20 hoàn toàn chính xác."
+                }
+            ],
+            "errors": [],
+            "missing_steps": [],
+            "teacher_comment": null
+        }
+      },
+
+    {
+        "question_id": "QA0038",
+        "answer": [
+          {
+            "step": 1,
+            "description": "Gọi số cần lập là abcd. Vì đây là số chẵn nên chữ số hàng đơn vị d phải thuộc {0, 2, 4}."
+          },
+          {
+            "step": 2,
+            "description": "Nếu d = 0 thì a có 5 cách chọn, b có 4 cách và c có 3 cách. Có 5 × 4 × 3 = 60 số."
+          },
+          {
+            "step": 3,
+            "description": "Nếu d = 2 hoặc d = 4 thì có 2 cách chọn d, a có 4 cách chọn (không được bằng 0 và d), b có 4 cách và c có 3 cách. Có 2 × 4 × 4 × 3 = 96 số."
+          },
+          {
+            "step": 4,
+            "description": "Vậy tổng số cần tìm là 60 + 96 = 156 số."
+          }
+        ],
+        "expected_result": {
+            "grading_status": "AI_GRADED",
+            "requires_teacher": false,
+            "overall_result": "CORRECT",
+            "final_answer_correct": true,
+            "step_results": [
+                {
+                "step": 1,
+                "result": "CORRECT",
+                "feedback": "Xác định đúng chữ số hàng đơn vị phải thuộc tập {0, 2, 4} để số được lập là số chẵn. Đây là cách phân chia các trường hợp hợp lý."
+                },
+                {
+                "step": 2,
+                "result": "CORRECT",
+                "feedback": "Với trường hợp chữ số hàng đơn vị bằng 0, học sinh xác định đúng số cách chọn các chữ số còn lại: hàng nghìn có 5 cách, hàng trăm có 4 cách và hàng chục có 3 cách. Kết quả 5 × 4 × 3 = 60 là chính xác."
+                },
+                {
+                "step": 3,
+                "result": "CORRECT",
+                "feedback": "Với trường hợp chữ số hàng đơn vị bằng 2 hoặc 4, học sinh xác định đúng có 2 cách chọn chữ số hàng đơn vị, 4 cách chọn hàng nghìn và lần lượt 4, 3 cách chọn hai chữ số còn lại. Kết quả 2 × 4 × 4 × 3 = 96 là chính xác."
+                },
+                {
+                "step": 4,
+                "result": "CORRECT",
+                "feedback": "Áp dụng quy tắc cộng để kết hợp hai trường hợp loại trừ nhau. Phép tính 60 + 96 = 156 chính xác."
+                }
+            ],
+            "errors": [],
+            "missing_steps": [],
+            "teacher_comment": null
+        }
+    },
+    {
+        "question_id": "QA0064",
+        "answer": [
+          {
+            "step": 1,
+            "description": "Có 6 chữ số khác nhau nên số cách sắp xếp 6 chữ số là 6! = 720."
+          },
+          {
+            "step": 2,
+            "description": "Xem hai chữ số 0 và 5 là một nhóm, ta có 5 đối tượng cần sắp xếp. Có 5! × 2 = 240 cách sắp xếp hai chữ số này đứng cạnh nhau."
+          },
+          {
+            "step": 3,
+            "description": "Số trường hợp hai chữ số 0 và 5 đứng cạnh nhau là 240. Do đó số trường hợp không đứng cạnh nhau là 720 - 240 = 480."
+          },
+          {
+            "step": 4,
+            "description": "Vậy có 480 số tự nhiên thỏa mãn yêu cầu."
+          }
+        ],
+        "expected_result": {
+            "grading_status": "AI_GRADED",
+            "requires_teacher": false,
+            "overall_result": "INCORRECT",
+            "final_answer_correct": false,
+            "step_results": [
+                {
+                "step": 1,
+                "result": "INCORRECT",
+                "feedback": "Học sinh tính 6! = 720 cách sắp xếp nhưng chưa loại bỏ các trường hợp chữ số 0 đứng ở vị trí đầu tiên. Vì đề bài yêu cầu lập số tự nhiên gồm 6 chữ số nên chữ số hàng triệu không được bằng 0. Số cách lập số tự nhiên gồm 6 chữ số từ 6 chữ số đã cho phải là 5 × 5! = 600."
+                },
+                {
+                "step": 2,
+                "result": "INCORRECT",
+                "feedback": "Học sinh xem hai chữ số 0 và 5 là một nhóm và tính được 5! × 2 = 240. Tuy nhiên, kết quả này vẫn bao gồm các trường hợp số bắt đầu bằng 0, cụ thể có 4! = 24 trường hợp không hợp lệ. Số trường hợp hai chữ số 0 và 5 đứng cạnh nhau và tạo thành số tự nhiên gồm 6 chữ số phải là 240 - 24 = 216."
+                },
+                {
+                "step": 3,
+                "result": "INCORRECT",
+                "feedback": "Phép trừ 720 - 240 = 480 đúng về mặt số học nhưng sử dụng hai đại lượng chưa được xác định chính xác ở các bước trước. Phải lấy tổng số số tự nhiên hợp lệ trừ số trường hợp 0 và 5 đứng cạnh nhau: 600 - 216 = 384."
+                },
+                {
+                "step": 4,
+                "result": "INCORRECT",
+                "feedback": "Kết luận 480 số tự nhiên là không chính xác. Đáp án đúng phải là 384 số."
+                }
+            ],
+            "errors": [
+                {
+                "step": 1,
+                "error_type": "INVALID_COUNTING",
+                "description": "Không loại trừ trường hợp chữ số 0 đứng đầu số."
+                },
+                {
+                "step": 2,
+                "error_type": "INVALID_COUNTING",
+                "description": "Số trường hợp hai chữ số 0 và 5 đứng cạnh nhau vẫn chứa các số có chữ số 0 đứng đầu."
+                },
+                {
+                "step": 3,
+                "error_type": "DEPENDENT_ERROR",
+                "description": "Sử dụng kết quả sai từ hai bước trước để tính số trường hợp không đứng cạnh nhau."
+                }
+            ],
+            "missing_steps": [],
+            "teacher_comment": null
+        }
+      },
+      {
+        "question_id": "QA0102",
+        "answer": [
+          {
+            "step": 1,
+            "description": "Các chữ số được sử dụng là 1, 2, 3, 4, 5, 6. Vì số cần lập bé hơn 100 nên số đó có thể có 1 chữ số hoặc 2 chữ số."
+          },
+          {
+            "step": 2,
+            "description": "Với số có 1 chữ số, có 6 cách chọn."
+          },
+          {
+            "step": 3,
+            "description": "Với số có 2 chữ số, hàng chục có 6 cách chọn và hàng đơn vị cũng có 6 cách chọn. Có 6 × 6 = 36 số."
+          },
+          {
+            "step": 4,
+            "description": "Theo quy tắc cộng, tổng số tự nhiên lập được là 6 + 36 = 42 số."
+          }
+        ],
+        "expected_result": {
+
+            "grading_status": "NEEDS_REVIEW",
+            "requires_teacher": true,
+            "overall_result": "UNCERTAIN",
+            "final_answer_correct": null,
+            "step_results": [
+                {
+                "step": 1,
+                "result": "UNCERTAIN",
+                "feedback": "Học sinh xác định được hai trường hợp số có một chữ số và số có hai chữ số. Tuy nhiên, cần đối chiếu với rubric để xác nhận cách phân chia trường hợp có đầy đủ yêu cầu hay không."
+                },
+                {
+                "step": 2,
+                "result": "UNCERTAIN",
+                "feedback": "Học sinh cho rằng có 6 cách lập số có một chữ số. Chưa đủ cơ sở để xác nhận bước này theo rubric hiện tại."
+                },
+                {
+                "step": 3,
+                "result": "UNCERTAIN",
+                "feedback": "Học sinh tính 6 × 6 = 36 cách lập số có hai chữ số. Cần giáo viên xác nhận cách hiểu điều kiện sử dụng chữ số và đối chiếu với rubric."
+                },
+                {
+                "step": 4,
+                "result": "UNCERTAIN",
+                "feedback": "Phép tính 6 + 36 = 42 đúng về số học, nhưng tính đúng của kết quả cuối cùng phụ thuộc vào tính hợp lệ của các bước trước."
+                }
+            ],
+            "errors": [],
+            "missing_steps": [],
+            "teacher_comment": "AI chưa đủ cơ sở để xác nhận kết quả chấm. Cần giáo viên đối chiếu bài làm với rubric của câu hỏi."
+        }
+      }
+    ]
+  }
+}
