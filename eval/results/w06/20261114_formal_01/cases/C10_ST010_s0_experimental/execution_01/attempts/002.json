@@ -1,0 +1,52 @@
+{
+  "sequence": 2,
+  "started_at": "2026-11-14T17:40:08.883886+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_06ea455cd1b2f0bf424924d20531e95c39ed0b861b2dbf66402d928adfc269bc",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Có 8 người tham gia hoạt động thể thao. Mỗi cặp gồm hai người khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp khác nhau có thể được hình thành từ 8 người đó?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0012",
+  "template_instance": {
+    "instance_id": "TI_06ea455cd1b2f0bf424924d20531e95c39ed0b861b2dbf66402d928adfc269bc",
+    "parameters": {
+      "n": 8,
+      "pair_order_matters": false
+    },
+    "signature": "06ea455cd1b2f0bf424924d20531e95c39ed0b861b2dbf66402d928adfc269bc",
+    "template_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "5a22bf02429c1e5e42f9cbef66fa01ce7a46ed3be6b6234a5375171daf889d1a",
+    "verification_status": "experimental",
+    "context_id": "club"
+  },
+  "source_text": "Có 8 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Có 8 người tham gia hoạt động thể thao. Mỗi cặp gồm hai người khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp khác nhau có thể được hình thành từ 8 người đó?\"}",
+  "elapsed_seconds": 6.452607,
+  "finished_at": "2026-11-14T17:40:15.338692+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 6440553300,
+    "load_duration": 6510200,
+    "prompt_eval_count": 535,
+    "prompt_eval_cached_count": 1,
+    "prompt_eval_duration": 4205108000,
+    "eval_count": 56,
+    "eval_duration": 2195259000
+  }
+}

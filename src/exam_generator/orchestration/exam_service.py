@@ -370,6 +370,7 @@ class ExamService:
             status="pending_teacher_review",
             teacher_review=None,
             revision=exam.revision + 1,
+            quality_report=None,
         )
         for item in value["questions"]:
             item["validation"]["teacher_approved"] = False

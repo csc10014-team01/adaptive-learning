@@ -1,0 +1,50 @@
+{
+  "sequence": 2,
+  "started_at": "2026-11-14T17:42:07.626651+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "fail",
+    "question": null,
+    "reasons": [
+      "Indirect still asks the Direct counting operation; ask a contextual outcome instead"
+    ]
+  },
+  "template_id": "EA0012",
+  "template_instance": {
+    "instance_id": "TI_296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+    "parameters": {
+      "n": 7,
+      "pair_order_matters": false
+    },
+    "signature": "296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+    "template_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "559a0dfea1a36cd9a2bd573e20ca5c0f548c7d863de7c60780edfafcbe2e50b3",
+    "verification_status": "experimental",
+    "context_id": "event"
+  },
+  "source_text": "Có 7 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Một album ảnh có 7 kế hoạch khác nhau. Mỗi kế hoạch là một cách tổ chức sự kiện hoàn chỉnh. Mỗi cặp kế hoạch được chọn phải là một cặp khác nhau và không có thể lặp lại. Hỏi có bao nhiêu cách chọn các cặp kế hoạch để in vào album?\"}",
+  "elapsed_seconds": 4.418476,
+  "finished_at": "2026-11-14T17:42:12.046492+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4407541000,
+    "load_duration": 5092100,
+    "prompt_eval_count": 536,
+    "prompt_eval_cached_count": 357,
+    "prompt_eval_duration": 1493113000,
+    "eval_count": 70,
+    "eval_duration": 2851005000
+  }
+}

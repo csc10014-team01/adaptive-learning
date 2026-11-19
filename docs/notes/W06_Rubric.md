@@ -4,6 +4,15 @@
 - **Status:** Review Required
 - **Target Scope:** Đánh giá chất lượng nội dung của từng câu hỏi và toàn bộ đề thi sinh ra theo Use cases UC-01, UC-02 (Phần Đại số tổ hợp - Toán 10).
 
+**Quyết định tích hợp được chủ dự án phê duyệt ngày 14/11/2026:** Cộng trực tiếp
+điểm C1/C2/C3/C4 theo tối đa 35/25/20/20, không nhân trọng số lần hai.
+Với Structured Assessment (`default_blueprint`), C4 không áp dụng; các mức tối đa
+là 45/35/20. Giáo viên vẫn được duyệt thủ công cả đề khi báo cáo còn
+`NEEDS_REVIEW`; hành động đó không chuyển báo cáo thành `PASS` hoặc tự cấp điểm.
+Lỗi đã xác nhận vẫn bị chặn. Các ngưỡng xác định trùng lặp hoặc lệch độ khó
+"nghiêm trọng" và thang chấm chi tiết còn chờ nhóm thống nhất.
+Xem [hướng dẫn Quality Gate](../design/W06_Exam_Quality_Gate.md).
+
 ---
 
 ## 1. Nguồn tham khảo & Lý do lựa chọn (References & Rationale)
@@ -127,6 +136,19 @@ Nếu một mô tả mức điểm dẫn đến lỗi chuyên môn nghiêm trọ
      **Điều kiện loại đề:** Với đề cá nhân hóa, nếu cần điều chỉnh mức độ khó của **từ 30% tổng số câu trở lên** để đúng kế hoạch thì đề bị hard-fail.
 
      **Căn cứ đối chiếu:** Kế hoạch phải được lập trước từ hồ sơ học sinh, đã tính đến cách làm tròn số câu và cách xử lý khi thiếu nguồn câu hỏi. Độ khó thực tế của từng câu được kiểm tra theo C2.2.
+- **Cách xử lý tiêu chí không áp dụng:** 
+  Trong các trường hợp sinh đề chuẩn chung (Default Blueprint), **C4 không áp dụng**,
+  không được ghi là đã đạt 20 điểm. Phân bổ đều 20 điểm sang C1 và C2: điểm tối đa
+  C1/C2/C3 lần lượt là **45/35/20**. Điểm đánh giá thủ công phải sử dụng đúng các
+  mức tối đa này; không tự quy đổi điểm cũ hoặc cấp điểm cho phần chưa đánh giá.
+
+- **Cách tính điểm trung bình để đánh giá mục tiêu 80/100:**
+  Các điểm thành phần đã bao gồm trọng số, nên cộng trực tiếp:
+  $$\text{Total Score} = C_1 + C_2 + C_3 + C_4$$
+  Với Default Blueprint: $$\text{Total Score} = C_1 + C_2 + C_3$$
+  Chỉ tính tổng khi mọi tiêu chí áp dụng đều có điểm được hỗ trợ bằng bằng chứng
+  đánh giá. Thiếu bằng chứng thì tổng điểm để trống; không mặc định 0 hoặc điểm tối đa.
+  Để được công nhận **Đạt mục tiêu (Pass)**, đề thi phải đạt tổng điểm từ **80/100 trở lên** và **tuyệt đối không vi phạm bất kỳ lỗi Hard-Fail nào**.
 
      **Cách tính:** So sánh số câu thực tế với kế hoạch ở từng mức độ khó. Cộng số câu **vượt kế hoạch** ở các mức; đây là số câu tối thiểu cần đổi mức để bù vào các mức còn thiếu. Mỗi câu chỉ tính một lần.
 

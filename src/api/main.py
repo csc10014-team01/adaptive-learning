@@ -21,6 +21,8 @@ from src.api.adaptive_generator import (
     SQLDataAdapter,
     core_data,
     core_exam,
+    core_profile,
+    core_request,
     public_exam,
 )
 from src.api.data_adapter import (
@@ -54,12 +56,17 @@ from src.exam_generator.adaptation.skill_relationships import SkillRelationships
 from src.exam_generator.ai.qwen_client import QwenClient
 from src.exam_generator.api.data_adapter import ApiFailure as CoreApiFailure
 from src.exam_generator.api.m3_adapter import DEFAULT_STUDENTS
+from src.exam_generator.api.schemas import (
+    GenerateExamRequest as CoreRequest,
+    StudentProfileResponse as CoreProfile,
+)
 from src.exam_generator.orchestration.review_service import (
     approve_exam,
     check_revision,
     require_template_regeneration,
     validate_regeneration,
 )
+from src.exam_generator.validation.exam_quality import ExamQualityEvaluator, QualityPolicy
 from src.ui.routes import mount_ui
 
 logger = logging.getLogger(__name__)
@@ -150,6 +157,7 @@ def create_app(
     qwen_client: QwenClient | None = None,
     relationships: SkillRelationships | None = None,
     instance_seed: int | None = None,
+    quality_policy: QualityPolicy | None = None,
 ) -> FastAPI:
     api = FastAPI(title="Smart Exam Generator — Fake MVP1", version="1.0.0")
     # Keep the team's default JSON/fake service; the Generator launcher explicitly
@@ -163,6 +171,7 @@ def create_app(
             "EXAM_BACKEND must be fake/qwen; PROFILE_SOURCE must be json/m3"
         )
     api.state.backend, api.state.profile_source = backend, profile_source
+    api.state.quality_evaluator = ExamQualityEvaluator(quality_policy or QualityPolicy())
     api.state.instance_seed = instance_seed
     relationship_file = os.getenv("SKILL_RELATIONSHIPS_FILE")
     api.state.relationships = relationships or (
@@ -348,6 +357,13 @@ def create_app(
             raise ApiFailure(
                 500, "INVALID_EXAM_OUTPUT", "Service output không đúng contract."
             ) from exc
+        # Evaluate only complete, source-checked output. Ignore provider-supplied
+        # reports: the API owns trusted profile/request snapshots and evidence.
+        exam.quality_report = None
+        exam.quality_report = request.app.state.quality_evaluator.evaluate(
+            core_exam(exam), data=core_data(data),
+            profile=core_profile(student), request=core_request(payload),
+        )
         request.app.state.exams.save(exam)
         return exam
 
@@ -378,7 +394,16 @@ def create_app(
     ) -> ExamResponse:
         store = request.app.state.exams
         current = store.get(exam_id)
-        reviewed = public_exam(approve_exam(core_exam(current), payload), current)
+        check_revision(current, payload.expected_revision)
+        try:
+            current.quality_report = request.app.state.quality_evaluator.evaluate(
+                core_exam(current), data=core_data(data), human_review=payload.quality_review,
+            )
+        except ValueError as exc:
+            raise ApiFailure(422, "INVALID_QUALITY_REVIEW", str(exc)) from exc
+        reviewed = public_exam(approve_exam(
+            core_exam(current), payload, evaluator=request.app.state.quality_evaluator,
+        ), current)
         try:
             if current.generation_mode == "adaptive":
                 core_data(data).validate_exam_references(core_exam(reviewed))
@@ -435,6 +460,16 @@ def create_app(
             data=core_data(data),
         )
         core_data(data).validate_exam_references(core_exam(regenerated))
+        # Preserve the generation-time inputs, never substitute today's profile.
+        previous = current.quality_report
+        regenerated.quality_report = None
+        regenerated.quality_report = request.app.state.quality_evaluator.evaluate(
+            core_exam(regenerated), data=core_data(data),
+            profile=CoreProfile.model_validate(previous.profile_snapshot)
+            if previous and previous.profile_snapshot is not None else None,
+            request=CoreRequest.model_validate(previous.request_snapshot)
+            if previous and previous.request_snapshot is not None else None,
+        )
         store.replace(regenerated, expected_revision=payload.expected_revision)
         return regenerated
 

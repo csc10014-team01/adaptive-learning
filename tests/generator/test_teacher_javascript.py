@@ -19,4 +19,4 @@ def test_teacher_review_javascript_workflows():
         [node, str(script)], capture_output=True, text=True, timeout=20, check=False
     )
     assert result.returncode == 0, result.stdout + result.stderr
-    assert json.loads(result.stdout)["passed"] == 18
+    assert json.loads(result.stdout)["passed"] == 20

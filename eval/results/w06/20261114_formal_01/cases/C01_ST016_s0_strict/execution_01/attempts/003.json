@@ -1,0 +1,53 @@
+{
+  "sequence": 3,
+  "started_at": "2026-11-14T17:38:41.012340+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_0755bdf93a64461a7b6b1fc8606102e8ae72fc23c6746f09a19bbf7fbe341a9e",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Một đa giác có 12 đỉnh. Mỗi cặp có thứ tự (A, B) gồm hai đỉnh khác nhau xác định một vectơ AB theo điểm đầu A và điểm cuối B. Có bao nhiêu cặp có thứ tự (A, B) như vậy?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0015",
+  "template_instance": {
+    "instance_id": "TI_0755bdf93a64461a7b6b1fc8606102e8ae72fc23c6746f09a19bbf7fbe341a9e",
+    "parameters": {
+      "vertex_count": 12,
+      "ordered_pair": true,
+      "same_vertex_allowed": false,
+      "counting_unit": "Cặp đỉnh có thứ tự, không gộp các vectơ hình học bằng nhau"
+    },
+    "signature": "0755bdf93a64461a7b6b1fc8606102e8ae72fc23c6746f09a19bbf7fbe341a9e",
+    "template_digest": "5a58ea1d1bc17038d1ffda6c1287c802f1b30b556b900016847562335a03473c"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "4af7d58a4a6569c00892d23f21f61af81602eb627d9d713c325adf2650627e57",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Một đa giác có 12 đỉnh. Mỗi cặp có thứ tự (A, B) gồm hai đỉnh khác nhau xác định một vectơ AB theo điểm đầu A và điểm cuối B. Có bao nhiêu cặp có thứ tự (A, B) như vậy?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Một đa giác có 12 đỉnh. Mỗi cặp có thứ tự (A, B) gồm hai đỉnh khác nhau xác định một vectơ AB theo điểm đầu A và điểm cuối B. Có bao nhiêu cặp có thứ tự (A, B) như vậy?\"\n}",
+  "elapsed_seconds": 5.991991,
+  "finished_at": "2026-11-14T17:38:47.006057+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 5732970500,
+    "load_duration": 8486200,
+    "prompt_eval_count": 449,
+    "prompt_eval_cached_count": 448,
+    "prompt_eval_duration": 66875000,
+    "eval_count": 66,
+    "eval_duration": 5615567000
+  }
+}

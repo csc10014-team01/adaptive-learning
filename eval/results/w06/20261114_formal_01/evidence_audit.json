@@ -1,0 +1,119 @@
+{
+  "phase": "formal",
+  "started_at": "2026-11-14T17:38:33.913338+07:00",
+  "finished_at": "2026-11-14T17:44:49.272555+07:00",
+  "model": "qwen3:1.7b",
+  "ollama": {
+    "version": "0.40.16",
+    "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "size_bytes": 1359293444,
+    "quantization": "Q4_K_M"
+  },
+  "cases": 30,
+  "questions": 300,
+  "final_question_sources": {
+    "question": 216,
+    "template": 84
+  },
+  "by_mode": {
+    "strict": {
+      "cases": 15,
+      "qwen_calls": 42,
+      "rejected_wordings": 0,
+      "wording_retries": 0,
+      "bank_questions": 108,
+      "template_questions": 42,
+      "experimental_indirect_questions": 0,
+      "cases_with_indirect": 0,
+      "indirect_to_direct_fallbacks": 0,
+      "mean_seconds": 8.354,
+      "median_seconds": 9.464231,
+      "min_seconds": 3.28279,
+      "max_seconds": 12.861934
+    },
+    "experimental": {
+      "cases": 15,
+      "qwen_calls": 60,
+      "rejected_wordings": 18,
+      "wording_retries": 11,
+      "bank_questions": 108,
+      "template_questions": 42,
+      "experimental_indirect_questions": 11,
+      "cases_with_indirect": 10,
+      "indirect_to_direct_fallbacks": 7,
+      "mean_seconds": 15.475732266666666,
+      "median_seconds": 14.508321,
+      "min_seconds": 2.082474,
+      "max_seconds": 29.657659
+    }
+  },
+  "attempt_statuses": [
+    {
+      "generate_type": "direct",
+      "validation_status": "pass",
+      "count": 73
+    },
+    {
+      "generate_type": "indirect",
+      "validation_status": "needs_review",
+      "count": 11
+    },
+    {
+      "generate_type": "indirect",
+      "validation_status": "fail",
+      "count": 18
+    }
+  ],
+  "fallback_case_ids": [
+    "C04_ST003_s0_experimental",
+    "C14_ST003_s42_experimental",
+    "C20_ST010_s42_experimental",
+    "C24_ST003_s2026_experimental",
+    "C30_ST010_s2026_experimental"
+  ],
+  "indirect_to_direct_fallbacks": 7,
+  "source_hashes_verified": true,
+  "code_hashes_verified": true,
+  "review_sheet_rows": {
+    "grading_R1.csv": 120,
+    "grading_R2.csv": 120,
+    "question_review_R1.csv": 300,
+    "question_review_R2.csv": 300
+  },
+  "human_grading": "PENDING",
+  "unique_normalized_question_texts": 41,
+  "unique_bank_question_ids": 15,
+  "unique_template_mathematical_instances": 17,
+  "scarce_source_profile_quotas": [
+    {
+      "case_id": "C05_ST004_s0_strict",
+      "requested_focus": 4,
+      "achieved_focus": 1
+    },
+    {
+      "case_id": "C06_ST004_s0_experimental",
+      "requested_focus": 4,
+      "achieved_focus": 1
+    },
+    {
+      "case_id": "C15_ST004_s42_strict",
+      "requested_focus": 4,
+      "achieved_focus": 1
+    },
+    {
+      "case_id": "C16_ST004_s42_experimental",
+      "requested_focus": 4,
+      "achieved_focus": 1
+    },
+    {
+      "case_id": "C25_ST004_s2026_strict",
+      "requested_focus": 4,
+      "achieved_focus": 1
+    },
+    {
+      "case_id": "C26_ST004_s2026_experimental",
+      "requested_focus": 4,
+      "achieved_focus": 1
+    }
+  ]
+}
