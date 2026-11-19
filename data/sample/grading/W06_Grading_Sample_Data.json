@@ -1,0 +1,297 @@
+{
+  "description": "Dữ liệu tổng hợp minh họa đầu vào bài tự luận nguyên khối và JSON kết quả gọn của bộ chấm hiện tại. Không phải dữ liệu học sinh thật hoặc contract API/DB đã được nhóm phê duyệt.",
+  "sample_version": "grading-frozen-v11-docs-2026-11-19",
+  "provenance": {
+    "method": "Phát lại proposal Qwen đã lưu qua validate_case và exam_payload của source đã chốt; không gọi Qwen mới.",
+    "grading_revision": "R2026-11-17-scoped-skill-guidance-v11",
+    "notes": [
+      "Bốn câu được ghép thành một đề minh họa; feedback cấp đề được tổng hợp lại bằng code.",
+      "input và output là hai phần của tài liệu mẫu, không phải toàn bộ cấu trúc ghi nguyên vào DB.",
+      "Chỉ output là mẫu kết quả gọn; repeat và complete thuộc cách đóng gói của bộ thử hiện tại.",
+      "complete=true nghĩa là đã xử lý đủ câu, không có nghĩa tất cả câu đã được xác minh hoặc giáo viên duyệt."
+    ]
+  },
+  "input": {
+    "test_id": "SYN_AI_PILOT",
+    "student_id": "SYN_STUDENT",
+    "questions": [
+      {
+        "question_id": "SYN_N09",
+        "question_text": "Từ A đến B có 3 đường, từ B đến C có 2 đường. Ngoài ra có 4 đường đi thẳng từ A đến C không qua B. Chỉ xét đi từ A đến C theo một trong hai kiểu: đi thẳng, hoặc đi qua B đúng một lần; mỗi đường khác nhau tạo một cách đi khác nhau. Có bao nhiêu cách?",
+        "reference_answer": "10",
+        "rubric": [
+          {
+            "id": "R1",
+            "description": "Với kiểu qua B, kết hợp hai chặng: 3*2=6.",
+            "skill_ids": [
+              "A002"
+            ]
+          },
+          {
+            "id": "R2",
+            "description": "Hai kiểu trực tiếp và qua B loại trừ nhau; cộng 6+4=10.",
+            "skill_ids": [
+              "A001",
+              "A007",
+              "A008"
+            ]
+          }
+        ],
+        "skill_ids": [
+          "A001",
+          "A002",
+          "A007"
+        ]
+      },
+      {
+        "question_id": "SYN_N08",
+        "question_text": "Từ 8 học sinh phân biệt chọn 4 người vào một nhóm, không phân biệt vai trò. Có bao nhiêu nhóm?",
+        "reference_answer": "70",
+        "rubric": [
+          {
+            "id": "R1",
+            "description": "Chọn không thứ tự, biểu thức 8*7*6*5/24 phù hợp.",
+            "skill_ids": [
+              "A004"
+            ]
+          },
+          {
+            "id": "R2",
+            "description": "Tính biểu thức được 70; phân biệt tính sai với chọn sai phương pháp.",
+            "skill_ids": [
+              "A008"
+            ]
+          }
+        ],
+        "skill_ids": [
+          "A004",
+          "A008"
+        ]
+      },
+      {
+        "question_id": "SYN_N10",
+        "question_text": "Tung một đồng xu 4 lần liên tiếp, mỗi lần có thể ra ngửa hoặc sấp. Có bao nhiêu chuỗi kết quả có đúng 2 lần ngửa? Trình bày cách đếm bằng liệt kê các chuỗi hoặc chọn vị trí của hai lần ngửa.",
+        "reference_answer": "6",
+        "rubric": [
+          {
+            "id": "R1",
+            "description": "Bắt buộc thể hiện cách đếm: chọn 2 vị trí ngửa trong 4 vị trí, hoặc liệt kê đầy đủ chuỗi. Không cần làm cả hai cách.",
+            "skill_ids": [
+              "A004",
+              "A005"
+            ]
+          },
+          {
+            "id": "R2",
+            "description": "Nếu chọn vị trí: C(4,2)=6. Nếu liệt kê: NNSS, NSNS, NSSN, SNNS, SNSN, SSNN; kết luận 6. Chỉ nêu đáp số không đủ.",
+            "skill_ids": [
+              "A004",
+              "A005"
+            ]
+          }
+        ],
+        "skill_ids": [
+          "A004",
+          "A005"
+        ]
+      },
+      {
+        "question_id": "SYN_P07",
+        "question_text": "Từ các chữ số 0, 1, 2, 3, 4 lập số tự nhiên có 3 chữ số đôi một khác nhau. Có bao nhiêu số?",
+        "reference_answer": "48",
+        "rubric": [
+          {
+            "id": "R1",
+            "description": "Hàng trăm khác 0 nên có 4 cách.",
+            "skill_ids": [
+              "A009"
+            ]
+          },
+          {
+            "id": "R2",
+            "description": "Hai vị trí còn lại có 4 và 3 cách; tổng 48.",
+            "skill_ids": [
+              "A002",
+              "A008"
+            ]
+          }
+        ],
+        "skill_ids": [
+          "A002",
+          "A009"
+        ]
+      }
+    ],
+    "submissions": [
+      {
+        "question_id": "SYN_N09",
+        "student_answer": "Đi qua B thì chọn 1 đường đoạn đầu và 1 đường đoạn sau, được 3 × 2 = 6 cách. Còn 4 đường thẳng là kiểu khác, nên cộng: 6 + 4 = 10. Có 10 cách đi."
+      },
+      {
+        "question_id": "SYN_N08",
+        "student_answer": "Em chọn lần lượt rồi chia số lần bị trùng của 4 người. Như vậy 8 × 7 × 6 × 5 / 24 = 60 nhóm. Em lấy đáp số 60."
+      },
+      {
+        "question_id": "SYN_N10",
+        "student_answer": "Em ra 6 chuỗi nha. Em làm ở giấy riêng, giờ chỉ nhớ kết quả chứ không nhớ đã liệt kê những chuỗi nào."
+      },
+      {
+        "question_id": "SYN_P07",
+        "student_answer": "Ba ô thì ô đầu em cho 5 cách, ô tiếp theo 4 cách, ô cuối 3 cách vì không được trùng. Em nhân 5 × 4 × 3 = 60 số."
+      }
+    ]
+  },
+  "output": {
+    "test_id": "SYN_AI_PILOT",
+    "student_id": "SYN_STUDENT",
+    "repeat": 1,
+    "complete": true,
+    "submissions": [
+      {
+        "question_id": "SYN_N09",
+        "answer": [
+          {
+            "step": 1,
+            "description": "Học sinh đã tính đúng số cách đi qua B bằng cách nhân số đường từ A đến B với số đường từ B đến C.",
+            "start": 0,
+            "end": 76
+          },
+          {
+            "step": 2,
+            "description": "Học sinh đã nhận diện đúng hai kiểu đi (thẳng và qua B) và cộng số cách của hai kiểu đó.",
+            "start": 77,
+            "end": 145
+          }
+        ],
+        "grading_result": {
+          "grading_status": "AI_GRADED",
+          "requires_teacher": false,
+          "overall_result": "CORRECT",
+          "final_answer_correct": true,
+          "step_results": [
+            {
+              "step": 1,
+              "result": "CORRECT",
+              "start": 0,
+              "end": 76
+            },
+            {
+              "step": 2,
+              "result": "CORRECT",
+              "start": 77,
+              "end": 145
+            }
+          ],
+          "errors": [],
+          "missing_steps": [],
+          "teacher_comment": null
+        }
+      },
+      {
+        "question_id": "SYN_N08",
+        "answer": [
+          {
+            "step": 1,
+            "description": "Học sinh ghi phép tính 8 × 7 × 6 × 5 / 24 = 60.",
+            "start": 0,
+            "end": 110
+          }
+        ],
+        "grading_result": {
+          "grading_status": "AI_GRADED",
+          "requires_teacher": false,
+          "overall_result": "INCORRECT",
+          "final_answer_correct": null,
+          "step_results": [
+            {
+              "step": 1,
+              "result": "INCORRECT",
+              "start": 0,
+              "end": 110
+            }
+          ],
+          "errors": [
+            {
+              "step": 1,
+              "error_type": "ARITHMETIC_ERROR",
+              "skill_ids": [
+                "A008"
+              ],
+              "reason": "Sai phép tính: 8 × 7 × 6 × 5 / 24 = 60; giá trị đúng là 70."
+            }
+          ],
+          "missing_steps": [],
+          "teacher_comment": null
+        }
+      },
+      {
+        "question_id": "SYN_N10",
+        "answer": [
+          {
+            "step": 1,
+            "description": "Học sinh nói rằng đã ra kết quả 6 nhưng không nhớ các chuỗi cụ thể.",
+            "start": 0,
+            "end": 101
+          }
+        ],
+        "grading_result": {
+          "grading_status": "AI_GRADED",
+          "requires_teacher": false,
+          "overall_result": "INCORRECT",
+          "final_answer_correct": null,
+          "step_results": [
+            {
+              "step": 1,
+              "result": "INCORRECT",
+              "start": 0,
+              "end": 101
+            }
+          ],
+          "errors": [
+            {
+              "step": 1,
+              "error_type": "INCOMPLETE_SOLUTION",
+              "skill_ids": [],
+              "reason": "Bài làm tự luận chưa đầy đủ."
+            }
+          ],
+          "missing_steps": [],
+          "teacher_comment": null
+        }
+      },
+      {
+        "question_id": "SYN_P07",
+        "answer": [],
+        "grading_result": {
+          "grading_status": "NEEDS_REVIEW",
+          "requires_teacher": true,
+          "overall_result": "UNCERTAIN",
+          "final_answer_correct": null,
+          "step_results": [],
+          "errors": [],
+          "missing_steps": [],
+          "teacher_comment": null
+        }
+      }
+    ],
+    "feedback": "Trong 4 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 2 câu; 1 câu cần xem lại. Cần trình bày đầy đủ lập luận và phép tính ở các câu: SYN_N10. Các kỹ năng có lỗi đã ghi nhận: A008. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  "example_notes": [
+    {
+      "question_id": "SYN_N09",
+      "meaning": "Bài đúng, kết hợp quy tắc nhân và cộng; đáp số 10 đã được trích từ bài gốc."
+    },
+    {
+      "question_id": "SYN_N08",
+      "meaning": "Sai số học: 8*7*6*5/24 bằng 70, không phải 60; gắn A008 và dừng ở bước được phát hiện sai."
+    },
+    {
+      "question_id": "SYN_N10",
+      "meaning": "Đáp số 6 đúng nhưng thiếu cách đếm bắt buộc; INCORRECT/INCOMPLETE_SOLUTION, không gắn kỹ năng sai."
+    },
+    {
+      "question_id": "SYN_P07",
+      "meaning": "Qwen đưa nội dung rubric vào evidence thay vì trích bài học sinh; validator không chấp nhận. Đây là lỗi output AI, không phải kết luận học sinh làm sai. Trả NEEDS_REVIEW/UNCERTAIN, errors rỗng; nguyên nhân chi tiết giữ trong log riêng."
+    }
+  ]
+}
