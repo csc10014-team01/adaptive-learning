@@ -1,0 +1,486 @@
+{
+  "protocol_version": "w06-live-v1",
+  "phase": "formal",
+  "started_at": "2026-11-14T17:38:33.913338+07:00",
+  "status": "GENERATION_COMPLETE",
+  "frozen": {
+    "selection_sha256": "9a1f7e25a0fd802576a22d2b4badbce10895424ff3c167e44ec15a8905cbbdca",
+    "source_code_sha256": {
+      "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/adaptation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ai/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ai/qwen_spike.py": "87f8be9800fc8dcd5e91924a0ecbd4659d818aab4e54d55e1354b829fa9ebffd",
+      "src/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/api/adaptive_generator.py": "cb28a0bde87c821890244adb8a735aef7ae7559be54bbe429c21194c5924c574",
+      "src/api/data_adapter.py": "3df8d7d861f67516f267d59116b6cb9fc385395ddc086e9a408abe6a55de9cf3",
+      "src/api/exam_store.py": "05b60e339fbf15f355b9a9e3f9f5dc3872e66d5afb2a6ce8d3ec8b145599437d",
+      "src/api/main.py": "a00320c6e663bcdbbeffa0ffbf35555305891c61776504b49324353a96f00720",
+      "src/api/schemas.py": "f5d96065a680bf78743d4bd21ffc130da5e8ccac60f52c64eab44512130ba177",
+      "src/api/services.py": "2a8fc3f0a8d96d50eb715097d49c16642b063a0e3997cc4b59bfaacc18f35228",
+      "src/assessment/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/competency/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/exam_generator/__init__.py": "b5e59db9d246955cb811960134619a8d33e107c461043c0e578fe09909fb04c4",
+      "src/exam_generator/adaptation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/exam_generator/adaptation/contracts.py": "c66d4482f5e8cbca5d1dfd77aebf88d91f872b983224c1a2c7e58d51a10f020a",
+      "src/exam_generator/adaptation/difficulty_allocator.py": "2e4720bb09c9656060549282ece0efe402ffd662851d363e6d2adc3b457b9562",
+      "src/exam_generator/adaptation/min_cost_flow.py": "03526cd97590f59da832f368367f56f88c8b6ab7a005c1c7a15e13a0a1bcdbe3",
+      "src/exam_generator/adaptation/planner.py": "93f53cee69b7a8dfbd25fe712d2cdc3e896f150c104abcf097be437c2a92fc22",
+      "src/exam_generator/adaptation/policy.py": "ac70d9026a1c662b3a9fcb0587bf542c3dcae23e7ff1c63be485d80837ae9439",
+      "src/exam_generator/adaptation/question_selector.py": "d54f44e999407ab49c243db5ce11912d9be2add9db4d95c0c39c642bb62e9178",
+      "src/exam_generator/adaptation/selection_diagnostics.py": "3761f60f416e53ce715cf514d841c1ff80ffe35cc40645059827eba2d13c5a2d",
+      "src/exam_generator/adaptation/skill_relationships.py": "a3aa1330fbf61e75c8e5d3beee9959f88b551595a63396440675ed7683797dc7",
+      "src/exam_generator/adaptation/source_selector.py": "8b6929e65909486fd593dff40ed478c95867db8b63a5123073196c7cf07a1e90",
+      "src/exam_generator/ai/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/exam_generator/ai/contracts.py": "da3b4a721af2a517ee83ac179d769ac83aabcdbcf04e59f494badbf113ef8f69",
+      "src/exam_generator/ai/expression_planner.py": "b133340bde54ed08839cd4c67647dfd9b82399fa70817290e4f1a20849044da8",
+      "src/exam_generator/ai/problem_spec.py": "8e317db9b3e0f66e0f44a6d485b2d194acda0ad981c00072bbc9f404cd8b64e6",
+      "src/exam_generator/ai/prompts.py": "66580aef522915c70ffdbda73b677473fa4fcc6f22f927ee7249b0e869ece7a3",
+      "src/exam_generator/ai/qwen_client.py": "37cad68023050c04a0dd5fd6735a23fd58a6615778f8295ae57e759b39221276",
+      "src/exam_generator/ai/template_instantiator.py": "7ba7bb2654037f236db018fb749f6ad41517850588481cb69601811461ff8dd3",
+      "src/exam_generator/ai/template_presentations.py": "ae1c6fa470b065b5ed2ea3e7168acadd28bcdbd91c1d2831f6ed36006e3d84ef",
+      "src/exam_generator/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/exam_generator/api/data_adapter.py": "946ed87b7ebd763231789c8462330e7b3377b23225b9fcf9526ac4d8aa8fb463",
+      "src/exam_generator/api/m3_adapter.py": "8aeb0658888970fd8a913189249a1c6f02888e56b8e3fa4c7f3baf530c18b97a",
+      "src/exam_generator/api/question_repository.py": "a180fa5c0bccb64154e1fd095a060ad33533225f247a05ed31d4a37783a91b0c",
+      "src/exam_generator/api/real_generator.py": "469affb315e1f5f953e4396531076d9096273e8b1f74918f19d26a7e636bd043",
+      "src/exam_generator/api/schemas.py": "c8517a763721d532b9cddd8fb6d61febf518e285ca438682d4c881b06613388e",
+      "src/exam_generator/api/services.py": "1428622a7c28effdefeee1cd88009d90b3e512c5842df35e18c8a530ca1f5aff",
+      "src/exam_generator/api/template_repository.py": "7fad588958e5ef7cc6352c5ce2c03487bafe7dcb81db7c070078fd0c99f87920",
+      "src/exam_generator/orchestration/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/exam_generator/orchestration/exam_assembler.py": "b962fcde62f66b3d73f6f2b0e398d0972bbdd2cc7489ed2096f972be6ab773ee",
+      "src/exam_generator/orchestration/exam_service.py": "1fb3f6313c4ab8c93ee2fc6f630e17aa9787b562400e1d1fbe186d0c99f74886",
+      "src/exam_generator/orchestration/question_generation.py": "e7c1e4c9fa28fb65ae5812344d7f1e36d1c011246f789b06552bfd483dcd40a1",
+      "src/exam_generator/orchestration/review_service.py": "84d0da1434b5aa17bec89bed8e3154473ac5ed73b90821f33bace3d12dc452ad",
+      "src/exam_generator/orchestration/source_snapshot.py": "22b7643ee7c942c2d3b3e1062dd63ac51f8f12b683b479919856e9c01ed93fa0",
+      "src/exam_generator/validation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/exam_generator/validation/exam_quality.py": "497c511021a4c2ad72d72d136f01ffa200fbca9aa9f57b8844b5c42e623dfb1e",
+      "src/exam_generator/validation/math_validator.py": "beb8b8e1f5bc54cea7098f54aa2c34a6cb1aef7fc1b6fe73577127645f4e4146",
+      "src/exam_generator/validation/quality_contracts.py": "fb33f418765f051eae83adde41fd4b7471ce0273264c753eb11e63d3efe9a2a3",
+      "src/exam_generator/validation/question_validator.py": "c0fadbf97878d45e71f6fa9612b73fd59820cc901cbf5c11043e337aeade1c50",
+      "src/exercise/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/knowledge/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/knowledge/loader.py": "6006c05dceebfd8fa43f6c0aa1be15db46d593332c994ee1ac280a5cda307700",
+      "src/knowledge/validator.py": "e764195383c9f2cb737826bb5443f903b3b220f4b2663d3c1056de316b8d472b",
+      "src/orchestration/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ui/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/ui/__main__.py": "ff92f1ca7ce947e77dbb2e22024e5049fccdb32161030ff93e2e6fe38c1323a2",
+      "src/ui/routes.py": "cfff5d0ab6bd5acea5915de5e795153763bb77055764edcfc05e2ea071c61446",
+      "config/skill_relationships_a001_a009.json": "c88eeb8077da7b4c2e6d5b52bf969f6d00cc64ae3980a5190e50f3dda575e5dc",
+      "config/template_presentations.json": "123e5a4d1c3d533abeae4c4c3fc981337a5c504ed99e4922fbd1fd735c7c565b",
+      "tools/run_w06_experiment.py": "ade8733a887a37cd73d1d31e49c643f2388a34c811124e116e04870fa038bd6e"
+    },
+    "rubric_sha256": "02d65db256c92b241aa93b2ebb5b107d5ff9e341fc26dbf1222fa44395b1331d",
+    "client_config": {
+      "base_url": "http://127.0.0.1:11434",
+      "model": "qwen3:1.7b",
+      "timeout": 45,
+      "exam_timeout": 180,
+      "attempts": 2
+    },
+    "source_sha256": {
+      "G:\\HK4\\Project\\adaptive-learning\\data\\sample\\memory\\student_profiles_sample.db": "92f880a3fedd0d991fe8e36a60bfda7dc8123f7f1f05b70e0330a7b67789861a",
+      "G:\\HK4\\Project\\adaptive-learning\\data\\sample\\dataset\\question_bank.db": "0eb2c2445bed183862de44b1ca4141689ff72e94e935039341496b13d303bba3"
+    },
+    "python": "3.14.6",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu_inventory": [],
+    "presentation_registry": {
+      "version": "template-presentations-v1",
+      "presentations": [
+        {
+          "template_id": "EA0001",
+          "presentation_id": "ea0001_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Một quầy phục vụ chia các mặt hàng thành các nhóm phân biệt, không giao nhau, có số lượng lần lượt là {counts}. Khách nhận đúng một mặt hàng từ một trong các nhóm. Quầy cần liệt kê bao nhiêu lựa chọn cho khách?",
+          "required_placeholders": [
+            "counts"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "77573f6c087e6f737c730df856dd351d761f903829b7e30697bbcea1a8fc6ba1",
+          "cognitive_level": "recognition",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        },
+        {
+          "template_id": "EA0002",
+          "presentation_id": "ea0002_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Một trung tâm có {n} phương thức phục vụ với số phương án tương ứng là {counts}. Mỗi lượt khách chỉ chọn một phương thức và thực hiện một phương án thuộc phương thức đó. Danh sách lựa chọn cho một lượt khách có bao nhiêu mục?",
+          "required_placeholders": [
+            "counts",
+            "n"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "591edb1063ebcf01107ad58cc2622ced69f2f9050b6a5fa3018e8bbb77c185b0",
+          "cognitive_level": "recognition",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        },
+        {
+          "template_id": "EA0004",
+          "presentation_id": "ea0004_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Ban tổ chức ghi nhận {n} cặp đôi, mỗi cặp gồm một người nhóm A và một người nhóm B. Một lượt giao lưu ghép một người từ mỗi nhóm, nhưng không ghép lại cặp đôi đã ghi nhận. Ban tổ chức có thể ghi bao nhiêu lượt ghép khác nhau?",
+          "required_placeholders": [
+            "n"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "e0f3e1c2179173b61e4ddc9ad0e867708170fbfba1b9f27599d32724eebd3e6f",
+          "cognitive_level": "understanding",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        },
+        {
+          "template_id": "EA0012",
+          "presentation_id": "ea0012_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Một câu lạc bộ có {n} thành viên phân biệt. Ban tổ chức lập danh sách mọi đôi bạn gồm hai thành viên khác nhau; đổi vị trí hai tên không tạo đôi bạn mới. Danh sách cần bao nhiêu mục?",
+          "required_placeholders": [
+            "n"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e",
+          "cognitive_level": "recognition",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        },
+        {
+          "template_id": "EA0013",
+          "presentation_id": "ea0013_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Ban tổ chức lên lịch cho {team_count} đội bóng. Mỗi cặp đội gặp nhau đúng {matches_per_pair} trận. Lịch thi đấu cần bao nhiêu ô dành cho các trận?",
+          "required_placeholders": [
+            "matches_per_pair",
+            "team_count"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c",
+          "cognitive_level": "recognition",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        },
+        {
+          "template_id": "EA0015",
+          "presentation_id": "ea0015_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Một bảng vẽ đa giác có {vertex_count} đỉnh. Mỗi thao tác chọn một đỉnh làm điểm đầu rồi một đỉnh khác làm điểm cuối để tạo vectơ. Đổi điểm đầu và điểm cuối là thao tác khác; không gộp các cặp đỉnh tạo vectơ bằng nhau. Danh sách mọi thao tác cần bao nhiêu mục?",
+          "required_placeholders": [
+            "vertex_count"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "5a58ea1d1bc17038d1ffda6c1287c802f1b30b556b900016847562335a03473c",
+          "cognitive_level": "recognition",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        },
+        {
+          "template_id": "EA0017",
+          "presentation_id": "ea0017_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Một tủ trưng bày có {n} món đồ phân biệt. Người phụ trách lập danh sách mọi phương án đặt tất cả món đồ thành một hàng; các vị trí trong hàng được phân biệt. Danh sách cần bao nhiêu phương án?",
+          "required_placeholders": [
+            "n"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "a8771c0c44d1fae0121c3d41468f0bc6056c8b9dad41595fe0c8acd24679411e",
+          "cognitive_level": "recognition",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        },
+        {
+          "template_id": "EA0018",
+          "presentation_id": "ea0018_context_proposed",
+          "generate_type": "indirect",
+          "pattern": "Người phụ trách lập sơ đồ xếp {n} người phân biệt thành một hàng. Hai người được chỉ định là A và B không được đứng cạnh nhau. Danh sách mọi sơ đồ hợp lệ có bao nhiêu mục?",
+          "required_placeholders": [
+            "n"
+          ],
+          "permitted_context": "Chỉ dùng tình huống trong pattern; không thêm điều kiện. ĐỀ XUẤT CHƯA ĐƯỢC TÁC GIẢ DUYỆT.",
+          "mathematical_invariants": [
+            "Giữ đúng tham số, điều kiện và đối tượng đếm của SQL được ràng buộc bằng source_digest.",
+            "Giữ nguyên answer_rule và solution_rule; cần chuyên gia xác minh tương đương và mức nhận thức."
+          ],
+          "required_result": "Đếm đúng đối tượng của Template SQL; không thay kỹ thuật đếm.",
+          "source_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef",
+          "cognitive_level": "understanding",
+          "verification_status": "proposed",
+          "verification_reference": null,
+          "cognitive_level_preserved": false,
+          "cognitive_review_reference": null
+        }
+      ],
+      "experimental_indirect": false
+    },
+    "sampling": {
+      "strict_temperature": 0,
+      "experimental_temperature": 0.7,
+      "num_predict": 1800,
+      "transport_seed": "42 + instance variation + attempt index, per existing QwenClient"
+    }
+  },
+  "cases": [
+    {
+      "case_id": "C01_ST016_s0_strict",
+      "student_id": "ST016",
+      "seed": 0,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C02_ST016_s0_experimental",
+      "student_id": "ST016",
+      "seed": 0,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C03_ST003_s0_strict",
+      "student_id": "ST003",
+      "seed": 0,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C04_ST003_s0_experimental",
+      "student_id": "ST003",
+      "seed": 0,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C05_ST004_s0_strict",
+      "student_id": "ST004",
+      "seed": 0,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C06_ST004_s0_experimental",
+      "student_id": "ST004",
+      "seed": 0,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C07_ST008_s0_strict",
+      "student_id": "ST008",
+      "seed": 0,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C08_ST008_s0_experimental",
+      "student_id": "ST008",
+      "seed": 0,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C09_ST010_s0_strict",
+      "student_id": "ST010",
+      "seed": 0,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C10_ST010_s0_experimental",
+      "student_id": "ST010",
+      "seed": 0,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C11_ST016_s42_strict",
+      "student_id": "ST016",
+      "seed": 42,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C12_ST016_s42_experimental",
+      "student_id": "ST016",
+      "seed": 42,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C13_ST003_s42_strict",
+      "student_id": "ST003",
+      "seed": 42,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C14_ST003_s42_experimental",
+      "student_id": "ST003",
+      "seed": 42,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C15_ST004_s42_strict",
+      "student_id": "ST004",
+      "seed": 42,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C16_ST004_s42_experimental",
+      "student_id": "ST004",
+      "seed": 42,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C17_ST008_s42_strict",
+      "student_id": "ST008",
+      "seed": 42,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C18_ST008_s42_experimental",
+      "student_id": "ST008",
+      "seed": 42,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C19_ST010_s42_strict",
+      "student_id": "ST010",
+      "seed": 42,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C20_ST010_s42_experimental",
+      "student_id": "ST010",
+      "seed": 42,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C21_ST016_s2026_strict",
+      "student_id": "ST016",
+      "seed": 2026,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C22_ST016_s2026_experimental",
+      "student_id": "ST016",
+      "seed": 2026,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C23_ST003_s2026_strict",
+      "student_id": "ST003",
+      "seed": 2026,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C24_ST003_s2026_experimental",
+      "student_id": "ST003",
+      "seed": 2026,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C25_ST004_s2026_strict",
+      "student_id": "ST004",
+      "seed": 2026,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C26_ST004_s2026_experimental",
+      "student_id": "ST004",
+      "seed": 2026,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C27_ST008_s2026_strict",
+      "student_id": "ST008",
+      "seed": 2026,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C28_ST008_s2026_experimental",
+      "student_id": "ST008",
+      "seed": 2026,
+      "mode": "experimental"
+    },
+    {
+      "case_id": "C29_ST010_s2026_strict",
+      "student_id": "ST010",
+      "seed": 2026,
+      "mode": "strict"
+    },
+    {
+      "case_id": "C30_ST010_s2026_experimental",
+      "student_id": "ST010",
+      "seed": 2026,
+      "mode": "experimental"
+    }
+  ],
+  "generation_timing_scope": "Core generation, source validation and W06 evaluation; excludes warmup and API/auth network overhead",
+  "human_grading_status": "PENDING",
+  "source_databases_read_only": true,
+  "ollama": {
+    "version": "0.40.16",
+    "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "size_bytes": 1359293444,
+    "quantization": "Q4_K_M"
+  },
+  "running_models_after_warmup": {
+    "models": [
+      {
+        "name": "qwen3:1.7b",
+        "model": "qwen3:1.7b",
+        "size": 1886629395,
+        "digest": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "2.0B",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2026-11-14T17:43:34.1128652+07:00",
+        "size_vram": 0,
+        "context_length": 4096,
+        "runner": "llamacpp"
+      }
+    ]
+  },
+  "finished_at": "2026-11-14T17:44:49.272555+07:00"
+}

@@ -1,0 +1,53 @@
+{
+  "student_id": "ST016",
+  "name": "ST016",
+  "grade_level": 10,
+  "skill_mastery": [
+    {
+      "skill_id": "A001",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A002",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A003",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A004",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A005",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A006",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A007",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A008",
+      "mastery_score": null,
+      "evidence_count": 0
+    },
+    {
+      "skill_id": "A009",
+      "mastery_score": null,
+      "evidence_count": 0
+    }
+  ],
+  "learning_history": []
+}

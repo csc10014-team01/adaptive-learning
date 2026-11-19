@@ -1,0 +1,51 @@
+{
+  "sequence": 1,
+  "started_at": "2026-11-14T17:41:05.979716+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 7 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0012",
+  "template_instance": {
+    "instance_id": "TI_296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+    "parameters": {
+      "n": 7,
+      "pair_order_matters": false
+    },
+    "signature": "296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+    "template_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "918fdd4355abb399a72a4fe3f0fbc9b90dce722cef3acc942a0870793a95f043",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 7 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 7 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?\"\n}",
+  "elapsed_seconds": 1.660852,
+  "finished_at": "2026-11-14T17:41:07.641902+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 1651316500,
+    "load_duration": 5730400,
+    "prompt_eval_count": 315,
+    "prompt_eval_cached_count": 314,
+    "prompt_eval_duration": 70986000,
+    "eval_count": 41,
+    "eval_duration": 1544120000
+  }
+}

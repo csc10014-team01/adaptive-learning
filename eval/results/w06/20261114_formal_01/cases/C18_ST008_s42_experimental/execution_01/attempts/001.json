@@ -1,0 +1,51 @@
+{
+  "sequence": 1,
+  "started_at": "2026-11-14T17:41:49.378047+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 3 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0004",
+  "template_instance": {
+    "instance_id": "TI_8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+    "parameters": {
+      "n": 3,
+      "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+    },
+    "signature": "8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+    "template_digest": "ea492614a2bc2389b18f3010af4e4e35a1e7e3a35753b4fcbd99eea61705f507"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "3dc61a4913c76284a0a1ae94a5e6aaf1f92e604cd776fe09f8cafd1433750bd9",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 3 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 3 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?\"\n}",
+  "elapsed_seconds": 2.573285,
+  "finished_at": "2026-11-14T17:41:51.952668+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 2555132200,
+    "load_duration": 7499700,
+    "prompt_eval_count": 423,
+    "prompt_eval_cached_count": 422,
+    "prompt_eval_duration": 74169000,
+    "eval_count": 65,
+    "eval_duration": 2439539000
+  }
+}

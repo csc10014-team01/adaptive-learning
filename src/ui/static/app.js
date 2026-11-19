@@ -59,6 +59,12 @@ async function api(path, {method = "GET", body, timeout = 15000} = {}) {
         QWEN_TIMEOUT: "Qwen đã hết thời gian xử lý. Bạn có thể thử tạo đề ít câu hơn.",
         INSUFFICIENT_QUESTION_BANK: "Ngân hàng chưa đủ câu phù hợp với hồ sơ và giới hạn độ khó. Thử giảm số câu hoặc bổ sung nguồn đã duyệt.",
         INVALID_QWEN_OUTPUT: "Đầu ra Qwen chưa vượt qua kiểm tra. Không có đề dở được lưu.",
+        EXAM_QUALITY_HARD_FAIL: "Đề có lỗi nghiêm trọng đã xác nhận nên chưa thể duyệt. Kiểm tra báo cáo chất lượng và tạo lại đề/câu bị lỗi.",
+        EXAM_QUALITY_QUALITY_FAIL: "Đề chưa đạt kiểm tra chất lượng hoặc điểm W06 chưa đạt. Kiểm tra các lỗi trong báo cáo trước khi duyệt.",
+        EXAM_QUALITY_RETRYABLE_FAIL: "Một kiểm tra chất lượng bắt buộc chưa hoàn tất. Kiểm tra nguồn dữ liệu hoặc kết nối rồi thử lại.",
+        EXAM_QUALITY_NOT_READY: "Báo cáo chất lượng chưa hợp lệ hoặc không còn khớp phiên bản đề. Tải lại bản mới nhất trước khi duyệt.",
+        EXAM_QUALITY_NEEDS_REVIEW: "Cấu hình hiện tại yêu cầu đánh giá W06 đầy đủ trước khi duyệt đề.",
+        INVALID_QUALITY_REVIEW: "Đánh giá W06 gửi lên chưa hợp lệ hoặc thuộc nội dung đề cũ. Kiểm tra lại phiên bản, điểm và bằng chứng.",
         EXAM_REVISION_CONFLICT: "Đề đã thay đổi ở phiên khác. Bấm Tải lại bản mới nhất rồi kiểm tra lại từng câu trước khi duyệt.",
         REGENERATION_UNSUPPORTED: "Tạo lại câu cần backend Qwen. Đề demo không hỗ trợ thao tác này.",
         EXAM_NOT_FOUND: "Không tìm thấy mã đề này. Đề demo sẽ mất khi khởi động lại server."
@@ -199,7 +205,7 @@ function warnings(items) {
 }
 
 function approvalReady(exam) {
-  return exam?.status === "pending_teacher_review" && exam.questions?.length === exam.total_questions &&
+  return exam?.status === "pending_teacher_review" && !exam.quality_report?.approval_blocked && exam.questions?.length === exam.total_questions &&
     exam.questions.length > 0 && exam.questions.every(q => q.content_latex?.trim() && q.answer?.correct_answer?.trim() &&
       q.step_solutions?.length > 0 && q.rubric?.length > 0 && q.validation &&
       !q.validation.blocking_errors?.length &&
@@ -219,6 +225,20 @@ function renderExam(exam) {
   status.setAttribute("role", "status");
   if (exam.status === "approved") status.classList.remove("warning");
   body.append(heading, status);
+  if (exam.quality_report) {
+    const report = exam.quality_report;
+    const labels = {PASS: "Đủ đánh giá", QUALITY_FAIL: "Chưa đạt chất lượng", HARD_FAIL: "Có lỗi nghiêm trọng",
+      NEEDS_REVIEW: "Cần giáo viên đánh giá", RETRYABLE_FAIL: "Cần thử đánh giá lại", NOT_APPLICABLE: "Không áp dụng"};
+    const quality = element("details", null, "notice warning");
+    quality.append(element("summary", `Chất lượng đề: ${labels[report.status] || report.status}`));
+    quality.append(element("p", report.total_score == null ? "Chưa đủ bằng chứng để tính điểm W06." : `Điểm W06: ${report.total_score}/100`));
+    for (const criterion of report.criteria) {
+      quality.append(element("p", `${criterion.criterion_id}: ${labels[criterion.status] || criterion.status}${criterion.score == null ? "" : ` · ${criterion.score}/${criterion.max_score}`}`));
+      quality.append(warnings(criterion.warnings));
+    }
+    quality.append(warnings(report.warnings));
+    body.append(quality);
+  }
   const reviewActions = element("div", null, "review-actions");
   const refresh = element("button", "Tải lại bản mới nhất", "secondary review-control");
   refresh.type = "button"; refresh.id = "refresh-draft-button";

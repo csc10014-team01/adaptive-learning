@@ -1,0 +1,53 @@
+{
+  "sequence": 2,
+  "started_at": "2026-11-14T17:36:29.119868+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Một người bán hàng có 5 loại sản phẩm khác nhau. Hỏi cần chuẩn bị bao nhiêu loại sản phẩm để có thể sắp xếp tất cả chúng thành một hàng khác nhau mỗi ngày, mà không lặp lại bất kỳ thứ gì nào?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0017",
+  "template_instance": {
+    "instance_id": "TI_6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+    "parameters": {
+      "n": 5,
+      "arrange_all": true,
+      "distinct": true
+    },
+    "signature": "6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+    "template_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "b81234bc6aaad27fa1604578b98176bf5f036bb36d1af1e4d113f8cd13b6eadc",
+    "verification_status": "experimental",
+    "context_id": "everyday"
+  },
+  "source_text": "Có 5 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Một người bán hàng có 5 loại sản phẩm khác nhau. Hỏi cần chuẩn bị bao nhiêu loại sản phẩm để có thể sắp xếp tất cả chúng thành một hàng khác nhau mỗi ngày, mà không lặp lại bất kỳ thứ gì nào?\"}",
+  "elapsed_seconds": 7.730092,
+  "finished_at": "2026-11-14T17:36:36.851239+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 7718898500,
+    "load_duration": 7125400,
+    "prompt_eval_count": 596,
+    "prompt_eval_cached_count": 1,
+    "prompt_eval_duration": 5207824000,
+    "eval_count": 60,
+    "eval_duration": 2471204000
+  }
+}

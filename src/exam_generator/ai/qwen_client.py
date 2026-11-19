@@ -4,6 +4,7 @@ import json
 import socket
 import time
 from http.client import HTTPException
+from math import isfinite
 from threading import BoundedSemaphore
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -24,8 +25,12 @@ class QwenClient:
         attempts: int = 2,
         exam_timeout: float = 180,
     ):
-        if timeout <= 0 or exam_timeout <= 0 or attempts not in (1, 2, 3):
-            raise ValueError("Qwen timeout must be positive; attempts must be 1..3")
+        if any(
+            isinstance(value, bool) or not isinstance(value, (int, float))
+            or not isfinite(value) or value <= 0
+            for value in (timeout, exam_timeout)
+        ) or type(attempts) is not int or attempts not in (1, 2, 3):
+            raise ValueError("Qwen timeouts must be finite positive numbers; attempts must be an integer in 1..3")
         self.base_url, self.model = base_url.rstrip("/"), model
         self.timeout, self.attempts, self.exam_timeout = timeout, attempts, exam_timeout
         self.capacity = BoundedSemaphore(1)
@@ -122,6 +127,8 @@ class QwenClient:
             envelope = json.loads(b"".join(chunks))
             if envelope.get("done") is not True or envelope.get("model") != self.model:
                 raise ValueError("Incomplete response or unexpected model")
+            if envelope.get("done_reason", "stop") != "stop":
+                raise ValueError("Model did not finish with a normal stop")
             if not isinstance(envelope["response"], str):
                 # Preserve the ValueError contract for malformed provider data.
                 raise ValueError("Expected model response text")  # noqa: TRY004

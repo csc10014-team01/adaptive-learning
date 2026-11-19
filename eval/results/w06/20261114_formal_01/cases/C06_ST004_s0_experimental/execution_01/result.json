@@ -1,0 +1,215 @@
+{
+  "case_id": "C06_ST004_s0_experimental",
+  "student_id": "ST004",
+  "seed": 0,
+  "mode": "experimental",
+  "status": "GENERATED",
+  "started_at": "2026-11-14T17:39:40.304602+07:00",
+  "execution": "execution_01",
+  "previous_executions": [],
+  "exam_id": "EX_0ecd8b28405b40e8a11d1f360420ce00",
+  "revision": 1,
+  "sources": {
+    "question": 9,
+    "template": 1
+  },
+  "quality_status": "NEEDS_REVIEW",
+  "content_fingerprint": "c83e5bd2cfcf6528948dc657dbe39131dbf97d1e459377d880046145b5199b3d",
+  "automatic_w06_score": null,
+  "quota_summary": {
+    "requested_groups": {
+      "focus": 4,
+      "review": 6
+    },
+    "achieved_groups": {
+      "focus": 1,
+      "review": 9
+    },
+    "requested_skills": {
+      "A005": 4,
+      "A001": 1,
+      "A002": 1,
+      "A003": 1,
+      "A004": 1,
+      "A006": 1,
+      "A007": 1,
+      "A008": 0,
+      "A009": 0
+    },
+    "achieved_skills": {
+      "A005": 1,
+      "A001": 5,
+      "A002": 1,
+      "A003": 1,
+      "A004": 1,
+      "A006": 1,
+      "A007": 0,
+      "A008": 0,
+      "A009": 0
+    },
+    "requested_levels": {
+      "recognition": 3,
+      "understanding": 4,
+      "application": 2,
+      "advanced_application": 1
+    },
+    "achieved_levels": {
+      "recognition": 3,
+      "understanding": 4,
+      "application": 2,
+      "advanced_application": 1
+    },
+    "requested_skill_levels": {
+      "A005": {
+        "recognition": 2,
+        "understanding": 2,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A001": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A004": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 1
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A009": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      }
+    },
+    "achieved_skill_levels": {
+      "A005": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A001": {
+        "recognition": 2,
+        "understanding": 2,
+        "application": 0,
+        "advanced_application": 1
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A004": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A009": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      }
+    }
+  },
+  "warnings": [
+    "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+    "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Question fallback for A005/recognition: selected QA0001; no feasible preferred Template assignment.",
+    "Question fallback for A005/recognition: selected QA0002; no feasible preferred Template assignment.",
+    "Question fallback for A005/understanding: selected QA0005; no feasible preferred Template assignment.",
+    "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+    "Question fallback for A001/understanding: selected QA0008; no feasible preferred Template assignment.",
+    "Question fallback for A004/understanding: selected QA0101; no feasible preferred Template assignment.",
+    "Substituted A005/recognition with A001/recognition (QA0001): requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback.",
+    "Substituted A005/recognition with A001/recognition (QA0002): requested cell has 0/2 eligible sources; same difficulty preserved via skill fallback.",
+    "Substituted A005/understanding with A001/understanding (QA0005): requested cell has 1/2 eligible sources; same difficulty preserved via skill fallback.",
+    "Substituted A007/advanced_application with A001/advanced_application (QA0027): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+    "Soft group quotas deviated: requested={'focus': 4, 'review': 6}, achieved={'focus': 1, 'review': 9}.",
+    "Soft skill quotas deviated: requested={'A005': 4, 'A001': 1, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 1, 'A008': 0, 'A009': 0}, achieved={'A005': 1, 'A001': 5, 'A002': 1, 'A003': 1, 'A004': 1, 'A006': 1, 'A007': 0, 'A008': 0, 'A009': 0}.",
+    "Focus quota achieved 1/4; substituted valid in-scope questions."
+  ],
+  "resources": {
+    "ram_system_total_mib": null,
+    "ram_system_used_before_mib": null,
+    "ram_system_used_peak_mib": null,
+    "ram_system_peak_delta_mib": null,
+    "nvidia_vram_used_before_mib": null,
+    "nvidia_vram_used_peak_mib": null,
+    "nvidia_vram_peak_delta_mib": null,
+    "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples."
+  },
+  "final_qwen_questions": 1,
+  "experimental_questions": 0,
+  "elapsed_seconds": 2.261533,
+  "finished_at": "2026-11-14T17:39:42.575354+07:00",
+  "qwen_calls": 1,
+  "wording_retries": 0,
+  "transport_failures": 0,
+  "rejected_wordings": 0,
+  "successful_validated_wordings": 1
+}

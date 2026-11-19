@@ -1,0 +1,54 @@
+{
+  "sequence": 4,
+  "started_at": "2026-11-14T17:40:18.014018+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_35b4e7712a47abcf1ffeb32137ea826b287c78a7248348f0f684e479f9f6c871",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Có 4 người phân biệt (A, B, C, D) cần xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi cần thiết lập bao nhiêu trang catalogue để thể hiện tất cả các cấu hình khác nhau?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0018",
+  "template_instance": {
+    "instance_id": "TI_35b4e7712a47abcf1ffeb32137ea826b287c78a7248348f0f684e479f9f6c871",
+    "parameters": {
+      "n": 4,
+      "restricted_pair_count": 2,
+      "adjacent_forbidden": true,
+      "people_distinct": true
+    },
+    "signature": "35b4e7712a47abcf1ffeb32137ea826b287c78a7248348f0f684e479f9f6c871",
+    "template_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "d6f84898e7c8ff81bdaf63a2fe5479762dac5ddb970a177dbeafde5d6787e70c",
+    "verification_status": "experimental",
+    "context_id": "display"
+  },
+  "source_text": "Có 4 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Có 4 người phân biệt (A, B, C, D) cần xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi cần thiết lập bao nhiêu trang catalogue để thể hiện tất cả các cấu hình khác nhau?\"}",
+  "elapsed_seconds": 7.325417,
+  "finished_at": "2026-11-14T17:40:25.340925+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 7314737500,
+    "load_duration": 5508900,
+    "prompt_eval_count": 567,
+    "prompt_eval_cached_count": 1,
+    "prompt_eval_duration": 4526649000,
+    "eval_count": 70,
+    "eval_duration": 2743969000
+  }
+}

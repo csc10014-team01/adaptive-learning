@@ -1,0 +1,52 @@
+{
+  "sequence": 1,
+  "started_at": "2026-11-14T17:41:40.213052+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 7 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0017",
+  "template_instance": {
+    "instance_id": "TI_cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+    "parameters": {
+      "n": 7,
+      "arrange_all": true,
+      "distinct": true
+    },
+    "signature": "cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+    "template_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "da5aa5e8611eeb15bc958401ed3beac9816baa85587bf0515cd77759bde4c420",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 7 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Có 7 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?\"}",
+  "elapsed_seconds": 1.334071,
+  "finished_at": "2026-11-14T17:41:41.548487+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 1324541300,
+    "load_duration": 6953000,
+    "prompt_eval_count": 320,
+    "prompt_eval_cached_count": 319,
+    "prompt_eval_duration": 57349000,
+    "eval_count": 33,
+    "eval_duration": 1251993000
+  }
+}

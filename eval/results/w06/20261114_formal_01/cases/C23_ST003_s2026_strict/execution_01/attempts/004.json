@@ -1,0 +1,51 @@
+{
+  "sequence": 4,
+  "started_at": "2026-11-14T17:43:09.115724+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_8e965afda0861950066d7be023039b7a65c5e67a5ecfb61c2edafa3bdb126708",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 2 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0013",
+  "template_instance": {
+    "instance_id": "TI_8e965afda0861950066d7be023039b7a65c5e67a5ecfb61c2edafa3bdb126708",
+    "parameters": {
+      "team_count": 2,
+      "matches_per_pair": 8
+    },
+    "signature": "8e965afda0861950066d7be023039b7a65c5e67a5ecfb61c2edafa3bdb126708",
+    "template_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "d4d58429ae99b0b7db172c7c52a3b811f77b23627f4f8969931c0aedfc7aac2b",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 2 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 2 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?\"\n}",
+  "elapsed_seconds": 2.721574,
+  "finished_at": "2026-11-14T17:43:11.838497+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 2712893600,
+    "load_duration": 6646700,
+    "prompt_eval_count": 313,
+    "prompt_eval_cached_count": 165,
+    "prompt_eval_duration": 1208076000,
+    "eval_count": 39,
+    "eval_duration": 1471380000
+  }
+}

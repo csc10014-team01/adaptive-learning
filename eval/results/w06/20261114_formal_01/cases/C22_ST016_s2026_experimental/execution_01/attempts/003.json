@@ -1,0 +1,53 @@
+{
+  "sequence": 3,
+  "started_at": "2026-11-14T17:42:51.214614+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 1,
+  "feedback": "Lần trước không hợp lệ: Indirect still asks the Direct counting operation; ask a contextual outcome instead",
+  "source_id": "TI_501c346398ce95a03784429bcd1d5983ff744a4ef174420cf2e0b40fa3727f4d",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Một giáo viên có 8 cuốn sách khác nhau. Mỗi ngày, giáo viên sắp xếp tất cả các cuốn sách thành một hàng với một thứ tự mới. Hỏi tối đa có bao nhiêu ngày mà không có bất kỳ thứ tự nào trùng lặp?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0017",
+  "template_instance": {
+    "instance_id": "TI_501c346398ce95a03784429bcd1d5983ff744a4ef174420cf2e0b40fa3727f4d",
+    "parameters": {
+      "n": 8,
+      "arrange_all": true,
+      "distinct": true
+    },
+    "signature": "501c346398ce95a03784429bcd1d5983ff744a4ef174420cf2e0b40fa3727f4d",
+    "template_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "b81234bc6aaad27fa1604578b98176bf5f036bb36d1af1e4d113f8cd13b6eadc",
+    "verification_status": "experimental",
+    "context_id": "everyday"
+  },
+  "source_text": "Có 8 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Một giáo viên có 8 cuốn sách khác nhau. Mỗi ngày, giáo viên sắp xếp tất cả các cuốn sách thành một hàng với một thứ tự mới. Hỏi tối đa có bao nhiêu ngày mà không có bất kỳ thứ tự nào trùng lặp?\"\n}",
+  "elapsed_seconds": 4.78515,
+  "finished_at": "2026-11-14T17:42:56.000762+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4775161500,
+    "load_duration": 5385700,
+    "prompt_eval_count": 623,
+    "prompt_eval_cached_count": 335,
+    "prompt_eval_duration": 2224590000,
+    "eval_count": 63,
+    "eval_duration": 2534146000
+  }
+}

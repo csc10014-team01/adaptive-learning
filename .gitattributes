@@ -1,0 +1,4 @@
+# Preserve exact experimental evidence and frozen snapshot bytes, including
+# raw HTTP responses and hashes, across Git LF/CRLF conversion settings.
+/eval/results/w06/** -text -whitespace
+/eval/benchmarks/w06_selected_profiles.json -text -whitespace
