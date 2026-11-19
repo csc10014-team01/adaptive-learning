@@ -120,13 +120,13 @@ Mỗi phần tử `submissions` gồm `question_id`, `answer[]`, `grading_result
 | Trường trong `grading_result` | Quy ước |
 | --- | --- |
 | `grading_status` | `AI_GRADED` hoặc `NEEDS_REVIEW`. |
-| `requires_teacher` | `false` khi nhận kết quả tự động; `true` khi chưa kết luận. Với lỗi kỹ thuật, backend có thể cần retry/xử lý hệ thống trước khi nhờ giáo viên. |
+| `requires_teacher` | `false` khi nhận kết quả tự động; `true` khi chưa kết luận. |
 | `overall_result` | `CORRECT`, `INCORRECT`, hoặc `UNCERTAIN`. |
 | `final_answer_correct` | `true` khi bản hiện tại đã xác minh kết luận trong luồng tất cả bước đúng; `null` khi dừng sớm hoặc chưa xác minh. Không tự đổi thành `false` chỉ vì có một bước sai. |
 | `step_results[]` | Các bước đã xét với `step`, `result`, `start`, `end`; không có feedback. |
 | `errors[]` | Lỗi đầu tiên: `step`, `error_type`, `skill_ids`, `reason` ngắn. Thiếu trình bày có `skill_ids: []`. Câu đúng/review có `errors: []`. |
 | `missing_steps[]` | Trường tương thích hiện giữ rỗng; chưa có bộ phát hiện bước thiếu độc lập. |
-| `teacher_comment` | `null` từ AI; dành cho tầng giáo viên sau này. |
+| `teacher_comment` | `null` từ AI. |
 
 `answer[]` chứa `step`, `description`, `start`, `end`. Offset là chỉ số ký tự Python, bắt đầu từ 0, end không bao gồm ký tự cuối; tham chiếu bài gốc chưa sửa. Nếu frontend dùng cách đếm ký tự khác, tầng tích hợp phải chuyển đổi phù hợp.
 
@@ -163,9 +163,9 @@ Mẫu được tạo bằng phát lại proposal Qwen đã lưu qua validator v�
 | Output JSON gọn và feedback cấp đề | Có trong formatter standalone. |
 | Tách thành `src/ai/answer_grading.py` và demo trong `scripts/grading/` | Bước tiếp theo đã thống nhất; chưa khẳng định đã tạo module. |
 | Đọc ngữ cảnh đúng phiên bản đề đã duyệt từ API/DB | Chờ source nhóm ổn định và contract tích hợp. |
-| Lưu kết quả, quyền xem/sửa của giáo viên | Tầng tích hợp phải triển khai; chưa phải chức năng của runner. |
+| Tầng tích hợp phải triển khai; chưa phải chức năng của runner. |
 
-Khi tách module, giữ nguyên prompt, validator, cấu hình và repair đã chốt. Kiểm tra tính tương đương bằng cùng proposal/response lưu sẵn; test replay không thay thế kiểm thử Qwen thật. Bên tích hợp phải lưu bài gốc cùng ngữ cảnh đúng phiên bản và cho giáo viên xem/sửa cả kết quả đã chấm tự động, không chỉ các câu review.
+Khi tách module, giữ nguyên prompt, validator, cấu hình và repair đã chốt. Kiểm tra tính tương đương bằng cùng proposal/response lưu sẵn; test replay không thay thế kiểm thử Qwen thật.
 
 ## 9. Bằng chứng và giới hạn hiện tại
 
@@ -187,7 +187,7 @@ Khi tách module, giữ nguyên prompt, validator, cấu hình và repair đã c
 - [ ] Tách module dùng lại được, giữ hành vi bản đã chốt.
 - [ ] Kiểm tra replay tương đương giữa module và runner.
 - [ ] Thống nhất output với Data Lead/API; xác định ánh xạ version đề và lưu trữ.
-- [ ] Nối source chính khi nhóm ổn định; kiểm tra luồng nộp bài và giáo viên xem/sửa.
+- [ ] Nối source chính khi nhóm ổn định; kiểm tra luồng nộp bài và trả kết quả chấm.
 - [ ] Kiểm thử thêm dữ liệu chưa dùng chỉnh hệ thống và ghi kết quả thật.
 - [ ] Vẽ workflow tích hợp theo code sau khi điểm nối đã triển khai.
 
