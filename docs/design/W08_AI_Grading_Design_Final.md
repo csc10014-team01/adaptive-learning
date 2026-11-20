@@ -518,3 +518,19 @@ khởi động, hiển thị và tải JSON đã được kiểm tra ở mức m
 Tôi ghi trạng thái hiện tại tại
 [`W08_Grading_Current_State.md`](../notes/W08_Grading_Current_State.md) và bàn giao
 file/commands/API/PR tại [`W08_AI_Grading_Handoff.md`](../report/W08_AI_Grading_Handoff.md).
+
+## 15. Đính chính kiểm tra provenance — 20/11/2026
+
+Tôi xác nhận các hash `ast.dump` cũ phụ thuộc phiên bản Python: 38/38 khớp trên
+3.13.13, nhưng chỉ 10/38 khớp trên 3.11.15 và 3.12.7. Khi dùng `show_empty=True`
+trên 3.13, cả 38 dump khớp dump mặc định của 3.12; nguyên nhân là cách hiển thị
+các trường list rỗng, không phải thay đổi quy tắc chấm. Manifest cũ không ghi
+Python tạo hash; log lỗi được cung cấp cũng không ghi phiên bản interpreter.
+
+Tôi giữ nguyên mọi hash lịch sử, thêm snapshot test-only có raw SHA-256 trùng
+nguồn standalone đã xác nhận, và so sánh AST nguồn đó với code tích hợp **bằng
+cùng interpreter đang chạy**. Tôi không bỏ field AST hoặc normalize prompt/regex.
+Ngoại lệ injection chỉ chấp nhận đúng tham số, default, toàn bộ câu lệnh gọi và
+vị trí trong AST đã cho phép. Tôi không sửa engine, Qwen client, API, lưu trữ hay UI.
+Chi tiết chẩn đoán, mutation tests và kết quả được ghi trong
+[`W08_Grading_Provenance_Repair.md`](../report/W08_Grading_Provenance_Repair.md).

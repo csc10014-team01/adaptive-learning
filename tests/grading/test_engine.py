@@ -1,4 +1,3 @@
-import ast
 import copy
 import hashlib
 import json
@@ -6,9 +5,10 @@ from pathlib import Path
 
 import pytest
 
-from src.grading import engine, qwen_client
+from src.grading import engine
 from src.grading.config import GradingConfig
 from src.grading.qwen_client import QwenClient
+from tools.grading_provenance import ProvenanceError, verify_repository
 
 ROOT = Path(__file__).resolve().parents[2]
 REPLAYS = json.loads(
@@ -71,53 +71,10 @@ def test_recorded_payloads_and_compact_outcomes_match_frozen_standalone(saved):
 
 
 def test_all_extracted_definitions_match_frozen_ast_except_explicit_injection():
-    manifest = json.loads(
-        (ROOT / "docs/notes/grading_source_manifest.json").read_text()
-    )
-    trees = [
-        ast.parse(Path(module.__file__).read_text(encoding="utf-8"))
-        for module in (engine, qwen_client)
-    ]
-    found = {}
-    for tree in trees:
-        for definition in tree.body:
-            name = (
-                definition.name
-                if isinstance(definition, (ast.FunctionDef, ast.ClassDef))
-                else (
-                    definition.targets[0].id
-                    if isinstance(definition, ast.Assign)
-                    and isinstance(definition.targets[0], ast.Name)
-                    else None
-                )
-            )
-            if name not in manifest["ast_sha256"]:
-                continue
-            definition = copy.deepcopy(definition)
-            if name == "grade_question":
-                definition.args.kwonlyargs = []
-                definition.args.kw_defaults = []
-                for item in ast.walk(definition):
-                    if (
-                        isinstance(item, ast.Assign)
-                        and isinstance(item.targets[0], ast.Name)
-                        and item.targets[0].id == "call"
-                    ):
-                        item.value.func = ast.Name(id="call_model", ctx=ast.Load())
-            if name == "call_model":
-                definition.args.kwonlyargs = []
-                definition.args.kw_defaults = []
-                for item in ast.walk(definition):
-                    if (
-                        isinstance(item, ast.Assign)
-                        and isinstance(item.targets[0], ast.Name)
-                        and item.targets[0].id == "env"
-                    ):
-                        item.value.func = ast.Name(id="request", ctx=ast.Load())
-            found[name] = hashlib.sha256(
-                ast.dump(definition, include_attributes=False).encode()
-            ).hexdigest()
-    assert found == manifest["ast_sha256"]
+    try:
+        assert verify_repository(ROOT) == 38
+    except ProvenanceError as exc:
+        pytest.fail(str(exc), pytrace=False)
 
 
 def test_extraction_repair_only_changes_quote_and_uses_160_token_budget():

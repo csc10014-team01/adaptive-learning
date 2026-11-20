@@ -2,3 +2,5 @@
 # raw HTTP responses and hashes, across Git LF/CRLF conversion settings.
 /eval/results/w06/** -text -whitespace
 /eval/benchmarks/w06_selected_profiles.json -text -whitespace
+# Test-only authoritative grading source: preserve its recorded raw SHA-256.
+/tests/fixtures/grading_v11/frozen_standalone_v11.py.txt -text -whitespace

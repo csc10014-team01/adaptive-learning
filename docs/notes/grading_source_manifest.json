@@ -48,5 +48,63 @@
     "call_model: injectable request function only",
     "transport: configurable Ollama base URL",
     "exam_payload invoked unchanged; test/student IDs supplied at outer adapter; benchmark repeat/complete omitted, processing completion represented in job metadata"
-  ]
+  ],
+  "structural_comparison": {
+    "version": "same-interpreter-ast-v1",
+    "reference_snapshot": "tests/fixtures/grading_v11/frozen_standalone_v11.py.txt",
+    "legacy_ast_sha256_note": "Historical ast.dump(include_attributes=False) digests, with no Python version originally recorded. All 38 reproduce on CPython 3.13.13; 28 differ on CPython 3.12.7 solely because default dump omits empty list fields in 3.13. Kept unchanged as historical evidence; current structural comparison parses both sources under the running interpreter.",
+    "modules": {
+      "src/grading/engine.py": [
+        "GRADING_REVISION",
+        "clean",
+        "parse",
+        "instantiate",
+        "value",
+        "key",
+        "arithmetic_checks",
+        "equations",
+        "DECISIONS",
+        "STEP",
+        "SCHEMA",
+        "EXTRACTION_SCHEMA",
+        "INCOMPLETE_REASON",
+        "BASELINE_SKILL_GUIDANCE",
+        "SKILL_GUIDANCE",
+        "EVIDENCE_HINT",
+        "CONDITION_HINT",
+        "INSTRUCTIONS",
+        "question_data",
+        "allowed_skill_ids",
+        "skill_guidance",
+        "initial_instructions",
+        "payload",
+        "case_schema",
+        "make_payload",
+        "make_repair_payload",
+        "review_result",
+        "description_diagnostics",
+        "source_occurrences",
+        "normalize_answer_quote",
+        "extract_final_answer",
+        "skill_support",
+        "validate_case",
+        "proposal_result",
+        "grade_question",
+        "exam_payload"
+      ],
+      "src/grading/qwen_client.py": [
+        "strict",
+        "call_model"
+      ]
+    },
+    "integration_only_definitions": {
+      "src/grading/qwen_client.py": [
+        "PROVIDER_KEYS",
+        "NoRedirect",
+        "QwenClient",
+        "request"
+      ]
+    },
+    "injection_policy": "Exact client=None / request_fn=None keyword-only parameters; exact full call statements at their frozen reference AST paths. No other normalization."
+  }
 }

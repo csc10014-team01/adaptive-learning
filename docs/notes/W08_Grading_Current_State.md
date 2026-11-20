@@ -66,3 +66,44 @@ References: [final Vietnamese design](../design/W08_AI_Grading_Design_Final.md),
 [handoff](../report/W08_AI_Grading_Handoff.md),
 [source manifest](grading_source_manifest.json),
 [database audit](../report/w08_grading_database_audit.json).
+
+## Provenance check repair — 2026-11-20
+
+The previous AST hash check was interpreter-sensitive. The original manifest did
+not record its generating Python version; all 38 historical digests reproduce on
+CPython 3.13.13, the version recorded for integration verification. CPython 3.11.15
+and 3.12.7 reproduce the reported pattern: 28 mismatching digests, 10 matching.
+Python 3.13's default `ast.dump` omits empty list fields. Its `show_empty=True`
+output matches Python 3.12's default dumps for all 38 frozen definitions. The
+original supplied failure log does not identify its Python version.
+
+Under each interpreter, the verified frozen source and integrated definitions
+match after undoing exactly the two authorized transport injections. No prompt,
+constant, annotation, docstring, condition, default or grading behavior drift was
+found. This repair changes no application runtime code, UI or grading contract.
+
+The manifest keeps every historical AST hash unchanged and now records
+`same-interpreter-ast-v1`, a repository-local test-only raw source snapshot, the
+complete module inventory and integration-only transport definitions. The snapshot
+matches the original SHA-256 above; `.gitattributes` preserves its bytes. The guard
+parses both sides with the running interpreter instead of comparing version-bound
+dump hashes. No fields/strings are canonicalized or dropped. Injection exceptions
+require exactly `client=None` / `request_fn=None` and the exact full call statements
+at their original AST paths; other keyword arguments or call/env assignments fail.
+Missing, unexpected, duplicate and mismatching definitions produce concise named
+structural diagnostics.
+
+The original failing test name is retained. A standard-library-only guard and 22
+mutation tests also run without application dependencies, supporting cross-version
+verification. See the [repair report](../report/W08_Grading_Provenance_Repair.md)
+for actual commands/results, structural comparisons and limits. No new live Qwen
+inference was performed for this test-only repair; the live evidence earlier in
+this note belongs to the original integration.
+
+Final repair verification: exact retained test **1 passed**; grading suite **88
+passed**; full repository **692 passed** with no skipped/failed tests and one
+existing Starlette warning. The shared guard reports 38 matching definitions on
+3.11.15, 3.12.7 and 3.13.13; all 22 mutation tests passed on each. Full application/
+replay verification ran on 3.13.13 only; 3.11/3.12 application dependencies were not
+installed, remote CI and Python 3.14+ were not run. Historical hashes and original
+source bytes remain unchanged.
