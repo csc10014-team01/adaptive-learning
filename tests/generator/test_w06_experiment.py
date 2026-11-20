@@ -33,7 +33,7 @@ def test_trace_retains_rejected_attempt_raw_http_payload_and_validator_evidence(
     def transport(request, **kwargs):
         calls.append(json.loads(request.data))
         text = SOURCE + " Add 99 pens." if len(calls) == 1 else SOURCE
-        body = json.dumps({"done": True, "done_reason": "stop", "model": "qwen3:1.7b",
+        body = json.dumps({"done": True, "done_reason": "stop", "model": client.model,
                            "response": json.dumps({"question": text}), "eval_count": 12}).encode()
         raw.append(body)
         return io.BytesIO(body)

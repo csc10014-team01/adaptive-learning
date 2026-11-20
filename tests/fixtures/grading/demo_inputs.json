@@ -1,0 +1,395 @@
+[
+  {
+    "question_snapshot": {
+      "question_id": "QA0007",
+      "exam_version": "DEMO_APPROVED_V1",
+      "content": "Từ tỉnh A đến tỉnh B có thể đi bằng ô tô, tàu hỏa, tàu thủy hoặc máy bay. Mỗi ngày có 10 chuyến ô tô, 5 chuyến tàu hỏa, 3 chuyến tàu thủy và 2 chuyến máy bay. Có bao nhiêu cách đi?",
+      "approved": true,
+      "approval_provenance": "synthetic_demo"
+    },
+    "reference_answer": {
+      "question_id": "QA0007",
+      "exam_version": "DEMO_APPROVED_V1",
+      "question_content_sha256": "721a15a25c1a808284ebbbde2e6e58b894a48e73fb994cdcc6768b07f065f07b",
+      "correct_answer": "20 cách chọn",
+      "explanation": "Nếu đi bằng ô tô có 10 cách. Nếu đi bằng tàu hỏa có 5 cách. Nếu đi bằng tàu thủy có 3 cách. Nếu đi bằng máy bay có 2 cách. Theo qui tắc cộng, ta có 10 + 5 + 3 + 2 = 20 cách chọn.",
+      "verification_status": "verified",
+      "methods": [
+        {
+          "id": "reviewed_demo_method",
+          "checkpoints": [
+            {
+              "id": "S1",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Có 4 phương tiện để đi từ tỉnh A đến tỉnh B. Số chuyến tương ứng lần lượt là 10 chuyến ô tô, 5 chuyến tàu hỏa, 3 chuyến tàu thủy và 2 chuyến máy bay.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S2",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Vì chỉ cần chọn một trong các phương tiện nên áp dụng quy tắc cộng. Ta có 10 + 5 + 3 + 2 = 20 cách đi.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": [],
+                  "final_answer_correct": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "rubric": {
+      "question_id": "QA0007",
+      "exam_version": "DEMO_APPROVED_V1",
+      "rubric_version": "DEMO_CATEGORICAL_V1",
+      "levels_by_result": {
+        "CORRECT": "CORRECT",
+        "INCORRECT": "INCORRECT"
+      }
+    },
+    "student_steps": [
+      {
+        "step": 1,
+        "description": "Có 4 phương tiện để đi từ tỉnh A đến tỉnh B. Số chuyến tương ứng lần lượt là 10 chuyến ô tô, 5 chuyến tàu hỏa, 3 chuyến tàu thủy và 2 chuyến máy bay."
+      },
+      {
+        "step": 2,
+        "description": "Vì chỉ cần chọn một trong các phương tiện nên áp dụng quy tắc cộng. Ta có 10 + 5 + 3 + 2 = 20 cách đi."
+      }
+    ]
+  },
+  {
+    "question_snapshot": {
+      "question_id": "QA0038",
+      "exam_version": "DEMO_APPROVED_V1",
+      "content": "Từ các chữ số 0, 1, 2, 3, 4, 5 có thể lập được bao nhiêu số chẵn gồm 4 chữ số khác nhau?",
+      "approved": true,
+      "approval_provenance": "synthetic_demo"
+    },
+    "reference_answer": {
+      "question_id": "QA0038",
+      "exam_version": "DEMO_APPROVED_V1",
+      "question_content_sha256": "cf99a16177911876faa1d9156d4b04f74b111688448459a289c516ca33ed763e",
+      "correct_answer": "156 số",
+      "explanation": "Gọi số cần tìm có dạng abcd với (a, b, c, d) thuộc A = {0, 1, 2, 3, 4, 5}. Vì abcd là số chẵn nên d thuộc {0, 2, 4}. TH1: Nếu d = 0, số cần tìm là abc0. a có 5 cách chọn; b có 4 cách chọn; c có 3 cách chọn. Có 5 × 4 × 3 = 60 số có dạng abc0. TH2: Nếu d thuộc {2, 4}, d có 2 cách chọn; a có 4 cách chọn; b có 4 cách chọn và c có 3 cách chọn. Có 2 × 4 × 4 × 3 = 96 số. Vậy có tất cả 60 + 96 = 156 số cần tìm.",
+      "verification_status": "verified",
+      "methods": [
+        {
+          "id": "reviewed_demo_method",
+          "checkpoints": [
+            {
+              "id": "S1",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Gọi số cần lập là abcd. Vì đây là số chẵn nên chữ số hàng đơn vị d phải thuộc {0, 2, 4}.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S2",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Nếu d = 0 thì a có 5 cách chọn, b có 4 cách và c có 3 cách. Có 5 × 4 × 3 = 60 số.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S3",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Nếu d = 2 hoặc d = 4 thì có 2 cách chọn d, a có 4 cách chọn (không được bằng 0 và d), b có 4 cách và c có 3 cách. Có 2 × 4 × 4 × 3 = 96 số.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S4",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Vậy tổng số cần tìm là 60 + 96 = 156 số.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": [],
+                  "final_answer_correct": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "rubric": {
+      "question_id": "QA0038",
+      "exam_version": "DEMO_APPROVED_V1",
+      "rubric_version": "DEMO_CATEGORICAL_V1",
+      "levels_by_result": {
+        "CORRECT": "CORRECT",
+        "INCORRECT": "INCORRECT"
+      }
+    },
+    "student_steps": [
+      {
+        "step": 1,
+        "description": "Gọi số cần lập là abcd. Vì đây là số chẵn nên chữ số hàng đơn vị d phải thuộc {0, 2, 4}."
+      },
+      {
+        "step": 2,
+        "description": "Nếu d = 0 thì a có 5 cách chọn, b có 4 cách và c có 3 cách. Có 5 × 4 × 3 = 60 số."
+      },
+      {
+        "step": 3,
+        "description": "Nếu d = 2 hoặc d = 4 thì có 2 cách chọn d, a có 4 cách chọn (không được bằng 0 và d), b có 4 cách và c có 3 cách. Có 2 × 4 × 4 × 3 = 96 số."
+      },
+      {
+        "step": 4,
+        "description": "Vậy tổng số cần tìm là 60 + 96 = 156 số."
+      }
+    ]
+  },
+  {
+    "question_snapshot": {
+      "question_id": "QA0064",
+      "exam_version": "DEMO_APPROVED_V1",
+      "content": "Từ các chữ số 0, 2, 3, 5, 6, 8 có thể lập được bao nhiêu số tự nhiên gồm 6 chữ số đôi một khác nhau trong đó hai chữ số 0 và 5 không đứng cạnh nhau?",
+      "approved": true,
+      "approval_provenance": "synthetic_demo"
+    },
+    "reference_answer": {
+      "question_id": "QA0064",
+      "exam_version": "DEMO_APPROVED_V1",
+      "question_content_sha256": "fe18c29a05ed33d601728f8cee526a313623a63801ad2462c3b27348105f7b0e",
+      "correct_answer": "384 số",
+      "explanation": "Số các số có 6 chữ số được lập từ các chữ số 0, 2, 3, 5, 6, 8 là 6! − 5!. Số các số có chữ số 0 và 5 đứng cạnh nhau: 2 × 5! − 4!. Số các số có chữ số 0 và 5 không đứng cạnh nhau là: 6! − 5! − (2 × 5! − 4!) = 384.",
+      "verification_status": "verified",
+      "methods": [
+        {
+          "id": "reviewed_demo_method",
+          "checkpoints": [
+            {
+              "id": "S1",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Có 6 chữ số khác nhau nên số cách sắp xếp 6 chữ số là 6! = 720.",
+                  "result": "INCORRECT",
+                  "feedback": "Chưa loại chữ số 0 đứng đầu: tổng hợp lệ là 5 × 5! = 600.",
+                  "error_skill_ids": [
+                    "A009"
+                  ],
+                  "error_type": "INVALID_COUNTING"
+                }
+              ]
+            },
+            {
+              "id": "S2",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Xem hai chữ số 0 và 5 là một nhóm, ta có 5 đối tượng cần sắp xếp. Có 5! × 2 = 240 cách sắp xếp hai chữ số này đứng cạnh nhau.",
+                  "result": "INCORRECT",
+                  "feedback": "Số trường hợp đứng cạnh hợp lệ là 2 × 5! − 4! = 216.",
+                  "error_skill_ids": [
+                    "A009"
+                  ],
+                  "error_type": "INVALID_COUNTING"
+                }
+              ]
+            },
+            {
+              "id": "S3",
+              "required": true,
+              "depends_on": [
+                "S1",
+                "S2"
+              ],
+              "variants": [
+                {
+                  "statement": "Số trường hợp hai chữ số 0 và 5 đứng cạnh nhau là 240. Do đó số trường hợp không đứng cạnh nhau là 720 - 240 = 480.",
+                  "result": "DEPENDENT",
+                  "feedback": "Phép trừ đúng nhưng dùng các đại lượng sai; phải lấy 600 − 216 = 384.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S4",
+              "required": true,
+              "depends_on": [
+                "S3"
+              ],
+              "variants": [
+                {
+                  "statement": "Vậy có 480 số tự nhiên thỏa mãn yêu cầu.",
+                  "result": "DEPENDENT",
+                  "feedback": "Kết luận 480 sai theo kết quả trước; đáp án là 384.",
+                  "error_skill_ids": [],
+                  "final_answer_correct": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "rubric": {
+      "question_id": "QA0064",
+      "exam_version": "DEMO_APPROVED_V1",
+      "rubric_version": "DEMO_CATEGORICAL_V1",
+      "levels_by_result": {
+        "CORRECT": "CORRECT",
+        "INCORRECT": "INCORRECT"
+      }
+    },
+    "student_steps": [
+      {
+        "step": 1,
+        "description": "Có 6 chữ số khác nhau nên số cách sắp xếp 6 chữ số là 6! = 720."
+      },
+      {
+        "step": 2,
+        "description": "Xem hai chữ số 0 và 5 là một nhóm, ta có 5 đối tượng cần sắp xếp. Có 5! × 2 = 240 cách sắp xếp hai chữ số này đứng cạnh nhau."
+      },
+      {
+        "step": 3,
+        "description": "Số trường hợp hai chữ số 0 và 5 đứng cạnh nhau là 240. Do đó số trường hợp không đứng cạnh nhau là 720 - 240 = 480."
+      },
+      {
+        "step": 4,
+        "description": "Vậy có 480 số tự nhiên thỏa mãn yêu cầu."
+      }
+    ]
+  },
+  {
+    "question_snapshot": {
+      "question_id": "QA0102",
+      "exam_version": "DEMO_APPROVED_V1",
+      "content": "Từ các chữ số 1, 2, 3, 4, 5, 6 có thể lập được bao nhiêu số tự nhiên bé hơn 100?",
+      "approved": true,
+      "approval_provenance": "synthetic_demo"
+    },
+    "reference_answer": {
+      "question_id": "QA0102",
+      "exam_version": "DEMO_APPROVED_V1",
+      "question_content_sha256": "9849d6ff5175ca0614d740835e774e6001bcd14ab126e72fb38c93d7a2d640ce",
+      "correct_answer": "156",
+      "explanation": "Gọi số cần tìm là: abcd (với b, c, d ∈ {0;1;2;3;4;5}, a ∈ {1;2;3;4;5}). Trường hợp 1: Chọn d = 0, nên có 1 cách chọn. Chọn a ∈ {1, 2, 3, 4, 5} nên có 5 cách chọn. Chọn b có 4 cách chọn. Chọn c có 3 cách chọn. Suy ra, có 1.5.4.3 = 60 số. Trường hợp 2: Chọn d ∈ {2, 4}, nên có 2 cách chọn. Chọn a ≠ 0 nên có 4 cách chọn. Chọn b có 4 cách chọn. Chọn c có 3 cách chọn. Suy ra, có 2.4.4.3 = 96 số. Vậy có tất cả: 60 + 96 = 156 số.",
+      "verification_status": "conflicting",
+      "methods": [
+        {
+          "id": "reviewed_demo_method",
+          "checkpoints": [
+            {
+              "id": "S1",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Các chữ số được sử dụng là 1, 2, 3, 4, 5, 6. Vì số cần lập bé hơn 100 nên số đó có thể có 1 chữ số hoặc 2 chữ số.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S2",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Với số có 1 chữ số, có 6 cách chọn.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S3",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Với số có 2 chữ số, hàng chục có 6 cách chọn và hàng đơn vị cũng có 6 cách chọn. Có 6 × 6 = 36 số.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": []
+                }
+              ]
+            },
+            {
+              "id": "S4",
+              "required": true,
+              "depends_on": [],
+              "variants": [
+                {
+                  "statement": "Theo quy tắc cộng, tổng số tự nhiên lập được là 6 + 36 = 42 số.",
+                  "result": "CORRECT",
+                  "feedback": "Bước khớp một phát biểu đã kiểm tra trong fixture; không có phép suy diễn ngữ nghĩa mới.",
+                  "error_skill_ids": [],
+                  "final_answer_correct": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "rubric": {
+      "question_id": "QA0102",
+      "exam_version": "DEMO_APPROVED_V1",
+      "rubric_version": "DEMO_CATEGORICAL_V1",
+      "levels_by_result": {
+        "CORRECT": "CORRECT",
+        "INCORRECT": "INCORRECT"
+      }
+    },
+    "student_steps": [
+      {
+        "step": 1,
+        "description": "Các chữ số được sử dụng là 1, 2, 3, 4, 5, 6. Vì số cần lập bé hơn 100 nên số đó có thể có 1 chữ số hoặc 2 chữ số."
+      },
+      {
+        "step": 2,
+        "description": "Với số có 1 chữ số, có 6 cách chọn."
+      },
+      {
+        "step": 3,
+        "description": "Với số có 2 chữ số, hàng chục có 6 cách chọn và hàng đơn vị cũng có 6 cách chọn. Có 6 × 6 = 36 số."
+      },
+      {
+        "step": 4,
+        "description": "Theo quy tắc cộng, tổng số tự nhiên lập được là 6 + 36 = 42 số."
+      }
+    ]
+  }
+]
