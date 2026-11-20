@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import os
 import secrets
+from contextlib import asynccontextmanager
 from pathlib import Path
 from threading import Lock
 from typing import Annotated
@@ -68,6 +69,11 @@ from src.exam_generator.orchestration.review_service import (
 )
 from src.exam_generator.validation.exam_quality import ExamQualityEvaluator, QualityPolicy
 from src.ui.routes import mount_ui
+from src.grading.adapter import ExamStoreSnapshots
+from src.grading.config import GradingConfig
+from src.grading.qwen_client import QwenClient as GradingQwenClient
+from src.grading.routes import mount_grading
+from src.grading.service import GradingService
 
 logger = logging.getLogger(__name__)
 bearer = HTTPBearer(auto_error=False)
@@ -158,8 +164,20 @@ def create_app(
     relationships: SkillRelationships | None = None,
     instance_seed: int | None = None,
     quality_policy: QualityPolicy | None = None,
+    grading_config: GradingConfig | None = None,
+    grading_client: GradingQwenClient | None = None,
+    grading_snapshots=None,
 ) -> FastAPI:
-    api = FastAPI(title="Smart Exam Generator — Fake MVP1", version="1.0.0")
+    @asynccontextmanager
+    async def lifespan(app):
+        # Grading initializes lazily on first grading access. Generation-only
+        # sessions need neither a grading DB nor an inference worker.
+        try:
+            yield
+        finally:
+            app.state.grading.stop()
+
+    api = FastAPI(title="Smart Exam Generator — Fake MVP1", version="1.0.0", lifespan=lifespan)
     # Keep the team's default JSON/fake service; the Generator launcher explicitly
     # selects SQL/Qwen. No missing database can implicitly activate JSON fallback.
     backend = backend or os.getenv("EXAM_BACKEND", "fake")
@@ -215,6 +233,14 @@ def create_app(
         raise ValueError("EXAM_DB must be separate from canonical SQL databases")
     api.state.exams = (
         InMemoryExamStore() if backend == "fake" else SQLiteExamStore(store_path)
+    )
+    grading_settings = grading_config or GradingConfig.from_env()
+    protected_paths = {api.state.bank_path.resolve(), api.state.student_path.resolve(), store_path.resolve()}
+    if grading_settings.db_path in protected_paths or grading_settings.debug_dir in protected_paths:
+        raise ValueError("Grading runtime paths must be separate from canonical and exam databases")
+    api.state.grading = GradingService(
+        grading_settings, grading_client or GradingQwenClient(grading_settings),
+        grading_snapshots or ExamStoreSnapshots(api.state.exams),
     )
 
     @api.exception_handler(CoreApiFailure)
@@ -474,6 +500,7 @@ def create_app(
         return regenerated
 
     api.include_router(router)
+    mount_grading(api, require_teacher)
     mount_ui(api, require_teacher)
     # Registered last so CORS wraps the response/error boundary above.
     origins = [

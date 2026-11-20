@@ -1,0 +1,34 @@
+{
+  "mode": "experimental",
+  "idempotency_key": "synthetic-example-change-for-new-run",
+  "test_id": "SYN_MANUAL_EXAM",
+  "student_id": "SYN_MANUAL_STUDENT",
+  "questions": [
+    {
+      "question_id": "SYN_SUM",
+      "question_text": "Có 2 bút đỏ và 3 bút xanh, tất cả phân biệt. Chọn đúng một bút. Có bao nhiêu cách? Trình bày lập luận và phép tính.",
+      "reference_answer": "5",
+      "reference_solution": "Hai nhóm lựa chọn loại trừ nhau nên có 2 + 3 = 5 cách.",
+      "rubric": [
+        {"id": "R1", "description": "Nhận diện hai nhóm lựa chọn loại trừ nhau và dùng quy tắc cộng.", "skill_ids": ["A001"]},
+        {"id": "R2", "description": "Tính tổng và kết luận có 5 cách chọn.", "skill_ids": ["A001", "A008"]}
+      ],
+      "skill_ids": ["A001", "A008"]
+    },
+    {
+      "question_id": "SYN_PRODUCT",
+      "question_text": "Có 3 áo và 2 quần khác nhau. Mỗi bộ gồm một áo và một quần. Có bao nhiêu bộ? Trình bày cách đếm.",
+      "reference_answer": "6",
+      "reference_solution": "Mỗi áo kết hợp được với 2 quần nên có 3 * 2 = 6 bộ.",
+      "rubric": [
+        {"id": "R1", "description": "Kết hợp một lựa chọn áo với một lựa chọn quần bằng quy tắc nhân.", "skill_ids": ["A002"]},
+        {"id": "R2", "description": "Tính tích và kết luận có 6 bộ.", "skill_ids": ["A002", "A008"]}
+      ],
+      "skill_ids": ["A002", "A008"]
+    }
+  ],
+  "answers": [
+    {"question_id": "SYN_SUM", "student_answer": "Hai nhóm bút không giao nhau nên dùng quy tắc cộng. Có 2 + 3 = 5 cách. Vậy có 5 cách."},
+    {"question_id": "SYN_PRODUCT", "student_answer": "Mỗi áo có thể ghép với 2 quần. Em tính 3 * 2 = 7. Vậy có 7 bộ."}
+  ]
+}

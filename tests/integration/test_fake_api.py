@@ -462,13 +462,14 @@ def test_generate_does_not_write_data_or_call_qwen(client, monkeypatch):
     assert before == {p: hashlib.sha256(p.read_bytes()).digest() for p in paths}
 
 
-def test_openapi_documents_eight_teacher_endpoints(client):
+def test_openapi_documents_generation_and_grading_teacher_endpoints(client):
     schema = client.get("/openapi.json").json()
-    assert len(schema["paths"]) == 8
+    assert len(schema["paths"]) == 11
     for path in schema["paths"].values():
         for operation in path.values():
             assert operation["security"] == [{"HTTPBearer": []}]
-            assert "200" in operation["responses"]
+            expected = "202" if operation["operationId"].startswith("submit_") else "200"
+            assert expected in operation["responses"]
 
 
 @pytest.mark.parametrize(

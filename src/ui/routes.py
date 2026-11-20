@@ -6,10 +6,13 @@ from fastapi import Depends
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+from src.ui.grading_routes import mount_grading_ui
+
 ASSETS = Path(__file__).resolve().parent / "static"
 
 
 def mount_ui(app, require_teacher):
+    mount_grading_ui(app)
     @app.get("/", include_in_schema=False)
     def index():
         return FileResponse(
