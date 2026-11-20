@@ -8,13 +8,13 @@
 
 | Mục | Giá trị |
 |---|---|
-| Bản tích hợp | `main`, commit `bb8bf08` (sau PR #66, 20/11 10:30) |
+| Bản tích hợp | Giao diện và API giả lập chạy trên `main` `bb8bf08` (sau PR #66, 20/11 10:30). `pytest` và phần chấm lõi chạy trên `main` `e6da02b` (sau PR #70, 20/11 20:12, đã gộp vào nhánh `docs/w07-qa-evaluation`). Model mặc định của `main` mới là `qwen3:4b-q4_K_M` (trước là `qwen3:1.7b`) |
 | Chế độ sinh đề | **Giả lập** (`backend="fake"`, `profile_source="m3"`), không gọi Qwen |
 | Cách chạy | Gọi API qua `TestClient` trong tiến trình, cùng `create_app` mà `python -m src.ui --fake` dùng. Giao diện trình duyệt do Hoài Thương chạy tay, xem mục 2b. |
 | Indirect | `KORO_EXPERIMENTAL_INDIRECT=1` (mặc định của launcher) |
 | Chế độ chấm bài | Chưa có. `main` không có endpoint nộp bài hay chấm bài |
 | Môi trường | Python 3.13, FastAPI, môi trường sạch cài từ `requirements.txt` |
-| Test của repo | Máy Hoài Thương (Windows, `.venv`, 20/11): `589 passed, 1 skipped, 1 warning in 52.31s` (`pytest -q`). Cảnh báo là `StarletteDeprecationWarning` về `httpx` trong `fastapi.testclient`, không ảnh hưởng kết quả. Môi trường thử cũng chạy 590 test đạt. Commit trên máy Hoài Thương: `bb8bf08`, trùng bản tích hợp ở dòng trên |
+| Test của repo | Máy Hoài Thương (Windows, `.venv`, 20/11, `main` `e6da02b`): `603 passed, 1 skipped, 1 warning in 28.06s` (`pytest -q`). Trước đó trên `bb8bf08`: `589 passed, 1 skipped, 1 warning in 52.31s`. Cảnh báo là `StarletteDeprecationWarning` về `httpx` trong `fastapi.testclient`, không ảnh hưởng kết quả |
 
 Đây là lần chạy trong môi trường thử, chỉ có giá trị tham khảo. Giao diện và pytest đã chạy lại trên máy Hoài Thương. Phần API giả lập qua TestClient vẫn do môi trường thử chạy.
 
@@ -79,6 +79,19 @@ Phát hiện thêm từ giao diện:
 - Hệ thống chỉ kiểm số liệu và cấu trúc, không kiểm tương đương ngữ nghĩa. Cảnh báo này nằm sẵn trong báo cáo ("semantic and cognitive equivalence are NOT verified"), nên một câu Indirect đổi nghĩa mà giữ số liệu vẫn có thể lọt qua. Ca EA0004 bị loại ở lần này là nhờ kiểm số liệu và kiểm sao chép.
 - Các mẫu khác bị loại nhiều hơn: EA0013 4/10, EA0012 3/15, EA0018 3/15, EA0017 2/20 (đều ở Indirect).
 
+## 2d. Phần chấm bài lõi (chưa qua API), `main` `e6da02b`
+
+`main` đã có `src/ai/answer_grading.py` (bộ ánh xạ sau khi AI tách bước), nhưng chưa có API nộp bài hoặc chấm bài. Hoài Thương chạy `scripts/grading/run_demo.py` (không gọi Qwen, dữ liệu giả lập, `allow_demo=True`):
+
+| Câu | Kết quả tổng thể | Khớp nhãn tham chiếu |
+|---|---|---|
+| QA0007 | CORRECT | Có |
+| QA0038 | CORRECT | Có |
+| QA0064 | INCORRECT | Có |
+| QA0102 | UNCERTAIN, `REFERENCE_UNVERIFIED` | Có |
+
+Tương ứng TC-W07-022, 023, 024, 026: **Một phần**, vì chỉ kiểm nhãn tổng thể, chưa kiểm các trường chi tiết (từng bước, nhận xét, mức, `requires_teacher`) và chưa qua API. Thời gian ánh xạ khoảng 0,0001 đến 0,0002 giây, không gồm thời gian Qwen tách bước. Tài liệu nhóm ghi QA0102 có đáp án DB 156 không khớp đề và lời giải (lỗi dữ liệu nguồn).
+
 ## 3. Ca chưa chạy và lý do
 
 | Ca | Lý do |
@@ -90,7 +103,7 @@ Phát hiện thêm từ giao diện:
 | TC-W07-014 | Chờ có kết quả Qwen thật để tách hai bảng |
 | TC-W07-046 | Báo cáo tự động chỉ ghi "cần giáo viên đánh giá" cho C3, chưa có cảnh báo trùng lặp để đối chiếu. Cần người đọc toàn đề |
 | TC-W07-047 | Cần mở giao diện trình duyệt để xem công thức |
-| TC-W07-015 đến 036 | Chưa có API nộp bài và chấm bài |
+| TC-W07-015 đến 021, 025, 027 đến 036 | Chưa có API nộp bài và chấm bài (022, 023, 024, 026 chỉ chạy phần lõi, mục 2d) |
 
 ## 4. Phát hiện cần báo nhóm
 
@@ -102,8 +115,7 @@ Phát hiện thêm từ giao diện:
 
 ## 5. Lỗi chặn demo
 
-- Không có API nộp bài và chấm bài trên `main` (chặn toàn bộ GRD-01 đến GRD-04 và demo bước 3, 4).
-- `answer_grading.py` chỉ nằm ở nhánh `w07_grading`, chưa merge.
+- Không có API nộp bài và chấm bài trên `main` (chặn GRD-01 đến GRD-04 qua API và demo bước 3, 4). `answer_grading.py` đã có trên `main` từ `e6da02b` nhưng chỉ là bộ lõi, chưa có endpoint.
 - Chưa có contract API, kết quả kiểm tra Indirect và tài liệu giao diện W07.
 - Giao diện mới của Chi Mai ở nhánh `try-mapping-ui`, chưa merge, nên chưa kiểm tra giao diện.
 
