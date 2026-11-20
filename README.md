@@ -105,7 +105,7 @@ non-adaptive requests retain their manual distribution. New endpoints are
 existing teacher bearer authentication. Approval and regeneration require
 `expected_revision`. Whole-exam approval does not require individual checkboxes.
 
-Qwen uses local Ollama (`qwen3:1.7b` by default). The launcher enables experimental
+Qwen uses local Ollama (`qwen3:4b-q4_K_M` by default). The launcher enables experimental
 Indirect wording; set `KORO_EXPERIMENTAL_INDIRECT=0` for verified-only behavior.
 Experimental semantic equivalence remains unproven and visible to the teacher.
 Backend answers/solutions stay authoritative. Fake mode demonstrates assembly

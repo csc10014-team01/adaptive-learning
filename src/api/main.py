@@ -184,7 +184,7 @@ def create_app(
         api.state.student_path = ROOT / api.state.student_path
     api.state.qwen_client = qwen_client or QwenClient(
         base_url=os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434"),
-        model=os.getenv("QWEN_MODEL", "qwen3:1.7b"),
+        model=os.getenv("QWEN_MODEL", "qwen3:4b-q4_K_M"),
         timeout=float(os.getenv("QWEN_TIMEOUT_SECONDS", "45")),
         attempts=int(os.getenv("QWEN_MAX_ATTEMPTS", "2")),
         exam_timeout=float(os.getenv("EXAM_TIMEOUT_SECONDS", "180")),

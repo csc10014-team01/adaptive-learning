@@ -20,7 +20,7 @@ class QwenClient:
     def __init__(
         self,
         base_url: str = "http://127.0.0.1:11434",
-        model: str = "qwen3:1.7b",
+        model: str = "qwen3:4b-q4_K_M",
         timeout: float = 45,
         attempts: int = 2,
         exam_timeout: float = 180,
