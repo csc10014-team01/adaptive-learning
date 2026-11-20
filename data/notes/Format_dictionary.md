@@ -15,6 +15,8 @@ question = {
             "content": "Tính số cách thực hiện hành động thứ nhất."
         }
     ]
+    "skills": ['A001', 'A002']
+    "main_skill": 'A001'
 }
 get_all_questions() trả về list các question
 # 2. Answer

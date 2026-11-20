@@ -10,6 +10,7 @@
    Màn hiện tại luôn được ghi ở document.body.dataset.view.
 ═══════════════════════════════════════════════════════════ */
 
+const el = element;
 const AUTH_CODES = ["TEACHER_ACCESS_DENIED", "TEACHER_AUTH_REQUIRED", "TEACHER_ACCESS_NOT_CONFIGURED"];
 const MIN_EVIDENCE = 3; // chỉ để hiển thị "n/3 câu". Việc phân loại kỹ năng do planner quyết định (README, ADR-003)
 const LEVEL_KEYS = Object.keys(levels);
@@ -18,11 +19,11 @@ const DEFAULTS = {questions: 4, duration: 45};
 const VIEW_NAMES = ["profile", "config", "draft"];
 
 const view = {current: "home", studentId: null};
-const draftCtx = {request: null}; // body của lần sinh đề gần nhất, dùng cho "Tạo lại toàn bộ đề"
+const draftCtx = {request: null, examId: null}; // body của lần sinh đề gần nhất, dùng cho "Tạo lại toàn bộ đề"
 
 /* ── Tiện ích ── */
 const enc = encodeURIComponent;
-const isAuthError = (err) => AUTH_CODES.includes(err?.apiCode || "");
+const isAuthError = (err) => AUTH_CODES.includes(err?.code || "");
 const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
 const genTimeout = () => (Number(state.config?.generation_timeout_seconds) || 180) * 1000 + 20000;
 
@@ -202,7 +203,7 @@ function skillRow(name, record, classification) {
 function renderProfile(profile, topics, plan) {
   const skills = topics.flatMap((t) => t.skills);
   const cls = plan.skill_classifications || {};
-  $("pf-name").textContent = profile.name;
+  $("pf-name").textContent = profile.student_name;
   $("pf-grade").textContent = `Lớp ${profile.grade_level}`;
   setDataStatus("pf", cls);
   $("pf-exams").textContent = `${profile.learning_history.length} bài`;
@@ -357,7 +358,7 @@ async function loadConfigView(studentId) {
     const [profile, topicsResp] = await Promise.all([api(`/api/v1/students/${enc(studentId)}/profile`), api("/api/v1/topics")]);
     if (loadSeq !== cf.loadSeq || view.current !== "config") return;
     cf.topics = topicsResp.items;
-    $("cf-name").textContent = profile.name;
+    $("cf-name").textContent = profile.student_name;
     $("cf-grade").textContent = `Lớp ${profile.grade_level}`;
     $("cf-sum-subject").textContent = `Toán · Lớp ${profile.grade_level}`;
     setLoading("config", false);
@@ -384,8 +385,8 @@ async function cfStart() {
   const timer = setInterval(() => { $("cf-elapsed").textContent = String(Math.floor((Date.now() - started) / 1000)); }, 1000);
   try {
     const exam = await api("/api/v1/exams/generate", {method: "POST", body, timeout: genTimeout()});
-    state.exam = exam;
-    draftCtx.request = body;
+    acceptExam(exam);
+    Object.assign(draftCtx, {request: body, examId: exam.exam_id});
     if (view.current === "config" && cf.studentId === studentId) location.hash = `#/students/${enc(studentId)}/exams/${enc(exam.exam_id)}`;
   } catch (err) {
     setAlert("cf", "error", err.message); // form giữ nguyên, không reset
@@ -453,7 +454,9 @@ function questionCard(q, topics) {
   toggle.append(el("span", "Đáp án"), svgIcon("i-chevron"));
   const replace = el("button", null, "fg-act"); replace.type = "button"; replace.dataset.act = "replace";
   replace.append(svgIcon("i-refresh"), el("span", "Thay câu"));
-  const actions = el("div", null, "fg-q-actions"); actions.append(toggle, replace);
+  const actions = el("div", null, "fg-q-actions");
+  actions.append(toggle);
+  if (q.source_ref.kind === "template") actions.append(replace);
 
   card.append(head, el("p", q.content_latex, "fg-q-body"), actions, answer);
   return card;
@@ -462,7 +465,7 @@ function questionCard(q, topics) {
 function renderDraft() {
   const {exam, profile, topics} = dr;
   const plan = exam.planner_summary || null;
-  $("dr-name").textContent = profile.name;
+  $("dr-name").textContent = profile.student_name;
   $("dr-grade").textContent = `Lớp ${profile.grade_level}`;
   if (plan) setDataStatus("dr", plan.skill_classifications);
   else { $("dr-data-label").textContent = "Dữ liệu hồ sơ: —"; $("dr-data-icon").setAttribute("class", "ic is-none"); }
@@ -503,15 +506,14 @@ async function loadDraftView(studentId, examId) {
   setAlert("dr", "", "");
   setLoading("draft", true);
   try {
-    const cached = state.exam && state.exam.exam_id === examId ? state.exam : null;
     const [exam, profile, topicsResp] = await Promise.all([
-      cached || api(`/api/v1/exams/${enc(examId)}`),
+      api(`/api/v1/exams/${enc(examId)}`),
       api(`/api/v1/students/${enc(studentId)}/profile`),
       api("/api/v1/topics"),
     ]);
     if (seq !== dr.seq || view.current !== "draft") return;
     if (exam.student_id !== studentId) throw new Error("Mã đề này không thuộc học sinh đang xem.");
-    state.exam = exam;
+    acceptExam(exam);
     Object.assign(dr, {exam, profile, topics: topicsResp.items});
     renderDraft();
     setLoading("draft", false);
@@ -526,7 +528,7 @@ async function drReplace(questionId) {
   drBusy(true, `Đang thay câu ${number}… Qwen có thể cần vài phút.`);
   try {
     const exam = await api(`/api/v1/exams/${enc(dr.exam.exam_id)}/questions/${enc(questionId)}/regenerate`, {method: "POST", body: {expected_revision: dr.exam.revision}, timeout: genTimeout()});
-    state.exam = exam; dr.exam = exam;
+    acceptExam(exam); dr.exam = exam;
     renderDraft();
     setAlert("dr", "ok", `Đã thay câu ${number}. Đề quay về trạng thái chờ giáo viên duyệt (phiên bản ${exam.revision}).`);
   } catch (err) {
@@ -538,13 +540,15 @@ async function drReplace(questionId) {
 async function drRegenerateAll() {
   if (dr.busy) return;
   const exam = dr.exam;
-  const body = draftCtx.request && draftCtx.request.student_id === exam.student_id
+  const body = draftCtx.examId === exam.exam_id
     ? draftCtx.request
-    : {...planBody(exam.student_id, exam.total_questions, exam.duration_minutes), generation_mode: exam.generation_mode, selected_topic_ids: [exam.topic_id]};
+    : {...planBody(exam.student_id, exam.total_questions, exam.duration_minutes), generation_mode: exam.generation_mode, selected_topic_ids: [exam.topic_id],
+      difficulty_distribution: exam.quality_report?.request_snapshot?.difficulty_distribution ?? null};
   drBusy(true, "Đang tạo lại toàn bộ đề… Qwen có thể cần vài phút.");
   try {
     const fresh = await api("/api/v1/exams/generate", {method: "POST", body, timeout: genTimeout()});
-    state.exam = fresh; draftCtx.request = body;
+    acceptExam(fresh);
+    Object.assign(draftCtx, {request: body, examId: fresh.exam_id});
     if (view.current === "draft") location.hash = `#/students/${enc(fresh.student_id)}/exams/${enc(fresh.exam_id)}`;
   } catch (err) {
     if (isAuthError(err)) { showFull("forbidden", err.message); return; }
@@ -584,7 +588,12 @@ function parseRoute() {
 }
 
 function handleRoute() {
-  const route = parseRoute();
+  let route;
+  try { route = parseRoute(); }
+  catch (error) {
+    if (!(error instanceof URIError)) throw error;
+    route = {name: "home"};
+  }
   showView(route.name, route.studentId);
   if (route.name === "home") return;
   if (!state.token) { showFull("forbidden", "Phiên làm việc chưa có teacher token (hoặc đã mất do tải lại trang). Hãy kết nối lại từ màn đầu."); return; }

@@ -16,7 +16,10 @@ def test_ui_assets_are_public_but_do_not_embed_credentials_or_profiles():
         assert "Math Studio" in page.text and TOKEN not in page.text
         assert "frame-ancestors 'none'" in page.headers["content-security-policy"]
         assert page.headers["cache-control"] == "no-store"
-        for asset in ["app.js", "style.css"]:
+        for element_id in ("open-profile", "view-profile", "view-config", "view-draft"):
+            assert f'id="{element_id}"' in page.text
+        assert 'src="/ui/assets/views.js"' in page.text
+        for asset in ["app.js", "style.css", "views.js"]:
             result = client.get("/ui/assets/" + asset)
             assert result.status_code == 200 and TOKEN not in result.text
         assert client.get("/ui/assets/does-not-exist.js").status_code == 404

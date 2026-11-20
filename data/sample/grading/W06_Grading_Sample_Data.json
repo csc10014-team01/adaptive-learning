@@ -1,0 +1,182 @@
+{
+  "description": "JSON minh hoa dữ liệu đầu vào, tham số PCM và đầu ra PCM + EAP + PCM tham chiếu. Các tham số và kết quả số chỉ để minh họa, chưa được hiệu chuẩn thực nghiệm.",
+  "model_config": {
+    "rubric_levels": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "prior": {
+      "distribution": "Normal",
+      "mu": 0.0,
+      "sigma": 1.0
+    },
+    "reference_step_difficulties": [
+      -1.5,
+      -0.5,
+      0.5,
+      1.5
+    ],
+    "reference_parameter_version": "REF_V1",
+    "mastery_scale": {
+      "min": 0,
+      "max": 4
+    }
+  },
+  "classes": {
+    "QuestionTemplate": [
+      {
+        "template_id": "QT001",
+        "name": "Bài toán đếm cơ bản",
+        "default_rubric": {
+          "0": "Không xác định được hướng giải",
+          "1": "Nhận diện dữ kiện nhưng chưa hình thành cách giải",
+          "2": "Chọn phương pháp phù hợp nhưng còn thiếu bước",
+          "3": "Giải đúng phần lớn các bước, còn lỗi nhỏ",
+          "4": "Lời giải đầy đủ và chính xác"
+        },
+        "rubric_version": "RUBRIC_V1"
+      }
+    ],
+    "QuestionRubric": [
+      {
+        "rubric_id": "QR001",
+        "question_id": "Q001",
+        "rubric_version": "CUSTOM_V1",
+        "levels": {
+          "0": "Không có hướng giải phù hợp",
+          "1": "Nêu được một phần ý tưởng",
+          "2": "Áp dụng đúng công thức nhưng thiếu xử lý điều kiện",
+          "3": "Xử lý đúng điều kiện, còn sai sót nhỏ",
+          "4": "Lời giải đầy đủ và chính xác"
+        }
+      }
+    ],
+    "PCMTemplateParameters": [
+      {
+        "template_id": "QT001",
+        "step_difficulties": [
+          -0.5,
+          0.5,
+          1.0,
+          1.5
+        ],
+        "parameter_version": "PCM_QT001_V1",
+        "calibration_status": "ASSUMED_NOT_CALIBRATED",
+        "rubric_version": "RUBRIC_V1"
+      }
+    ],
+    "PCMQuestionParameters": [
+      {
+        "question_id": "Q001",
+        "step_difficulties": [
+          -0.5,
+          0.5,
+          1.0,
+          1.5
+        ],
+        "parameter_version": "PCM_Q001_V1",
+        "calibration_status": "ASSUMED_NOT_CALIBRATED",
+        "rubric_id": "QR001"
+      }
+    ],
+    "test_questions": [
+      {
+        "test_id": "TEST001",
+        "question_id": "Q001",
+        "observed_level": 2,
+        "theta_eap": 0.333573,
+        "question_mastery_score": 2.306286,
+        "pcm_parameter_version": "PCM_Q001_V1",
+        "reference_parameter_version": "REF_V1"
+      }
+    ],
+    "TestQuestionSkillResult": {
+      "usage": "Chỉ cần khi một câu hỏi đánh giá nhiều skill và từng skill có observed_level riêng.",
+      "example": [
+        {
+          "test_id": "TEST001",
+          "question_id": "Q001",
+          "skill_id": "A001",
+          "observed_level": 2,
+          "theta_eap": 0.333573,
+          "question_mastery_score": 2.306286
+        },
+        {
+          "test_id": "TEST001",
+          "question_id": "Q001",
+          "skill_id": "A002",
+          "observed_level": 1,
+          "theta_eap": null,
+          "question_mastery_score": null
+        }
+      ]
+    },
+    "question_skills": [
+      {
+        "question_id": "Q001",
+        "skill_id": "A001"
+      }
+    ],
+    "student_skill_mastery": [
+      {
+        "student_id": "STU001",
+        "skill_id": "A001",
+        "mastery_score": 2.306286,
+        "evidence_count": 1
+      }
+    ]
+  },
+  "algorithm_output": {
+    "input": {
+      "test_id": "TEST001",
+      "student_id": "STU001",
+      "question_id": "Q001",
+      "skill_id": "A001",
+      "observed_level": 2,
+      "step_difficulties": [
+        -0.5,
+        0.5,
+        1.0,
+        1.5
+      ]
+    },
+    "posterior_estimation": {
+      "method": "EAP",
+      "prior": {
+        "distribution": "Normal",
+        "mu": 0.0,
+        "sigma": 1.0
+      },
+      "theta_eap": 0.333573
+    },
+    "reference_conversion": {
+      "reference_step_difficulties": [
+        -1.5,
+        -0.5,
+        0.5,
+        1.5
+      ],
+      "probabilities_by_level": {
+        "0": 0.026565,
+        "1": 0.166196,
+        "2": 0.382504,
+        "3": 0.32386,
+        "4": 0.100875
+      },
+      "question_mastery_formula": "sum(k * P_ref(X=k | theta_eap)) for k=0..4",
+      "question_mastery_score": 2.306286,
+      "scale": "0-4"
+    },
+    "skill_aggregation": {
+      "method": "arithmetic_mean",
+      "question_mastery_scores": [
+        2.306286
+      ],
+      "mastery_score": 2.306286,
+      "evidence_count": 1
+    }
+  }
+}   

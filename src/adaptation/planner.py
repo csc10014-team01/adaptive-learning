@@ -10,9 +10,10 @@ from src.adaptation.skill_relationships import SkillRelationships
 from src.adaptation.policy import PlannerPolicyConfig
 from src.api.data_adapter import ApiFailure, FixtureQuestion, StaticDataAdapter
 from src.api.schemas import (
-    LEVELS, CognitiveLevel, ContractModel, GenerateExamRequest, Identifier, Mode,
+    LEVELS, CognitiveLevel, ContractModel, Identifier,
     PlannerSummary, QuotaSummary, StudentProfileResponse, Text,
 )
+from src.exam_generator.api.schemas import GenerateExamRequest, Mode
 from src.api.services import level_counts, question_slots
 
 

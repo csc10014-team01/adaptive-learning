@@ -1,0 +1,53 @@
+{
+  "excluded_from_case_metrics": true,
+  "request": {
+    "model": "qwen3:1.7b",
+    "prompt": "Reply only: OK",
+    "stream": false,
+    "think": false,
+    "keep_alive": "5m",
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_predict": 16
+    }
+  },
+  "response": {
+    "model": "qwen3:1.7b",
+    "created_at": "2026-11-14T10:38:34.1112173Z",
+    "response": "OK",
+    "done": true,
+    "done_reason": "stop",
+    "context": [
+      151644,
+      872,
+      198,
+      20841,
+      1172,
+      25,
+      10402,
+      608,
+      2152,
+      5854,
+      766,
+      151645,
+      198,
+      151644,
+      77091,
+      198,
+      151667,
+      271,
+      151668,
+      271,
+      3925
+    ],
+    "total_duration": 111340200,
+    "load_duration": 7534600,
+    "prompt_eval_count": 20,
+    "prompt_eval_cached_count": 19,
+    "prompt_eval_duration": 51927000,
+    "eval_count": 2,
+    "eval_duration": 32147000
+  },
+  "elapsed_seconds": 0.13807759998599067
+}

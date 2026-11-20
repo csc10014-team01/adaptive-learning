@@ -1,0 +1,439 @@
+{
+  "policy_version": "mvp-personalization-v4-coordinated-difficulty",
+  "strategy": "diagnostic_review",
+  "difficulty_locked": false,
+  "skill_classifications": {
+    "A001": "PARTIAL",
+    "A002": "ACHIEVED",
+    "A003": "ACHIEVED",
+    "A004": "PARTIAL",
+    "A005": "PARTIAL",
+    "A006": "PARTIAL",
+    "A007": "PARTIAL",
+    "A008": "PARTIAL",
+    "A009": "PARTIAL"
+  },
+  "quota_summary": {
+    "requested_groups": {
+      "diagnostic": 6,
+      "maintenance": 4
+    },
+    "achieved_groups": {
+      "diagnostic": 6,
+      "maintenance": 4
+    },
+    "requested_skills": {
+      "A001": 1,
+      "A004": 1,
+      "A005": 1,
+      "A006": 1,
+      "A007": 1,
+      "A008": 1,
+      "A009": 0,
+      "A002": 2,
+      "A003": 2
+    },
+    "achieved_skills": {
+      "A001": 3,
+      "A004": 1,
+      "A005": 0,
+      "A006": 0,
+      "A007": 1,
+      "A008": 1,
+      "A009": 0,
+      "A002": 2,
+      "A003": 2
+    },
+    "requested_levels": {
+      "recognition": 2,
+      "understanding": 3,
+      "application": 4,
+      "advanced_application": 1
+    },
+    "achieved_levels": {
+      "recognition": 2,
+      "understanding": 3,
+      "application": 4,
+      "advanced_application": 1
+    },
+    "requested_skill_levels": {
+      "A001": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A004": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A005": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 1
+      },
+      "A009": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      }
+    },
+    "achieved_skill_levels": {
+      "A001": {
+        "recognition": 1,
+        "understanding": 2,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A004": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A005": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A006": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A007": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A008": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 1
+      },
+      "A009": {
+        "recognition": 0,
+        "understanding": 0,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "A002": {
+        "recognition": 0,
+        "understanding": 1,
+        "application": 1,
+        "advanced_application": 0
+      },
+      "A003": {
+        "recognition": 1,
+        "understanding": 0,
+        "application": 1,
+        "advanced_application": 0
+      }
+    }
+  },
+  "warnings": [
+    "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+    "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+    "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+    "Question fallback for A005/recognition: selected QA0001; no feasible preferred Template assignment.",
+    "Question fallback for A006/understanding: selected QA0008; no feasible preferred Template assignment.",
+    "Substituted A005/recognition with A001/recognition (QA0001): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+    "Substituted A006/understanding with A001/understanding (QA0008): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+    "Soft skill quotas deviated: requested={'A001': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 0, 'A002': 2, 'A003': 2}, achieved={'A001': 3, 'A004': 1, 'A005': 0, 'A006': 0, 'A007': 1, 'A008': 1, 'A009': 0, 'A002': 2, 'A003': 2}."
+  ],
+  "selection_diagnostics": {
+    "exact_skill_level_matrix_feasible": false,
+    "exact_exam_levels_feasible": true,
+    "eligible_question_levels": {
+      "recognition": 39,
+      "understanding": 47,
+      "application": 21,
+      "advanced_application": 14
+    },
+    "eligible_template_instance_levels": {
+      "recognition": 10,
+      "understanding": 20,
+      "application": 0,
+      "advanced_application": 0
+    },
+    "cell_shortages": [
+      {
+        "skill_id": "A005",
+        "level": "recognition",
+        "requested": 1,
+        "available": 0,
+        "shortage": 1
+      },
+      {
+        "skill_id": "A006",
+        "level": "understanding",
+        "requested": 1,
+        "available": 0,
+        "shortage": 1
+      }
+    ],
+    "level_shortages": [],
+    "substitutions": [
+      {
+        "slot": 3,
+        "requested_skill": "A005",
+        "requested_level": "recognition",
+        "actual_skill": "A001",
+        "actual_level": "recognition",
+        "source_kind": "question",
+        "source_id": "QA0001",
+        "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+      },
+      {
+        "slot": 4,
+        "requested_skill": "A006",
+        "requested_level": "understanding",
+        "actual_skill": "A001",
+        "actual_level": "understanding",
+        "source_kind": "question",
+        "source_id": "QA0008",
+        "reason": "requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback"
+      }
+    ],
+    "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+  },
+  "student_id": "ST008",
+  "requested_mode": "adaptive",
+  "personalized": true,
+  "priority_skills": [],
+  "target_count": 0,
+  "achieved_target_count": 0,
+  "questions": [
+    {
+      "source_id": "QA0005",
+      "target_skill_id": "A001",
+      "skill_ids": [
+        "A001"
+      ],
+      "cognitive_level": "understanding",
+      "group": "diagnostic",
+      "targeted": false,
+      "reasons": [
+        "diagnostic: A001 is PARTIAL; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    },
+    {
+      "source_id": "QA0117",
+      "target_skill_id": "A004",
+      "skill_ids": [
+        "A004"
+      ],
+      "cognitive_level": "application",
+      "group": "diagnostic",
+      "targeted": false,
+      "reasons": [
+        "diagnostic: A004 is PARTIAL; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    },
+    {
+      "source_id": "QA0001",
+      "target_skill_id": "A001",
+      "skill_ids": [
+        "A001"
+      ],
+      "cognitive_level": "recognition",
+      "group": "diagnostic",
+      "targeted": false,
+      "reasons": [
+        "diagnostic: A001 is PARTIAL; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    },
+    {
+      "source_id": "QA0008",
+      "target_skill_id": "A001",
+      "skill_ids": [
+        "A001"
+      ],
+      "cognitive_level": "understanding",
+      "group": "diagnostic",
+      "targeted": false,
+      "reasons": [
+        "diagnostic: A001 is PARTIAL; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    },
+    {
+      "source_id": "QA0120",
+      "target_skill_id": "A007",
+      "skill_ids": [
+        "A007"
+      ],
+      "cognitive_level": "application",
+      "group": "diagnostic",
+      "targeted": false,
+      "reasons": [
+        "diagnostic: A007 is PARTIAL; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    },
+    {
+      "source_id": "QA0121",
+      "target_skill_id": "A008",
+      "skill_ids": [
+        "A008"
+      ],
+      "cognitive_level": "advanced_application",
+      "group": "diagnostic",
+      "targeted": false,
+      "reasons": [
+        "diagnostic: A008 is PARTIAL; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    },
+    {
+      "source_id": "EA0004",
+      "target_skill_id": "A002",
+      "skill_ids": [
+        "A002",
+        "A009"
+      ],
+      "cognitive_level": "understanding",
+      "group": "maintenance",
+      "targeted": false,
+      "reasons": [
+        "maintenance: A002 is ACHIEVED; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "template",
+      "source_status": "pending_wording",
+      "template_instance": {
+        "instance_id": "TI_c1c33d69c473e856fd4f7bf204edf5f94a6701380de8dd546c76b7fa9f42a225",
+        "parameters": {
+          "n": 9,
+          "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+        },
+        "signature": "c1c33d69c473e856fd4f7bf204edf5f94a6701380de8dd546c76b7fa9f42a225",
+        "template_digest": "ea492614a2bc2389b18f3010af4e4e35a1e7e3a35753b4fcbd99eea61705f507"
+      }
+    },
+    {
+      "source_id": "QA0052",
+      "target_skill_id": "A002",
+      "skill_ids": [
+        "A002"
+      ],
+      "cognitive_level": "application",
+      "group": "maintenance",
+      "targeted": false,
+      "reasons": [
+        "maintenance: A002 is ACHIEVED; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    },
+    {
+      "source_id": "EA0017",
+      "target_skill_id": "A003",
+      "skill_ids": [
+        "A002",
+        "A003"
+      ],
+      "cognitive_level": "recognition",
+      "group": "maintenance",
+      "targeted": false,
+      "reasons": [
+        "maintenance: A003 is ACHIEVED; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "template",
+      "source_status": "pending_wording",
+      "template_instance": {
+        "instance_id": "TI_6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+        "parameters": {
+          "n": 5,
+          "arrange_all": true,
+          "distinct": true
+        },
+        "signature": "6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+        "template_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978"
+      }
+    },
+    {
+      "source_id": "QA0010",
+      "target_skill_id": "A003",
+      "skill_ids": [
+        "A003"
+      ],
+      "cognitive_level": "application",
+      "group": "maintenance",
+      "targeted": false,
+      "reasons": [
+        "maintenance: A003 is ACHIEVED; strategy=diagnostic_review.",
+        "Available wrong-question history is partial; completed-question history is not inferred."
+      ],
+      "source_kind": "question",
+      "source_status": "stored",
+      "template_instance": null
+    }
+  ]
+}

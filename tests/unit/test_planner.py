@@ -9,7 +9,8 @@ from pydantic import ValidationError
 from src.adaptation.planner import RuleBasedPlanner, fair_counts
 from src.adaptation.policy import PlannerPolicyConfig
 from src.api.data_adapter import ApiFailure, FixtureQuestion, StaticDataAdapter
-from src.api.schemas import LEVELS, GenerateExamRequest, StudentProfileResponse, Topic
+from src.api.schemas import LEVELS, StudentProfileResponse, Topic
+from src.exam_generator.api.schemas import GenerateExamRequest
 from src.api.services import level_counts
 
 SKILLS = ["A001", "A002", "A003", "A004"]

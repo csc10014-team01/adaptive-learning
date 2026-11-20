@@ -1,0 +1,17 @@
+{
+  "review_type": "ASSISTANT_ADVISORY_NOT_HUMAN_W06_GRADING",
+  "created_at": "2026-11-14T17:39:36.104729+07:00",
+  "collection_verified": true,
+  "actual_qwen_calls": 10,
+  "pilot_excluded_from_formal_sample": true,
+  "observation": {
+    "case_id": "C02_ST016_s0_experimental",
+    "question_id": "QW_bff19791c3e045dbb1ff8883f43955e5",
+    "template_id": "EA0017",
+    "generated_question": "Một người bán hàng có 5 loại sản phẩm khác nhau. Hỏi cần chuẩn bị bao nhiêu loại sản phẩm để có thể sắp xếp tất cả chúng thành một hàng khác nhau mỗi ngày, mà không lặp lại bất kỳ thứ gì nào?",
+    "backend_answer": "120",
+    "concern": "Question asks number/types of products rather than number of arrangements or nonrepeated days. Meaning and reference-answer alignment require independent human assessment.",
+    "w06_score": null
+  },
+  "decision": "Collect the frozen formal sample without mid-run tuning; retain the observed semantic issue and NEEDS_REVIEW status."
+}

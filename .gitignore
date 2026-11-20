@@ -231,5 +231,7 @@ __pycache__/
 *.db
 .vscode/
 .idea/
-# Application-owned generated drafts; canonical M3 databases remain tracked.
-data/runtime/
+
+# Generator runtime drafts and isolated pytest scratch (never canonical data)
+/data/runtime/
+/.pytest_tmp_mira/

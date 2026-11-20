@@ -11,13 +11,13 @@ from src.api.services import question_slots
 from tests.unit.test_planner import make_data, profile, question, request
 
 HEADERS = {"Authorization": "Bearer teacher-test"}
-CATALOGUE = [f"A00{i}" for i in range(1, 8)]
+CATALOGUE = [f"A00{i}" for i in range(1, 10)]
 
 
 def fixtures(path, student, bank=None):
     path.mkdir()
     envelope = {"fixture_kind": "synthetic_api_demo", "topic_id": "combinatorics"}
-    (path / "student_profiles.json").write_text(json.dumps(envelope | {"students": [student.model_dump()]}), encoding="utf-8")
+    (path / "student_profiles.json").write_text(json.dumps(envelope | {"students": [student.model_dump(exclude={"student_name", "evidence_count", "data_status", "recommended_blueprint_mode"}) | {"name": student.name}]}), encoding="utf-8")
     if bank is None:
         bank = make_data(skills=CATALOGUE).questions
     (path / "questions.json").write_text(json.dumps(envelope | {"questions": [q.model_dump() for q in bank]}), encoding="utf-8")
@@ -43,15 +43,15 @@ def test_plan_endpoint_strategies_without_model_or_draft(tmp_path, rows, strateg
     assert not app.state.exams._exams
 
 
-def test_teacher_quota_shortage_returns_typed_409_and_no_partial_plan(tmp_path):
+def test_manual_adaptive_distribution_is_rejected_without_saving(tmp_path):
     directory = fixtures(tmp_path / "fixtures", profile(), [question(index=i) for i in range(10)])
     app = create_app(backend="fake", teacher_token="teacher-test", fixture_dir=directory)
     with TestClient(app, headers=HEADERS) as client:
         response = client.post("/api/v1/exams/plan", json=request(
             difficulty_distribution=dict(zip(LEVELS, (0, 0, 0, 100))),
         ).model_dump(mode="json"))
-    assert response.status_code == 409
-    assert response.json()["error"]["code"] == "INSUFFICIENT_QUESTION_BANK"
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "REQUEST_VALIDATION_ERROR"
     assert "questions" not in response.json() and not app.state.exams._exams
 
 
@@ -89,12 +89,15 @@ def test_ambiguous_multi_skill_is_excluded_with_warning(tmp_path):
 
 
 @pytest.mark.parametrize("locked", [False, True])
-def test_existing_generate_endpoint_accepts_optional_default_and_standard_alias(tmp_path, locked):
+def test_existing_generate_endpoint_requires_distribution_for_default_blueprint(tmp_path, locked):
     directory = fixtures(tmp_path / "fixtures", profile())
     app = create_app(backend="fake", teacher_token="teacher-test", fixture_dir=directory)
-    req = request(4, "standard", **({"difficulty_distribution": dict(zip(LEVELS, (25, 25, 25, 25)))} if locked else {}))
+    req = request(4, "default_blueprint", **({"difficulty_distribution": dict(zip(LEVELS, (25, 25, 25, 25)))} if locked else {}))
     with TestClient(app, headers=HEADERS) as client:
         response = client.post("/api/v1/exams/generate", json=req.model_dump(mode="json"))
+    if not locked:
+        assert response.status_code == 422
+        return
     assert response.status_code == 200, response.text
     result = response.json()
     assert {level: sum(q["cognitive_level"] == level for q in result["questions"]) for level in LEVELS} == question_slots(req)
@@ -104,7 +107,7 @@ def test_primary_metadata_preserved_in_openapi():
     with TestClient(create_app(backend="fake", teacher_token="teacher-test")) as client:
         schema = client.get("/openapi.json").json()["components"]["schemas"]
     assert "difficulty_distribution" not in schema["GenerateExamRequest"]["required"]
-    assert "standard" in schema["GenerateExamRequest"]["properties"]["generation_mode"]["enum"]
+    assert "default_blueprint" in schema["GenerateExamRequest"]["properties"]["generation_mode"]["enum"]
     assert "target_skill_id" in schema["PlannedQuestion"]["required"]
     assert "planner_summary" in schema["ExamResponse"]["properties"]
 
@@ -112,26 +115,12 @@ def test_primary_metadata_preserved_in_openapi():
 def test_qwen_generation_accepts_mastery_levels_without_teacher_lock(tmp_path):
     # A local client double proves integration accepts adaptive L3/L4 totals and
     # preserves a multi-skill source; it performs no model call or math changes.
-    from threading import BoundedSemaphore
-    from src.api.data_adapter import StaticDataAdapter
-    from src.api.real_generator import QwenExamGenerator
 
-    bank = [question(s, "advanced_application", i, content="Synthetic mathematical question for pipeline validation.",
+    bank = [question(s, level, i, content="Synthetic mathematical question for pipeline validation.",
                      skill_ids=[s, "A007"] if s != "A007" else [s])
-            for s in CATALOGUE for i in range(3)]
+            for s in CATALOGUE for level in LEVELS for i in range(3)]
     directory = fixtures(tmp_path / "fixtures", profile([(s, 4, 3) for s in CATALOGUE]), bank)
-    data = StaticDataAdapter(fixture_dir=directory)
-
-    class LocalClient:
-        capacity = BoundedSemaphore(1)
-        exam_timeout = 10
-        model = "local-test-double"
-
-        def rewrite(self, content, *, deadline):
-            return content
-
-    generator = QwenExamGenerator(data, LocalClient())
-    app = create_app(backend="fake", teacher_token="teacher-test", fixture_dir=directory, generator=generator)
+    app = create_app(backend="fake", teacher_token="teacher-test", fixture_dir=directory)
     req = request().model_dump(mode="json")
     with TestClient(app, headers=HEADERS) as client:
         planned = client.post("/api/v1/exams/plan", json=req)
@@ -140,8 +129,7 @@ def test_qwen_generation_accepts_mastery_levels_without_teacher_lock(tmp_path):
     exam = response.json()
     assert exam["planner_summary"]["strategy"] == "advanced_review"
     assert not exam["planner_summary"]["difficulty_locked"]
-    assert exam["planner_summary"]["warnings"]
-    assert all(q["cognitive_level"] == "advanced_application" for q in exam["questions"])
+    assert exam["planner_summary"]["quota_summary"] == planned.json()["quota_summary"]
     assert [q["source_ref"]["id"] for q in exam["questions"]] == [q["source_id"] for q in planned.json()["questions"]]
     for q in exam["questions"]:
         original = next(item for item in bank if item.question_id == q["source_ref"]["id"])

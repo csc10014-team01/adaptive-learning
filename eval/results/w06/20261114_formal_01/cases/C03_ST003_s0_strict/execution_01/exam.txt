@@ -1,0 +1,69 @@
+Đề ôn tập Đại số tổ hợp — Cá nhân hóa
+EX_2a22c39047134f23984d527d4fa3b894 | student=ST003 | revision=1
+
+Cau 1 (1.0 diem) | template:EA0012
+direct | recognition | skill=A002
+Có 8 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?
+DAP AN: 28
+LOI GIAI: Chọn 2 đối tượng từ n đối tượng. Có n(n-1) cách chọn có thứ tự; mỗi cặp bị đếm hai lần, nên số cặp là n(n-1)/2.
+Thay n=8 vào quy tắc C(n,2) = n * (n - 1) / 2. Kết quả: 28.
+
+Cau 2 (1.0 diem) | template:EA0004
+direct | understanding | skill=A002
+Có 9 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?
+DAP AN: 72
+LOI GIAI: Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.
+Thay n=9 vào quy tắc N = n * n - n = n * (n - 1). Kết quả: 72.
+
+Cau 3 (1.0 diem) | template:EA0018
+direct | understanding | skill=A002
+Có 4 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?
+DAP AN: 12
+LOI GIAI: Có n! cách sắp xếp tất cả mọi người. Để đếm trường hợp A và B đứng cạnh nhau, gộp A và B thành một khối; khối có 2 thứ tự bên trong và cùng n-2 người còn lại tạo thành n-1 đơn vị, có 2*(n-1)! cách. Vậy số cách không đứng cạnh nhau là n! - 2*(n-1)!.
+Thay n=4; restricted_pair_count=2 vào quy tắc N = n! - 2 * (n - 1)!. Kết quả: 12.
+
+Cau 4 (1.0 diem) | question:QA0052
+direct | application | skill=A002
+Có 6 học sinh và 3 thầy giáo A, B, C. Hỏi có bao nhiêu cách xếp chỗ 9 người đó ngồi trên một hàng ngang có 9 chỗ sao cho mỗi thầy giáo ngồi giữa hai học sinh?
+DAP AN: 43200 cách
+LOI GIAI: Sắp 6 học sinh thành một hàng ngang, giữa 6 học sinh có 5 khoảng trống, ta chọn 3 khoảng trống và đưa 3 giáo viên vào được cách sắp thỏa yêu cầu bài toán. Vậy tất cả có: 6! × A_5^3 = 43200 cách.
+
+Cau 5 (1.0 diem) | question:QA0005
+direct | understanding | skill=A001
+Một trường THPT được cử một học sinh đi dự trại hè toàn quốc. Chọn một học sinh tiên tiến lớp 11A hoặc lớp 12B; lớp 11A có 31 học sinh tiên tiến và lớp 12B có 22 học sinh tiên tiến. Hỏi có bao nhiêu cách chọn?
+DAP AN: 53 cách chọn
+LOI GIAI: Nếu chọn một học sinh lớp 11A có 31 cách. Nếu chọn một học sinh lớp 12B có 22 cách. Theo qui tắc cộng, ta có 31 + 22 = 53 cách chọn.
+
+Cau 6 (1.0 diem) | question:QA0010
+direct | application | skill=A003
+Có bao nhiêu số tự nhiên có chín chữ số mà các chữ số được viết theo thứ tự giảm dần?
+DAP AN: 10 số tự nhiên
+LOI GIAI: Với một cách chọn 9 chữ số từ tập {0,1,2,3,4,5,6,7,8,9} ta có duy nhất một cách xếp chúng theo thứ tự giảm dần. Ta có 10 cách chọn 9 chữ số từ tập {0,1,2,3,4,5,6,7,8,9}. Do đó có 10 số tự nhiên cần tìm.
+
+Cau 7 (1.0 diem) | template:EA0013
+direct | recognition | skill=A004
+Có 5 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 12 trận. Hỏi có tất cả bao nhiêu trận đấu?
+DAP AN: 120
+LOI GIAI: Mỗi trận đấu thuộc về một cặp đội. Chọn 2 đội trong team_count đội có C(team_count,2) cách, rồi nhân với số trận mỗi cặp thi đấu.
+Thay team_count=5; matches_per_pair=12 vào quy tắc N = C(team_count, 2) * matches_per_pair = team_count * (team_count - 1) * matches_per_pair / 2. Kết quả: 120.
+
+Cau 8 (1.0 diem) | question:QA0118
+direct | understanding | skill=A005
+Một cửa hàng có 3 loại áo và 2 loại quần. Một bộ trang phục gồm một áo và một quần. Hỏi có bao nhiêu bộ trang phục khác nhau?
+DAP AN: 6
+LOI GIAI: Với mỗi loại áo có 2 cách chọn quần. Theo quy tắc nhân, số bộ trang phục là 3 × 2 = 6.
+
+Cau 9 (1.0 diem) | question:QA0119
+direct | application | skill=A006
+Một nhóm có 5 học sinh. Cần chọn 3 học sinh lần lượt giữ các chức vụ lớp trưởng, lớp phó và thư ký. Mỗi học sinh chỉ giữ một chức vụ. Hỏi có bao nhiêu cách phân công?
+DAP AN: 60
+LOI GIAI: Ba chức vụ khác nhau nên thứ tự phân công có ý nghĩa. Số cách phân công là A(5,3) = 5!/(5-3)! = 5 × 4 × 3 = 60.
+
+Cau 10 (1.0 diem) | question:QA0001
+direct | recognition | skill=A001
+Bạn Phương có 7 quyển sách Tiếng Anh và 8 quyển sách Văn học, các quyển sách là khác nhau. Hỏi bạn Phương có bao nhiêu cách chọn một quyển sách để đọc?
+DAP AN: 15 cách
+LOI GIAI: Việc chọn một quyển sách để đọc là thực hiện một trong hai hành động sau:
+Chọn một quyển sách tiếng anh: có 7 cách chọn.
+Chọn một quyển sách Văn học: có 8 cách chọn.
+Vậy có 7+8=15 cách chọn một quyển sách để đọc

@@ -1,0 +1,35 @@
+[
+  {
+    "case_id": "C04_ST003_s0_experimental",
+    "question_id": "QW_9c6e18b3051848bc9fe0463a54f4195c",
+    "template_id": "EA0013",
+    "source_statement": "Có 5 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 12 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+    "generated_question": "Một triển lãm sách có 5 cuốn sách. Mỗi cặp sách được trưng bày ở một trang catalog với 12 cách sắp xếp khác nhau. Hỏi cần bao nhiêu trang catalog để thể hiện đầy đủ tất cả các cách sắp xếp?",
+    "reference_answer": "120",
+    "review_method": "ASSISTANT_ADVISORY",
+    "human_confirmation": "PENDING",
+    "score": null
+  },
+  {
+    "case_id": "C20_ST010_s42_experimental",
+    "question_id": "QW_a6472a9e942e4f46a933d32e35221db5",
+    "template_id": "EA0012",
+    "source_statement": "Có 7 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+    "generated_question": "Mỗi lần đến cửa hàng, bạn chọn một loại đồ ăn từ 7 loại khác nhau. Mỗi loại đồ ăn được in một cách khác nhau. Hỏi số lần bạn có thể đến cửa hàng trước khi gặp lại một loại đồ ăn đã chọn trước đó?",
+    "reference_answer": "21",
+    "review_method": "ASSISTANT_ADVISORY",
+    "human_confirmation": "PENDING",
+    "score": null
+  },
+  {
+    "case_id": "C30_ST010_s2026_experimental",
+    "question_id": "QW_d909bc37e28f405ea863a7ea6f540cde",
+    "template_id": "EA0018",
+    "source_statement": "Có 8 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?",
+    "generated_question": "Một hội diễn có 8 người tham gia, gồm hai người đặc biệt gọi là A và B. Họ không được đứng cạnh nhau. Hỏi cần thiết lập bao nhiêu cấu hình khác nhau để đảm bảo hai người này không gặp nhau trong mọi buổi diễn?",
+    "reference_answer": "30240",
+    "review_method": "ASSISTANT_ADVISORY",
+    "human_confirmation": "PENDING",
+    "score": null
+  }
+]

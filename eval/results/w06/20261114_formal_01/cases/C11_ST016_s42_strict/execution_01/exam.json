@@ -1,0 +1,1373 @@
+{
+  "exam_id": "EX_b5526acff8f340bca1c21a89822d308e",
+  "student_id": "ST016",
+  "grade_level": 10,
+  "topic_id": "combinatorics",
+  "title": "Đề ôn tập Đại số tổ hợp — Khung chuẩn",
+  "generation_mode": "adaptive",
+  "total_questions": 10,
+  "duration_minutes": 45,
+  "total_score": 10.0,
+  "status": "pending_teacher_review",
+  "revision": 1,
+  "teacher_review": null,
+  "provenance": {
+    "generator": "qwen",
+    "model": "qwen3:1.7b"
+  },
+  "questions": [
+    {
+      "question_id": "QW_62ec37e590954d4f99fab82a880a43df",
+      "order_index": 1,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A001"
+      ],
+      "cognitive_level": "understanding",
+      "generate_type": "direct",
+      "content_latex": "Một trường THPT được cử một học sinh đi dự trại hè toàn quốc. Chọn một học sinh tiên tiến lớp 11A hoặc lớp 12B; lớp 11A có 31 học sinh tiên tiến và lớp 12B có 22 học sinh tiên tiến. Hỏi có bao nhiêu cách chọn?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "question",
+        "id": "QA0005"
+      },
+      "template_instance": null,
+      "template_presentation": null,
+      "source_digest": "6b96bdb8a26609c161d1c483053d92aa64eb2c88c9fc08f7d5bcc270fc83966f",
+      "target_skill_id": "A001",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "53 cách chọn",
+        "explanation": "Nếu chọn một học sinh lớp 11A có 31 cách. Nếu chọn một học sinh lớp 12B có 22 cách. Theo qui tắc cộng, ta có 31 + 22 = 53 cách chọn."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Nếu chọn một học sinh lớp 11A có 31 cách. Nếu chọn một học sinh lớp 12B có 22 cách. Theo qui tắc cộng, ta có 31 + 22 = 53 cách chọn.",
+          "score": 1.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A001 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_1819dd099c78499f80f7c4d47a5f6e77",
+      "order_index": 2,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A001",
+        "A002"
+      ],
+      "cognitive_level": "application",
+      "generate_type": "direct",
+      "content_latex": "Có bao nhiêu cách sắp xếp 3 nữ sinh, 3 nam sinh thành một hàng dọc sao cho các bạn nam và nữ\nngồi xen kẻ:",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "question",
+        "id": "QA0054"
+      },
+      "template_instance": null,
+      "template_presentation": null,
+      "source_digest": "205ce3b80524d751504892e8a897c76248c200d2231f067ea3242979e4cc8d62",
+      "target_skill_id": "A001",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "72 cách",
+        "explanation": "Chọn vị trí cho 3 nam và 3 nữ để ngồi xen kẽ có 2 cách: nam ngồi ở các vị trí 1, 3, 5 hoặc nữ ngồi ở các vị trí 1, 3, 5. Xếp 3 nam có 3! = 6 cách. Xếp 3 nữ có 3! = 6 cách. Vậy số cách xếp là 2 × 3! × 3! = 2 × 6 × 6 = 72 cách."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Chọn vị trí cho 3 nam và 3 nữ để ngồi xen kẽ có 2 cách: nam ngồi ở các vị trí 1, 3, 5 hoặc nữ ngồi ở các vị trí 1, 3, 5. Xếp 3 nam có 3! = 6 cách. Xếp 3 nữ có 3! = 6 cách. Vậy số cách xếp là 2 × 3! × 3! = 2 × 6 × 6 = 72 cách.",
+          "score": 1.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A001 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_fb9338c1fcf74f589989b63f9128372c",
+      "order_index": 3,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A002",
+        "A009"
+      ],
+      "cognitive_level": "understanding",
+      "generate_type": "direct",
+      "content_latex": "Có 3 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "template",
+        "id": "EA0004"
+      },
+      "template_instance": {
+        "instance_id": "TI_8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+        "parameters": {
+          "n": 3,
+          "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+        },
+        "signature": "8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+        "template_digest": "ea492614a2bc2389b18f3010af4e4e35a1e7e3a35753b4fcbd99eea61705f507"
+      },
+      "template_presentation": {
+        "presentation_id": "sql_direct",
+        "generate_type": "direct",
+        "config_version": "sql-direct-v1",
+        "fingerprint": "3dc61a4913c76284a0a1ae94a5e6aaf1f92e604cd776fe09f8cafd1433750bd9",
+        "verification_status": "source_direct",
+        "context_id": null
+      },
+      "source_digest": "ea492614a2bc2389b18f3010af4e4e35a1e7e3a35753b4fcbd99eea61705f507",
+      "target_skill_id": "A002",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "6",
+        "explanation": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.\nThay n=3 vào quy tắc N = n * n - n = n * (n - 1). Kết quả: 6."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Có n lựa chọn ở nhóm A và n lựa chọn ở nhóm B, nên có n^2 cặp chọn trước khi áp dụng điều kiện. Có đúng n cặp bị loại vì là các cặp đôi đã cho. Vậy N = n^2 - n.",
+          "score": 0.5
+        },
+        {
+          "step_number": 2,
+          "explanation": "Thay n=3 vào quy tắc N = n * n - n = n * (n - 1). Kết quả: 6.",
+          "score": 0.5
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Matches the author-approved presentation; supported counting answer independently checked.",
+          "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+          "Template EA0004: no verified compatible Indirect presentation; using SQL Direct.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A002 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_33c97250c5924ec6bcb4ce5514896246",
+      "order_index": 4,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A002",
+        "A003"
+      ],
+      "cognitive_level": "recognition",
+      "generate_type": "direct",
+      "content_latex": "Có 7 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "template",
+        "id": "EA0017"
+      },
+      "template_instance": {
+        "instance_id": "TI_cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+        "parameters": {
+          "n": 7,
+          "arrange_all": true,
+          "distinct": true
+        },
+        "signature": "cab1f438158394af857f3afb5b914c46a541ab0cb28d01177bf8020708b06736",
+        "template_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978"
+      },
+      "template_presentation": {
+        "presentation_id": "sql_direct",
+        "generate_type": "direct",
+        "config_version": "sql-direct-v1",
+        "fingerprint": "da5aa5e8611eeb15bc958401ed3beac9816baa85587bf0515cd77759bde4c420",
+        "verification_status": "source_direct",
+        "context_id": null
+      },
+      "source_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978",
+      "target_skill_id": "A003",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "5040",
+        "explanation": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.\nThay n=7 vào quy tắc P(n) = n!. Kết quả: 5040."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.",
+          "score": 0.5
+        },
+        {
+          "step_number": 2,
+          "explanation": "Thay n=7 vào quy tắc P(n) = n!. Kết quả: 5040.",
+          "score": 0.5
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Matches the author-approved presentation; supported counting answer independently checked.",
+          "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+          "Template EA0017: no verified compatible Indirect presentation; using SQL Direct.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A003 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_f5395d7d18414cc2b47b34103cc2dc60",
+      "order_index": 5,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A004"
+      ],
+      "cognitive_level": "application",
+      "generate_type": "direct",
+      "content_latex": "Một lớp có 6 học sinh. Giáo viên cần chọn 2 học sinh làm đại diện tham gia một hoạt động. Hỏi có bao nhiêu cách chọn?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "question",
+        "id": "QA0117"
+      },
+      "template_instance": null,
+      "template_presentation": null,
+      "source_digest": "a3a5b9248c490ed4a1102bdbf50829691bf48fb076e0f052362d9379150f8c1d",
+      "target_skill_id": "A004",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "15",
+        "explanation": "Thứ tự chọn không quan trọng nên sử dụng tổ hợp. C(6,2) = 6!/(2!4!) = 15. Vậy có 15 cách chọn."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Thứ tự chọn không quan trọng nên sử dụng tổ hợp. C(6,2) = 6!/(2!4!) = 15. Vậy có 15 cách chọn.",
+          "score": 1.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A004 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_b7b84abff7ad441882e724f9d6d67ee0",
+      "order_index": 6,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A005"
+      ],
+      "cognitive_level": "understanding",
+      "generate_type": "direct",
+      "content_latex": "Một cửa hàng có 3 loại áo và 2 loại quần. Một bộ trang phục gồm một áo và một quần. Hỏi có bao nhiêu bộ trang phục khác nhau?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "question",
+        "id": "QA0118"
+      },
+      "template_instance": null,
+      "template_presentation": null,
+      "source_digest": "531a4cdb3c5abf7d5a719528cea46f7fac668c8214107d8b598f30e7b813fc08",
+      "target_skill_id": "A005",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "6",
+        "explanation": "Với mỗi loại áo có 2 cách chọn quần. Theo quy tắc nhân, số bộ trang phục là 3 × 2 = 6."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Với mỗi loại áo có 2 cách chọn quần. Theo quy tắc nhân, số bộ trang phục là 3 × 2 = 6.",
+          "score": 1.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A005 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_04be4e01207649e1bf638265f4737557",
+      "order_index": 7,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A002",
+        "A006"
+      ],
+      "cognitive_level": "recognition",
+      "generate_type": "direct",
+      "content_latex": "Một đa giác có 9 đỉnh. Mỗi cặp có thứ tự (A, B) gồm hai đỉnh khác nhau xác định một vectơ AB theo điểm đầu A và điểm cuối B. Có bao nhiêu cặp có thứ tự (A, B) như vậy?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "template",
+        "id": "EA0015"
+      },
+      "template_instance": {
+        "instance_id": "TI_79e395461347c41783263f43386382cde5ccc34a4dc91c83c83f88baf3f3204d",
+        "parameters": {
+          "vertex_count": 9,
+          "ordered_pair": true,
+          "same_vertex_allowed": false,
+          "counting_unit": "Cặp đỉnh có thứ tự, không gộp các vectơ hình học bằng nhau"
+        },
+        "signature": "79e395461347c41783263f43386382cde5ccc34a4dc91c83c83f88baf3f3204d",
+        "template_digest": "5a58ea1d1bc17038d1ffda6c1287c802f1b30b556b900016847562335a03473c"
+      },
+      "template_presentation": {
+        "presentation_id": "sql_direct",
+        "generate_type": "direct",
+        "config_version": "sql-direct-v1",
+        "fingerprint": "4af7d58a4a6569c00892d23f21f61af81602eb627d9d713c325adf2650627e57",
+        "verification_status": "source_direct",
+        "context_id": null
+      },
+      "source_digest": "5a58ea1d1bc17038d1ffda6c1287c802f1b30b556b900016847562335a03473c",
+      "target_skill_id": "A006",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "72",
+        "explanation": "Có vertex_count cách chọn điểm đầu A. Với mỗi A, có vertex_count - 1 cách chọn điểm cuối B khác A. Vì đang đếm cặp đỉnh có thứ tự chứ không gộp các vectơ hình học trùng nhau, số trường hợp là vertex_count * (vertex_count - 1).\nThay vertex_count=9 vào quy tắc N = vertex_count * (vertex_count - 1). Kết quả: 72."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Có vertex_count cách chọn điểm đầu A. Với mỗi A, có vertex_count - 1 cách chọn điểm cuối B khác A. Vì đang đếm cặp đỉnh có thứ tự chứ không gộp các vectơ hình học trùng nhau, số trường hợp là vertex_count * (vertex_count - 1).",
+          "score": 0.5
+        },
+        {
+          "step_number": 2,
+          "explanation": "Thay vertex_count=9 vào quy tắc N = vertex_count * (vertex_count - 1). Kết quả: 72.",
+          "score": 0.5
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Áp dụng đúng quy tắc và tham số; giải thích và kết luận đúng.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Matches the author-approved presentation; supported counting answer independently checked.",
+          "Author verification of the statement and solution remains the trust boundary; teacher approval is separate.",
+          "Template EA0015: no verified compatible Indirect presentation; using SQL Direct.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A006 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_a5e218e0e533426fac9b32ef026409d9",
+      "order_index": 8,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A007"
+      ],
+      "cognitive_level": "application",
+      "generate_type": "direct",
+      "content_latex": "Một nhóm có 5 học sinh. Cần chọn 2 học sinh làm đội trưởng và đội phó. Hỏi có bao nhiêu cách chọn và phân công hai chức vụ này?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "question",
+        "id": "QA0120"
+      },
+      "template_instance": null,
+      "template_presentation": null,
+      "source_digest": "f8746eb177495fb06d243be7dd91356b07a7750a47217906b4caf607f86fd276",
+      "target_skill_id": "A007",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "20",
+        "explanation": "Chọn 2 học sinh từ 5 học sinh có C(5,2) = 10 cách. Sau đó phân công đội trưởng và đội phó có 2! = 2 cách. Tổng số cách là 10 × 2 = 20."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Chọn 2 học sinh từ 5 học sinh có C(5,2) = 10 cách. Sau đó phân công đội trưởng và đội phó có 2! = 2 cách. Tổng số cách là 10 × 2 = 20.",
+          "score": 1.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A007 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_e933b4683baa44ab9e7042d69c8abad4",
+      "order_index": 9,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A008"
+      ],
+      "cognitive_level": "advanced_application",
+      "generate_type": "direct",
+      "content_latex": "Tính giá trị biểu thức C(12,4) * A(5,2).",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "question",
+        "id": "QA0121"
+      },
+      "template_instance": null,
+      "template_presentation": null,
+      "source_digest": "09d8edbe9b5e3c358cba9ceeef04d0d85aa74fa0990777eb5fe4b84633702663",
+      "target_skill_id": "A008",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "9900",
+        "explanation": "Ta có C(12,4) = 12!/(4!8!) = 495 và A(5,2) = 5!/(5-2)! = 20. Do đó C(12,4) × A(5,2) = 495 × 20 = 9900."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Ta có C(12,4) = 12!/(4!8!) = 495 và A(5,2) = 5!/(5-2)! = 20. Do đó C(12,4) × A(5,2) = 495 × 20 = 9900.",
+          "score": 1.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A008 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    },
+    {
+      "question_id": "QW_34a019e46cde4c41b7d4df46d6a524b2",
+      "order_index": 10,
+      "topic_tag": "combinatorics",
+      "skill_ids": [
+        "A009"
+      ],
+      "cognitive_level": "recognition",
+      "generate_type": "direct",
+      "content_latex": "(Học sinh giải theo 2 cách: quy tắc đếm và hoán vị) Cho các số tự nhiên: 0, 1, 2, 3, 4.\na) Hỏi lập được bao nhiêu số tự nhiên có 5 chữ số khác nhau?\nb) Hỏi lập được bao nhiêu số tự nhiên có 5 chữ số và chữ số 3 đứng ở chính giữa?",
+      "max_score": 1.0,
+      "source_ref": {
+        "kind": "question",
+        "id": "QA0076"
+      },
+      "template_instance": null,
+      "template_presentation": null,
+      "source_digest": "f8871d892bfaa5868367d8017d0b1bc0dc596185bd2f15ff2baa0e43bdb5ff9d",
+      "target_skill_id": "A009",
+      "expression_context_id": null,
+      "answer": {
+        "correct_answer": "96; 18\na) 96\nb) 18",
+        "explanation": "Cách 1. a. Số tự nhiên cần lập có dạng abcde (a ≠ 0). Trong đó chữ số a có 4 cách chọn. Chữ số b có 4 cách chọn. Chữ số c có 3 cách chọn. Chữ số d có 2 cách chọn. Chữ số e có 1 cách chọn. Nên có tất cả 4.4.3.2.1 = 96 số thỏa mãn yêu cầu đề bài. b. Số tự nhiên cần lập có dạng ab3de (a ≠ 0). Chữ số a có 3 cách chọn. Chữ số b có 3 cách chọn. Chữ số d có 2 cách chọn. Chữ số e có 1 cách chọn. Vậy thành lập được tất cả 3.3.2 = 18 số có 5 chữ số khác nhau mà số 3 đứng chính giữa từ các số trên. Cách 2. a. Mỗi số có 5 chữ số khác nhau được thành lập từ các số trên là một hoán vị của {0; 1; 2; 3; 4}. Các số có dạng 0abcd mà a; b; c; d khác nhau là một hoán vị của các số {1; 2; 3; 4}. Nên có tất cả 5! - 4! = 96 số có 5 chữ số khác nhau được thành lập từ các số trên. b. Tương tự phần a; các số có dạng ab3de bằng với số hoán vị của 4 số {0; 1; 2; 4}. Các số có dạng 0a3cd bằng số hoán vị của 3 số {1; 2; 4}. Nên có tất cả 4! - 3! = 18 số có 5 chữ số khác nhau có số 3 đứng giữa được thành lập từ các số trên.\na) Số tự nhiên cần lập có dạng abcde (a != 0). Chữ số a có 4 cách chọn; chữ số b có 4 cách chọn; các chữ số còn lại lần lượt có 3, 2, 1 cách chọn. Vậy có 4 * 4 * 3 * 2 * 1 = 96 số.\nb) Cố định chữ số 3 ở chính giữa. Chữ số đầu tiên không thể là 0 nên có 3 cách chọn; ba chữ số còn lại có 3! cách sắp xếp. Vậy có 3 * 3! = 18 số."
+      },
+      "step_solutions": [
+        {
+          "step_number": 1,
+          "explanation": "Cách 1. a. Số tự nhiên cần lập có dạng abcde (a ≠ 0). Trong đó chữ số a có 4 cách chọn. Chữ số b có 4 cách chọn. Chữ số c có 3 cách chọn. Chữ số d có 2 cách chọn. Chữ số e có 1 cách chọn. Nên có tất cả 4.4.3.2.1 = 96 số thỏa mãn yêu cầu đề bài. b. Số tự nhiên cần lập có dạng ab3de (a ≠ 0). Chữ số a có 3 cách chọn. Chữ số b có 3 cách chọn. Chữ số d có 2 cách chọn. Chữ số e có 1 cách chọn. Vậy thành lập được tất cả 3.3.2 = 18 số có 5 chữ số khác nhau mà số 3 đứng chính giữa từ các số trên. Cách 2. a. Mỗi số có 5 chữ số khác nhau được thành lập từ các số trên là một hoán vị của {0; 1; 2; 3; 4}. Các số có dạng 0abcd mà a; b; c; d khác nhau là một hoán vị của các số {1; 2; 3; 4}. Nên có tất cả 5! - 4! = 96 số có 5 chữ số khác nhau được thành lập từ các số trên. b. Tương tự phần a; các số có dạng ab3de bằng với số hoán vị của 4 số {0; 1; 2; 4}. Các số có dạng 0a3cd bằng số hoán vị của 3 số {1; 2; 4}. Nên có tất cả 4! - 3! = 18 số có 5 chữ số khác nhau có số 3 đứng giữa được thành lập từ các số trên.\na) Số tự nhiên cần lập có dạng abcde (a != 0). Chữ số a có 4 cách chọn; chữ số b có 4 cách chọn; các chữ số còn lại lần lượt có 3, 2, 1 cách chọn. Vậy có 4 * 4 * 3 * 2 * 1 = 96 số.\nb) Cố định chữ số 3 ở chính giữa. Chữ số đầu tiên không thể là 0 nên có 3 cách chọn; ba chữ số còn lại có 3! cách sắp xếp. Vậy có 3 * 3! = 18 số.",
+          "score": 1.0
+        }
+      ],
+      "rubric": [
+        {
+          "criteria": "Lập luận đúng phương pháp và kết luận phù hợp đáp án nguồn M3.",
+          "sub_score": 1.0
+        }
+      ],
+      "validation": {
+        "auto_status": "needs_review",
+        "teacher_approved": false,
+        "review_notes": [
+          "Source answers and cognitive labels require teacher review.",
+          "Generic scoring rubric requires teacher review.",
+          "Immutable Question Bank source: original content, answer and solution; Qwen was not invoked.",
+          "Planner mvp-personalization-v4-coordinated-difficulty; personalized=False; priority_count=0/0.",
+          "diagnostic: A009 is NO_DATA; strategy=diagnostic_review.",
+          "Available wrong-question history is partial; completed-question history is not inferred.",
+          "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+          "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+          "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+          "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+          "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+        ],
+        "blocking_errors": []
+      }
+    }
+  ],
+  "planner_summary": {
+    "policy_version": "mvp-personalization-v4-coordinated-difficulty",
+    "strategy": "diagnostic_review",
+    "difficulty_locked": false,
+    "skill_classifications": {
+      "A001": "NO_DATA",
+      "A002": "NO_DATA",
+      "A003": "NO_DATA",
+      "A004": "NO_DATA",
+      "A005": "NO_DATA",
+      "A006": "NO_DATA",
+      "A007": "NO_DATA",
+      "A008": "NO_DATA",
+      "A009": "NO_DATA"
+    },
+    "quota_summary": {
+      "requested_groups": {
+        "diagnostic": 10,
+        "maintenance": 0
+      },
+      "achieved_groups": {
+        "diagnostic": 10,
+        "maintenance": 0
+      },
+      "requested_skills": {
+        "A001": 2,
+        "A002": 1,
+        "A003": 1,
+        "A004": 1,
+        "A005": 1,
+        "A006": 1,
+        "A007": 1,
+        "A008": 1,
+        "A009": 1
+      },
+      "achieved_skills": {
+        "A001": 2,
+        "A002": 1,
+        "A003": 1,
+        "A004": 1,
+        "A005": 1,
+        "A006": 1,
+        "A007": 1,
+        "A008": 1,
+        "A009": 1
+      },
+      "requested_levels": {
+        "recognition": 3,
+        "understanding": 3,
+        "application": 3,
+        "advanced_application": 1
+      },
+      "achieved_levels": {
+        "recognition": 3,
+        "understanding": 3,
+        "application": 3,
+        "advanced_application": 1
+      },
+      "requested_skill_levels": {
+        "A001": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A002": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A003": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A004": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A005": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A006": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A007": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A008": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 1
+        },
+        "A009": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        }
+      },
+      "achieved_skill_levels": {
+        "A001": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A002": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A003": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A004": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A005": {
+          "recognition": 0,
+          "understanding": 1,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A006": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        },
+        "A007": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 1,
+          "advanced_application": 0
+        },
+        "A008": {
+          "recognition": 0,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 1
+        },
+        "A009": {
+          "recognition": 1,
+          "understanding": 0,
+          "application": 0,
+          "advanced_application": 0
+        }
+      }
+    },
+    "warnings": [
+      "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+      "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+      "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+      "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+      "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+    ],
+    "selection_diagnostics": {
+      "exact_skill_level_matrix_feasible": true,
+      "exact_exam_levels_feasible": true,
+      "eligible_question_levels": {
+        "recognition": 39,
+        "understanding": 47,
+        "application": 21,
+        "advanced_application": 14
+      },
+      "eligible_template_instance_levels": {
+        "recognition": 20,
+        "understanding": 20,
+        "application": 0,
+        "advanced_application": 0
+      },
+      "cell_shortages": [],
+      "level_shortages": [],
+      "substitutions": [],
+      "fallback_policy": "Preserve difficulty before skill; exact linked-skill L1/L2 Templates first. Only if exact difficulty is infeasible: minimize changed difficulty slots, then distance; Question upward <=1, downward allowed; forbidden L4 and actual related-review cap remain hard constraints."
+    }
+  },
+  "quality_report": {
+    "rubric_version": "w06-draft-evidence-v1",
+    "policy_version": "w06-approved-integration-v1",
+    "exam_id": "EX_b5526acff8f340bca1c21a89822d308e",
+    "revision": 1,
+    "content_fingerprint": "d3ca4cbd0f318be1a5f3865ee427f5f72f53dc4264eac29e3fcc7b770ea69e9b",
+    "status": "NEEDS_REVIEW",
+    "approval_blocked": false,
+    "total_score": null,
+    "criteria": [
+      {
+        "criterion_id": "C1",
+        "status": "NEEDS_REVIEW",
+        "score": null,
+        "max_score": 35.0,
+        "method": "RULE",
+        "evidence": [
+          "Existing count, solution-step and marking-score validators passed; logical completeness is not certified.",
+          "Existing source/proof/presentation validator passed.",
+          "Content, answer and solution match the source; this does not establish mathematical correctness.",
+          "Content, answer and solution match the source; this does not establish mathematical correctness.",
+          "Independent supported computation: expected 6; recorded 6. Statement-to-model and solution quality remain separate checks.",
+          "Independent supported computation: expected 5040; recorded 5040. Statement-to-model and solution quality remain separate checks.",
+          "Content, answer and solution match the source; this does not establish mathematical correctness.",
+          "Content, answer and solution match the source; this does not establish mathematical correctness.",
+          "Independent supported computation: expected 72; recorded 72. Statement-to-model and solution quality remain separate checks.",
+          "Content, answer and solution match the source; this does not establish mathematical correctness.",
+          "Content, answer and solution match the source; this does not establish mathematical correctness.",
+          "Content, answer and solution match the source; this does not establish mathematical correctness."
+        ],
+        "warnings": [
+          "Human assessment required for statement validity, mathematical modelling, solution logic and detailed marking scheme.",
+          "Legacy bank prose has no supported mathematical specification.",
+          "Legacy bank prose has no supported mathematical specification.",
+          "Legacy bank prose has no supported mathematical specification.",
+          "Legacy bank prose has no supported mathematical specification.",
+          "Legacy bank prose has no supported mathematical specification.",
+          "Legacy bank prose has no supported mathematical specification.",
+          "Legacy bank prose has no supported mathematical specification."
+        ],
+        "checks": [
+          {
+            "code": "SOLUTION_STRUCTURE",
+            "status": "PASS",
+            "evidence": "Existing count, solution-step and marking-score validators passed; logical completeness is not certified.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_PROVENANCE",
+            "status": "PASS",
+            "evidence": "Existing source/proof/presentation validator passed.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_CONSISTENCY",
+            "status": "PASS",
+            "evidence": "Content, answer and solution match the source; this does not establish mathematical correctness.",
+            "question_ids": [
+              "QW_62ec37e590954d4f99fab82a880a43df"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "BANK_MATHEMATICS",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Legacy bank prose has no supported mathematical specification.",
+            "question_ids": [
+              "QW_62ec37e590954d4f99fab82a880a43df"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_CONSISTENCY",
+            "status": "PASS",
+            "evidence": "Content, answer and solution match the source; this does not establish mathematical correctness.",
+            "question_ids": [
+              "QW_1819dd099c78499f80f7c4d47a5f6e77"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "BANK_MATHEMATICS",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Legacy bank prose has no supported mathematical specification.",
+            "question_ids": [
+              "QW_1819dd099c78499f80f7c4d47a5f6e77"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "COUNTING_ANSWER",
+            "status": "PASS",
+            "evidence": "Independent supported computation: expected 6; recorded 6. Statement-to-model and solution quality remain separate checks.",
+            "question_ids": [
+              "QW_fb9338c1fcf74f589989b63f9128372c"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "COUNTING_ANSWER",
+            "status": "PASS",
+            "evidence": "Independent supported computation: expected 5040; recorded 5040. Statement-to-model and solution quality remain separate checks.",
+            "question_ids": [
+              "QW_33c97250c5924ec6bcb4ce5514896246"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_CONSISTENCY",
+            "status": "PASS",
+            "evidence": "Content, answer and solution match the source; this does not establish mathematical correctness.",
+            "question_ids": [
+              "QW_f5395d7d18414cc2b47b34103cc2dc60"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "BANK_MATHEMATICS",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Legacy bank prose has no supported mathematical specification.",
+            "question_ids": [
+              "QW_f5395d7d18414cc2b47b34103cc2dc60"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_CONSISTENCY",
+            "status": "PASS",
+            "evidence": "Content, answer and solution match the source; this does not establish mathematical correctness.",
+            "question_ids": [
+              "QW_b7b84abff7ad441882e724f9d6d67ee0"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "BANK_MATHEMATICS",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Legacy bank prose has no supported mathematical specification.",
+            "question_ids": [
+              "QW_b7b84abff7ad441882e724f9d6d67ee0"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "COUNTING_ANSWER",
+            "status": "PASS",
+            "evidence": "Independent supported computation: expected 72; recorded 72. Statement-to-model and solution quality remain separate checks.",
+            "question_ids": [
+              "QW_04be4e01207649e1bf638265f4737557"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_CONSISTENCY",
+            "status": "PASS",
+            "evidence": "Content, answer and solution match the source; this does not establish mathematical correctness.",
+            "question_ids": [
+              "QW_a5e218e0e533426fac9b32ef026409d9"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "BANK_MATHEMATICS",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Legacy bank prose has no supported mathematical specification.",
+            "question_ids": [
+              "QW_a5e218e0e533426fac9b32ef026409d9"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_CONSISTENCY",
+            "status": "PASS",
+            "evidence": "Content, answer and solution match the source; this does not establish mathematical correctness.",
+            "question_ids": [
+              "QW_e933b4683baa44ab9e7042d69c8abad4"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "BANK_MATHEMATICS",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Legacy bank prose has no supported mathematical specification.",
+            "question_ids": [
+              "QW_e933b4683baa44ab9e7042d69c8abad4"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "SOURCE_CONSISTENCY",
+            "status": "PASS",
+            "evidence": "Content, answer and solution match the source; this does not establish mathematical correctness.",
+            "question_ids": [
+              "QW_34a019e46cde4c41b7d4df46d6a524b2"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "BANK_MATHEMATICS",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Legacy bank prose has no supported mathematical specification.",
+            "question_ids": [
+              "QW_34a019e46cde4c41b7d4df46d6a524b2"
+            ],
+            "method": "RULE"
+          }
+        ]
+      },
+      {
+        "criterion_id": "C2",
+        "status": "NEEDS_REVIEW",
+        "score": null,
+        "max_score": 25.0,
+        "method": "RULE",
+        "evidence": [
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+          "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review."
+        ],
+        "warnings": [
+          "Human assessment required for semantic target-skill alignment and actual cognitive difficulty."
+        ],
+        "checks": [
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_62ec37e590954d4f99fab82a880a43df"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_1819dd099c78499f80f7c4d47a5f6e77"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_fb9338c1fcf74f589989b63f9128372c"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_33c97250c5924ec6bcb4ce5514896246"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_f5395d7d18414cc2b47b34103cc2dc60"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_b7b84abff7ad441882e724f9d6d67ee0"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_04be4e01207649e1bf638265f4737557"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_a5e218e0e533426fac9b32ef026409d9"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_e933b4683baa44ab9e7042d69c8abad4"
+            ],
+            "method": "RULE"
+          },
+          {
+            "code": "CURRICULUM_METADATA",
+            "status": "PASS",
+            "evidence": "Grade/topic and linked skill identifiers are in the supported catalogue; content alignment still requires human review.",
+            "question_ids": [
+              "QW_34a019e46cde4c41b7d4df46d6a524b2"
+            ],
+            "method": "RULE"
+          }
+        ]
+      },
+      {
+        "criterion_id": "C3",
+        "status": "NEEDS_REVIEW",
+        "score": null,
+        "max_score": 20.0,
+        "method": "RULE",
+        "evidence": [],
+        "warnings": [
+          "Human assessment required for Vietnamese language, question independence and rendered mathematical formatting."
+        ],
+        "checks": []
+      },
+      {
+        "criterion_id": "C4",
+        "status": "NEEDS_REVIEW",
+        "score": null,
+        "max_score": 20.0,
+        "method": "RULE",
+        "evidence": [
+          "Reported={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}; counted={'understanding': 3, 'application': 3, 'recognition': 3, 'advanced_application': 1}.",
+          "Reported={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}; counted={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}.",
+          "Requested skills/groups={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}/{'diagnostic': 10, 'maintenance': 0}; achieved={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}/{'diagnostic': 10, 'maintenance': 0}; soft deviations require pedagogical judgment.",
+          "Selected source IDs occurring in available wrong-question history: []. This is not a complete seen/mastered-question check.",
+          "Classification from generation-time evidence: {'A001': 'NO_DATA', 'A002': 'NO_DATA', 'A003': 'NO_DATA', 'A004': 'NO_DATA', 'A005': 'NO_DATA', 'A006': 'NO_DATA', 'A007': 'NO_DATA', 'A008': 'NO_DATA', 'A009': 'NO_DATA'}."
+        ],
+        "warnings": [
+          "Human assessment required for pedagogical alignment and limitations of the available learning history.",
+          "Skills without sufficient evidence: ['A001', 'A002', 'A003', 'A004', 'A005', 'A006', 'A007', 'A008', 'A009']. Missing evidence is not evidence of weakness.",
+          "Available history: 0 tests, containing wrong-question IDs only; completed/mastered-question history and thinking-error labels are not certified."
+        ],
+        "checks": [
+          {
+            "code": "REPORTED_LEVELS",
+            "status": "PASS",
+            "evidence": "Reported={'recognition': 3, 'understanding': 3, 'application': 3, 'advanced_application': 1}; counted={'understanding': 3, 'application': 3, 'recognition': 3, 'advanced_application': 1}.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "REPORTED_SKILLS",
+            "status": "PASS",
+            "evidence": "Reported={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}; counted={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "PERSONALIZATION_QUOTAS",
+            "status": "PASS",
+            "evidence": "Requested skills/groups={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}/{'diagnostic': 10, 'maintenance': 0}; achieved={'A001': 2, 'A002': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 1, 'A009': 1}/{'diagnostic': 10, 'maintenance': 0}; soft deviations require pedagogical judgment.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "PROFILE_EVIDENCE",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Skills without sufficient evidence: ['A001', 'A002', 'A003', 'A004', 'A005', 'A006', 'A007', 'A008', 'A009']. Missing evidence is not evidence of weakness.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "LEARNING_HISTORY",
+            "status": "NEEDS_REVIEW",
+            "evidence": "Available history: 0 tests, containing wrong-question IDs only; completed/mastered-question history and thinking-error labels are not certified.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "HISTORY_EXPOSURE",
+            "status": "PASS",
+            "evidence": "Selected source IDs occurring in available wrong-question history: []. This is not a complete seen/mastered-question check.",
+            "question_ids": [],
+            "method": "RULE"
+          },
+          {
+            "code": "PROFILE_CLASSIFICATION",
+            "status": "PASS",
+            "evidence": "Classification from generation-time evidence: {'A001': 'NO_DATA', 'A002': 'NO_DATA', 'A003': 'NO_DATA', 'A004': 'NO_DATA', 'A005': 'NO_DATA', 'A006': 'NO_DATA', 'A007': 'NO_DATA', 'A008': 'NO_DATA', 'A009': 'NO_DATA'}.",
+            "question_ids": [],
+            "method": "RULE"
+          }
+        ]
+      }
+    ],
+    "warnings": [],
+    "profile_snapshot": {
+      "student_id": "ST016",
+      "name": "ST016",
+      "grade_level": 10,
+      "skill_mastery": [
+        {
+          "skill_id": "A001",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A002",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A003",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A004",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A005",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A006",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A007",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A008",
+          "mastery_score": null,
+          "evidence_count": 0
+        },
+        {
+          "skill_id": "A009",
+          "mastery_score": null,
+          "evidence_count": 0
+        }
+      ],
+      "learning_history": []
+    },
+    "request_snapshot": {
+      "student_id": "ST016",
+      "generation_mode": "adaptive",
+      "selected_topic_ids": [
+        "combinatorics"
+      ],
+      "total_questions": 10,
+      "duration_minutes": 45,
+      "difficulty_distribution": null,
+      "advanced_options": {
+        "include_real_world_context": true,
+        "step_scoring_granularity": 0.25
+      }
+    },
+    "human_review": null
+  }
+}

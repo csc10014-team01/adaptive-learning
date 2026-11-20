@@ -1,0 +1,50 @@
+{
+  "sequence": 6,
+  "started_at": "2026-11-14T17:43:28.997076+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_8e965afda0861950066d7be023039b7a65c5e67a5ecfb61c2edafa3bdb126708",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "fail",
+    "question": null,
+    "reasons": [
+      "Indirect copied the Direct statement rather than contextualizing it"
+    ]
+  },
+  "template_id": "EA0013",
+  "template_instance": {
+    "instance_id": "TI_8e965afda0861950066d7be023039b7a65c5e67a5ecfb61c2edafa3bdb126708",
+    "parameters": {
+      "team_count": 2,
+      "matches_per_pair": 8
+    },
+    "signature": "8e965afda0861950066d7be023039b7a65c5e67a5ecfb61c2edafa3bdb126708",
+    "template_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "f2623e3cc1e96d747a964ef6205f420b0fe66dcf77e31655bc5c473b2e7d5261",
+    "verification_status": "experimental",
+    "context_id": "school"
+  },
+  "source_text": "Có 2 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Có 2 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?\"}",
+  "elapsed_seconds": 5.862502,
+  "finished_at": "2026-11-14T17:43:34.860651+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 5852911700,
+    "load_duration": 5528800,
+    "prompt_eval_count": 529,
+    "prompt_eval_cached_count": 1,
+    "prompt_eval_duration": 4365917000,
+    "eval_count": 37,
+    "eval_duration": 1451112000
+  }
+}

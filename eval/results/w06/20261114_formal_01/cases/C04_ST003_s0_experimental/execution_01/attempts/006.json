@@ -1,0 +1,52 @@
+{
+  "sequence": 6,
+  "started_at": "2026-11-14T17:39:28.811540+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_749699fdaa9944035263705b3ecd70e23e8cfe12079a4b0177564fcb1c3957a7",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Một triển lãm sách có 5 cuốn sách. Mỗi cặp sách được trưng bày ở một trang catalog với 12 cách sắp xếp khác nhau. Hỏi cần bao nhiêu trang catalog để thể hiện đầy đủ tất cả các cách sắp xếp?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0013",
+  "template_instance": {
+    "instance_id": "TI_749699fdaa9944035263705b3ecd70e23e8cfe12079a4b0177564fcb1c3957a7",
+    "parameters": {
+      "team_count": 5,
+      "matches_per_pair": 12
+    },
+    "signature": "749699fdaa9944035263705b3ecd70e23e8cfe12079a4b0177564fcb1c3957a7",
+    "template_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "31fec6efa5a6ff17fcfd19df574a55079b78f6d83cb5ce3cc03350847b4f976d",
+    "verification_status": "experimental",
+    "context_id": "display"
+  },
+  "source_text": "Có 5 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 12 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Một triển lãm sách có 5 cuốn sách. Mỗi cặp sách được trưng bày ở một trang catalog với 12 cách sắp xếp khác nhau. Hỏi cần bao nhiêu trang catalog để thể hiện đầy đủ tất cả các cách sắp xếp?\"\n}",
+  "elapsed_seconds": 6.865112,
+  "finished_at": "2026-11-14T17:39:35.677694+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 6854720200,
+    "load_duration": 4986000,
+    "prompt_eval_count": 531,
+    "prompt_eval_cached_count": 1,
+    "prompt_eval_duration": 4228063000,
+    "eval_count": 63,
+    "eval_duration": 2597222000
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "sequence": 8,
+  "started_at": "2026-11-14T17:41:32.986933+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_17af394801e23d59144f06a4a0fb1fbaa1793b63b7e3934797573b3794234058",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 9 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0013",
+  "template_instance": {
+    "instance_id": "TI_17af394801e23d59144f06a4a0fb1fbaa1793b63b7e3934797573b3794234058",
+    "parameters": {
+      "team_count": 9,
+      "matches_per_pair": 8
+    },
+    "signature": "17af394801e23d59144f06a4a0fb1fbaa1793b63b7e3934797573b3794234058",
+    "template_digest": "884ff0f4be99d41e1b09d589b5923f43220eb16876492b8b63955d350d52216c"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "d4d58429ae99b0b7db172c7c52a3b811f77b23627f4f8969931c0aedfc7aac2b",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 9 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 9 đội bóng. Mỗi cặp đội thi đấu với nhau đúng 8 trận. Hỏi có tất cả bao nhiêu trận đấu?\"\n}",
+  "elapsed_seconds": 1.661845,
+  "finished_at": "2026-11-14T17:41:34.649891+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 1652955900,
+    "load_duration": 6150000,
+    "prompt_eval_count": 313,
+    "prompt_eval_cached_count": 312,
+    "prompt_eval_duration": 92089000,
+    "eval_count": 39,
+    "eval_duration": 1498661000
+  }
+}

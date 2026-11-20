@@ -1,4 +1,4 @@
-#[N03] Pre-work: Chủ đề Đại số tổ hợp, Câu hỏi mẫu & Data Dictionary/Schema
+#[N02] Pre-work: Chủ đề Đại số tổ hợp, Câu hỏi mẫu & Data Dictionary/Schema
 **Owner**: Nguyen Ngoc Anh Duong
 **Issue**: #5
 **Tổng quan**: 
@@ -192,7 +192,7 @@ Bảng
 Dữ liệu sử dụng
 
 - Tests: test_id, student_id
-- test_questions: test_id, question_id, is_correct
+- test_questions: test_id, question_id, is_correct, rate_correct
 - questions: question_id, difficulty
 - question_skills: Quan hệ giữa câu hỏi và kỹ năng
 - student_skill_mastery: student_id, skill_id, mastery_score, evidence_count
@@ -213,13 +213,13 @@ Trường rate_correct chưa được sử dụng trong giai đoạn này.
 
 Công thức:
 
-                M_test = 4 * SUM(difficulty_i * is_correct_i) / SUM(difficulty_i)
+                M_test = 4 * SUM(difficulty_i * rate_correct_i) / SUM(difficulty_i)
 
 Trong đó:
 
 - M_test: Điểm mastery của kỹ năng trong bài kiểm tra.
 - difficulty_i: Độ khó của câu hỏi thứ i.
-- is_correct_i: Kết quả trả lời câu hỏi, bằng 1 nếu đúng và 0 nếu sai.
+- rate_correct_i: Kết quả trả lời câu hỏi, tỷ lệ đúng câu đó.
 - Tổng được tính trên tất cả câu hỏi thuộc kỹ năng đang xét trong bài kiểm tra.
 - Điểm mastery nằm trong khoảng từ 0 đến 4, với điều kiện độ khó của các câu hỏi lớn hơn 0.
 

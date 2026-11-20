@@ -1,0 +1,758 @@
+{
+  "phase": "pilot",
+  "run_status": "GENERATION_COMPLETE",
+  "planned_cases": 3,
+  "case_statuses": {
+    "GENERATED": 3
+  },
+  "attempted_cases": 3,
+  "qwen_calls": 10,
+  "transport_failures": 0,
+  "rejected_wordings": 0,
+  "bank_only_generated_cases": 0,
+  "human_quality_assessment": "PENDING",
+  "human_reviews": {
+    "status": "PENDING",
+    "reviewers": {
+      "R1": {
+        "assessed_cases": 0,
+        "generated_cases": 3,
+        "mean_score": null,
+        "pass_cases": 0,
+        "cases": {
+          "C01_ST016_s0_strict": {
+            "status": "PENDING",
+            "total_score": null,
+            "errors": [
+              "C1: could not convert string to float: ''",
+              "C2: could not convert string to float: ''",
+              "C3: could not convert string to float: ''",
+              "C4: could not convert string to float: ''"
+            ]
+          },
+          "C02_ST016_s0_experimental": {
+            "status": "PENDING",
+            "total_score": null,
+            "errors": [
+              "C1: could not convert string to float: ''",
+              "C2: could not convert string to float: ''",
+              "C3: could not convert string to float: ''",
+              "C4: could not convert string to float: ''"
+            ]
+          },
+          "C03_ST003_s0_strict": {
+            "status": "PENDING",
+            "total_score": null,
+            "errors": [
+              "C1: could not convert string to float: ''",
+              "C2: could not convert string to float: ''",
+              "C3: could not convert string to float: ''",
+              "C4: could not convert string to float: ''"
+            ]
+          }
+        }
+      },
+      "R2": {
+        "assessed_cases": 0,
+        "generated_cases": 3,
+        "mean_score": null,
+        "pass_cases": 0,
+        "cases": {
+          "C01_ST016_s0_strict": {
+            "status": "PENDING",
+            "total_score": null,
+            "errors": [
+              "C1: could not convert string to float: ''",
+              "C2: could not convert string to float: ''",
+              "C3: could not convert string to float: ''",
+              "C4: could not convert string to float: ''"
+            ]
+          },
+          "C02_ST016_s0_experimental": {
+            "status": "PENDING",
+            "total_score": null,
+            "errors": [
+              "C1: could not convert string to float: ''",
+              "C2: could not convert string to float: ''",
+              "C3: could not convert string to float: ''",
+              "C4: could not convert string to float: ''"
+            ]
+          },
+          "C03_ST003_s0_strict": {
+            "status": "PENDING",
+            "total_score": null,
+            "errors": [
+              "C1: could not convert string to float: ''",
+              "C2: could not convert string to float: ''",
+              "C3: could not convert string to float: ''",
+              "C4: could not convert string to float: ''"
+            ]
+          }
+        }
+      }
+    },
+    "verdict_disagreements": []
+  },
+  "w06_mean_score": null,
+  "cases": [
+    {
+      "case_id": "C01_ST016_s0_strict",
+      "student_id": "ST016",
+      "seed": 0,
+      "mode": "strict",
+      "status": "GENERATED",
+      "started_at": "2026-11-14T17:36:14.015965+07:00",
+      "execution": "execution_01",
+      "previous_executions": [],
+      "exam_id": "EX_236044688cfe4476b002bd17b9c30193",
+      "revision": 1,
+      "sources": {
+        "question": 7,
+        "template": 3
+      },
+      "quality_status": "NEEDS_REVIEW",
+      "content_fingerprint": "30d093b3bc50f2f00c6ea25fd73b91dc626e18659409a3a72d566173ca023bb6",
+      "automatic_w06_score": null,
+      "quota_summary": {
+        "requested_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "achieved_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "requested_skills": {
+          "A001": 2,
+          "A002": 1,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 1,
+          "A008": 1,
+          "A009": 1
+        },
+        "achieved_skills": {
+          "A001": 2,
+          "A002": 1,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 1,
+          "A008": 1,
+          "A009": 1
+        },
+        "requested_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "achieved_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "requested_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        },
+        "achieved_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        }
+      },
+      "warnings": [
+        "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+        "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+        "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+        "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+      ],
+      "resources": {
+        "ram_system_total_mib": null,
+        "ram_system_used_before_mib": null,
+        "ram_system_used_peak_mib": null,
+        "ram_system_peak_delta_mib": null,
+        "nvidia_vram_used_before_mib": null,
+        "nvidia_vram_used_peak_mib": null,
+        "nvidia_vram_peak_delta_mib": null,
+        "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples."
+      },
+      "final_qwen_questions": 3,
+      "experimental_questions": 0,
+      "elapsed_seconds": 11.684177,
+      "finished_at": "2026-11-14T17:36:25.703352+07:00",
+      "qwen_calls": 3,
+      "wording_retries": 0,
+      "transport_failures": 0,
+      "rejected_wordings": 0,
+      "successful_validated_wordings": 3
+    },
+    {
+      "case_id": "C02_ST016_s0_experimental",
+      "student_id": "ST016",
+      "seed": 0,
+      "mode": "experimental",
+      "status": "GENERATED",
+      "started_at": "2026-11-14T17:36:26.167465+07:00",
+      "execution": "execution_01",
+      "previous_executions": [],
+      "exam_id": "EX_8007b137717d456eaa04f7ce2b38fdb7",
+      "revision": 1,
+      "sources": {
+        "question": 7,
+        "template": 3
+      },
+      "quality_status": "NEEDS_REVIEW",
+      "content_fingerprint": "04b29542e1cba5ac82494b4c50156f445d4295fd8df4f214ba7c7cab957384fe",
+      "automatic_w06_score": null,
+      "quota_summary": {
+        "requested_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "achieved_groups": {
+          "diagnostic": 10,
+          "maintenance": 0
+        },
+        "requested_skills": {
+          "A001": 2,
+          "A002": 1,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 1,
+          "A008": 1,
+          "A009": 1
+        },
+        "achieved_skills": {
+          "A001": 2,
+          "A002": 1,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 1,
+          "A008": 1,
+          "A009": 1
+        },
+        "requested_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "achieved_levels": {
+          "recognition": 3,
+          "understanding": 3,
+          "application": 3,
+          "advanced_application": 1
+        },
+        "requested_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        },
+        "achieved_skill_levels": {
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A002": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 1
+          },
+          "A009": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        }
+      },
+      "warnings": [
+        "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+        "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+        "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+        "Question fallback for A009/recognition: selected QA0076; no feasible preferred Template assignment."
+      ],
+      "resources": {
+        "ram_system_total_mib": null,
+        "ram_system_used_before_mib": null,
+        "ram_system_used_peak_mib": null,
+        "ram_system_peak_delta_mib": null,
+        "nvidia_vram_used_before_mib": null,
+        "nvidia_vram_used_peak_mib": null,
+        "nvidia_vram_peak_delta_mib": null,
+        "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples."
+      },
+      "final_qwen_questions": 3,
+      "experimental_questions": 1,
+      "elapsed_seconds": 13.437561,
+      "finished_at": "2026-11-14T17:36:39.616259+07:00",
+      "qwen_calls": 3,
+      "wording_retries": 0,
+      "transport_failures": 0,
+      "rejected_wordings": 0,
+      "successful_validated_wordings": 3
+    },
+    {
+      "case_id": "C03_ST003_s0_strict",
+      "student_id": "ST003",
+      "seed": 0,
+      "mode": "strict",
+      "status": "GENERATED",
+      "started_at": "2026-11-14T17:36:40.085518+07:00",
+      "execution": "execution_01",
+      "previous_executions": [],
+      "exam_id": "EX_5f44346e2bbb42bfa60e8e731eff80a5",
+      "revision": 1,
+      "sources": {
+        "template": 4,
+        "question": 6
+      },
+      "quality_status": "NEEDS_REVIEW",
+      "content_fingerprint": "35ca63f0ba66b1e67b0c943e8990c4ef95c114eeb15d96bd04469d2d8121b730",
+      "automatic_w06_score": null,
+      "quota_summary": {
+        "requested_groups": {
+          "focus": 4,
+          "review": 6
+        },
+        "achieved_groups": {
+          "focus": 4,
+          "review": 6
+        },
+        "requested_skills": {
+          "A002": 4,
+          "A001": 1,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 1,
+          "A008": 0,
+          "A009": 0
+        },
+        "achieved_skills": {
+          "A002": 4,
+          "A001": 2,
+          "A003": 1,
+          "A004": 1,
+          "A005": 1,
+          "A006": 1,
+          "A007": 0,
+          "A008": 0,
+          "A009": 0
+        },
+        "requested_levels": {
+          "recognition": 3,
+          "understanding": 4,
+          "application": 3,
+          "advanced_application": 0
+        },
+        "achieved_levels": {
+          "recognition": 3,
+          "understanding": 4,
+          "application": 3,
+          "advanced_application": 0
+        },
+        "requested_skill_levels": {
+          "A002": {
+            "recognition": 1,
+            "understanding": 2,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A001": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A009": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        },
+        "achieved_skill_levels": {
+          "A002": {
+            "recognition": 1,
+            "understanding": 2,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A001": {
+            "recognition": 1,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A003": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A004": {
+            "recognition": 1,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A005": {
+            "recognition": 0,
+            "understanding": 1,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A006": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 1,
+            "advanced_application": 0
+          },
+          "A007": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A008": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          },
+          "A009": {
+            "recognition": 0,
+            "understanding": 0,
+            "application": 0,
+            "advanced_application": 0
+          }
+        }
+      },
+      "warnings": [
+        "Template EA0003 unsupported: Unsupported parameter type or missing explicit value; Question Bank fallback allowed.",
+        "Template EA0007 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0008 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0009 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0010 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Template EA0011 unsupported: Answer rule is not a supported explicit formula; Question Bank fallback allowed.",
+        "Excluded QA0040: L4 is forbidden by the assessed skill's difficulty policy.",
+        "Excluded QA0041: L4 is forbidden by the assessed skill's difficulty policy.",
+        "Excluded QA0060: L4 is forbidden by the assessed skill's difficulty policy.",
+        "Excluded QA0061: L4 is forbidden by the assessed skill's difficulty policy.",
+        "Excluded QA0070: L4 is forbidden by the assessed skill's difficulty policy.",
+        "Excluded QA0072: L4 is forbidden by the assessed skill's difficulty policy.",
+        "Question fallback for A001/understanding: selected QA0005; no feasible preferred Template assignment.",
+        "Question fallback for A005/understanding: selected QA0118; no feasible preferred Template assignment.",
+        "Question fallback for A007/recognition: selected QA0001; no feasible preferred Template assignment.",
+        "Substituted A007/recognition with A001/recognition (QA0001): requested cell has 0/1 eligible sources; same difficulty preserved via skill fallback.",
+        "Soft skill quotas deviated: requested={'A002': 4, 'A001': 1, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 1, 'A008': 0, 'A009': 0}, achieved={'A002': 4, 'A001': 2, 'A003': 1, 'A004': 1, 'A005': 1, 'A006': 1, 'A007': 0, 'A008': 0, 'A009': 0}."
+      ],
+      "resources": {
+        "ram_system_total_mib": null,
+        "ram_system_used_before_mib": null,
+        "ram_system_used_peak_mib": null,
+        "ram_system_peak_delta_mib": null,
+        "nvidia_vram_used_before_mib": null,
+        "nvidia_vram_used_peak_mib": null,
+        "nvidia_vram_peak_delta_mib": null,
+        "note": "System-wide sampled usage; NOT Ollama-exclusive. VRAM is null if nvidia-smi is unavailable. Peak may be missed between samples."
+      },
+      "final_qwen_questions": 4,
+      "experimental_questions": 0,
+      "elapsed_seconds": 12.952086,
+      "finished_at": "2026-11-14T17:36:53.048334+07:00",
+      "qwen_calls": 4,
+      "wording_retries": 0,
+      "transport_failures": 0,
+      "rejected_wordings": 0,
+      "successful_validated_wordings": 4
+    }
+  ],
+  "by_mode": {
+    "experimental": {
+      "attempted": 1,
+      "generated": 1,
+      "failed": 0,
+      "qwen_calls": 3,
+      "wording_retries": 0,
+      "mean_seconds_all_attempted": 13.437561
+    },
+    "strict": {
+      "attempted": 2,
+      "generated": 2,
+      "failed": 0,
+      "qwen_calls": 7,
+      "wording_retries": 0,
+      "mean_seconds_all_attempted": 12.3181315
+    }
+  },
+  "by_profile": {
+    "ST003": {
+      "attempted": 1,
+      "generated": 1,
+      "failed": 0,
+      "qwen_calls": 4,
+      "wording_retries": 0,
+      "mean_seconds_all_attempted": 12.952086
+    },
+    "ST016": {
+      "attempted": 2,
+      "generated": 2,
+      "failed": 0,
+      "qwen_calls": 6,
+      "wording_retries": 0,
+      "mean_seconds_all_attempted": 12.560869
+    }
+  }
+}

@@ -13,21 +13,30 @@ from fastapi.testclient import TestClient
 import pytest
 
 from src.adaptation.planner import RuleBasedPlanner
-from src.ai.qwen_client import QwenClient
+from src.ai.qwen_client import QwenClient as LegacyQwenClient
+from src.exam_generator.ai.qwen_client import QwenClient
 from src.api.data_adapter import ApiFailure, DEFAULT_BANK, StaticDataAdapter
 from src.api.main import create_app
 from src.api.m3_adapter import DEFAULT_STUDENTS, M3DataAdapter
-from src.api.schemas import ExamResponse, GenerateExamRequest, StudentProfileResponse
+from src.api.schemas import ExamResponse, StudentProfileResponse
+from src.exam_generator.api.schemas import GenerateExamRequest
 
 HEADERS = {"Authorization": "Bearer teacher-test"}
 
 
-def payload(student_id="ST001", **changes):
+def legacy_payload(student_id="ST001", **changes):
     value = dict(student_id=student_id, generation_mode="adaptive", selected_topic_ids=["combinatorics"],
                  total_questions=4, duration_minutes=45,
                  difficulty_distribution=dict(recognition=20, understanding=40, application=30, advanced_application=10))
     value.update(changes)
     return value
+
+
+def payload(student_id="ST011", **changes):
+    if changes.get("generation_mode", "adaptive") == "adaptive":
+        changes.setdefault("difficulty_distribution", None)
+        changes.setdefault("total_questions", 10)
+    return legacy_payload(student_id, **changes)
 
 
 def profile(skill="A001", mastery=1.5, evidence=1, wrong=()):
@@ -37,7 +46,7 @@ def profile(skill="A001", mastery=1.5, evidence=1, wrong=()):
 
 
 def single_request(**changes):
-    return GenerateExamRequest.model_validate(payload("S", total_questions=1,
+    return GenerateExamRequest.model_validate(legacy_payload("S", total_questions=1,
         difficulty_distribution=dict(recognition=100, understanding=0, application=0, advanced_application=0), **changes))
 
 
@@ -52,7 +61,7 @@ def ollama():
             if state["kind"] == "http_error":
                 self.send_error(503)
                 return
-            content = json.loads(value["prompt"].split("DỮ LIỆU NGUỒN:\n")[1])["question"]
+            content = json.loads(value["prompt"].split("DỮ LIỆU NGUỒN:\n")[1])["required_statement"]
             question = content + (" Có thêm 999 đối tượng." if state["kind"] == "numbers" else "")
             output = "broken" if state["kind"] == "json" else json.dumps({"question": question})
             raw = json.dumps({"model": value["model"], "done": state["kind"] != "truncated", "response": output}).encode()
@@ -128,7 +137,7 @@ def test_m3_reads_author_supplied_primary_without_modifying_canonical_bank(tmp_p
 
 def test_sufficient_evidence_targets_the_weak_primary_skill():
     planner = RuleBasedPlanner(StaticDataAdapter())
-    request = GenerateExamRequest.model_validate(payload("S", total_questions=3,
+    request = GenerateExamRequest.model_validate(legacy_payload("S", total_questions=3,
         difficulty_distribution=dict(recognition=67, understanding=33, application=0, advanced_application=0)))
     a = planner.plan(request, profile("A001", evidence=3))
     b = planner.plan(request, profile("A003", evidence=3))
@@ -145,7 +154,7 @@ def test_sufficient_evidence_targets_the_weak_primary_skill():
 ])
 def test_evidence_is_per_skill(evidence, mastery, mode, expected):
     plan = RuleBasedPlanner(StaticDataAdapter()).plan(
-        GenerateExamRequest.model_validate(payload("S", generation_mode=mode)),
+        GenerateExamRequest.model_validate(legacy_payload("S", generation_mode=mode)),
         profile(mastery=mastery, evidence=evidence))
     assert plan.personalized is expected
 
@@ -160,7 +169,7 @@ def test_history_does_not_override_mastery_or_invent_evidence():
 
 
 def test_quota_shortage_is_explicit_and_distribution_preserved():
-    request = GenerateExamRequest.model_validate(payload("S"))
+    request = GenerateExamRequest.model_validate(legacy_payload("S"))
     plan = RuleBasedPlanner(StaticDataAdapter()).plan(request, profile(evidence=3))
     assert plan.target_count == 2 and plan.achieved_target_count == 1
     assert any("1/2" in warning for warning in plan.warnings)
@@ -172,7 +181,7 @@ def test_quota_shortage_is_explicit_and_distribution_preserved():
 def test_two_evidence_never_outranks_an_eligible_weak_skill():
     p = profile(mastery=1.5, evidence=3)
     p.skill_mastery.append(type(p.skill_mastery[0])(skill_id="A003", mastery_score=1.5, evidence_count=2))
-    plan = RuleBasedPlanner(StaticDataAdapter()).plan(GenerateExamRequest.model_validate(payload("S")), p)
+    plan = RuleBasedPlanner(StaticDataAdapter()).plan(GenerateExamRequest.model_validate(legacy_payload("S")), p)
     assert plan.priority_skills == ["A001"]
     assert plan.skill_classifications["A003"] == "PARTIAL"
 
@@ -181,13 +190,12 @@ def test_real_api_m3_to_http_qwen_to_durable_draft(tmp_path, ollama):
     qwen, calls, _ = ollama
     hashes = {p: hashlib.sha256(p.read_bytes()).digest() for p in (DEFAULT_STUDENTS, DEFAULT_BANK)}
     db = tmp_path / "exams.db"
-    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, exam_db=db)
+    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, instance_seed=42, exam_db=db)
     with TestClient(app, headers=HEADERS) as c:
         plan = c.post("/api/v1/exams/plan", json=payload())
         assert plan.status_code == 200 and not calls
-        # The diversified sample gives ST001 sufficient evidence and a weak addition skill.
-        assert plan.json()["personalized"]
-        assert plan.json()["skill_classifications"]["A001"] == "WEAK"
+        assert plan.json()["strategy"] == "diagnostic_review"
+        assert any(q["source_kind"] == "template" for q in plan.json()["questions"])
         result = c.post("/api/v1/exams/generate", json=payload())
         assert result.status_code == 200, result.text
         exam = ExamResponse.model_validate(result.json())
@@ -196,35 +204,42 @@ def test_real_api_m3_to_http_qwen_to_durable_draft(tmp_path, ollama):
         assert [q.source_ref.id for q in exam.questions] == [q["source_id"] for q in plan.json()["questions"]]
         bank = {q.question_id: q for q in app.state.data.questions}
         for q in exam.questions:
-            assert q.validation.auto_status == "needs_review" and not q.validation.teacher_approved
-            assert q.answer == bank[q.source_ref.id].answer
-            assert q.target_skill_id == bank[q.source_ref.id].primary_skill_id
-            assert q.skill_ids == bank[q.source_ref.id].skill_ids
-        assert len(calls) == 4
-        assert all("ST001" not in call["prompt"] and "Gia Han" not in call["prompt"] for call in calls)
+            assert not q.validation.teacher_approved
+            if q.source_ref.kind == "question":
+                assert q.answer == bank[q.source_ref.id].answer
+                assert q.target_skill_id == bank[q.source_ref.id].primary_skill_id
+                assert q.skill_ids == bank[q.source_ref.id].skill_ids
+            else:
+                assert q.template_instance is not None
+        assert len(calls) == sum(q.source_ref.kind == "template" for q in exam.questions)
+        assert all("ST011" not in call["prompt"] and "Gia Han" not in call["prompt"] for call in calls)
         assert c.get(f"/api/v1/exams/{exam.exam_id}").json() == result.json()
     with TestClient(create_app(backend="qwen", teacher_token="teacher-test", exam_db=db), headers=HEADERS) as c:
         assert c.get(f"/api/v1/exams/{exam.exam_id}").json() == result.json()
     assert hashes == {p: hashlib.sha256(p.read_bytes()).digest() for p in hashes}
 
 
-@pytest.mark.parametrize("kind,code,status,calls_count", [
-    ("numbers", "INVALID_QWEN_OUTPUT", 502, 2), ("json", "INVALID_QWEN_OUTPUT", 502, 2),
-    ("truncated", "INVALID_QWEN_OUTPUT", 502, 2), ("http_error", "QWEN_PROVIDER_ERROR", 503, 1),
+@pytest.mark.parametrize("kind,code", [
+    ("numbers", "INVALID_QWEN_OUTPUT"), ("json", "INVALID_QWEN_OUTPUT"),
+    ("truncated", "INVALID_QWEN_OUTPUT"), ("http_error", "QWEN_PROVIDER_ERROR"),
 ])
-def test_provider_failure_never_saves_partial_exam(tmp_path, ollama, kind, code, status, calls_count):
+def test_provider_failure_falls_back_to_a_complete_bank_exam(tmp_path, ollama, kind, code):
     qwen, calls, state = ollama
     state["kind"] = kind
-    path = tmp_path / "no_partial.db"
-    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, exam_db=path)
+    path = tmp_path / "fallback.db"
+    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, instance_seed=42, exam_db=path)
     with TestClient(app, headers=HEADERS) as c:
         result = c.post("/api/v1/exams/generate", json=payload())
-    assert result.status_code == status and result.json()["error"]["code"] == code
-    assert len(calls) == calls_count and not path.exists()
+        assert result.status_code == 200, result.text
+        exam = result.json()
+        assert calls and len(exam["questions"]) == exam["total_questions"]
+        assert all(q["source_ref"]["kind"] == "question" for q in exam["questions"])
+        assert any(code in note for note in exam["planner_summary"]["warnings"])
+        assert c.get(f"/api/v1/exams/{exam['exam_id']}").json() == exam
 
 
 def test_qwen_timeout_unavailable_and_deadline(monkeypatch):
-    qwen = QwenClient()
+    qwen = LegacyQwenClient()
     for failure, status in [(TimeoutError(), 504), (URLError("offline"), 503)]:
         def fail(*args, **kwargs):
             raise failure
@@ -239,12 +254,14 @@ def test_qwen_timeout_unavailable_and_deadline(monkeypatch):
 
 def test_busy_and_plan_auth(tmp_path, ollama):
     qwen, calls, _ = ollama
-    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, exam_db=tmp_path / "e.db")
+    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, instance_seed=42, exam_db=tmp_path / "e.db")
     with TestClient(app) as c:
         assert c.post("/api/v1/exams/plan", json=payload()).status_code == 401
         qwen.capacity.acquire()
         try:
-            assert c.post("/api/v1/exams/generate", headers=HEADERS, json=payload()).status_code == 503
+            response = c.post("/api/v1/exams/generate", headers=HEADERS, json=payload())
+            assert response.status_code == 200, response.text
+            assert any("QWEN_BUSY" in note for note in response.json()["planner_summary"]["warnings"])
         finally:
             qwen.capacity.release()
         assert c.post("/api/v1/exams/plan", headers=HEADERS, json=payload()).status_code == 200
@@ -258,7 +275,7 @@ def test_json_profile_real_backend_still_uses_m3_bank(tmp_path):
         assert result.status_code == 200, result.text
         assert result.json()["priority_skills"] == []
         assert result.json()["skill_classifications"]["A001"] == "PARTIAL"
-        assert all(q["source_id"].startswith("QA") for q in result.json()["questions"])
+        assert all(q["source_id"].startswith(("QA", "EA")) for q in result.json()["questions"])
 
 
 def test_cannot_store_drafts_in_canonical_m3_database():
@@ -269,7 +286,7 @@ def test_cannot_store_drafts_in_canonical_m3_database():
 
 def test_no_candidates_for_priority_does_not_claim_personalization():
     plan = RuleBasedPlanner(StaticDataAdapter()).plan(
-        GenerateExamRequest.model_validate(payload("S")), profile("A005", evidence=3))
+        GenerateExamRequest.model_validate(legacy_payload("S")), profile("A005", evidence=3))
     assert not plan.personalized
     assert plan.target_count == 2 and plan.achieved_target_count == 0
     assert any("0/2" in warning for warning in plan.warnings)
@@ -277,7 +294,7 @@ def test_no_candidates_for_priority_does_not_claim_personalization():
 
 def test_missing_grade_or_distribution_fails_before_qwen(tmp_path, ollama):
     qwen, calls, _ = ollama
-    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, exam_db=tmp_path / "e.db")
+    app = create_app(backend="qwen", teacher_token="teacher-test", qwen_client=qwen, instance_seed=42, exam_db=tmp_path / "e.db")
     with TestClient(app, headers=HEADERS) as c:
         result = c.post("/api/v1/exams/generate", json=payload(total_questions=11))
         assert result.status_code == 422 and not calls

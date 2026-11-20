@@ -60,8 +60,6 @@ Trường `auestions.difficulty` sử dụng thang từ 1 đến 6:
 | 2 | Trung bình |
 | 3 | Khá |
 | 4 | Khó/Giỏi |
-| 5 | Rất khó/Xuất sắc |
-| 6 | Vượt cấp/đội tuyển |
 
 Độ khó là thuộc tính của câu hỏi, không phải điểm đánh giá mức độ thành thạo của học sinh.
 
@@ -224,20 +222,122 @@ Trong đó:
 - Điểm mastery nằm trong khoảng từ 0 đến 4, với điều kiện độ khó của các câu hỏi lớn hơn 0.
 
 #### 6.3.2. Tổng hợp mastery qua nhiều bài kiểm tra
+##### 6.3.2.1 Công thức tính mastery_score của kỹ năng trong bài 1 kiểm tra
 
-Sau khi tính điểm của từng kỹ năng trong mỗi bài kiểm tra, hệ thống tổng hợp kết quả từ toàn bộ các bài kiểm tra liên quan đến học sinh.
+Điểm mastery của một kỹ năng trong bài kiểm tra được tính bằng tổng điểm đóng góp của các câu hỏi đánh giá kỹ năng đó. Mỗi câu hỏi có độ khó riêng và điểm đóng góp được tính dựa trên tỷ lệ trả lời đúng nhân với độ khó của câu hỏi.
 
-Công thức:
+**Công thức:**
 
-                M_new = SUM(M_j * W_j) / SUM(W_j)
+```
+                M_j = SUM(r_ij * d_ij)
+```
 
 Trong đó:
 
-- M_new: Điểm mastery tổng hợp mới của kỹ năng. 
-- M_j: Điểm mastery của kỹ năng trong bài kiểm tra thứ j.
-- W_j: Tổng độ khó của các câu hỏi thuộc kỹ năng đó trong bài kiểm tra thứ j.
+- `M_j`: Điểm mastery của kỹ năng trong bài kiểm tra thứ j.
+- `n_j`: Số câu hỏi thuộc kỹ năng đang xét trong bài kiểm tra thứ j.
+- `r_ij`: Tỷ lệ trả lời đúng của câu hỏi thứ i trong bài kiểm tra thứ j, nằm trong khoảng [0, 1]. MVP 1 lấy r_ij = {0, 1}
+- `d_ij`: Độ khó của câu hỏi thứ i trong bài kiểm tra thứ j.
 
-Cách tính này giúp kết quả của mỗi bài kiểm tra đóng góp tương ứng với tổng độ khó của các câu hỏi thuộc kỹ năng đang xét.
+Điểm đóng góp của mỗi câu hỏi được tính theo công thức:
+
+```
+                Score_ij = r_ij * d_ij
+```
+
+Nếu một câu hỏi đánh giá nhiều kỹ năng, điểm đóng góp của câu hỏi đó được tính riêng cho từng kỹ năng tương ứng.
+
+##### 6.3.2.2 Công thức cập nhật mastery_score qua nhiều bài kiểm tra
+
+Điểm mastery tổng hợp mới của kỹ năng được tính bằng trung bình có trọng số theo độ khó của các câu hỏi thuộc kỹ năng đó qua nhiều bài kiểm tra.
+
+**Công thức:**
+
+```text
+                M_new = 4 * SUM(r_ij * d_ij) / SUM(d_ij)
+```
+
+Trong đó, các tổng được tính trên toàn bộ câu hỏi thuộc kỹ năng đang xét trong các bài kiểm tra có dữ liệu đánh giá.
+
+- `M_new`: Điểm mastery tổng hợp mới của kỹ năng, nằm trong khoảng [0, 4].
+- `k`: Tổng số bài kiểm tra có dữ liệu đánh giá kỹ năng.
+- `n_j`: Số câu hỏi thuộc kỹ năng đang xét trong bài kiểm tra thứ j.
+- `r_ij`: Tỷ lệ trả lời đúng của câu hỏi thứ i trong bài kiểm tra thứ j.
+- `d_ij`: Độ khó của câu hỏi thứ i trong bài kiểm tra thứ j.
+
+Công thức đảm bảo các câu hỏi có độ khó cao đóng góp trọng số lớn hơn vào điểm mastery tổng hợp của kỹ năng.
+
+##### 6.3.2.3. Dữ liệu ví dụ
+
+###### Bài kiểm tra 1
+
+| Câu hỏi | Difficulty | Rate_correct | Điểm đóng góp (`rate_correct * difficulty`) |
+|---|---:|---:|---:|
+| Q1 | 1 | 1.0 | 1.0 |
+| Q2 | 2 | 0.5 | 1.0 |
+| Q3 | 4 | 0.0 | 0.0 |
+| **Tổng** | **7** | | **2.0** |
+
+Tính mastery của kỹ năng trong bài kiểm tra 1:
+
+```text
+M_1 = 1.0 * 1 + 0.5 * 2 + 0.0 * 4
+    = 1.0 + 1.0 + 0.0
+    = 2.0
+```
+
+###### Bài kiểm tra 2
+
+| Câu hỏi | Difficulty | Rate_correct | Điểm đóng góp (`rate_correct * difficulty`) |
+|---|---:|---:|---:|
+| Q1 | 2 | 1.0 | 2.0 |
+| Q2 | 3 | 1.0 | 3.0 |
+| Q3 | 4 | 0.5 | 2.0 |
+| **Tổng** | **9** | | **7.0** |
+
+Tính mastery của kỹ năng trong bài kiểm tra 2:
+
+```text
+M_2 = 1.0 * 2 + 1.0 * 3 + 0.5 * 4
+    = 2.0 + 3.0 + 2.0
+    = 7.0
+```
+
+###### Tính `M_new`
+
+Cộng điểm đóng góp của tất cả câu hỏi thuộc kỹ năng trong cả hai bài kiểm tra:
+
+```text
+Tong_diem_dong_gop = M_1 + M_2
+                   = 2.0 + 7.0
+                   = 9.0
+```
+
+Cộng tổng độ khó của tất cả câu hỏi:
+
+```text
+Tong_difficulty = 7 + 9
+                = 16
+```
+
+Thay vào công thức:
+
+```text
+M_new = 4 * 9.0 / 16
+      = 36 / 16
+      = 2.25
+```
+
+**Kết quả: `M_new = 2.25` trên thang điểm `[0, 4]`.**
+
+###### Diễn giải
+
+Trong ví dụ này, kỹ năng A001 có mastery tổng hợp là **2.25/4**.
+
+Công thức dùng độ khó làm trọng số: câu hỏi có difficulty cao hơn sẽ có ảnh hưởng lớn hơn đến kết quả tổng hợp. Tỷ lệ trả lời đúng của từng câu vẫn quyết định mức điểm đóng góp thực tế.
+
+> Lưu ý: `M_j` là tổng điểm đóng góp chưa chuẩn hóa trong một bài kiểm tra; `M_new` là điểm tổng hợp đã chuẩn hóa về thang `[0, 4]`. Vì vậy, không nên diễn giải trực tiếp `M_j` như một điểm mastery trên thang `[0, 4]`.
+
 
 #### 6.3.3. Cập nhật evidence_count
 
