@@ -1,0 +1,53 @@
+{
+  "sequence": 5,
+  "started_at": "2026-11-14T17:41:21.818195+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_e1dfcb9ed93d9b4632368018348c92c2ef0a44327e56f6bf374e621c4758f46b",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 11 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0018",
+  "template_instance": {
+    "instance_id": "TI_e1dfcb9ed93d9b4632368018348c92c2ef0a44327e56f6bf374e621c4758f46b",
+    "parameters": {
+      "n": 11,
+      "restricted_pair_count": 2,
+      "adjacent_forbidden": true,
+      "people_distinct": true
+    },
+    "signature": "e1dfcb9ed93d9b4632368018348c92c2ef0a44327e56f6bf374e621c4758f46b",
+    "template_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "aeca3a19f391989c5fb01fba45a229084a51812dec73d6118229912a59193648",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 11 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 11 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?\"\n}",
+  "elapsed_seconds": 2.037748,
+  "finished_at": "2026-11-14T17:41:23.856949+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 2029433200,
+    "load_duration": 4989000,
+    "prompt_eval_count": 382,
+    "prompt_eval_cached_count": 381,
+    "prompt_eval_duration": 64322999,
+    "eval_count": 50,
+    "eval_duration": 1918990000
+  }
+}

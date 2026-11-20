@@ -1,0 +1,12 @@
+{
+  "model": "qwen3:1.7b",
+  "prompt": "Reply only: OK",
+  "stream": false,
+  "think": false,
+  "keep_alive": "5m",
+  "options": {
+    "temperature": 0,
+    "seed": 42,
+    "num_predict": 16
+  }
+}

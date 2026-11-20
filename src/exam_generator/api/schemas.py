@@ -15,6 +15,11 @@ from pydantic import (
     model_validator,
 )
 
+from src.exam_generator.validation.quality_contracts import (
+    EvaluationReport,
+    HumanQualityReview,
+)
+
 Identifier = Annotated[
     str, Field(strict=True, min_length=1, max_length=128, pattern=r"^\S+$")
 ]
@@ -376,6 +381,7 @@ class ApproveExamRequest(ContractModel):
     # Optional individual review acknowledgements, independent of whole-exam approval.
     accepted_question_ids: list[Identifier] = Field(default_factory=list)
     notes: Annotated[str, Field(max_length=2000)] = ""
+    quality_review: HumanQualityReview | None = None
 
 
 class RegenerateQuestionRequest(ContractModel):
@@ -398,6 +404,7 @@ class ExamResponse(ContractModel):
     provenance: Provenance
     questions: Annotated[list[ExamQuestion], Field(min_length=1)]
     planner_summary: PlannerSummary | None = None
+    quality_report: EvaluationReport | None = None
 
     @model_validator(mode="after")
     def complete_exam(self) -> Self:

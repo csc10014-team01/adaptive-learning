@@ -6,6 +6,7 @@ from pydantic import ValidationError
 
 from src.exam_generator.api.data_adapter import ApiFailure
 from src.exam_generator.api.schemas import ApproveExamRequest, ExamResponse
+from src.exam_generator.validation.exam_quality import ExamQualityEvaluator
 
 
 def check_revision(exam: ExamResponse, expected_revision: int) -> None:
@@ -34,7 +35,9 @@ def require_template_regeneration(exam, question_id):
     return question
 
 
-def approve_exam(exam: ExamResponse, request: ApproveExamRequest) -> ExamResponse:
+def approve_exam(
+    exam: ExamResponse, request: ApproveExamRequest, *, evaluator=None
+) -> ExamResponse:
     check_revision(exam, request.expected_revision)
     if exam.status != "pending_teacher_review":
         raise ApiFailure(409, "EXAM_ALREADY_APPROVED", "Exam has already been approved")
@@ -67,6 +70,7 @@ def approve_exam(exam: ExamResponse, request: ApproveExamRequest) -> ExamRespons
             "INVALID_QUESTION_REVIEW",
             "Individual review IDs must be distinct questions in this draft",
         )
+    (evaluator or ExamQualityEvaluator()).require_approval_ready(exam)
     value = exam.model_dump(mode="python")
     value.update(
         status="approved",
@@ -79,6 +83,7 @@ def approve_exam(exam: ExamResponse, request: ApproveExamRequest) -> ExamRespons
     for question in value["questions"]:
         if question["question_id"] in accepted:
             question["validation"]["teacher_approved"] = True
+    value["quality_report"]["revision"] = value["revision"]
     return ExamResponse.model_validate(value)
 
 
@@ -87,7 +92,7 @@ def validate_regeneration(
 ) -> None:
     """Template math/presentation may change; source, quotas and scoring stay fixed."""
     old_target = require_template_regeneration(original, question_id)
-    allowed = {"questions", "status", "revision", "teacher_review", "provenance"}
+    allowed = {"questions", "status", "revision", "teacher_review", "provenance", "quality_report"}
     if (
         updated.status != "pending_teacher_review"
         or updated.revision != original.revision + 1

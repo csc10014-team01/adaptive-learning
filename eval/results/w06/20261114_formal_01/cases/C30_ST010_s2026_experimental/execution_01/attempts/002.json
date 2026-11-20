@@ -1,0 +1,50 @@
+{
+  "sequence": 2,
+  "started_at": "2026-11-14T17:44:22.278479+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_cab46a4a6ed619df369a974f19bb96557e3bf5fb845e7f45727b9daed730c23f",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "fail",
+    "question": null,
+    "reasons": [
+      "Changed or missing numeric facts"
+    ]
+  },
+  "template_id": "EA0012",
+  "template_instance": {
+    "instance_id": "TI_cab46a4a6ed619df369a974f19bb96557e3bf5fb845e7f45727b9daed730c23f",
+    "parameters": {
+      "n": 9,
+      "pair_order_matters": false
+    },
+    "signature": "cab46a4a6ed619df369a974f19bb96557e3bf5fb845e7f45727b9daed730c23f",
+    "template_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "a0ff087cd5896890fafb45fa6c700ae82f3a598f4fbfab756082d87adfd828c9",
+    "verification_status": "experimental",
+    "context_id": "display"
+  },
+  "source_text": "Có 9 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Một triển lãm sách có 9 cuốn sách khác nhau. Mỗi trang in một bộ 2 cuốn sách khác nhau và không phân biệt thứ tự. Hỏi cần bao nhiêu trang in để in tất cả các bộ 2 cuốn sách khác nhau mà không có trùng lặp?\"}",
+  "elapsed_seconds": 4.932516,
+  "finished_at": "2026-11-14T17:44:27.212420+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4920121800,
+    "load_duration": 8213000,
+    "prompt_eval_count": 536,
+    "prompt_eval_cached_count": 335,
+    "prompt_eval_duration": 1883262000,
+    "eval_count": 70,
+    "eval_duration": 2967882000
+  }
+}

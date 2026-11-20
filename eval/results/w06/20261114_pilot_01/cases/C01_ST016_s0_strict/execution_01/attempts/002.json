@@ -1,0 +1,52 @@
+{
+  "sequence": 2,
+  "started_at": "2026-11-14T17:36:18.528347+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+  "generate_type": "direct",
+  "validation": {
+    "status": "pass",
+    "question": "Có 5 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+    "reasons": [
+      "Matches the author-approved presentation; supported counting answer independently checked.",
+      "Author verification of the statement and solution remains the trust boundary; teacher approval is separate."
+    ]
+  },
+  "template_id": "EA0017",
+  "template_instance": {
+    "instance_id": "TI_6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+    "parameters": {
+      "n": 5,
+      "arrange_all": true,
+      "distinct": true
+    },
+    "signature": "6a9ba7970af02da6675ba6eedcad07e328188e28a8e1a0b0853a909abe21c029",
+    "template_digest": "380e1259a35bcdd26e8d3e2e0854a1f787f6114e13b10adca97048e067206978"
+  },
+  "presentation": {
+    "presentation_id": "sql_direct",
+    "generate_type": "direct",
+    "config_version": "sql-direct-v1",
+    "fingerprint": "da5aa5e8611eeb15bc958401ed3beac9816baa85587bf0515cd77759bde4c420",
+    "verification_status": "source_direct",
+    "context_id": null
+  },
+  "source_text": "Có 5 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 5 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?\"\n}",
+  "elapsed_seconds": 2.0752,
+  "finished_at": "2026-11-14T17:36:20.604474+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 2067447300,
+    "load_duration": 4387100,
+    "prompt_eval_count": 320,
+    "prompt_eval_cached_count": 165,
+    "prompt_eval_duration": 807501000,
+    "eval_count": 35,
+    "eval_duration": 1229166000
+  }
+}

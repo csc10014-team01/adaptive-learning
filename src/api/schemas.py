@@ -20,6 +20,7 @@ from src.exam_generator.api.schemas import (
 from src.exam_generator.api.schemas import (
     RegenerateQuestionRequest as RegenerateQuestionRequest,  # noqa: PLC0414 -- Public compatibility re-export.
 )
+from src.exam_generator.validation.quality_contracts import EvaluationReport
 
 Identifier = Annotated[
     str, Field(strict=True, min_length=1, max_length=128, pattern=r"^\S+$")
@@ -310,6 +311,7 @@ class ExamResponse(ContractModel):
     revision: PositiveInt = 1
     teacher_review: TeacherReview | None = None
     planner_summary: PlannerSummary | None = None
+    quality_report: EvaluationReport | None = None
     provenance: Provenance
     questions: Annotated[list[ExamQuestion], Field(min_length=1)]
 

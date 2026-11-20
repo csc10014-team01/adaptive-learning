@@ -1,0 +1,50 @@
+{
+  "sequence": 2,
+  "started_at": "2026-11-14T17:41:07.663677+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 0,
+  "feedback": "",
+  "source_id": "TI_8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "fail",
+    "question": null,
+    "reasons": [
+      "Indirect copied the Direct statement rather than contextualizing it"
+    ]
+  },
+  "template_id": "EA0004",
+  "template_instance": {
+    "instance_id": "TI_8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+    "parameters": {
+      "n": 3,
+      "condition": "Hai người được chọn không thuộc cùng cặp đôi"
+    },
+    "signature": "8fe28306e2cb2b288dd46efed8dffb42e9dddcbe981cd6ba903ee0aa534e10e0",
+    "template_digest": "ea492614a2bc2389b18f3010af4e4e35a1e7e3a35753b4fcbd99eea61705f507"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "3cde84c69cb9716cea5b3bae4cfbd55fb0a42374838b7c77598fd5d0d44f63fa",
+    "verification_status": "experimental",
+    "context_id": "club"
+  },
+  "source_text": "Có 3 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?",
+  "http_status": 200,
+  "raw_model_response": "{\n  \"question\": \"Có 3 cặp đôi, mỗi cặp gồm một người thuộc nhóm A và một người thuộc nhóm B. Chọn một người từ nhóm A và một người từ nhóm B sao cho họ không phải là một cặp đôi đã cho. Hỏi có bao nhiêu cách chọn?\"\n}",
+  "elapsed_seconds": 6.919924,
+  "finished_at": "2026-11-14T17:41:14.584846+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 6909219000,
+    "load_duration": 5760000,
+    "prompt_eval_count": 542,
+    "prompt_eval_cached_count": 1,
+    "prompt_eval_duration": 4313807000,
+    "eval_count": 65,
+    "eval_duration": 2557473000
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "sequence": 7,
+  "started_at": "2026-11-14T17:44:43.868085+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 1,
+  "feedback": "Lần trước không hợp lệ: Indirect still asks the Direct counting operation; ask a contextual outcome instead",
+  "source_id": "TI_875fb78472e60969f487d0cd3b9d337b1337c7ea76bf6a7118f65b2770462789",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Một hội diễn có 8 người tham gia, gồm hai người đặc biệt gọi là A và B. Họ không được đứng cạnh nhau. Hỏi cần thiết lập bao nhiêu cấu hình khác nhau để đảm bảo hai người này không gặp nhau trong mọi buổi diễn?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0018",
+  "template_instance": {
+    "instance_id": "TI_875fb78472e60969f487d0cd3b9d337b1337c7ea76bf6a7118f65b2770462789",
+    "parameters": {
+      "n": 8,
+      "restricted_pair_count": 2,
+      "adjacent_forbidden": true,
+      "people_distinct": true
+    },
+    "signature": "875fb78472e60969f487d0cd3b9d337b1337c7ea76bf6a7118f65b2770462789",
+    "template_digest": "c600dee265c508ad5830911a7cc06fef2af589389a8a222470227ec304c622ef"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "bc435ce48c25900a6c41339da7e7e27f0de71c4664c53d9a95476a8a22e2abc1",
+    "verification_status": "experimental",
+    "context_id": "school"
+  },
+  "source_text": "Có 8 người phân biệt xếp thành một hàng. Hai người được chỉ định là A và B, và họ không được đứng cạnh nhau. Hỏi có bao nhiêu cách sắp xếp?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Một hội diễn có 8 người tham gia, gồm hai người đặc biệt gọi là A và B. Họ không được đứng cạnh nhau. Hỏi cần thiết lập bao nhiêu cấu hình khác nhau để đảm bảo hai người này không gặp nhau trong mọi buổi diễn?\"}",
+  "elapsed_seconds": 4.964656,
+  "finished_at": "2026-11-14T17:44:48.833884+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4953462900,
+    "load_duration": 5878000,
+    "prompt_eval_count": 588,
+    "prompt_eval_cached_count": 343,
+    "prompt_eval_duration": 2197202000,
+    "eval_count": 65,
+    "eval_duration": 2738417000
+  }
+}

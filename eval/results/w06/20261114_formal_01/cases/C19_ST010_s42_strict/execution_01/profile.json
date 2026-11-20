@@ -1,0 +1,61 @@
+{
+  "student_id": "ST010",
+  "name": "ST010",
+  "grade_level": 10,
+  "skill_mastery": [
+    {
+      "skill_id": "A001",
+      "mastery_score": 2.6,
+      "evidence_count": 6
+    },
+    {
+      "skill_id": "A002",
+      "mastery_score": 2.0,
+      "evidence_count": 5
+    },
+    {
+      "skill_id": "A003",
+      "mastery_score": 3.8,
+      "evidence_count": 3
+    },
+    {
+      "skill_id": "A004",
+      "mastery_score": 2.2,
+      "evidence_count": 3
+    },
+    {
+      "skill_id": "A005",
+      "mastery_score": 2.0,
+      "evidence_count": 4
+    },
+    {
+      "skill_id": "A006",
+      "mastery_score": 2.0,
+      "evidence_count": 4
+    },
+    {
+      "skill_id": "A007",
+      "mastery_score": 3.0,
+      "evidence_count": 3
+    },
+    {
+      "skill_id": "A008",
+      "mastery_score": 3.4,
+      "evidence_count": 3
+    },
+    {
+      "skill_id": "A009",
+      "mastery_score": 2.0,
+      "evidence_count": 3
+    }
+  ],
+  "learning_history": [
+    {
+      "test_id": "TA0011",
+      "wrong_questions": [
+        "QA0016",
+        "QA0065"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "sequence": 3,
+  "started_at": "2026-11-14T17:42:12.066084+07:00",
+  "transport_status": "SUCCESS",
+  "attempt_index": 1,
+  "feedback": "Lần trước không hợp lệ: Indirect still asks the Direct counting operation; ask a contextual outcome instead",
+  "source_id": "TI_296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+  "generate_type": "indirect",
+  "validation": {
+    "status": "needs_review",
+    "question": "Mỗi lần đến cửa hàng, bạn chọn một loại đồ ăn từ 7 loại khác nhau. Mỗi loại đồ ăn được in một cách khác nhau. Hỏi số lần bạn có thể đến cửa hàng trước khi gặp lại một loại đồ ăn đã chọn trước đó?",
+    "reasons": [
+      "Diễn đạt Indirect thử nghiệm — chưa kiểm chứng đầy đủ về ngữ nghĩa toán học.",
+      "Basic JSON, source/numeric and detectable constraint checks only; semantic and cognitive equivalence are NOT verified.",
+      "Answer and solution remain computed by the backend, not Qwen."
+    ]
+  },
+  "template_id": "EA0012",
+  "template_instance": {
+    "instance_id": "TI_296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+    "parameters": {
+      "n": 7,
+      "pair_order_matters": false
+    },
+    "signature": "296afae7003316eb6c1478b7acd078d344e05cb3645fb7514eab17a721631a3e",
+    "template_digest": "15b67962599ed4aff4ff322a914fd351ae5308ee2eab3009639a8a9ef176032e"
+  },
+  "presentation": {
+    "presentation_id": "experimental_indirect",
+    "generate_type": "indirect",
+    "config_version": "experimental-indirect-v1",
+    "fingerprint": "559a0dfea1a36cd9a2bd573e20ca5c0f548c7d863de7c60780edfafcbe2e50b3",
+    "verification_status": "experimental",
+    "context_id": "event"
+  },
+  "source_text": "Có 7 đối tượng phân biệt. Mỗi cặp gồm hai đối tượng khác nhau và không phân biệt thứ tự. Hỏi có bao nhiêu cặp?",
+  "http_status": 200,
+  "raw_model_response": "{\"question\": \"Mỗi lần đến cửa hàng, bạn chọn một loại đồ ăn từ 7 loại khác nhau. Mỗi loại đồ ăn được in một cách khác nhau. Hỏi số lần bạn có thể đến cửa hàng trước khi gặp lại một loại đồ ăn đã chọn trước đó?\"}",
+  "elapsed_seconds": 4.297133,
+  "finished_at": "2026-11-14T17:42:16.364350+07:00",
+  "ollama_metrics": {
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4286563100,
+    "load_duration": 5031700,
+    "prompt_eval_count": 559,
+    "prompt_eval_cached_count": 335,
+    "prompt_eval_duration": 1799826000,
+    "eval_count": 62,
+    "eval_duration": 2471185000
+  }
+}

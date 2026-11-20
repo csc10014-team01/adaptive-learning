@@ -1,0 +1,70 @@
+Đề ôn tập Đại số tổ hợp — Cá nhân hóa
+EX_3872e251e5974b9694cf4575fdaab661 | student=ST004 | revision=1
+
+Cau 1 (1.0 diem) | question:QA0001
+direct | recognition | skill=A001
+Bạn Phương có 7 quyển sách Tiếng Anh và 8 quyển sách Văn học, các quyển sách là khác nhau. Hỏi bạn Phương có bao nhiêu cách chọn một quyển sách để đọc?
+DAP AN: 15 cách
+LOI GIAI: Việc chọn một quyển sách để đọc là thực hiện một trong hai hành động sau:
+Chọn một quyển sách tiếng anh: có 7 cách chọn.
+Chọn một quyển sách Văn học: có 8 cách chọn.
+Vậy có 7+8=15 cách chọn một quyển sách để đọc
+
+Cau 2 (1.0 diem) | question:QA0002
+direct | recognition | skill=A001
+Một bạn muốn đi từ tỉnh A đến tỉnh B trong một ngày nhất định. Biết rằng trong ngày hôm đó từ
+tỉnh A đến tỉnh B có 14 chuyến ô tô, 5 chuyến tàu. Hỏi bạn đó có bao nhiêu sự lựa chọn để đi từ A đến
+B?
+DAP AN: 19 cách
+LOI GIAI: Bạn đó đi từ tỉnh A đến tỉnh B bằng tàu có: 14 cách.
+Bạn đó đi từ tỉnh A đến tỉnh B bằng ô tô có: 5 cách.
+Vậy bạn đó có: 14+5=19 sự lựa chọn. 
+
+Cau 3 (1.0 diem) | question:QA0005
+direct | understanding | skill=A001
+Một trường THPT được cử một học sinh đi dự trại hè toàn quốc. Chọn một học sinh tiên tiến lớp 11A hoặc lớp 12B; lớp 11A có 31 học sinh tiên tiến và lớp 12B có 22 học sinh tiên tiến. Hỏi có bao nhiêu cách chọn?
+DAP AN: 53 cách chọn
+LOI GIAI: Nếu chọn một học sinh lớp 11A có 31 cách. Nếu chọn một học sinh lớp 12B có 22 cách. Theo qui tắc cộng, ta có 31 + 22 = 53 cách chọn.
+
+Cau 4 (1.0 diem) | question:QA0118
+direct | understanding | skill=A005
+Một cửa hàng có 3 loại áo và 2 loại quần. Một bộ trang phục gồm một áo và một quần. Hỏi có bao nhiêu bộ trang phục khác nhau?
+DAP AN: 6
+LOI GIAI: Với mỗi loại áo có 2 cách chọn quần. Theo quy tắc nhân, số bộ trang phục là 3 × 2 = 6.
+
+Cau 5 (1.0 diem) | question:QA0008
+direct | understanding | skill=A001
+Một cuộc thi tìm hiểu Việt Nam có 8 đề tài lịch sử, 7 đề tài thiên nhiên, 10 đề tài con người và 6 đề tài văn hóa. Mỗi thí sinh chọn một đề tài. Có bao nhiêu lựa chọn?
+DAP AN: 31 cách chọn
+LOI GIAI: Nếu chọn đề tài về lịch sử có 8 cách. Nếu chọn đề tài về thiên nhiên có 7 cách. Nếu chọn đề tài về con người có 10 cách. Nếu chọn đề tài về văn hóa có 6 cách. Theo qui tắc cộng, ta có 8 + 7 + 10 + 6 = 31 cách chọn.
+
+Cau 6 (1.0 diem) | question:QA0052
+direct | application | skill=A002
+Có 6 học sinh và 3 thầy giáo A, B, C. Hỏi có bao nhiêu cách xếp chỗ 9 người đó ngồi trên một hàng ngang có 9 chỗ sao cho mỗi thầy giáo ngồi giữa hai học sinh?
+DAP AN: 43200 cách
+LOI GIAI: Sắp 6 học sinh thành một hàng ngang, giữa 6 học sinh có 5 khoảng trống, ta chọn 3 khoảng trống và đưa 3 giáo viên vào được cách sắp thỏa yêu cầu bài toán. Vậy tất cả có: 6! × A_5^3 = 43200 cách.
+
+Cau 7 (1.0 diem) | template:EA0017
+direct | recognition | skill=A003
+Có 8 phần tử phân biệt. Hỏi có bao nhiêu cách sắp xếp tất cả các phần tử thành một hàng?
+DAP AN: 40320
+LOI GIAI: Vị trí đầu có n lựa chọn, vị trí tiếp theo có n-1 lựa chọn, tiếp tục cho đến vị trí cuối có 1 lựa chọn. Theo quy tắc nhân, có n! cách sắp xếp. Với n = 0, quy ước 0! = 1.
+Thay n=8 vào quy tắc P(n) = n!. Kết quả: 40320.
+
+Cau 8 (1.0 diem) | question:QA0101
+direct | understanding | skill=A004
+Trong một giải thi đấu bóng đá có 20 đội tham gia với thể thức thi đấu vòng tròn. Cứ hai đội thì gặp nhau đúng một lần. Hỏi có tất cả bao nhiêu trận đấu xảy ra?
+DAP AN: 30240
+LOI GIAI: Xếp 8 người thành hàng ngang có P8 cách. Xếp 8 người thành hàng ngang sao cho 2 thầy giáo đứng cạnh nhau có 7.2!.6! cách. Vậy số cách xếp cần tìm là: P(8) − 7.2!.6! = 30240 cách.
+
+Cau 9 (1.0 diem) | question:QA0119
+direct | application | skill=A006
+Một nhóm có 5 học sinh. Cần chọn 3 học sinh lần lượt giữ các chức vụ lớp trưởng, lớp phó và thư ký. Mỗi học sinh chỉ giữ một chức vụ. Hỏi có bao nhiêu cách phân công?
+DAP AN: 60
+LOI GIAI: Ba chức vụ khác nhau nên thứ tự phân công có ý nghĩa. Số cách phân công là A(5,3) = 5!/(5-3)! = 5 × 4 × 3 = 60.
+
+Cau 10 (1.0 diem) | question:QA0027
+direct | advanced_application | skill=A001
+Có 10 quả cầu đỏ được đánh số từ 1 đến 10, 7 quả cầu xanh được đánh số từ 1 đến 7 và 8 quả cầu vàng được đánh số từ 1 đến 8. Hỏi có bao nhiêu cách lấy ra 3 quả cầu khác màu và khác số?
+DAP AN: 392 cách
+LOI GIAI: Ta chọn các quả cầu theo trình tự sau: Chọn quả xanh: 7 cách chọn. Chọn quả cầu vàng: có 7 cách chọn. Chọn quả cầu đỏ: có 8 cách chọn. Vậy có tất cả 7 × 7 × 8 = 392 cách chọn.
