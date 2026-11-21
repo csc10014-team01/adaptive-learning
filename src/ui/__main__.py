@@ -21,6 +21,7 @@ def main():
         help="Use existing M3 questions without calling Qwen",
     )
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--grading", action="store_true", help="Open the separate AI grading page (always real Qwen for nonblank answers)")
     parser.add_argument(
         "--no-browser",
         action="store_true",
@@ -42,7 +43,7 @@ def main():
         teacher_token=token,
     )
     server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=args.port))
-    url = f"http://127.0.0.1:{args.port}/"
+    url = f"http://127.0.0.1:{args.port}/" + ("grading" if args.grading else "")
     if not args.no_browser:
 
         def open_workspace():
@@ -56,8 +57,10 @@ def main():
 
         Thread(target=open_workspace, daemon=True).start()
     print(f"Teacher workspace: {url}")
+    if args.grading:
+        print("Grading requires local Ollama and GRADING_MODEL; --fake affects generation only.")
     print(
-        "Demo: no Qwen inference."
+        ("Generation demo: no Qwen inference for generation." if args.grading else "Demo: no Qwen inference.")
         if args.fake
         else "Generation requires local Ollama with the configured Qwen model."
     )

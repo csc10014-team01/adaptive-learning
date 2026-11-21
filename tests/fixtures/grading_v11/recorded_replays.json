@@ -1,0 +1,1480 @@
+[
+  {
+    "name": "P01",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P01",
+      "question_text": "Có 5 quyển sách Toán và 9 quyển sách Văn, tất cả khác nhau. Chọn đúng một quyển để đọc. Có bao nhiêu cách?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Xác định hai nhóm lựa chọn loại trừ nhau.",
+          "skill_ids": [
+            "A001"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Cộng hai số lượng và kết luận 14 cách.",
+          "skill_ids": [
+            "A001",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "14",
+      "student_answer": "Em chọn sách toán thì có 5 cách, còn chọn sách văn thì 9 cách. Mình chỉ lấy 1 quyển thôi nên cộng lại, 5 + 9 = 14. Vậy có 14 cách ạ.",
+      "skill_ids": [
+        "A001"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em chọn sách toán thì có 5 cách, còn chọn sách văn thì 9 cách. Mình chỉ lấy 1 quyển thôi nên cộng lại, 5 + 9 = 14. Vậy có 14 cách ạ.\",\n      \"description\": \"Học sinh giải thích rằng chọn sách Toán có 5 cách, chọn sách Văn có 9 cách, tổng cộng là 14 cách.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"Vậy có 14 cách ạ.\"\n}"
+    ],
+    "payload_sha256": [
+      "5bbc58dd4a91ceaf476f31870f63700be45d386b3aa702e83549ef460e05efd8"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P01",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh giải thích rằng chọn sách Toán có 5 cách, chọn sách Văn có 9 cách, tổng cộng là 14 cách.",
+          "start": 0,
+          "end": 132
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 132
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P02",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P02",
+      "question_text": "Có 4 áo và 3 quần khác nhau. Một bộ gồm một áo và một quần. Có bao nhiêu bộ?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Chọn một áo và một quần cho mỗi bộ.",
+          "skill_ids": [
+            "A002"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Áp dụng quy tắc nhân: 4*3=12.",
+          "skill_ids": [
+            "A002",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "12",
+      "student_answer": "Có 4 cái áo với 3 cái quần. Em lấy 4 + 3 = 7 nên có 7 bộ đồ.",
+      "skill_ids": [
+        "A002"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Có 4 cái áo với 3 cái quần. Em lấy 4 + 3 = 7 nên có 7 bộ đồ.\",\n      \"description\": \"Student claims 4 + 3 = 7 and concludes 7 sets.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A002\",\n          \"reason\": \"Sử dụng phép cộng thay vì phép nhân\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"\\\"Em lấy 4 + 3 = 7 nên có 7 bộ đồ.\\\"\"\n}"
+    ],
+    "payload_sha256": [
+      "e931e44feaba7724e6c1573969ca52b6a36f1da0e31baf64349e6f5ffbd05cbc"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P02",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Student claims 4 + 3 = 7 and concludes 7 sets.",
+          "start": 0,
+          "end": 60
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 60
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "METHOD_OR_CONDITION_ERROR",
+            "skill_ids": [
+              "A002"
+            ],
+            "reason": "Sai phương pháp hoặc điều kiện áp dụng."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A002. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P03",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P03",
+      "question_text": "Có 6 học sinh phân biệt. Xếp cả 6 thành một hàng ngang. Có bao nhiêu cách xếp?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Sắp xếp toàn bộ sáu học sinh phân biệt.",
+          "skill_ids": [
+            "A003"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Tính 6!=720 hoặc tích tương đương.",
+          "skill_ids": [
+            "A003",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "720",
+      "student_answer": "Đứng đầu có 6 bạn để chọn, rồi còn 5 bạn, cứ vậy tới người cuối. Nên em tính 6 × 5 × 4 × 3 × 2 × 1 = 720 cách.",
+      "skill_ids": [
+        "A003"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Đứng đầu có 6 bạn để chọn, rồi còn 5 bạn, cứ vậy tới người cuối. Nên em tính 6 × 5 × 4 × 3 × 2 × 1 = 720 cách.\",\n      \"description\": \"Học sinh mô tả quá trình tính số cách xếp hàng ngang bằng cách nhân các số từ 6 đến 1.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"6 × 5 × 4 × 3 × 2 × 1 = 720 cách.\"\n}"
+    ],
+    "payload_sha256": [
+      "0cc8093c0b66b5912ee6847783eef494b7eb197c5a202f25ce722e1eb24f8d34"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P03",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh mô tả quá trình tính số cách xếp hàng ngang bằng cách nhân các số từ 6 đến 1.",
+          "start": 0,
+          "end": 110
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 110
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P04",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P04",
+      "question_text": "Chọn 3 học sinh từ 7 học sinh phân biệt vào một nhóm, không phân biệt vai trò. Có bao nhiêu nhóm?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Chọn ba người không xét thứ tự.",
+          "skill_ids": [
+            "A004"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Loại đếm lặp hoặc dùng tổ hợp, kết quả 35.",
+          "skill_ids": [
+            "A004",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "35",
+      "student_answer": "Em chọn lần lượt thì có 7 × 6 × 5 = 210. Nhưng một nhóm 3 bạn bị tính 6 lần vì đổi chỗ nhau vẫn là nhóm đó, nên 210 / 6 = 35 nhóm.",
+      "skill_ids": [
+        "A004"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em chọn lần lượt thì có 7 × 6 × 5 = 210.\",\n      \"description\": \"Học sinh giải thích cách chọn lần lượt 3 học sinh\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    },\n    {\n      \"evidence\": \"Nhưng một nhóm 3 bạn bị tính 6 lần vì đổi chỗ nhau vẫn là nhóm đó, nên 210 / 6 = 35 nhóm.\",\n      \"description\": \"Học sinh nhận ra việc đếm lặp và điều chỉnh bằng cách chia cho 6\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"35 nhóm.\"\n}"
+    ],
+    "payload_sha256": [
+      "1ae718ea75bcf355d7b5217fc558f9f9db0413a3695d46a2df9f498572c54cec"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P04",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh giải thích cách chọn lần lượt 3 học sinh",
+          "start": 0,
+          "end": 40
+        },
+        {
+          "step": 2,
+          "description": "Học sinh nhận ra việc đếm lặp và điều chỉnh bằng cách chia cho 6",
+          "start": 41,
+          "end": 130
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 40
+          },
+          {
+            "step": 2,
+            "result": "CORRECT",
+            "start": 41,
+            "end": 130
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P05",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P05",
+      "question_text": "Từ 8 học sinh phân biệt chọn một lớp trưởng và một lớp phó. Một người không giữ cả hai chức vụ. Có bao nhiêu cách?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Hai chức vụ phân biệt, không chọn lại cùng người.",
+          "skill_ids": [
+            "A006"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Có 8*7=56 cách phân công.",
+          "skill_ids": [
+            "A006",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "56",
+      "student_answer": "Chọn 2 bạn trong 8 bạn nên em dùng tổ hợp, 8 × 7 / 2 = 28. Vậy có 28 cách chọn lớp trưởng và lớp phó.",
+      "skill_ids": [
+        "A006"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Chọn 2 bạn trong 8 bạn nên em dùng tổ hợp, 8 × 7 / 2 = 28. Vậy có 28 cách chọn lớp trưởng và lớp phó.\",\n      \"description\": \"Học sinh sử dụng tổ hợp để chọn 2 người từ 8 người, tính 8 × 7 / 2 = 28.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A006\",\n          \"reason\": \"Sử dụng tổ hợp thay vì chỉnh hợp vì hai chức vụ phân biệt.\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"Vậy có 28 cách chọn lớp trưởng và lớp phó.\"\n}"
+    ],
+    "payload_sha256": [
+      "0266418418d4bc16296838ab7709a50e9959628a589afb83eb14c6df9a10f6bb"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P05",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh sử dụng tổ hợp để chọn 2 người từ 8 người, tính 8 × 7 / 2 = 28.",
+          "start": 0,
+          "end": 101
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 101
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "METHOD_OR_CONDITION_ERROR",
+            "skill_ids": [
+              "A006"
+            ],
+            "reason": "Sai phương pháp hoặc điều kiện áp dụng."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A006. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P06",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P06",
+      "question_text": "Có 8 cặp vợ chồng, gồm 8 nam và 8 nữ. Chọn một nam và một nữ sao cho không phải vợ chồng. Có bao nhiêu cách?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Chọn một nam và loại vợ của người đó khi chọn nữ.",
+          "skill_ids": [
+            "A009"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Có 8*7=56 cách.",
+          "skill_ids": [
+            "A002",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "56",
+      "student_answer": "Em chọn người nam có 8 cách, nữ cũng có 8 cách. Thế là 8 × 8 = 64 cặp, em ra 64.",
+      "skill_ids": [
+        "A002",
+        "A009"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em chọn người nam có 8 cách, nữ cũng có 8 cách. Thế là 8 × 8 = 64 cặp, em ra 64.\",\n      \"description\": \"Học sinh chọn 8 cách cho nam và 8 cách cho nữ, sau đó nhân hai số để được 64.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A009\",\n          \"reason\": \"Không loại bỏ vợ của người nam khi chọn nữ, vi phạm điều kiện không được chọn vợ chồng.\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"em ra 64\"\n}"
+    ],
+    "payload_sha256": [
+      "ec15945644b7ec74bebaaecf3408251843f7874133aecd3f4737f2ed57ab90ff"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P06",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh chọn 8 cách cho nam và 8 cách cho nữ, sau đó nhân hai số để được 64.",
+          "start": 0,
+          "end": 80
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 80
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "METHOD_OR_CONDITION_ERROR",
+            "skill_ids": [
+              "A009"
+            ],
+            "reason": "Sai phương pháp hoặc điều kiện áp dụng."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A009. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P07",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P07",
+      "question_text": "Từ các chữ số 0, 1, 2, 3, 4 lập số tự nhiên có 3 chữ số đôi một khác nhau. Có bao nhiêu số?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Hàng trăm khác 0 nên có 4 cách.",
+          "skill_ids": [
+            "A009"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Hai vị trí còn lại có 4 và 3 cách; tổng 48.",
+          "skill_ids": [
+            "A002",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "48",
+      "student_answer": "Ba ô thì ô đầu em cho 5 cách, ô tiếp theo 4 cách, ô cuối 3 cách vì không được trùng. Em nhân 5 × 4 × 3 = 60 số.",
+      "skill_ids": [
+        "A002",
+        "A009"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Hàng trăm khác 0 nên có 4 cách.\",\n      \"description\": \"Học sinh nói rằng hàng trăm khác 0 nên có 4 cách.\",\n      \"rubric_ids\": [\"R1\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A009\",\n          \"reason\": \"Bỏ qua điều kiện chữ số 0 không được đặt ở hàng trăm\"\n        }\n      ]\n    },\n    {\n      \"evidence\": \"Hai vị trí còn lại có 4 và 3 cách; tổng 48.\",\n      \"description\": \"Học sinh nói rằng hai vị trí còn lại có 4 và 3 cách, tổng 48.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    },\n    {\n      \"evidence\": \"Ba ô thì ô đầu em cho 5 cách, ô tiếp theo 4 cách, ô cuối 3 cách vì không được trùng. Em nhân 5 × 4 × 3 = 60 số.\",\n      \"description\": \"Học sinh nói rằng có 5 cách cho ô đầu, 4 cách cho ô tiếp theo, 3 cách cho ô cuối, tổng 60 số.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"ARITHMETIC_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A008\",\n          \"reason\": \"Tính toán sai 5 × 4 × 3 = 60 thay vì 4 × 4 × 3 = 48\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"Em nhân 5 × 4 × 3 = 60 số.\"\n}",
+      "{\"steps\": [{\"evidence\": \"Hàng trăm khác 0 nên có 4 cách.\", \"description\": \"Sai vì hàng trăm có 4 cách (1, 2, 3, 4) nhưng chưa xét đến các chữ số khác.\", \"rubric_ids\": [\"R1\"], \"decision\": \"ARITHMETIC_ERROR\", \"skill_errors\": [{\"skill_id\": \"A009\", \"reason\": \"Không xét đầy đủ các điều kiện\"}]}], \"final_answer_quote\": \"Ba ô thì ô đầu em cho 5 cách, ô tiếp theo 4 cách, ô cuối 3 cách vì không được trùng. Em nhân 5 × 4 × 3 = 60 số.\"}"
+    ],
+    "payload_sha256": [
+      "a711f41add84b483f8035a440af97409e7920984225ec8b49014ebf6e5fe2a5e",
+      "84355cd61f36eba1f30e4909ccfe7798ece3e2492292dd5180dc06bd1a3714bc"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P07",
+      "answer": [],
+      "grading_result": {
+        "grading_status": "NEEDS_REVIEW",
+        "requires_teacher": true,
+        "overall_result": "UNCERTAIN",
+        "final_answer_correct": null,
+        "step_results": [],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 0 câu; 1 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P08",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P08",
+      "question_text": "Tung một đồng xu hai lần, mỗi lần có thể ra ngửa hoặc sấp. Có bao nhiêu chuỗi kết quả có đúng một lần ngửa?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Liệt kê nhánh hai lần tung: NN, NS, SN, SS.",
+          "skill_ids": [
+            "A005"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Chọn NS và SN, có 2 chuỗi.",
+          "skill_ids": [
+            "A005"
+          ]
+        }
+      ],
+      "reference_answer": "2",
+      "student_answer": "Em chia lần đầu thành N và S, mỗi nhánh lại có N hoặc S, được NN, NS, SN, SS. Đúng một ngửa thì giữ NS với SN. Có 2 kết quả.",
+      "skill_ids": [
+        "A005"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em chia lần đầu thành N và S, mỗi nhánh lại có N hoặc S, được NN, NS, SN, SS.\",\n      \"description\": \"Học sinh liệt kê tất cả các kết quả có thể xảy ra khi tung đồng xu hai lần.\",\n      \"rubric_ids\": [\"R1\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    },\n    {\n      \"evidence\": \"Đúng một ngửa thì giữ NS với SN. Có 2 kết quả.\",\n      \"description\": \"Học sinh xác định hai chuỗi kết quả có đúng một lần ngửa.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"Có 2 kết quả.\"\n}"
+    ],
+    "payload_sha256": [
+      "8639f7767c1aaee3b109edfa8d0b30c819b327bc82c22a207f54ecc00be53c1e"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P08",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh liệt kê tất cả các kết quả có thể xảy ra khi tung đồng xu hai lần.",
+          "start": 0,
+          "end": 77
+        },
+        {
+          "step": 2,
+          "description": "Học sinh xác định hai chuỗi kết quả có đúng một lần ngửa.",
+          "start": 78,
+          "end": 124
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 77
+          },
+          {
+            "step": 2,
+            "result": "CORRECT",
+            "start": 78,
+            "end": 124
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P09",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P09",
+      "question_text": "Có 4 viên bi đỏ và 3 viên bi xanh, tất cả phân biệt. Chọn 2 viên không xét thứ tự, sao cho có ít nhất một viên đỏ. Có bao nhiêu cách?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Tách hai trường hợp: hai đỏ hoặc một đỏ một xanh.",
+          "skill_ids": [
+            "A007",
+            "A009"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Có C(4,2)+4*3=6+12=18 cách, hoặc lấy bù tương đương.",
+          "skill_ids": [
+            "A004",
+            "A007",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "18",
+      "student_answer": "Em chia ra vài trường hợp rồi cộng lại, chắc là 18 cách. Phần tính em làm nháp mất rồi nên em chỉ ghi đáp số này thôi.",
+      "skill_ids": [
+        "A004",
+        "A007",
+        "A009"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em chia ra vài trường hợp rồi cộng lại, chắc là 18 cách.\",\n      \"description\": \"Học sinh nói rằng họ chia ra vài trường hợp và cộng lại, kết quả là 18 cách.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    },\n    {\n      \"evidence\": \"Phần tính em làm nháp mất rồi nên em chỉ ghi đáp số này thôi.\",\n      \"description\": \"Học sinh nói rằng phần tính đã bị xóa mất, chỉ còn lại đáp số 18.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"INCOMPLETE_SOLUTION\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"18 cách\"\n}"
+    ],
+    "payload_sha256": [
+      "329f94ba8700b076153f5bccae02971a8982339a42db4f0fe50829c851b66f11"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P09",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh nói rằng họ chia ra vài trường hợp và cộng lại, kết quả là 18 cách.",
+          "start": 0,
+          "end": 56
+        },
+        {
+          "step": 2,
+          "description": "Học sinh nói rằng phần tính đã bị xóa mất, chỉ còn lại đáp số 18.",
+          "start": 57,
+          "end": 118
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 56
+          },
+          {
+            "step": 2,
+            "result": "INCORRECT",
+            "start": 57,
+            "end": 118
+          }
+        ],
+        "errors": [
+          {
+            "step": 2,
+            "error_type": "INCOMPLETE_SOLUTION",
+            "skill_ids": [],
+            "reason": "Bài làm tự luận chưa đầy đủ."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Cần trình bày đầy đủ lập luận và phép tính ở các câu: SYN_P09. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "P10",
+    "source_run": "20261117T055917_244868Z",
+    "case": {
+      "question_id": "SYN_P10",
+      "question_text": "Chọn 2 người từ 6 người phân biệt để lập một nhóm, không phân biệt vai trò. Có bao nhiêu nhóm?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Chọn hai người không xét thứ tự; biểu thức 6*5/2 phù hợp.",
+          "skill_ids": [
+            "A004"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Tính được 15 nhóm.",
+          "skill_ids": [
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "15",
+      "student_answer": "Hai người không phân vai nên em lấy 6 × 5 / 2 = 16 nhóm. Chắc đáp số là 16 nhóm.",
+      "skill_ids": [
+        "A004",
+        "A008"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Hai người không phân vai nên em lấy 6 × 5 / 2 = 16 nhóm.\",\n      \"description\": \"Học sinh giải thích chọn hai người không phân biệt vai trò và tính 6 × 5 / 2 = 16.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"ARITHMETIC_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A008\",\n          \"reason\": \"Tính 6 × 5 / 2 = 16 là sai, kết quả đúng là 15.\"\n        }\n      ]\n    },\n    {\n      \"evidence\": \"Chắc đáp số là 16 nhóm.\",\n      \"description\": \"Học sinh khẳng định đáp số là 16 nhóm.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"ARITHMETIC_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A008\",\n          \"reason\": \"Đáp số 16 là sai, đáp số đúng là 15.\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"16 nhóm.\"\n}"
+    ],
+    "payload_sha256": [
+      "eaa749361e689ab7f35c8e8bdc5574b0a69b11cb6cc8aa769deb748249cdb854"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_P10",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh ghi phép tính 6 × 5 / 2 = 16.",
+          "start": 0,
+          "end": 56
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 56
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "ARITHMETIC_ERROR",
+            "skill_ids": [
+              "A008"
+            ],
+            "reason": "Sai phép tính: 6 × 5 / 2 = 16; giá trị đúng là 15."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A008. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N01",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N01",
+      "question_text": "Buổi chiều em đăng ký đúng một hoạt động: một trong 3 câu lạc bộ thể thao hoặc một trong 2 câu lạc bộ nghệ thuật. Năm câu lạc bộ này khác nhau. Có bao nhiêu cách đăng ký?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Hai nhóm câu lạc bộ khác nhau, chỉ chọn đúng một câu lạc bộ.",
+          "skill_ids": [
+            "A001"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Áp dụng cộng: 3+2=5; chấp nhận lời giải ngắn đủ ý.",
+          "skill_ids": [
+            "A001",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "5",
+      "student_answer": "Em chỉ đăng ký 1 CLB chứ không đăng ký cả hai loại. Thể thao có 3 lựa chọn, nghệ thuật có 2, vậy 3 + 2 = 5 cách.",
+      "skill_ids": [
+        "A001"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em chỉ đăng ký 1 CLB chứ không đăng ký cả hai loại. Thể thao có 3 lựa chọn, nghệ thuật có 2, vậy 3 + 2 = 5 cách.\",\n      \"description\": \"Học sinh giải thích rằng chỉ chọn một câu lạc bộ và tính tổng số lựa chọn từ hai nhóm.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"3 + 2 = 5 cách.\"\n}"
+    ],
+    "payload_sha256": [
+      "31636609eb05fffa0eeebc080099e2be44ee473f3de61c36598f7347e4fed583"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N01",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh giải thích rằng chỉ chọn một câu lạc bộ và tính tổng số lựa chọn từ hai nhóm.",
+          "start": 0,
+          "end": 112
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 112
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N02",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N02",
+      "question_text": "Một mã gồm đúng hai ký tự: ký tự đầu chọn từ A, B, C; ký tự sau chọn từ 1, 2, 3, 4, 5. Có bao nhiêu mã khác nhau?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Mỗi mã phải có đồng thời một chữ và một số.",
+          "skill_ids": [
+            "A002"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Mỗi chữ ghép được với 5 số; dùng 3*5=15.",
+          "skill_ids": [
+            "A002",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "15",
+      "student_answer": "Có 3 chữ cái với 5 chữ số để chọn. Em cộng 3 + 5 = 8, nên tạo được 8 mã.",
+      "skill_ids": [
+        "A002"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Có 3 chữ cái với 5 chữ số để chọn. Em cộng 3 + 5 = 8, nên tạo được 8 mã.\",\n      \"description\": \"Học sinh nói rằng có 3 chữ cái và 5 chữ số, cộng lại được 8 và kết luận tạo được 8 mã.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A002\",\n          \"reason\": \"Sai phương pháp tính số mã, thay vì nhân số chữ cái với số chữ số, học sinh đã cộng chúng lại.\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"\\\"Em cộng 3 + 5 = 8, nên tạo được 8 mã.\\\"\"\n}"
+    ],
+    "payload_sha256": [
+      "c5049d32cd083214e6ae8bae11384e888055ba30776082c9c6a78b8acfa81cf6"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N02",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh nói rằng có 3 chữ cái và 5 chữ số, cộng lại được 8 và kết luận tạo được 8 mã.",
+          "start": 0,
+          "end": 72
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 72
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "METHOD_OR_CONDITION_ERROR",
+            "skill_ids": [
+              "A002"
+            ],
+            "reason": "Sai phương pháp hoặc điều kiện áp dụng."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A002. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N03",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N03",
+      "question_text": "Có 5 học sinh phân biệt, trong đó có An và Bình. Xếp cả 5 thành một hàng ngang sao cho An và Bình không đứng cạnh nhau. Có bao nhiêu cách?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Đếm toàn bộ hoán vị của 5 người: 120.",
+          "skill_ids": [
+            "A003"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Đếm trường hợp An và Bình cạnh nhau bằng khối, có 2*4!=48.",
+          "skill_ids": [
+            "A003",
+            "A009"
+          ]
+        },
+        {
+          "id": "R3",
+          "description": "Lấy phần bù: 120-48=72; chấp nhận phương pháp hợp lệ khác.",
+          "skill_ids": [
+            "A009",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "72",
+      "student_answer": "Em tính tất cả trước thì có 5! = 120. Nếu An với Bình sát nhau thì gộp lại thành 1 khối, cùng 3 bạn còn lại là 4 đối tượng. Có 4! = 24, đổi chỗ An Bình trong khối được 2 kiểu nên có 24 × 2 = 48 cách đứng sát. Bỏ các cách đó đi: 120 - 48 = 72 cách.",
+      "skill_ids": [
+        "A003",
+        "A009"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em tính tất cả trước thì có 5! = 120.\",\n      \"description\": \"Học sinh đã tính toàn bộ hoán vị của 5 người là 120.\",\n      \"rubric_ids\": [\"R1\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    },\n    {\n      \"evidence\": \"Nếu An với Bình sát nhau thì gộp lại thành 1 khối, cùng 3 bạn còn lại là 4 đối tượng. Có 4! = 24, đổi chỗ An Bình trong khối được 2 kiểu nên có 24 × 2 = 48 cách đứng sát.\",\n      \"description\": \"Học sinh đã tính số cách An và Bình đứng cạnh nhau bằng cách ghép thành khối và tính hoán vị.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    },\n    {\n      \"evidence\": \"Bỏ các cách đó đi: 120 - 48 = 72 cách.\",\n      \"description\": \"Học sinh đã lấy phần bù để tìm số cách thỏa mãn điều kiện.\",\n      \"rubric_ids\": [\"R3\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"72\"\n}"
+    ],
+    "payload_sha256": [
+      "695a00d12b5982a1ca28abc5c5267f27e7eedeb2a28e70ae91c211a26e3d68cc"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N03",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh đã tính toàn bộ hoán vị của 5 người là 120.",
+          "start": 0,
+          "end": 37
+        },
+        {
+          "step": 2,
+          "description": "Học sinh đã tính số cách An và Bình đứng cạnh nhau bằng cách ghép thành khối và tính hoán vị.",
+          "start": 38,
+          "end": 208
+        },
+        {
+          "step": 3,
+          "description": "Học sinh đã lấy phần bù để tìm số cách thỏa mãn điều kiện.",
+          "start": 209,
+          "end": 247
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 37
+          },
+          {
+            "step": 2,
+            "result": "CORRECT",
+            "start": 38,
+            "end": 208
+          },
+          {
+            "step": 3,
+            "result": "CORRECT",
+            "start": 209,
+            "end": 247
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N04",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N04",
+      "question_text": "Một lớp có 6 nữ và 4 nam, tất cả là học sinh phân biệt. Chọn nhóm 3 người, không phân biệt vai trò, có ít nhất một nam. Có bao nhiêu nhóm?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Có thể chia theo số nam hoặc dùng phần bù; không bắt theo một phương pháp cố định.",
+          "skill_ids": [
+            "A007",
+            "A009"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Nếu chia trường hợp: 4*C(6,2)+C(4,2)*6+C(4,3)=100; nếu lấy bù: C(10,3)-C(6,3)=100.",
+          "skill_ids": [
+            "A004",
+            "A007",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "100",
+      "student_answer": "Em không chia theo 1 nam, 2 nam, 3 nam. Lấy tất cả các nhóm 3 người là 10 × 9 × 8 / 6 = 120. Nhóm không có nam là chọn 3 bạn nữ, 6 × 5 × 4 / 6 = 20. Vậy còn 120 - 20 = 100 nhóm.",
+      "skill_ids": [
+        "A004",
+        "A007",
+        "A009"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em không chia theo 1 nam, 2 nam, 3 nam. Lấy tất cả các nhóm 3 người là 10 × 9 × 8 / 6 = 120. Nhóm không có nam là chọn 3 bạn nữ, 6 × 5 × 4 / 6 = 20. Vậy còn 120 - 20 = 100 nhóm.\",\n      \"description\": \"Học sinh tính tổng số nhóm 3 người là 120, tính số nhóm chỉ có nữ là 20, và kết luận số nhóm có ít nhất 1 nam là 100.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"Vậy còn 120 - 20 = 100 nhóm.\"\n}"
+    ],
+    "payload_sha256": [
+      "56121eb1da9cf41181983abb082346040709c45b95c1111e5a6273cad17a27d2"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N04",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh tính tổng số nhóm 3 người là 120, tính số nhóm chỉ có nữ là 20, và kết luận số nhóm có ít nhất 1 nam là 100.",
+          "start": 0,
+          "end": 177
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 177
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N05",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N05",
+      "question_text": "Có 7 thí sinh phân biệt. Trao một giải nhất, một giải nhì và một giải ba; mỗi người nhận nhiều nhất một giải. Có bao nhiêu cách trao?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Ba giải có vai trò khác nhau và không trao hai giải cho cùng một người.",
+          "skill_ids": [
+            "A006"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Đếm phân công có thứ tự: 7*6*5=210; không chia cho 3!.",
+          "skill_ids": [
+            "A006",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "210",
+      "student_answer": "Mình chọn 3 người trong 7 người nên dùng tổ hợp. Em tính 7 × 6 × 5 / 6 = 35. Vậy có 35 cách trao giải.",
+      "skill_ids": [
+        "A006"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Mình chọn 3 người trong 7 người nên dùng tổ hợp. Em tính 7 × 6 × 5 / 6 = 35. Vậy có 35 cách trao giải.\",\n      \"description\": \"Học sinh sử dụng tổ hợp và chia cho 6 để tính số cách trao giải.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A006\",\n          \"reason\": \"Sử dụng tổ hợp thay vì hoán vị vì ba giải có vai trò khác nhau.\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"Vậy có 35 cách trao giải.\"\n}"
+    ],
+    "payload_sha256": [
+      "e09e54b68a1c4782dd7029278590da2398083388477d61db3957bef34a1c4544"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N05",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh sử dụng tổ hợp và chia cho 6 để tính số cách trao giải.",
+          "start": 0,
+          "end": 102
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 102
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "METHOD_OR_CONDITION_ERROR",
+            "skill_ids": [
+              "A006"
+            ],
+            "reason": "Sai phương pháp hoặc điều kiện áp dụng."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A006. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N06",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N06",
+      "question_text": "Gieo một xúc xắc sáu mặt hai lần liên tiếp. Dùng cách liệt kê theo nhánh của lần gieo đầu để tìm số cặp kết quả có tổng bằng 4. Thứ tự hai lần gieo được phân biệt.",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Theo nhánh lần gieo đầu, xét đầy đủ các giá trị có thể tạo tổng 4: 1, 2, 3.",
+          "skill_ids": [
+            "A005"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Liệt kê (1,3), (2,2), (3,1); các lần gieo có thứ tự, nên có 3 cặp.",
+          "skill_ids": [
+            "A005"
+          ]
+        }
+      ],
+      "reference_answer": "3",
+      "student_answer": "Em vẽ cây theo lần đầu. Nhánh ra 1 thì lần sau phải là 3, nhánh ra 2 thì lần sau là 2. Tới đây em thấy hết rồi nên chỉ có (1,3) với (2,2), tổng cộng 2 cặp.",
+      "skill_ids": [
+        "A005"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em vẽ cây theo lần đầu. Nhánh ra 1 thì lần sau phải là 3, nhánh ra 2 thì lần sau là 2. Tới đây em thấy hết rồi nên chỉ có (1,3) với (2,2), tổng cộng 2 cặp.\",\n      \"description\": \"Học sinh liệt kê các cặp kết quả theo nhánh lần gieo đầu, nhưng bỏ sót trường hợp (3,1).\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A005\",\n          \"reason\": \"Bỏ sót trường hợp (3,1) trong liệt kê các cặp kết quả.\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"\\\"tổng cộng 2 cặp.\\\"\"\n}"
+    ],
+    "payload_sha256": [
+      "f5574e8165a3eae66d28d53fc40fc47ba5483119bbe65f6041593fe6f11530b3"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N06",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh liệt kê các cặp kết quả theo nhánh lần gieo đầu, nhưng bỏ sót trường hợp (3,1).",
+          "start": 0,
+          "end": 155
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 155
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "METHOD_OR_CONDITION_ERROR",
+            "skill_ids": [
+              "A005"
+            ],
+            "reason": "Sai phương pháp hoặc điều kiện áp dụng."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A005. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N07",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N07",
+      "question_text": "Từ các chữ số 0, 2, 4, 6 lập số tự nhiên chẵn có 3 chữ số đôi một khác nhau. Có bao nhiêu số?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Mọi chữ số đều chẵn nên điều kiện chẵn tự thỏa, nhưng hàng trăm không được là 0: có 3 cách.",
+          "skill_ids": [
+            "A009"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Hàng chục còn 3 cách và hàng đơn vị còn 2: 3*3*2=18.",
+          "skill_ids": [
+            "A002",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "18",
+      "student_answer": "Các chữ số đều chẵn nên em không cần lọc hàng đơn vị. Hàng trăm có 4 cách, hàng chục còn 3, hàng đơn vị còn 2. Vậy 4 × 3 × 2 = 24 số.",
+      "skill_ids": [
+        "A002",
+        "A009"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Các chữ số đều chẵn nên em không cần lọc hàng đơn vị.\",\n      \"description\": \"Student claims no need to filter the units place because all digits are even.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A009\",\n          \"reason\": \"Invalid candidates/counts from ignoring a stated restriction\"\n        }\n      ]\n    },\n    {\n      \"evidence\": \"Hàng trăm có 4 cách, hàng chục còn 3, hàng đơn vị còn 2.\",\n      \"description\": \"Student claims 4 choices for hundreds place, 3 for tens, 2 for units.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"METHOD_OR_CONDITION_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A009\",\n          \"reason\": \"Invalid candidates/counts from ignoring a stated restriction\"\n        }\n      ]\n    },\n    {\n      \"evidence\": \"Vậy 4 × 3 × 2 = 24 số.\",\n      \"description\": \"Student calculates 4 × 3 × 2 = 24 as the final answer.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"ARITHMETIC_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A008\",\n          \"reason\": \"Numerically false arithmetic\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"4 × 3 × 2 = 24 số.\"\n}"
+    ],
+    "payload_sha256": [
+      "a9d112e46d77b3f0bade13817aebda57007c9a10d89ff75e3043ac59c474e528"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N07",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Student claims no need to filter the units place because all digits are even.",
+          "start": 0,
+          "end": 53
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 53
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "METHOD_OR_CONDITION_ERROR",
+            "skill_ids": [
+              "A009"
+            ],
+            "reason": "Sai phương pháp hoặc điều kiện áp dụng."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A009. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N08",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N08",
+      "question_text": "Từ 8 học sinh phân biệt chọn 4 người vào một nhóm, không phân biệt vai trò. Có bao nhiêu nhóm?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Chọn không thứ tự, biểu thức 8*7*6*5/24 phù hợp.",
+          "skill_ids": [
+            "A004"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Tính biểu thức được 70; phân biệt tính sai với chọn sai phương pháp.",
+          "skill_ids": [
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "70",
+      "student_answer": "Em chọn lần lượt rồi chia số lần bị trùng của 4 người. Như vậy 8 × 7 × 6 × 5 / 24 = 60 nhóm. Em lấy đáp số 60.",
+      "skill_ids": [
+        "A004",
+        "A008"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em chọn lần lượt rồi chia số lần bị trùng của 4 người. Như vậy 8 × 7 × 6 × 5 / 24 = 60 nhóm. Em lấy đáp số 60.\",\n      \"description\": \"Học sinh giải thích cách chọn không thứ tự bằng cách tính tích 8×7×6×5 và chia cho 24, dẫn đến kết quả 60.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"ARITHMETIC_ERROR\",\n      \"skill_errors\": [\n        {\n          \"skill_id\": \"A008\",\n          \"reason\": \"Tính 8×7×6×5/24 = 60 là sai, kết quả đúng là 70\"\n        }\n      ]\n    }\n  ],\n  \"final_answer_quote\": \"Em lấy đáp số 60.\"\n}"
+    ],
+    "payload_sha256": [
+      "b690c70ecc1d2be19535d59bdd83dca501c5ac140d546a0e2c06d9031d21922f"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N08",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh ghi phép tính 8 × 7 × 6 × 5 / 24 = 60.",
+          "start": 0,
+          "end": 110
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 110
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "ARITHMETIC_ERROR",
+            "skill_ids": [
+              "A008"
+            ],
+            "reason": "Sai phép tính: 8 × 7 × 6 × 5 / 24 = 60; giá trị đúng là 70."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Các kỹ năng có lỗi đã ghi nhận: A008. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N09",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N09",
+      "question_text": "Từ A đến B có 3 đường, từ B đến C có 2 đường. Ngoài ra có 4 đường đi thẳng từ A đến C không qua B. Chỉ xét đi từ A đến C theo một trong hai kiểu: đi thẳng, hoặc đi qua B đúng một lần; mỗi đường khác nhau tạo một cách đi khác nhau. Có bao nhiêu cách?",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Với kiểu qua B, kết hợp hai chặng: 3*2=6.",
+          "skill_ids": [
+            "A002"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Hai kiểu trực tiếp và qua B loại trừ nhau; cộng 6+4=10.",
+          "skill_ids": [
+            "A001",
+            "A007",
+            "A008"
+          ]
+        }
+      ],
+      "reference_answer": "10",
+      "student_answer": "Đi qua B thì chọn 1 đường đoạn đầu và 1 đường đoạn sau, được 3 × 2 = 6 cách. Còn 4 đường thẳng là kiểu khác, nên cộng: 6 + 4 = 10. Có 10 cách đi.",
+      "skill_ids": [
+        "A001",
+        "A002",
+        "A007"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Đi qua B thì chọn 1 đường đoạn đầu và 1 đường đoạn sau, được 3 × 2 = 6 cách.\",\n      \"description\": \"Học sinh đã tính đúng số cách đi qua B bằng cách nhân số đường từ A đến B với số đường từ B đến C.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    },\n    {\n      \"evidence\": \"Còn 4 đường thẳng là kiểu khác, nên cộng: 6 + 4 = 10. Có 10 cách đi.\",\n      \"description\": \"Học sinh đã nhận diện đúng hai kiểu đi (thẳng và qua B) và cộng số cách của hai kiểu đó.\",\n      \"rubric_ids\": [\"R2\"],\n      \"decision\": \"CORRECT\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"Có 10 cách đi.\"\n}"
+    ],
+    "payload_sha256": [
+      "49d89a56f85b74a47258498d8471d9f3e27b194b8c11b54de5d172748db00c13"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N09",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh đã tính đúng số cách đi qua B bằng cách nhân số đường từ A đến B với số đường từ B đến C.",
+          "start": 0,
+          "end": 76
+        },
+        {
+          "step": 2,
+          "description": "Học sinh đã nhận diện đúng hai kiểu đi (thẳng và qua B) và cộng số cách của hai kiểu đó.",
+          "start": 77,
+          "end": 145
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "CORRECT",
+        "final_answer_correct": true,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "CORRECT",
+            "start": 0,
+            "end": 76
+          },
+          {
+            "step": 2,
+            "result": "CORRECT",
+            "start": 77,
+            "end": 145
+          }
+        ],
+        "errors": [],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 1 câu, sai 0 câu; 0 câu cần xem lại. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  },
+  {
+    "name": "N10",
+    "source_run": "20261117T060355_556391Z",
+    "case": {
+      "question_id": "SYN_N10",
+      "question_text": "Tung một đồng xu 4 lần liên tiếp, mỗi lần có thể ra ngửa hoặc sấp. Có bao nhiêu chuỗi kết quả có đúng 2 lần ngửa? Trình bày cách đếm bằng liệt kê các chuỗi hoặc chọn vị trí của hai lần ngửa.",
+      "rubric": [
+        {
+          "id": "R1",
+          "description": "Bắt buộc thể hiện cách đếm: chọn 2 vị trí ngửa trong 4 vị trí, hoặc liệt kê đầy đủ chuỗi. Không cần làm cả hai cách.",
+          "skill_ids": [
+            "A004",
+            "A005"
+          ]
+        },
+        {
+          "id": "R2",
+          "description": "Nếu chọn vị trí: C(4,2)=6. Nếu liệt kê: NNSS, NSNS, NSSN, SNNS, SNSN, SSNN; kết luận 6. Chỉ nêu đáp số không đủ.",
+          "skill_ids": [
+            "A004",
+            "A005"
+          ]
+        }
+      ],
+      "reference_answer": "6",
+      "student_answer": "Em ra 6 chuỗi nha. Em làm ở giấy riêng, giờ chỉ nhớ kết quả chứ không nhớ đã liệt kê những chuỗi nào.",
+      "skill_ids": [
+        "A004",
+        "A005"
+      ]
+    },
+    "responses": [
+      "{\n  \"steps\": [\n    {\n      \"evidence\": \"Em ra 6 chuỗi nha. Em làm ở giấy riêng, giờ chỉ nhớ kết quả chứ không nhớ đã liệt kê những chuỗi nào.\",\n      \"description\": \"Học sinh nói rằng đã ra kết quả 6 nhưng không nhớ các chuỗi cụ thể.\",\n      \"rubric_ids\": [\"R1\", \"R2\"],\n      \"decision\": \"INCOMPLETE_SOLUTION\",\n      \"skill_errors\": []\n    }\n  ],\n  \"final_answer_quote\": \"6\"\n}"
+    ],
+    "payload_sha256": [
+      "872001b46a40c9604c9cf7214f2343f8d5fe635b4c27e8804e8cb19e7675a50a"
+    ],
+    "expected_submission": {
+      "question_id": "SYN_N10",
+      "answer": [
+        {
+          "step": 1,
+          "description": "Học sinh nói rằng đã ra kết quả 6 nhưng không nhớ các chuỗi cụ thể.",
+          "start": 0,
+          "end": 101
+        }
+      ],
+      "grading_result": {
+        "grading_status": "AI_GRADED",
+        "requires_teacher": false,
+        "overall_result": "INCORRECT",
+        "final_answer_correct": null,
+        "step_results": [
+          {
+            "step": 1,
+            "result": "INCORRECT",
+            "start": 0,
+            "end": 101
+          }
+        ],
+        "errors": [
+          {
+            "step": 1,
+            "error_type": "INCOMPLETE_SOLUTION",
+            "skill_ids": [],
+            "reason": "Bài làm tự luận chưa đầy đủ."
+          }
+        ],
+        "missing_steps": [],
+        "teacher_comment": null
+      }
+    },
+    "expected_feedback": "Trong 1 câu được yêu cầu ở lượt này, em được xác định đúng 0 câu, sai 1 câu; 0 câu cần xem lại. Cần trình bày đầy đủ lập luận và phép tính ở các câu: SYN_N10. Hệ thống dừng ở lỗi đầu tiên mỗi câu; chưa đánh giá toàn bộ lỗi trong bài."
+  }
+]

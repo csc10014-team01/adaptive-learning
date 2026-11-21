@@ -1,0 +1,231 @@
+{
+  "date": "2026-11-20",
+  "access": "SQLite mode=ro; PRAGMA query_only=ON",
+  "databases": [
+    {
+      "path": "data/sample/dataset/question_bank.db",
+      "sha256": "3fb49333eb900160e153410d2b13c34e58931a4afb161c1db70318e6de0ff57b",
+      "tables": [
+        {
+          "name": "QuestionMainSkill",
+          "columns": [
+            "question_id",
+            "skill_id"
+          ],
+          "rows": 121
+        },
+        {
+          "name": "answer_options",
+          "columns": [
+            "option_id",
+            "question_id",
+            "option_content",
+            "is_correct",
+            "display_order"
+          ],
+          "rows": 0
+        },
+        {
+          "name": "answer_parts",
+          "columns": [
+            "part_id",
+            "correct_answer",
+            "explanation"
+          ],
+          "rows": 10
+        },
+        {
+          "name": "answers",
+          "columns": [
+            "answer_id",
+            "question_id",
+            "correct_answer",
+            "explaination"
+          ],
+          "rows": 121
+        },
+        {
+          "name": "question_parts",
+          "columns": [
+            "part_id",
+            "question_id",
+            "label",
+            "content"
+          ],
+          "rows": 10
+        },
+        {
+          "name": "question_skills",
+          "columns": [
+            "question_id",
+            "skill_id"
+          ],
+          "rows": 159
+        },
+        {
+          "name": "question_template_skills",
+          "columns": [
+            "template_id",
+            "skill_id"
+          ],
+          "rows": 40
+        },
+        {
+          "name": "question_templates",
+          "columns": [
+            "template_id",
+            "template_content",
+            "parameter_rules",
+            "answer_rule",
+            "solution_rule",
+            "difficulty",
+            "rubric",
+            "step_difficulties"
+          ],
+          "rows": 18
+        },
+        {
+          "name": "questions",
+          "columns": [
+            "question_id",
+            "question_type",
+            "difficulty",
+            "content",
+            "grade_level",
+            "status",
+            "rubric",
+            "step_difficulties"
+          ],
+          "rows": 121
+        },
+        {
+          "name": "skills",
+          "columns": [
+            "skill_id",
+            "topic",
+            "name",
+            "grade_level",
+            "description"
+          ],
+          "rows": 9
+        },
+        {
+          "name": "terminology",
+          "columns": [
+            "term",
+            "text"
+          ],
+          "rows": 121
+        }
+      ],
+      "rubric_shapes": {
+        "questions": {
+          "['description', 'step']": 121
+        },
+        "question_templates": {
+          "invalid_json": 3,
+          "['description', 'step']": 15
+        }
+      },
+      "question_status_counts": {
+        "draft": 121
+      }
+    },
+    {
+      "path": "data/sample/memory/student_profiles_sample.db",
+      "sha256": "ea74d2cc5fae3edfd6067c5566e474af08ac2cac850a4e65265e55e2709b597e",
+      "tables": [
+        {
+          "name": "Students",
+          "columns": [
+            "student_id",
+            "grade_level",
+            "name",
+            "birthday"
+          ],
+          "rows": 20
+        },
+        {
+          "name": "Tests",
+          "columns": [
+            "test_id",
+            "student_id",
+            "test_name",
+            "date",
+            "score"
+          ],
+          "rows": 11
+        },
+        {
+          "name": "student_answer_attempt",
+          "columns": [
+            "test_id",
+            "question_id",
+            "answer",
+            "student_id"
+          ],
+          "rows": 0
+        },
+        {
+          "name": "student_skill_mastery",
+          "columns": [
+            "student_id",
+            "skill_id",
+            "mastery_score",
+            "evidence_count"
+          ],
+          "rows": 135
+        },
+        {
+          "name": "test_questions",
+          "columns": [
+            "test_id",
+            "question_id",
+            "question_order",
+            "is_correct",
+            "observed_level",
+            "theta_eap",
+            "question_mastery_score",
+            "pcm_parameter_version",
+            "reference_parameter_version",
+            "prior_version",
+            "AI"
+          ],
+          "rows": 40
+        }
+      ],
+      "historical_AI_nonempty": 40,
+      "historical_AI_storage_types": {
+        "integer": 40
+      },
+      "historical_AI_note": "AI is an integer flag in all 40 historical records, not original answer text or JSON evidence."
+    },
+    {
+      "path": "data/runtime/exams.db",
+      "sha256": "ddcb1218fe2fa4d33c6ac1d31cc0f04fd9969903ada0d7476d33ad8b2d40139e",
+      "tables": [
+        {
+          "name": "exam_drafts",
+          "columns": [
+            "exam_id",
+            "body"
+          ],
+          "rows": 2
+        },
+        {
+          "name": "exam_revisions",
+          "columns": [
+            "exam_id",
+            "revision",
+            "body"
+          ],
+          "rows": 3
+        }
+      ],
+      "approved_revision_count": 0,
+      "rubric_shapes": [
+        "['criteria', 'sub_score']"
+      ]
+    }
+  ]
+}

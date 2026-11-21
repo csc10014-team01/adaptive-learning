@@ -157,8 +157,9 @@ lượng với model thật. CLI thử model độc lập: `python src/ai/qwen_s
 
 ## Fake FastAPI backend — chế độ tương thích để test/demo
 
-Chạy từ repository root, Python 3.11 trở lên. API không gọi Ollama/Qwen và không ghi
-vào Data databases. Contract và giới hạn: [N04](docs/notes/N04_architecture_api.md).
+Chạy từ repository root, Python 3.11 trở lên. Các endpoint sinh đề fake không gọi
+Ollama/Qwen và không ghi vào Data databases. Phần AI grading riêng được mô tả bên
+dưới. Contract sinh đề fake và giới hạn: [N04](docs/notes/N04_architecture_api.md).
 
 ### Cài và chạy (PowerShell)
 
@@ -282,3 +283,84 @@ checkout is required in CI.
 
 See [the integration report](docs/report/finalized_generator_integration.md) for
 source provenance, changed files, compatibility decisions and verification.
+
+## AI grading integration (W08, 2026-11-20)
+
+The separate `/grading` page uses the extracted frozen engine
+`R2026-11-17-scoped-skill-guidance-v11`, with real local Ollama inference.
+It accepts explicitly supplied experimental multi-question context and raw answers.
+The synthetic example is reusable from the page or
+[`grading-example.json`](src/ui/static/grading-example.json). It has no gold/verdict labels.
+Generation remains at `/`; `--fake` affects generation only.
+
+Git Bash, from this repository:
+
+```bash
+python -m venv .venv
+source .venv/Scripts/activate           # Linux/macOS: source .venv/bin/activate
+python -m pip install -r requirements.txt
+ollama serve                          # separate terminal, only if not already running
+ollama list                           # must contain the exact GRADING_MODEL tag
+# If missing, explicitly install it yourself: ollama pull qwen3:4b-q4_K_M
+export GRADING_MODEL='qwen3:4b-q4_K_M'
+python -m src.ui --grading
+```
+
+The browser opens with a temporary workspace credential. Click **Nạp ví dụ tổng hợp**,
+edit the raw answers if desired, then **Bắt đầu chấm bằng AI**. Reopen using the stored
+job ID and download compact result JSON. Press **Ctrl+C** in the server terminal to
+stop. For headless/API use, export a secret `API_TEACHER_TOKEN`, then:
+
+```bash
+python -m src.ui --grading --no-browser
+# Or plain API (single application worker):
+python -m uvicorn src.api.main:app --host 127.0.0.1 --port 8000 --workers 1
+```
+
+Protected endpoints: `POST /api/v1/grading/jobs` (202),
+`GET /api/v1/grading/jobs/{job_id}`, and
+`GET /api/v1/grading/jobs/{job_id}/result` (409 until completed).
+Each response separates `metadata` from compact `result`. Supply an `idempotency_key`;
+identical retries return the same job, changed content with the same key returns 409.
+Capacity defaults to four active jobs including the running job. One bounded local
+worker processes them; no Redis/Celery. Use **one application process**; a store lease
+rejects competing workers on the same machine. Do not share this SQLite worker across hosts.
+
+`COMPLETED` means all questions were processed and persisted; some may be `UNCERTAIN`.
+An AI/provider failure never becomes a student error. Explicit blank answers are
+`INCORRECT` with `Bài làm tự luận chưa đầy đủ.` and no wrong skill IDs; missing answer
+records are rejected. There are no numeric grading scores, overrides or profile updates.
+
+Jobs, original text, exact context and compact results persist in
+`data/runtime/grading.db`. At the first grading access after restart, previously
+queued/running jobs become `INTERRUPTED`; they are never resumed automatically.
+Completed results remain readable. Graceful shutdown also interrupts unfinished work.
+Optional `GRADING_DEBUG=true` writes sensitive traces under `data/runtime/grading_debug/`
+after the corresponding result transaction. Clean only old diagnostic files with:
+
+```bash
+python -m src.grading.cleanup --older-than-days 7
+python tools/run_grading_smoke.py --live     # explicit real inference via API + worker
+python -m pytest -q --basetemp .pytest_tmp_mira/grading_check
+node tests/ui/grading.test.cjs
+```
+
+All runtime files are already covered by `.gitignore`. Cleanup never deletes stored
+submissions/results. `.env.example` documents separate `GRADING_*` settings; export
+them explicitly because the application does not auto-load `.env`.
+
+Approved mode accepts `mode=approved_snapshot`, exact `exam_id`, `exam_revision`,
+`student_id` and `answers`; reference data loads server-side from that revision.
+**Current generated snapshots are not grading-ready:** their `criteria/sub_score`
+rubrics lack authoritative rubric IDs and per-step skill mappings. They return
+`GRADING_CONTEXT_NOT_READY` before inference once approval/membership checks pass.
+The canonical `student_answer_attempt` table exists but is empty; historical
+`test_questions` has no original free-text submission. Future database access is
+an explicit repository interface, not a completed integration.
+
+The older `src/ai/answer_grading.py` and `scripts/grading/run_demo.py` remain isolated;
+their post-extraction semantics differ from this API. Legacy `requires_teacher` and
+`teacher_comment` fields remain only for frozen output compatibility, with no teacher
+grading workflow. See the [Vietnamese final design](docs/design/W08_AI_Grading_Design_Final.md)
+and [precise handoff](docs/report/W08_AI_Grading_Handoff.md) for contracts, database audit,
+verification evidence and remaining model limitations.
