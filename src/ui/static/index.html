@@ -285,6 +285,7 @@
         <div class="fg-body" id="dr-body">
           <h1 class="fg-title">Xem lại đề ôn tập thích ứng</h1>
           <p class="fg-meta" id="dr-meta"></p>
+          <p class="fg-text" id="dr-quality-status" role="status"></p>
           <div class="fg-headcard fg-headcard-dr">
             <span class="fg-for">Đề ôn tập dành cho</span>
             <div class="fg-name fg-name-sm" id="dr-name">—</div>
@@ -335,9 +336,10 @@
           </div>
 
           <div class="fg-footer">
-            <a class="fg-pill fg-ghost fg-pill-sm" href="#/">Duyệt đề</a>
+            <button type="button" class="fg-pill fg-cta fg-pill-sm" id="dr-approve">Duyệt đề và rubric chấm</button>
+            <button type="button" class="fg-pill fg-ghost fg-pill-sm" id="dr-refresh">Tải lại bản mới nhất</button>
             <button type="button" class="fg-pill fg-ghost fg-pill-sm" id="dr-save"><svg class="ic" width="18" height="18"><use href="#i-save"/></svg><span>Lưu bản nháp</span></button>
-            <button type="button" class="fg-pill fg-cta fg-pill-sm" id="dr-deliver" disabled title="Chưa có chức năng giao đề cho học sinh"><span>Giao đề</span><svg class="ic ic-fill" width="20" height="20"><use href="#i-tri-right"/></svg></button>
+            <button type="button" class="fg-pill fg-cta fg-pill-sm" id="dr-deliver" disabled><span>Nhập bài làm và chấm</span><svg class="ic ic-fill" width="20" height="20"><use href="#i-tri-right"/></svg></button>
           </div>
         </div>
       </section>

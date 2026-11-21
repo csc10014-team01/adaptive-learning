@@ -132,6 +132,9 @@ def exam_fingerprint(exam) -> str:
         q.model_dump(mode="json", exclude={"validation": {"teacher_approved"}})
         for q in exam.questions
     ]
+    for question in value["questions"]:
+        if question.get("grading_context") is None:
+            question.pop("grading_context", None)
     return hashlib.sha256(
         json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()
     ).hexdigest()

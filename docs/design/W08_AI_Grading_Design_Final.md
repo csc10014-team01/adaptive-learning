@@ -5,6 +5,16 @@
 **Engine kế thừa:** `R2026-11-17-scoped-skill-guidance-v11`  
 **Integration revision:** `W08-2026-11-20-v1`
 
+**Cập nhật tích hợp ngày 21/11/2026:** Luồng UI mới nay hỗ trợ duyệt đề kèm
+`grading_contexts` do giáo viên kiểm tra, chuyển đúng revision sang `/grading`,
+nhập bài làm từng câu, chấm và mở lại lịch sử đã lưu. Bản tích hợp mới mang mã
+`W08-2026-11-21-teacher-workflow-v2`; engine v11 và prompt vẫn giữ nguyên.
+Các giới hạn về snapshot thiếu mapping ở báo cáo ngày 20/11 bên dưới mô tả
+trạng thái trước cập nhật; snapshot cũ thiếu context vẫn bị từ chối.
+Xem [contract luồng hiện tại](../api/W08_Exam_and_Grading_Contract.md) và
+[ghi chú bàn giao luồng giáo viên V1](../report/W08_Teacher_Workflow_V1_Handoff.md).
+PCM/EAP và cập nhật hồ sơ tiếp tục nằm ngoài phạm vi lần nối luồng này.
+
 ## 1. Phạm vi tôi đã triển khai
 
 Tôi đã đưa engine Qwen độc lập vào FastAPI hiện có, bổ sung API job bất đồng bộ,

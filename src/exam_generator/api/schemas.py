@@ -20,6 +20,8 @@ from src.exam_generator.validation.quality_contracts import (
     HumanQualityReview,
 )
 
+from src.grading.schemas import QuestionContext, QuestionGradingReview
+
 Identifier = Annotated[
     str, Field(strict=True, min_length=1, max_length=128, pattern=r"^\S+$")
 ]
@@ -255,10 +257,17 @@ class ExamQuestion(StudentQuestion):
     answer: Answer
     step_solutions: Annotated[list[SolutionStep], Field(min_length=1)]
     rubric: Annotated[list[RubricCriterion], Field(min_length=1)]
+    grading_context: QuestionContext | None = None
     validation: ValidationSummary
 
     @model_validator(mode="after")
     def consistent_scoring(self) -> Self:
+        if self.grading_context is not None and (
+            self.grading_context.question_id != self.question_id
+            or self.grading_context.question_text != self.content_latex
+            or self.grading_context.skill_ids != self.skill_ids
+        ):
+            raise ValueError("Grading context must bind to this exact question and skills")
         if self.template_instance is not None and self.source_ref.kind != "template":
             raise ValueError("Only template questions can contain template instances")
         if self.template_presentation is not None and (
@@ -382,6 +391,7 @@ class ApproveExamRequest(ContractModel):
     accepted_question_ids: list[Identifier] = Field(default_factory=list)
     notes: Annotated[str, Field(max_length=2000)] = ""
     quality_review: HumanQualityReview | None = None
+    grading_contexts: Annotated[list[QuestionGradingReview], Field(min_length=1, max_length=10)] | None = None
 
 
 class RegenerateQuestionRequest(ContractModel):

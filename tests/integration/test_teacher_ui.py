@@ -35,7 +35,7 @@ def test_ui_config_requires_teacher_access_and_exposes_no_secrets():
                                    "generation_timeout_seconds": 180}
         assert TOKEN not in response.text
         # UI routes do not alter the published business API inventory.
-        assert len(client.get("/openapi.json").json()["paths"]) == 8
+        assert len(client.get("/openapi.json").json()["paths"]) == 12
 
 
 def test_local_demo_can_select_real_sample_profiles_plan_and_generate():

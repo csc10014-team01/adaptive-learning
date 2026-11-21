@@ -559,7 +559,7 @@ def test_generate_does_not_write_data_or_call_qwen(client, monkeypatch):
 
 def test_openapi_documents_generation_and_grading_teacher_endpoints(client):
     schema = client.get("/openapi.json").json()
-    assert len(schema["paths"]) == 11
+    assert len(schema["paths"]) == 12
     for path in schema["paths"].values():
         for operation in path.values():
             assert operation["security"] == [{"HTTPBearer": []}]

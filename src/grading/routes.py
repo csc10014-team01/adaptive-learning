@@ -1,6 +1,8 @@
 """Protected API using the workspace's existing teacher bearer dependency."""
 
-from fastapi import APIRouter, Depends, Request
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Query, Request
 
 from src.api.data_adapter import ApiFailure
 from src.grading.schemas import JobEnvelope, JobRequest
@@ -20,6 +22,10 @@ def mount_grading(app, require_teacher):
     @router.get("/jobs/{job_id}", response_model=JobEnvelope)
     def get_job(job_id: str, request: Request):
         return request.app.state.grading.get(job_id)
+
+    @router.get("/jobs")
+    def list_jobs(request: Request, exam_id: str | None = None, limit: Annotated[int, Query(ge=1, le=50)] = 20):
+        return request.app.state.grading.list_jobs(exam_id, limit)
 
     @router.get("/jobs/{job_id}/result", response_model=JobEnvelope)
     def get_result(job_id: str, request: Request):

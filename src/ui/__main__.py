@@ -5,12 +5,14 @@ import os
 import secrets
 import time
 import webbrowser
+from pathlib import Path
 from threading import Thread
 from urllib.parse import quote
 
 import uvicorn
 
 from src.api.main import create_app
+from src.api.data_adapter import ROOT
 
 
 def main():
@@ -41,6 +43,7 @@ def main():
         backend="fake" if args.fake else "qwen",
         profile_source="m3",
         teacher_token=token,
+        exam_db=Path(os.getenv("EXAM_DB", str(ROOT / "data/runtime/exams.db"))),
     )
     server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=args.port))
     url = f"http://127.0.0.1:{args.port}/" + ("grading" if args.grading else "")

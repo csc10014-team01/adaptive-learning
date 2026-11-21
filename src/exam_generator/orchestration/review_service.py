@@ -133,6 +133,7 @@ def validate_regeneration(
                     s.model_dump(mode="python") for s in new.step_solutions
                 ],
                 rubric=[r.model_dump(mode="python") for r in new.rubric],
+                grading_context=None,
             )
             presentation_changed = (
                 new.generate_type != old.generate_type

@@ -55,6 +55,21 @@ class SQLiteExamStore:
             raise ApiFailure(404, "EXAM_NOT_FOUND", "Không tìm thấy exam draft.")
         return ExamResponse.model_validate_json(row[0])
 
+    def get_revision(self, exam_id: str, revision: int) -> ExamResponse:
+        if not self.path.exists():
+            raise ApiFailure(404, "EXAM_REVISION_NOT_FOUND", "Không tìm thấy phiên bản đề đã yêu cầu.")
+        connection = sqlite3.connect(self.path.resolve().as_uri() + "?mode=ro", uri=True)
+        try:
+            connection.execute("PRAGMA query_only=ON")
+            row = connection.execute(
+                "SELECT body FROM exam_revisions WHERE exam_id=? AND revision=?", (exam_id, revision)
+            ).fetchone()
+        finally:
+            connection.close()
+        if row is None:
+            raise ApiFailure(404, "EXAM_REVISION_NOT_FOUND", "Không tìm thấy phiên bản đề đã yêu cầu.")
+        return ExamResponse.model_validate_json(row[0])
+
     def replace(self, exam: ExamResponse, *, expected_revision: int) -> None:
         """Compare-and-swap prevents a slow regeneration overwriting teacher review."""
         exam = ExamResponse.model_validate(exam)

@@ -117,6 +117,10 @@ class GradingService:
         self.start()
         return self.store.get(job_id)
 
+    def list_jobs(self, exam_id=None, limit=20):
+        self.start()
+        return {"items": self.store.list_jobs(exam_id, limit)}
+
     def stop(self):
         with self.lock:
             if self.thread is None:

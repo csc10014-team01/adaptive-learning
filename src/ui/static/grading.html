@@ -8,7 +8,7 @@
   <script src="/ui/assets/grading.js" defer></script>
 </head>
 <body>
-  <header><a href="/">MIRA · Tạo đề</a><span>KHÔNG GIAN CHẤM BÀI</span><a href="/docs">API docs ↗</a></header>
+  <header><a id="back-to-exam" href="/">MIRA · Tạo đề</a><span>KHÔNG GIAN CHẤM BÀI</span><a href="/docs">API docs ↗</a></header>
   <main>
     <div class="intro"><p class="eyebrow">AI GRADING · LOCAL WORKSPACE</p><h1>Đọc cách làm.<br>Hiểu từng bước.</h1><p>Gửi bài tự luận nguyên văn, theo dõi tiến độ và xem kết quả từng câu.</p></div>
     <form id="connect-form" class="panel inline"><label for="token">Token phiên làm việc</label><input id="token" type="password" autocomplete="off" required><button>Kết nối</button><span id="connection">Chưa kết nối</span></form>
@@ -24,11 +24,15 @@
           <button id="apply-input" type="button" class="secondary">Áp dụng JSON vào ô bài làm</button>
         </div>
         <div id="approved-fields" hidden>
-          <p class="callout">Nhập đúng mã đề và revision đã duyệt. Backend lấy đáp án và rubric từ snapshot; nếu chưa đủ mapping kỹ năng, hệ thống sẽ báo dữ liệu chưa sẵn sàng.</p>
+          <p class="callout">Nhập đúng mã đề và revision đã duyệt, rồi nạp câu hỏi. Đáp án và rubric được đọc từ snapshot giáo viên đã xác nhận.</p>
           <label for="exam-id">Mã đề</label><input id="exam-id" autocomplete="off">
           <label for="revision">Revision đã duyệt</label><input id="revision" type="number" min="1" step="1" value="2">
-          <label for="student-id">Mã học sinh của snapshot</label><input id="student-id" autocomplete="off">
-          <label for="approved-answers">Bài làm theo câu (JSON)</label><textarea id="approved-answers" rows="6" placeholder='[{"question_id":"Q1","student_answer":"..."}]'></textarea>
+          <label for="student-id">Mã học sinh của snapshot</label><input id="student-id" autocomplete="off" readonly>
+          <button id="load-approved" type="button" class="secondary">Nạp câu hỏi của phiên bản đã duyệt</button>
+          <details><summary>Nhập bài làm hàng loạt bằng JSON (tùy chọn)</summary>
+            <label for="approved-answers">Bài làm theo câu (JSON)</label><textarea id="approved-answers" rows="6" placeholder='[{"question_id":"Q1","student_answer":"..."}]'></textarea>
+            <button id="import-approved" type="button" class="secondary">Áp dụng bài làm JSON vào ô nhập</button>
+          </details>
         </div>
         <div id="answer-editors"></div>
         <p class="hint">Mỗi câu cần một bản ghi. Ô bài làm trống được hiểu là học sinh để trống câu đó.</p>
@@ -38,6 +42,8 @@
       <section class="panel output" aria-busy="false" id="output">
         <div class="inline spread"><h2>02 · Tiến độ & kết quả</h2><button id="download" class="secondary" type="button" disabled>Tải kết quả JSON ↓</button></div>
         <form id="reopen-form" class="inline"><label for="job-id">Mở job đã lưu</label><input id="job-id" placeholder="G_…" required><button class="secondary">Mở</button></form>
+        <button id="load-history" type="button" class="secondary">Xem các lần chấm đã lưu</button>
+        <div id="job-history"></div>
         <p id="job-label" class="hint">Kết quả và bài làm được lưu trong backend để mở lại bằng mã job.</p>
         <progress id="progress" value="0" max="1"></progress>
         <p id="status" role="status" aria-live="polite">Chưa bắt đầu</p>

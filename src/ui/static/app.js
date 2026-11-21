@@ -386,6 +386,9 @@ $("download-button").addEventListener("click", () => {
 });
 
 const bootstrapToken = new URLSearchParams(window.location.hash.slice(1)).get("token");
+const bootstrapRoute = new URLSearchParams(window.location.hash.slice(1)).get("route");
 if (bootstrapToken) history.replaceState(null, "", window.location.pathname + window.location.search);
 setControls();
-if (bootstrapToken) { $("teacher-token").value = bootstrapToken; operation("Đang kết nối phiên local…", connect); }
+if (bootstrapToken) { $("teacher-token").value = bootstrapToken; operation("Đang kết nối phiên local…", connect).then(() => {
+  if (state.connected && bootstrapRoute && /^\/students\/[^/]+(?:\/exams\/[^/]+)?$/.test(bootstrapRoute)) window.location.hash = bootstrapRoute;
+}); }

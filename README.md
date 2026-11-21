@@ -22,7 +22,7 @@ thạo), ST009 (thiếu dữ liệu một phần) và ST011 (chưa có evidence)
 và bấm **Xem kế hoạch**. Danh sách đầy đủ, nguồn fixture và cách seed có backup:
 [hướng dẫn hồ sơ mẫu](data/sample/memory/USAGE.md).
 
-Tạo đề thật cần Ollama chạy cùng model `qwen3:1.7b` (hoặc `QWEN_MODEL` đã cấu hình).
+Tạo đề thật cần Ollama chạy cùng model `qwen3:4b-q4_K_M` (hoặc `QWEN_MODEL` đã cấu hình).
 Để thử giao diện ngay mà không gọi model:
 
 ```powershell
@@ -31,14 +31,33 @@ Tạo đề thật cần Ollama chạy cùng model `qwen3:1.7b` (hoặc `QWEN_MO
 
 Demo vẫn đọc 20 hồ sơ M3 nhưng chỉ ghép câu nguồn, không thực hiện cá nhân hóa
 trong bước tạo đề; UI ghi rõ chế độ demo. Xem kế hoạch vẫn gọi rule-based planner.
-Draft demo nằm trong RAM và mất khi restart. Tắt server bằng Ctrl+C.
+Launcher lưu đề và revision vào `data/runtime/exams.db`, kể cả với `--fake`.
+Tắt server bằng Ctrl+C. API fake khởi tạo trực tiếp vẫn có thể dùng memory store
+nếu không truyền `exam_db` hoặc cấu hình `EXAM_DB`.
+
+### Luồng giáo viên: sinh → duyệt → chấm → mở lại kết quả
+
+1. Mở hồ sơ học sinh trong UI mới, cấu hình và tạo đề.
+2. Xem câu hỏi/đáp án, thay câu template nếu cần. Kiểm tra các tiêu chí chấm và
+   chọn kỹ năng cho từng tiêu chí; nội dung ban đầu chỉ là gợi ý từ lời giải.
+3. Bấm **Duyệt đề và rubric chấm**. Snapshot đã duyệt giữ nguyên đáp án nguồn,
+   đồng thời lưu context chấm được giáo viên xác nhận trong đúng revision.
+4. Bấm **Nhập bài làm và chấm**. Trang `/grading` tự nạp đúng đề, revision và học sinh.
+   Nhập văn bản từng câu hoặc dùng mục JSON tùy chọn để nhập bài giả lập hàng loạt.
+5. Bắt đầu chấm, xem tiến độ/kết quả, tải JSON hoặc dùng **Xem các lần chấm đã lưu**
+   để mở lại. Kết quả hoàn tất vẫn đọc được sau khi restart.
+
+`--fake` chỉ giả lập sinh đề; chấm bài không rỗng vẫn cần Ollama với `GRADING_MODEL`.
+Chưa tính điểm số, PCM/EAP hoặc ghi cập nhật hồ sơ. Chi tiết API và kiểm thử:
+[W08 Exam and Grading Contract](docs/api/W08_Exam_and_Grading_Contract.md).
+Phạm vi V1 và những việc còn lại: [W08 Teacher Workflow V1](docs/report/W08_Teacher_Workflow_V1_Handoff.md).
 
 Nếu port 8000 đang được sử dụng, thêm `--port 8001`. Nếu chạy bằng lệnh uvicorn
 ở phần dưới, mở `/` và nhập teacher token của server. `--no-browser` yêu cầu đặt
 `API_TEACHER_TOKEN` trước. Token launcher được truyền bằng URL fragment, xóa ngay
 khi trang đọc xong, không gửi trong URL HTTP hay lưu vào localStorage. Tải lại
 trang cần nhập token đã cấu hình hoặc mở lại từ launcher. UI chỉ dành cho giáo
-viên test local; chưa có màn hình học sinh, duyệt đề hay chấm bài trên UI.
+viên test local; chưa có màn hình học sinh.
 
 API mặc định chạy backend thật (`EXAM_BACKEND=qwen`), đọc hồ sơ trực tiếp từ
 `data/sample/memory/student_profiles_sample.db` và câu hỏi từ
@@ -56,13 +75,14 @@ Pipeline module và duyệt đề: [ADR-004](docs/decisions/ADR-004-modular-gene
 # Cần Python 3.11+ và Ollama đã cài trên máy.
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-ollama pull qwen3:1.7b
+ollama pull qwen3:4b-q4_K_M
 # Nếu Ollama chưa chạy, mở terminal riêng và chạy: ollama serve
 $env:API_TEACHER_TOKEN = [guid]::NewGuid().ToString('N')
 $env:EXAM_BACKEND = 'qwen'
 $env:PROFILE_SOURCE = 'm3'
 $env:OLLAMA_BASE_URL = 'http://127.0.0.1:11434'
-$env:QWEN_MODEL = 'qwen3:1.7b'
+$env:QWEN_MODEL = 'qwen3:4b-q4_K_M'
+$env:GRADING_MODEL = 'qwen3:4b-q4_K_M'
 .\.venv\Scripts\python.exe -m uvicorn src.api.main:app --host 127.0.0.1 --port 8000
 ```
 
@@ -351,9 +371,14 @@ them explicitly because the application does not auto-load `.env`.
 
 Approved mode accepts `mode=approved_snapshot`, exact `exam_id`, `exam_revision`,
 `student_id` and `answers`; reference data loads server-side from that revision.
-**Current generated snapshots are not grading-ready:** their `criteria/sub_score`
-rubrics lack authoritative rubric IDs and per-step skill mappings. They return
-`GRADING_CONTEXT_NOT_READY` before inference once approval/membership checks pass.
+New teacher-UI approvals supply explicit `grading_contexts` with reviewed reference
+expressions, rubric IDs and per-step skills. These are stored as each question's
+`grading_context` in the approved revision; the original marking scheme is preserved.
+Older snapshots without those mappings still return `GRADING_CONTEXT_NOT_READY`.
+The API never silently fabricates mappings when grading an existing snapshot.
+`GET /api/v1/exams/{exam_id}/grading-context?revision=N` prepares answer editors from
+the exact approved snapshot. `GET /api/v1/grading/jobs` lists recent stored jobs;
+the optional `exam_id` filter selects approved-snapshot jobs for that exam.
 The canonical `student_answer_attempt` table exists but is empty; historical
 `test_questions` has no original free-text submission. Future database access is
 an explicit repository interface, not a completed integration.
