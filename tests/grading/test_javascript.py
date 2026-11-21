@@ -20,4 +20,4 @@ def test_grading_ui_event_workflows():
         check=False,
     )
     assert result.returncode == 0, result.stdout + result.stderr
-    assert json.loads(result.stdout)["passed"] == 12
+    assert json.loads(result.stdout)["passed"] == 17

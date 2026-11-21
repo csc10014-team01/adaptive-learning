@@ -25,14 +25,14 @@ const source = fs.readFileSync(path.join(root, 'src/ui/static/grading.js'), 'utf
 const html = fs.readFileSync(path.join(root, 'src/ui/static/grading.html'), 'utf8');
 const example = JSON.parse(fs.readFileSync(path.join(root, 'src/ui/static/grading-example.json'), 'utf8'));
 
-function harness() {
+function harness(location = {}) {
   const nodes = Object.fromEntries([...html.matchAll(/id="([^"]+)"/g)].map(m => [m[1], new Node()]));
   nodes.mode.value = 'experimental';
   const created = [], requests = [], responses = [], timers = new Map(), blobs = [];
   let timerId = 0;
   const context = vm.createContext({
     document: {getElementById: id => nodes[id], createElement: tag => {const n = new Node(tag); created.push(n); return n;}},
-    window: {location: {hash: '', pathname: '/grading', search: ''}}, history: {}, URLSearchParams,
+    window: {location: {hash: '', pathname: '/grading', search: '', ...location}}, history: {}, URLSearchParams,
     URL: {createObjectURL: b => {blobs.push(b); return 'blob:synthetic';}, revokeObjectURL() {}},
     Blob, AbortController, crypto: {randomUUID: () => `SYN_KEY_${++timerId}`},
     setTimeout: (fn, ms) => {const id = ++timerId; timers.set(id, {fn, ms}); return id;},
@@ -146,6 +146,66 @@ async function run() {
   {
     const h = harness(); const invalid = structuredClone(example); invalid.answers.pop();
     assert.throws(() => h.apply(invalid), /answer/); passed++;
+  }
+  {
+    const h = harness();
+    h.nodes.mode.value = 'approved_snapshot';
+    h.nodes['exam-id'].value = 'EX_SYN'; h.nodes.revision.value = '2';
+    h.responses.push({status: 200, body: {exam_id: 'EX_SYN', exam_revision: 2, student_id: 'SERVER_STUDENT',
+      questions: [{question_id: 'Q1', question_text: 'Câu hỏi đã duyệt.'}], answers: [{question_id: 'Q1', student_answer: ''}]}});
+    await h.nodes['load-approved'].fire('click');
+    assert.equal(h.requests[0].url, '/api/v1/exams/EX_SYN/grading-context?revision=2');
+    assert.equal(h.nodes['student-id'].value, 'SERVER_STUDENT');
+    h.state.editors[0].editor.value = 'Bài làm nguyên văn.';
+    assert.equal(h.body().answers[0].student_answer, 'Bài làm nguyên văn.');
+    assert.equal(h.body().questions, undefined);
+    h.responses.push({status: 200, body: {exam_id: 'EX_SYN', exam_revision: 2, student_id: 'SERVER_STUDENT',
+      questions: [{question_id: 'Q1', question_text: 'Câu hỏi đã duyệt.'}], answers: [{question_id: 'Q1', student_answer: ''}]}});
+    await h.nodes['load-approved'].fire('click');
+    assert.equal(h.state.editors[0].editor.value, 'Bài làm nguyên văn.');
+    h.nodes['approved-answers'].value = 'unapplied invalid JSON';
+    assert.equal(h.body().answers[0].student_answer, 'Bài làm nguyên văn.');
+    h.nodes.revision.value = '3'; assert.throws(() => h.body(), /Nạp lại/); passed++;
+  }
+  {
+    const h = harness(); h.state.approved = {exam_id: 'EX_SYN', exam_revision: 2, student_id: 'S',
+      questions: [{question_id: 'Q1', question_text: 'Đề đã duyệt.'}], answers: [{question_id: 'Q1', student_answer: ''}]};
+    h.nodes['approved-answers'].value = JSON.stringify([{question_id: 'Q1', student_answer: 'Nội dung từ JSON.'}]);
+    await h.nodes['import-approved'].fire('click');
+    assert.equal(h.state.editors[0].editor.value, 'Nội dung từ JSON.');
+    h.nodes['approved-answers'].value = JSON.stringify([{question_id: 'WRONG', student_answer: ''}]);
+    await h.nodes['import-approved'].fire('click');
+    assert.equal(h.nodes.notice.attributes.role, 'alert');
+    assert.equal(h.state.editors[0].question_id, 'Q1'); passed++;
+  }
+  {
+    const h = harness(); h.state.approved = {exam_id: 'EX_SYN'};
+    h.responses.push({status: 200, body: {items: [{job_id: 'G_SYN', test_id: 'EX_SYN', state: 'COMPLETED', created_at: '2026-11-21'}]}});
+    await h.nodes['load-history'].fire('click');
+    assert.equal(h.requests[0].url, '/api/v1/grading/jobs?exam_id=EX_SYN');
+    const button = h.nodes['job-history'].children[0].children[0];
+    h.responses.push({status: 200, body: job()}); await button.fire('click');
+    assert.equal(h.nodes['job-id'].value, 'G_SYN'); assert.equal(h.nodes.download.disabled, false); passed++;
+  }
+  {
+    const h = harness({search: '?exam_id=EX_SYN&revision=2'});
+    assert.equal(h.nodes.mode.value, 'approved_snapshot');
+    h.nodes.token.value = 'session-secret';
+    h.responses.push({status: 200, body: {}}, {status: 200, body: {exam_id: 'EX_SYN', exam_revision: 2, student_id: 'S',
+      questions: [{question_id: 'Q1', question_text: 'Đề.'}], answers: [{question_id: 'Q1', student_answer: ''}]}});
+    await h.nodes['connect-form'].fire('submit');
+    assert.equal(h.state.editors.length, 1);
+    assert.ok(h.nodes['back-to-exam'].href.includes('route=%2Fstudents%2FS%2Fexams%2FEX_SYN'));
+    assert.ok(h.requests.every(r => !r.url.includes('session-secret'))); passed++;
+  }
+  {
+    const h = harness({search: '?exam_id=EX_OLD&revision=2'});
+    h.nodes.token.value = 'session-secret';
+    h.responses.push({status: 200, body: {}}, {status: 409, body: {error: {code: 'GRADING_CONTEXT_NOT_READY', message: 'Snapshot cũ thiếu rubric.'}}});
+    await h.nodes['connect-form'].fire('submit');
+    assert.equal(h.state.connected, true);
+    assert.equal(h.nodes.connection.textContent, 'Đã kết nối');
+    assert.ok(h.nodes.notice.textContent.includes('GRADING_CONTEXT_NOT_READY')); passed++;
   }
   console.log(JSON.stringify({passed}));
 }

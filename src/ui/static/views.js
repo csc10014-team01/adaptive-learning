@@ -427,7 +427,40 @@ $("cf-cancel").addEventListener("click", () => { location.hash = cf.studentId ? 
 /* ═══════════════════════════════════════════════════════════
    MÀN 3: BẢN NHÁP & XEM TRƯỚC
 ═══════════════════════════════════════════════════════════ */
-const dr = {studentId: null, exam: null, profile: null, topics: [], seq: 0, busy: false};
+const dr = {studentId: null, exam: null, profile: null, topics: [], seq: 0, busy: false, stale: false, editors: new Map()};
+
+function gradingReviewEditor(q) {
+  const section = el("section", null, "fg-grading-review");
+  section.append(el("h5", "Rubric chấm bài · giáo viên kiểm tra và xác nhận khi duyệt đề"));
+  const referenceLabel = el("label", "Đáp án chuẩn dùng để chấm (ví dụ 56, 1/2, C(8,3), 53 cách chọn)");
+  const reference = el("input"); reference.id = `grading-reference-${q.order_index}`;
+  referenceLabel.htmlFor = reference.id;
+  reference.value = q.grading_context?.reference_answer || q.answer.correct_answer;
+  const primary = q.target_skill_id || (q.skill_ids.length === 1 ? q.skill_ids[0] : null);
+  const criteria = q.grading_context?.rubric || q.step_solutions.map((step, i) => ({
+    id: `R${i + 1}`, description: step.explanation, skill_ids: primary ? [primary] : [],
+  }));
+  const names = q.skill_ids.map(id => `${id}: ${skillNameIn(dr.topics, id)}`).join("; ");
+  section.append(el("p", `Kỹ năng của câu: ${names}. Nội dung ban đầu là gợi ý từ lời giải; hãy sửa tiêu chí và chọn kỹ năng phù hợp trước khi duyệt.`, "fg-text"), referenceLabel, reference);
+  const approved = dr.exam.status === "approved";
+  const rubric = criteria.map((criterion, i) => {
+    const label = el("label", `Tiêu chí ${i + 1}`);
+    const description = el("textarea"); description.rows = 3;
+    description.id = `grading-criterion-${q.order_index}-${i}`; label.htmlFor = description.id;
+    description.value = criterion.description; description.disabled = approved;
+    const skills = q.skill_ids.map(id => {
+      const choice = el("label", null, "check-row");
+      const input = el("input"); input.type = "checkbox"; input.checked = criterion.skill_ids.includes(id); input.disabled = approved;
+      choice.append(input, el("span", skillNameIn(dr.topics, id)));
+      return {id, input, choice};
+    });
+    section.append(label, description, ...skills.map(s => s.choice));
+    return {id: criterion.id, description, skills};
+  });
+  reference.disabled = approved;
+  dr.editors.set(q.question_id, {reference, rubric});
+  return section;
+}
 
 function questionCard(q, topics) {
   const card = el("article", null, "fg-q");
@@ -459,6 +492,7 @@ function questionCard(q, topics) {
   if (q.source_ref.kind === "template") actions.append(replace);
 
   card.append(head, el("p", q.content_latex, "fg-q-body"), actions, answer);
+  card.append(gradingReviewEditor(q));
   return card;
 }
 
@@ -476,8 +510,16 @@ function renderDraft() {
     `Mã đề ${exam.exam_id} · phiên bản ${exam.revision || 1}`,
     exam.provenance?.generator === "qwen" ? `Tạo bởi ${exam.provenance.model}` : "Đề demo: ghép từ câu có sẵn, không gọi AI và chưa cá nhân hóa",
   ].join("  ·  ");
+  const quality = exam.quality_report;
+  $("dr-quality-status").textContent = quality
+    ? `Kiểm tra chất lượng đề: ${quality.status}. ${quality.total_score == null ? "Chưa đủ bằng chứng để tính điểm W06." : `${quality.total_score}/100.`}${quality.approval_blocked ? " Cần xử lý lỗi trước khi duyệt." : " Giáo viên kiểm tra nội dung trước khi duyệt."}`
+    : "Chưa có báo cáo kiểm tra chất lượng đề.";
 
+  dr.editors.clear();
   $("dr-questions").replaceChildren(...exam.questions.map((q) => questionCard(q, topics)));
+  $("dr-approve").hidden = exam.status === "approved";
+  $("dr-approve").disabled = dr.busy || dr.stale || !approvalReady(exam);
+  $("dr-deliver").disabled = dr.busy || dr.stale || exam.status !== "approved" || exam.questions.some(q => !q.grading_context);
 
   /* Tóm tắt: số liệu tính từ chính các câu trong đề, không lấy từ kế hoạch */
   const counts = Object.fromEntries(LEVEL_KEYS.map((k) => [k, exam.questions.filter((q) => q.cognitive_level === k).length]));
@@ -497,6 +539,16 @@ function drBusy(on, message) {
   for (const b of $("view-draft").querySelectorAll("[data-act]")) b.disabled = on;
   $("dr-regen-all").disabled = on;
   $("dr-save").disabled = on;
+  $("dr-refresh").disabled = on;
+  $("dr-approve").disabled = on || dr.stale || !approvalReady(dr.exam);
+  $("dr-deliver").disabled = on || dr.stale || dr.exam?.status !== "approved" || dr.exam.questions.some(q => !q.grading_context);
+  for (const entry of dr.editors.values()) {
+    entry.reference.disabled = on || dr.exam.status === "approved";
+    for (const criterion of entry.rubric) {
+      criterion.description.disabled = on || dr.exam.status === "approved";
+      for (const skill of criterion.skills) skill.input.disabled = on || dr.exam.status === "approved";
+    }
+  }
   if (on) setAlert("dr", "ok", message);
 }
 
@@ -514,7 +566,7 @@ async function loadDraftView(studentId, examId) {
     if (seq !== dr.seq || view.current !== "draft") return;
     if (exam.student_id !== studentId) throw new Error("Mã đề này không thuộc học sinh đang xem.");
     acceptExam(exam);
-    Object.assign(dr, {exam, profile, topics: topicsResp.items});
+    Object.assign(dr, {exam, profile, topics: topicsResp.items, stale: false});
     renderDraft();
     setLoading("draft", false);
   } catch (err) {
@@ -523,7 +575,7 @@ async function loadDraftView(studentId, examId) {
 }
 
 async function drReplace(questionId) {
-  if (dr.busy) return;
+  if (dr.busy || dr.stale) return;
   const number = dr.exam.questions.find((q) => q.question_id === questionId)?.order_index;
   drBusy(true, `Đang thay câu ${number}… Qwen có thể cần vài phút.`);
   try {
@@ -532,6 +584,7 @@ async function drReplace(questionId) {
     renderDraft();
     setAlert("dr", "ok", `Đã thay câu ${number}. Đề quay về trạng thái chờ giáo viên duyệt (phiên bản ${exam.revision}).`);
   } catch (err) {
+    if (err.code === "EXAM_REVISION_CONFLICT") dr.stale = true;
     if (isAuthError(err)) { showFull("forbidden", err.message); return; }
     setAlert("dr", "error", err.message);
   } finally { drBusy(false); }
@@ -565,6 +618,34 @@ $("dr-questions").addEventListener("click", (e) => {
     answer.hidden = !answer.hidden;
     button.setAttribute("aria-expanded", String(!answer.hidden));
   } else if (button.dataset.act === "replace") drReplace(card.dataset.questionId);
+});
+
+async function drApprove() {
+  if (dr.busy || dr.stale || !approvalReady(dr.exam)) return;
+  try {
+    const grading_contexts = dr.exam.questions.map(q => {
+      const entry = dr.editors.get(q.question_id);
+      return {question_id: q.question_id, reference_answer: entry.reference.value.trim(), rubric: entry.rubric.map(criterion => ({
+        id: criterion.id, description: criterion.description.value.trim(),
+        skill_ids: criterion.skills.filter(s => s.input.checked).map(s => s.id),
+      }))};
+    });
+    drBusy(true, "Đang duyệt đề và lưu rubric chấm cùng phiên bản đề…");
+    const exam = await api(`/api/v1/exams/${enc(dr.exam.exam_id)}/approve`, {method: "POST",
+      body: {expected_revision: dr.exam.revision, grading_contexts}});
+    acceptExam(exam); dr.exam = exam; dr.stale = false; renderDraft();
+    setAlert("dr", "ok", `Đã duyệt phiên bản ${exam.revision}. Có thể nhập bài làm để chấm. Duyệt thủ công không tự xác nhận đề đạt điểm W06.`);
+  } catch (err) {
+    if (err.code === "EXAM_REVISION_CONFLICT") dr.stale = true;
+    setAlert("dr", "error", err.message);
+  } finally { drBusy(false); }
+}
+
+$("dr-approve").addEventListener("click", drApprove);
+$("dr-refresh").addEventListener("click", () => { if (!dr.busy) loadDraftView(dr.studentId, dr.exam.exam_id); });
+$("dr-deliver").addEventListener("click", () => {
+  if (dr.busy || dr.stale || dr.exam?.status !== "approved" || dr.exam.questions.some(q => !q.grading_context)) return;
+  window.location.assign(`/grading?exam_id=${enc(dr.exam.exam_id)}&revision=${dr.exam.revision}#token=${enc(state.token)}`);
 });
 $("dr-regen-all").addEventListener("click", drRegenerateAll);
 $("dr-save").addEventListener("click", () => {

@@ -11,7 +11,7 @@ from uuid import uuid4
 from src.api.data_adapter import ApiFailure
 from src.grading.engine import GRADING_REVISION
 
-INTEGRATION_REVISION = "W08-2026-11-20-v1"
+INTEGRATION_REVISION = "W08-2026-11-21-teacher-workflow-v2"
 
 
 def now():
@@ -61,6 +61,16 @@ class GradingStore:
                 question_id TEXT NOT NULL, compact_json TEXT NOT NULL,
                 progress_json TEXT NOT NULL, PRIMARY KEY(job_id, question_id),
                 UNIQUE(job_id, position))""")
+
+    def list_jobs(self, exam_id=None, limit=20):
+        where = " WHERE json_extract(metadata_json, '$.mode')='approved_snapshot' AND json_extract(metadata_json, '$.test_id')=?" if exam_id else ""
+        parameters = (exam_id, limit) if exam_id else (limit,)
+        with self.connection() as db:
+            rows = db.execute(
+                "SELECT metadata_json FROM grading_jobs" + where + " ORDER BY rowid DESC LIMIT ?",
+                parameters,
+            ).fetchall()
+        return [json.loads(row["metadata_json"]) for row in rows]
 
     def existing(self, key, request_hash):
         with self.connection() as db:

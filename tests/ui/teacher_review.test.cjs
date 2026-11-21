@@ -10,6 +10,7 @@ class Node {
     this.tagName = tag; this.children = []; this.attributes = {}; this.listeners = {};
     this.value = ''; this.disabled = false; this.checked = false; this.hidden = false;
     this.className = ''; this._text = '';
+    this.dataset = {}; this.style = {};
     this.classList = {
       contains: name => this.className.split(' ').includes(name),
       toggle: (name, force) => {
@@ -29,6 +30,12 @@ class Node {
   replaceChildren(...nodes) { this._text = ''; this.children = nodes; }
   cloneNode() { return new Node(this.tagName); }
   setAttribute(name, value) { this.attributes[name] = String(value); }
+  getAttribute(name) { return this.attributes[name]; }
+  querySelectorAll(selector) {
+    const result = [];
+    const visit = n => { for (const c of n.children) { if (selector === '[data-act]' ? c.dataset.act : c.classList.contains(selector.slice(1))) result.push(c); visit(c); } };
+    visit(this); return result;
+  }
   addEventListener(event, listener) { (this.listeners[event] ||= []).push(listener); }
   async fire(event) { for (const listener of this.listeners[event] || []) await listener({preventDefault() {}}); }
   reportValidity() { return true; }
@@ -50,12 +57,16 @@ function harness(generator = 'qwen') {
     return result;
   }
   const document = {
+    body: new Node('body'),
     getElementById: id => all().find(n => n.id === id) || null,
     createElement: tag => new Node(tag), createDocumentFragment: () => new Node('fragment'),
+    createElementNS: (ns, tag) => new Node(tag),
     querySelectorAll: selector => all().filter(n => n.classList.contains(selector.slice(1))),
   };
   const requests = [], responses = [];
-  const context = vm.createContext({document, window: {location: {hash: ''}},
+  const navigation = [];
+  const location = {hash: '', assign: url => navigation.push(url)};
+  const context = vm.createContext({document, window: {location, addEventListener() {}, scrollTo() {}}, location,
     history: {}, URLSearchParams, URL, Blob, AbortController, setTimeout, clearTimeout,
     setInterval, clearInterval, console,
     fetch: async (url, options) => {
@@ -76,7 +87,9 @@ function harness(generator = 'qwen') {
   const buttons = () => all().filter(n => n.tagName === 'button');
   const accepts = () => all().filter(n => n.tagName === 'input' && n.type === 'checkbox');
   const regenerate = () => buttons().find(n => n.attributes['aria-label'] === 'Tạo lại câu 1');
-  return {state, requests, responses, present, get, all, buttons, accepts, regenerate,
+  return {state, requests, responses, present, get, all, buttons, accepts, regenerate, context, navigation,
+    evaluate: code => vm.runInContext(code, context),
+    loadViews: () => vm.runInContext(fs.readFileSync(path.join(root, 'src/ui/static/views.js'), 'utf8'), context),
     loadProfile: () => vm.runInContext('loadProfile()', context),
     requestBody: () => vm.runInContext('requestBody()', context)};
 }
@@ -337,6 +350,8 @@ async function run() {
 }
 
 module.exports = run;
+module.exports.harness = harness;
+module.exports.draft = draft;
 if (require.main === module) run().then(result => console.log(JSON.stringify(result))).catch(error => {
   console.error(error); process.exitCode = 1;
 });

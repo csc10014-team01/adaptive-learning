@@ -305,3 +305,8 @@ body[data-view="draft"] #step-1-link:hover{text-decoration:underline}
 .fg-skeleton-7{height:36px;width:420px;margin-bottom:26px}
 .fg-skeleton-8{height:78px}
 .fg-skeleton-9{height:460px}
+.fg-grading-review{margin-top:18px;padding:16px;border:1px solid #d8e0da;border-radius:12px;background:#f8faf8}
+.fg-grading-review label{display:block;margin-top:12px;font-size:13px}
+.fg-grading-review input,.fg-grading-review textarea{box-sizing:border-box;width:100%;margin-top:6px;padding:10px;border:1px solid #bdcbc1;border-radius:8px;font:inherit}
+.fg-grading-review textarea{font-family:Consolas,monospace;font-size:12px;resize:vertical}
+.fg-grading-review input[type=checkbox]{width:auto;margin:0}

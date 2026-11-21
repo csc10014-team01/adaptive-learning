@@ -2,7 +2,7 @@
 
 const $ = id => document.getElementById(id);
 const state = {token: "", connected: false, busy: false, context: null, applied: "", editors: [],
-  envelope: null, poll: null, epoch: 0, lastBody: "", lastKey: ""};
+  envelope: null, poll: null, epoch: 0, lastBody: "", lastKey: "", approved: null, answerMode: ""};
 
 function node(tag, text, className) {
   const result = document.createElement(tag);
@@ -22,6 +22,9 @@ function controls() {
   $("start").disabled = !state.connected || state.busy;
   $("download").disabled = !state.envelope || state.envelope.metadata.state !== "COMPLETED";
   $("output").setAttribute("aria-busy", String(state.busy));
+  $("load-approved").disabled = !state.connected || state.busy;
+  $("import-approved").disabled = state.busy;
+  $("load-history").disabled = !state.connected;
 }
 
 async function api(path, body) {
@@ -41,10 +44,7 @@ async function api(path, body) {
   } finally { clearTimeout(timer); }
 }
 
-function applyInput() {
-  const data = JSON.parse($("input-json").value);
-  if (data.mode !== "experimental" || !Array.isArray(data.questions) || !Array.isArray(data.answers) ||
-      data.questions.length < 1 || data.questions.length > 10) throw new Error("Cần experimental request với questions và answers (1–10 câu).");
+function answerEditors(data) {
   const ids = data.questions.map(q => q.question_id);
   const answerIds = data.answers.map(a => a.question_id);
   if (new Set(ids).size !== ids.length || new Set(answerIds).size !== answerIds.length ||
@@ -60,23 +60,65 @@ function applyInput() {
     const editor = node("textarea");
     editor.id = `answer-${editors.length}`; label.htmlFor = editor.id;
     editor.value = answer.student_answer;
+    editor.addEventListener("input", () => {
+      if (state.answerMode === "approved_snapshot") $("approved-answers").value = JSON.stringify(
+        state.editors.map(e => ({question_id: e.question_id, student_answer: e.editor.value})), null, 2);
+    });
     section.append(label, editor); container.append(section);
     editors.push({question_id: q.question_id, editor});
   });
-  state.context = data; state.applied = $("input-json").value; state.editors = editors;
+  state.editors = editors;
   $("answer-editors").replaceChildren(container);
+  $("answer-editors").hidden = false;
+}
+
+function applyInput() {
+  const data = JSON.parse($("input-json").value);
+  if (data.mode !== "experimental" || !Array.isArray(data.questions) || !Array.isArray(data.answers) ||
+      data.questions.length < 1 || data.questions.length > 10) throw new Error("Cần experimental request với questions và answers (1–10 câu).");
+  answerEditors(data);
+  state.context = data; state.applied = $("input-json").value; state.answerMode = "experimental";
   notice("Đã nạp dữ liệu thử nghiệm. Có thể sửa trực tiếp bài làm nguyên văn bên dưới.");
+}
+
+async function loadApproved() {
+  const id = $("exam-id").value.trim();
+  const revision = Number($("revision").value);
+  if (!id || !Number.isInteger(revision) || revision < 1) throw new Error("Nhập mã đề và revision nguyên dương.");
+  const data = await api(`/api/v1/exams/${encodeURIComponent(id)}/grading-context?revision=${revision}`);
+  if (state.answerMode === "approved_snapshot" && state.approved?.exam_id === data.exam_id && state.approved.exam_revision === data.exam_revision) {
+    const existing = new Map(state.editors.map(e => [e.question_id, e.editor.value]));
+    data.answers = data.answers.map(a => ({...a, student_answer: existing.get(a.question_id) ?? a.student_answer}));
+  }
+  answerEditors(data); state.approved = data; state.answerMode = "approved_snapshot";
+  $("student-id").value = data.student_id;
+  $("approved-answers").value = JSON.stringify(data.answers, null, 2);
+  notice(`Đã nạp ${data.questions.length} câu của đề ${id}, revision ${revision}. Nhập bài làm nguyên văn; ô trống là câu học sinh bỏ trống.`);
+  updateBackLink();
+}
+
+function updateBackLink() {
+  const route = state.approved ? `/students/${encodeURIComponent(state.approved.student_id)}/exams/${encodeURIComponent(state.approved.exam_id)}` : "/";
+  $("back-to-exam").href = `/#token=${encodeURIComponent(state.token)}&route=${encodeURIComponent(route)}`;
+  $("back-to-exam").textContent = state.approved ? "← Quay lại đề đã duyệt" : "MIRA · Tạo đề";
 }
 
 function requestBody() {
   let body;
   if ($("mode").value === "experimental") {
-    if (!state.context || state.applied !== $("input-json").value) throw new Error("Bấm Áp dụng JSON vào ô bài làm trước khi bắt đầu.");
+    if (!state.context || state.answerMode !== "experimental" || state.applied !== $("input-json").value) throw new Error("Bấm Áp dụng JSON vào ô bài làm trước khi bắt đầu.");
     body = {...state.context, answers: state.editors.map(e => ({question_id: e.question_id, student_answer: e.editor.value}))};
   } else {
     body = {mode: "approved_snapshot", exam_id: $("exam-id").value.trim(),
       exam_revision: Number($("revision").value), student_id: $("student-id").value.trim(),
-      answers: JSON.parse($("approved-answers").value)};
+      answers: state.approved && state.answerMode === "approved_snapshot"
+        ? state.editors.map(e => ({question_id: e.question_id, student_answer: e.editor.value}))
+        : JSON.parse($("approved-answers").value)};
+    if (state.approved && state.answerMode === "approved_snapshot") {
+      if (body.exam_id !== state.approved.exam_id || body.exam_revision !== state.approved.exam_revision || body.student_id !== state.approved.student_id)
+        throw new Error("Thông tin đề đã đổi. Nạp lại đúng phiên bản trước khi chấm.");
+      body.answers = state.editors.map(e => ({question_id: e.question_id, student_answer: e.editor.value}));
+    }
   }
   delete body.idempotency_key;
   const serialized = JSON.stringify(body);
@@ -159,12 +201,16 @@ $("connect-form").addEventListener("submit", async event => {
   try {
     await api("/ui/config"); state.connected = true; $("token").value = "";
     $("connection").textContent = "Đã kết nối"; notice("");
+    updateBackLink();
+    if ($("mode").value === "approved_snapshot" && $("exam-id").value.trim()) {
+      try { await loadApproved(); } catch (error) { notice(error.message, true); }
+    }
   } catch (error) { state.connected = false; $("connection").textContent = "Chưa kết nối"; notice(error.message, true); }
   controls();
 });
 $("mode").addEventListener("change", () => {
   const experimental = $("mode").value === "experimental";
-  $("experimental-fields").hidden = !experimental; $("answer-editors").hidden = !experimental;
+  $("experimental-fields").hidden = !experimental; $("answer-editors").hidden = state.answerMode !== $("mode").value;
   $("approved-fields").hidden = experimental;
 });
 $("example").addEventListener("click", async () => {
@@ -182,6 +228,39 @@ $("import").addEventListener("change", async () => {
   } catch (error) { notice(error.message, true); }
 });
 $("apply-input").addEventListener("click", () => { try { applyInput(); } catch (error) { notice(error.message, true); } });
+$("load-approved").addEventListener("click", async () => {
+  try { await loadApproved(); } catch (error) { notice(error.message, true); }
+});
+$("import-approved").addEventListener("click", () => {
+  try {
+    if (!state.approved) throw new Error("Nạp câu hỏi của phiên bản đã duyệt trước khi nhập bài làm.");
+    answerEditors({...state.approved, answers: JSON.parse($("approved-answers").value)});
+    state.answerMode = "approved_snapshot";
+    notice("Đã nhập bài làm JSON. Có thể kiểm tra và sửa từng ô trước khi chấm.");
+  } catch (error) { notice(error.message, true); }
+});
+$("load-history").addEventListener("click", async () => {
+  try {
+    const query = state.approved ? `?exam_id=${encodeURIComponent(state.approved.exam_id)}` : "";
+    const data = await api(`/api/v1/grading/jobs${query}`);
+    const list = node("div");
+    for (const job of data.items) {
+      const button = node("button", `${job.test_id} · ${job.state} · ${job.created_at}`, "secondary");
+      button.type = "button";
+      button.addEventListener("click", async () => {
+        try {
+          stopPolling(); const epoch = state.epoch;
+          const result = await api(`/api/v1/grading/jobs/${encodeURIComponent(job.job_id)}`);
+          if (epoch !== state.epoch) return;
+          render(result); notice(""); if (state.busy) poll(job.job_id, epoch);
+        } catch (error) { notice(error.message, true); }
+      });
+      list.append(button);
+    }
+    if (!data.items.length) list.append(node("p", "Chưa có lần chấm nào được lưu."));
+    $("job-history").replaceChildren(list);
+  } catch (error) { notice(error.message, true); }
+});
 $("start").addEventListener("click", async () => {
   try {
     const body = requestBody(); stopPolling(); const epoch = state.epoch;
@@ -208,6 +287,12 @@ $("download").addEventListener("click", () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 
+const entry = new URLSearchParams(window.location.search || "");
+if (entry.has("exam_id")) {
+  $("mode").value = "approved_snapshot";
+  $("exam-id").value = entry.get("exam_id"); $("revision").value = entry.get("revision") || "";
+  $("experimental-fields").hidden = true; $("approved-fields").hidden = false;
+}
 const fragment = new URLSearchParams(window.location.hash.slice(1));
 if (fragment.has("token")) {
   $("token").value = fragment.get("token");

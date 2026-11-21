@@ -10,7 +10,7 @@ from pathlib import Path
 from threading import Lock
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, FastAPI, Request
+from fastapi import APIRouter, Depends, FastAPI, Query, Request
 from fastapi.exceptions import RequestValidationError, ResponseValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -69,7 +69,7 @@ from src.exam_generator.orchestration.review_service import (
 )
 from src.exam_generator.validation.exam_quality import ExamQualityEvaluator, QualityPolicy
 from src.ui.routes import mount_ui
-from src.grading.adapter import ExamStoreSnapshots
+from src.grading.adapter import ExamStoreSnapshots, approved_input, prepare_grading_review
 from src.grading.config import GradingConfig
 from src.grading.qwen_client import QwenClient as GradingQwenClient
 from src.grading.routes import mount_grading
@@ -233,7 +233,8 @@ def create_app(
     }:
         raise ValueError("EXAM_DB must be separate from canonical SQL databases")
     api.state.exams = (
-        InMemoryExamStore() if backend == "fake" else SQLiteExamStore(store_path)
+        InMemoryExamStore() if backend == "fake" and exam_db is None and not os.getenv("EXAM_DB")
+        else SQLiteExamStore(store_path)
     )
     grading_settings = grading_config or GradingConfig.from_env()
     protected_paths = {api.state.bank_path.resolve(), api.state.student_path.resolve(), store_path.resolve()}
@@ -362,6 +363,7 @@ def create_app(
                 and all(
                     not q.validation.teacher_approved
                     and not q.validation.blocking_errors
+                    and q.grading_context is None
                     for q in exam.questions
                 ),
                 exam.provenance.generator == "fake"
@@ -417,6 +419,12 @@ def create_app(
             data, relationships=request.app.state.relationships
         ).plan(payload, student)
 
+    @router.get("/exams/{exam_id}/grading-context")
+    def grading_context(
+        exam_id: str, request: Request, revision: Annotated[int, Query(ge=1)],
+    ) -> dict:
+        return approved_input(exam_id, revision, request.app.state.grading.snapshots)
+
     @router.post("/exams/{exam_id}/approve", response_model=ExamResponse)
     def approve(
         exam_id: str,
@@ -427,9 +435,15 @@ def create_app(
         store = request.app.state.exams
         current = store.get(exam_id)
         check_revision(current, payload.expected_revision)
+        previous_report = current.quality_report
+        prepare_grading_review(current, payload.grading_contexts)
         try:
             current.quality_report = request.app.state.quality_evaluator.evaluate(
                 core_exam(current), data=core_data(data), human_review=payload.quality_review,
+                profile=CoreProfile.model_validate(previous_report.profile_snapshot)
+                if previous_report and previous_report.profile_snapshot else None,
+                request=CoreRequest.model_validate(previous_report.request_snapshot)
+                if previous_report and previous_report.request_snapshot else None,
             )
         except ValueError as exc:
             raise ApiFailure(422, "INVALID_QUALITY_REVIEW", str(exc)) from exc

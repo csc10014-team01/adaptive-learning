@@ -154,17 +154,26 @@ class InMemoryExamStore:
 
     def __init__(self):
         self._exams: dict[str, ExamResponse] = {}
+        self._revisions: dict[tuple[str, int], ExamResponse] = {}
         self._lock = Lock()
 
     def save(self, exam: ExamResponse) -> None:
         with self._lock:
             self._exams[exam.exam_id] = exam.model_copy(deep=True)
+            self._revisions[exam.exam_id, exam.revision] = exam.model_copy(deep=True)
 
     def get(self, exam_id: str) -> ExamResponse:
         with self._lock:
             if exam_id not in self._exams:
                 raise ApiFailure(404, "EXAM_NOT_FOUND", "Không tìm thấy exam draft.")
             return self._exams[exam_id].model_copy(deep=True)
+
+    def get_revision(self, exam_id: str, revision: int) -> ExamResponse:
+        with self._lock:
+            snapshot = self._revisions.get((exam_id, revision))
+            if snapshot is None:
+                raise ApiFailure(404, "EXAM_REVISION_NOT_FOUND", "Không tìm thấy phiên bản đề đã yêu cầu.")
+            return snapshot.model_copy(deep=True)
 
     def replace(self, exam: ExamResponse, *, expected_revision: int) -> None:
         exam = ExamResponse.model_validate(exam)
@@ -179,3 +188,4 @@ class InMemoryExamStore:
                     409, "EXAM_REVISION_CONFLICT", "Reload the latest draft"
                 )
             self._exams[exam.exam_id] = exam.model_copy(deep=True)
+            self._revisions[exam.exam_id, exam.revision] = exam.model_copy(deep=True)

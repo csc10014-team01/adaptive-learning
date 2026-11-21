@@ -72,6 +72,14 @@ class QuestionContext(Contract):
         return self
 
 
+class QuestionGradingReview(Contract):
+    """Teacher-supplied grading reference and mappings, approved with the exam."""
+
+    question_id: ID
+    reference_answer: Annotated[str, Field(strict=True, min_length=1, max_length=180)]
+    rubric: Annotated[list[RubricStep], Field(min_length=1, max_length=32)]
+
+
 class AnswerRecord(Contract):
     question_id: ID
     student_answer: Annotated[str, Field(strict=True, max_length=16000)]
