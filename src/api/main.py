@@ -101,8 +101,9 @@ def get_data(request: Request) -> StaticDataAdapter:
                     fixture_dir=state.fixture_dir,
                     bank_path=state.bank_path,
                     student_path=state.student_path,
+                    profile_json=state.profile_source == "json",
                 )
-                if state.profile_source == "m3"
+                if state.profile_source == "m3" or state.backend == "qwen"
                 else StaticDataAdapter(state.fixture_dir, state.bank_path)
             )
         return request.app.state.data
@@ -296,6 +297,8 @@ def create_app(
         service: Annotated[ExamGenerator, Depends(get_exam_generator)],
     ) -> ExamResponse:
         student = data.get_profile(payload.student_id)
+        if student.grade_level != data.topic.grade_level:
+            raise ApiFailure(409, "INSUFFICIENT_QUESTION_BANK", "Kh?ng c? c?u h?i cho kh?i l?p n?y.")
         # Adaptive eligibility is decided per skill by the finalized Planner.
         if request.app.state.generator is None:
             state = request.app.state
@@ -381,9 +384,12 @@ def create_app(
             raise ApiFailure(
                 422, "ADAPTIVE_PLAN_REQUIRED", "Preview is for adaptive generation"
             )
+        student = data.get_profile(payload.student_id)
+        if student.grade_level != data.topic.grade_level:
+            raise ApiFailure(409, "INSUFFICIENT_QUESTION_BANK", "Kh?ng c? c?u h?i cho kh?i l?p n?y.")
         return AdaptiveExamGenerator(
             data, relationships=request.app.state.relationships
-        ).plan(payload, data.get_profile(payload.student_id))
+        ).plan(payload, student)
 
     @router.post("/exams/{exam_id}/approve", response_model=ExamResponse)
     def approve(

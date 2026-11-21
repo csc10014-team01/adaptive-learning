@@ -40,13 +40,15 @@ def allocate_units(total: int, slots: int) -> list[int]:
 def question_slots(request: GenerateExamRequest) -> dict[str, int]:
     if request.difficulty_distribution is None:
         raise ValueError("Manual slots require a non-adaptive difficulty distribution")
-    exact = [
-        getattr(request.difficulty_distribution, level) * request.total_questions / 100
-        for level in LEVELS
-    ]
+    weights = tuple(getattr(request.difficulty_distribution, level) for level in LEVELS)
+    return level_counts(request.total_questions, weights)
+
+
+def level_counts(total: int, weights: tuple[float, ...]) -> dict[str, int]:
+    exact = [weight * total / 100 for weight in weights]
     counts = [floor(value) for value in exact]
     order = sorted(range(len(LEVELS)), key=lambda i: (-(exact[i] - counts[i]), i))
-    for index in order[: request.total_questions - sum(counts)]:
+    for index in order[:total - sum(counts)]:
         counts[index] += 1
     return dict(zip(LEVELS, counts))
 

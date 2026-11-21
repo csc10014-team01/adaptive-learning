@@ -386,6 +386,6 @@ $("download-button").addEventListener("click", () => {
 });
 
 const bootstrapToken = new URLSearchParams(window.location.hash.slice(1)).get("token");
-if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+if (bootstrapToken) history.replaceState(null, "", window.location.pathname + window.location.search);
 setControls();
 if (bootstrapToken) { $("teacher-token").value = bootstrapToken; operation("Đang kết nối phiên local…", connect); }

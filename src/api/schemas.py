@@ -5,7 +5,7 @@ from __future__ import annotations
 from math import isclose
 from typing import Annotated, Literal, Self
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, model_validator
+from pydantic import AliasChoices, BaseModel, BeforeValidator, ConfigDict, Field, model_validator
 
 from src.exam_generator.api.schemas import (
     ApproveExamRequest as ApproveExamRequest,  # noqa: PLC0414 -- Public compatibility re-export.
@@ -13,6 +13,7 @@ from src.exam_generator.api.schemas import (
 from src.exam_generator.api.schemas import (
     LearningHistoryItem,
     PlannerSummary,
+    QuotaSummary as QuotaSummary,
     TeacherReview,
     TemplateInstanceRecord,
     TemplatePresentationRecord,
@@ -78,11 +79,15 @@ class SkillMastery(ContractModel):
 
 class StudentSummary(ContractModel):
     student_id: Identifier
-    student_name: Text
-    grade_level: Annotated[int, Field(strict=True, ge=10, le=10)]
+    student_name: Text = Field(validation_alias=AliasChoices("student_name", "name"))
+    grade_level: Annotated[int, Field(strict=True, gt=0)]
     # Legacy JSON supplies root evidence; SQL records evidence per skill only.
     evidence_count: Count | None = None
     data_status: DataStatus | None = None
+
+    @property
+    def name(self) -> str:
+        return self.student_name
 
     @model_validator(mode="after")
     def consistent_evidence(self) -> Self:
@@ -97,7 +102,7 @@ class StudentSummary(ContractModel):
 
 class StudentProfileResponse(StudentSummary):
     skill_mastery: list[SkillMastery]
-    recommended_blueprint_mode: Mode
+    recommended_blueprint_mode: Mode = "adaptive"
     learning_history: list[LearningHistoryItem] = Field(default_factory=list)
 
     @model_validator(mode="after")

@@ -3,7 +3,7 @@
   "topic_id": "combinatorics",
   "questions": [
     {
-      "question_id": "DEMO_Q01", "grade_level": 10, "skill_ids": ["A001"],
+      "question_id": "DEMO_Q01", "grade_level": 10, "skill_ids": ["A001"], "primary_skill_id": "A001",
       "cognitive_level": "recognition", "generate_type": "direct",
       "content": "Có 3 bút đỏ và 5 bút xanh, tất cả các bút phân biệt. Có bao nhiêu cách chọn một bút?",
       "answer": {"correct_answer": "8", "explanation": "Chọn bút thuộc một trong hai nhóm không giao nhau: 3 + 5 = 8 cách."},
@@ -11,7 +11,7 @@
       "rubric_criteria": ["Nhận diện quy tắc cộng.", "Tính đúng và kết luận 8 cách."]
     },
     {
-      "question_id": "DEMO_Q02", "grade_level": 10, "skill_ids": ["A003"],
+      "question_id": "DEMO_Q02", "grade_level": 10, "skill_ids": ["A003"], "primary_skill_id": "A003",
       "cognitive_level": "recognition", "generate_type": "direct",
       "content": "Xếp 4 mô hình phân biệt thành một hàng. Có bao nhiêu cách xếp?",
       "answer": {"correct_answer": "24", "explanation": "Sắp xếp toàn bộ 4 đối tượng phân biệt: 4! = 24."},
@@ -19,7 +19,7 @@
       "rubric_criteria": ["Chọn đúng phép đếm hoán vị.", "Tính đúng 24 cách."]
     },
     {
-      "question_id": "DEMO_Q03", "grade_level": 10, "skill_ids": ["A004"],
+      "question_id": "DEMO_Q03", "grade_level": 10, "skill_ids": ["A004"], "primary_skill_id": "A004",
       "cognitive_level": "understanding", "generate_type": "direct",
       "content": "Một nhóm có 6 học sinh. Chọn 2 học sinh vào tổ trực nhật, không phân vai. Có bao nhiêu cách chọn?",
       "answer": {"correct_answer": "15", "explanation": "Không xét thứ tự: C(6,2) = 6 × 5 / 2 = 15."},
@@ -27,7 +27,7 @@
       "rubric_criteria": ["Xác định không xét thứ tự.", "Tính đúng 15 cách."]
     },
     {
-      "question_id": "DEMO_Q04", "grade_level": 10, "skill_ids": ["A002"],
+      "question_id": "DEMO_Q04", "grade_level": 10, "skill_ids": ["A002"], "primary_skill_id": "A002",
       "cognitive_level": "understanding", "generate_type": "direct",
       "content": "Có 3 mẫu áo và 4 mẫu quần. Một bộ gồm một áo và một quần. Có bao nhiêu bộ khác nhau?",
       "answer": {"correct_answer": "12", "explanation": "Hai lựa chọn độc lập: 3 × 4 = 12 bộ."},
@@ -35,7 +35,7 @@
       "rubric_criteria": ["Nhận diện quy tắc nhân.", "Tính đúng 12 bộ."]
     },
     {
-      "question_id": "DEMO_Q05", "grade_level": 10, "skill_ids": ["A004"],
+      "question_id": "DEMO_Q05", "grade_level": 10, "skill_ids": ["A004"], "primary_skill_id": "A004",
       "cognitive_level": "application", "generate_type": "direct",
       "content": "Một tổ có 5 nam và 4 nữ. Chọn nhóm gồm 2 nam và 1 nữ. Có bao nhiêu cách chọn?",
       "answer": {"correct_answer": "40", "explanation": "C(5,2) × C(4,1) = 10 × 4 = 40."},
@@ -43,7 +43,7 @@
       "rubric_criteria": ["Phân tách đúng hai lựa chọn.", "Kết hợp và tính đúng 40 cách."]
     },
     {
-      "question_id": "DEMO_Q06", "grade_level": 10, "skill_ids": ["A006"],
+      "question_id": "DEMO_Q06", "grade_level": 10, "skill_ids": ["A006"], "primary_skill_id": "A006",
       "cognitive_level": "application", "generate_type": "direct",
       "content": "Từ 7 thành viên, phân công 3 người khác nhau làm trưởng nhóm, phó nhóm và thư ký. Có bao nhiêu cách?",
       "answer": {"correct_answer": "210", "explanation": "Ba vai trò khác nhau nên có 7 × 6 × 5 = 210 cách."},

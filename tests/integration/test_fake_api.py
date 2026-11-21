@@ -66,9 +66,9 @@ def test_student_profile_and_catalogue(client):
     assert response.status_code == 200
     profile = StudentProfileResponse.model_validate(response.json())
     assert profile.grade_level == 10
-    assert profile.evidence_count == 3
+    assert profile.evidence_count is None
     assert profile.skill_mastery[0].evidence_count == 1
-    assert profile.data_status == "sufficient"
+    assert profile.data_status is None
     assert profile.recommended_blueprint_mode == "adaptive"
     assert "name" not in response.json()
     assert "birthday" not in response.json()
@@ -157,7 +157,7 @@ def test_adaptive_uses_diagnostic_planner_at_evidence_zero_one_two(client, stude
 def test_sufficient_profile_allows_explicit_mode(client, mode):
     body = generated(client, student_id="DEMO_SUFFICIENT_001", generation_mode=mode)
     assert body["generation_mode"] == mode
-    assert body["evidence_count"] == 3
+    assert body["evidence_count"] is None
 
 
 @pytest.mark.parametrize("count", [1, 3, 4, 5, 8, 10])
@@ -313,7 +313,7 @@ def test_malformed_profile_is_not_silently_defaulted(tmp_path, value):
     path = tmp_path / "data" / "student_profiles.json"
     fixture = json.loads(path.read_text(encoding="utf-8"))
     if value is None:
-        fixture["students"][0].pop("evidence_count")
+        fixture["students"][0]["evidence_count"] = None
     else:
         fixture["students"][0]["evidence_count"] = value
     path.write_text(json.dumps(fixture), encoding="utf-8")
@@ -323,6 +323,101 @@ def test_malformed_profile_is_not_silently_defaulted(tmp_path, value):
         response = client.get("/api/v1/students/DEMO_NEW_001/profile")
         assert response.status_code == 500
         assert response.json()["error"]["code"] == "INVALID_PROFILE_DATA"
+
+
+@pytest.mark.parametrize("value", [None, -1, True, "3", 1.5])
+def test_malformed_skill_evidence_is_not_silently_defaulted(tmp_path, value):
+    shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
+    path = tmp_path / "data" / "student_profiles.json"
+    fixture = json.loads(path.read_text(encoding="utf-8"))
+    skill = fixture["students"][1]["skill_mastery"][0]
+    if value is None:
+        skill.pop("evidence_count")
+    else:
+        skill["evidence_count"] = value
+    path.write_text(json.dumps(fixture), encoding="utf-8")
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent), headers=HEADERS) as client:
+        response = client.get("/api/v1/students/DEMO_PARTIAL_001/profile")
+        assert response.status_code == 500
+        assert response.json()["error"]["code"] == "INVALID_PROFILE_DATA"
+
+
+@pytest.mark.parametrize("mutation", [
+    "root_evidence", "student_name", "data_status", "recommended_mode",
+    "legacy_wrongs", "missing_history", "duplicate_skill", "unknown_skill",
+])
+def test_profile_fixture_must_follow_agreed_student_format(tmp_path, mutation):
+    shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
+    path = tmp_path / "data" / "student_profiles.json"
+    fixture = json.loads(path.read_text(encoding="utf-8"))
+    student = fixture["students"][1]
+    if mutation == "root_evidence":
+        student["evidence_count"] = 1
+    elif mutation == "student_name":
+        student["student_name"] = student.pop("name")
+    elif mutation == "data_status":
+        student["data_status"] = "partial"
+    elif mutation == "recommended_mode":
+        student["recommended_blueprint_mode"] = "default_blueprint"
+    elif mutation == "legacy_wrongs":
+        history = student["learning_history"][0]
+        history["wrongs"] = history.pop("wrong_questions")
+    elif mutation == "missing_history":
+        student.pop("learning_history")
+    elif mutation == "duplicate_skill":
+        student["skill_mastery"].append(student["skill_mastery"][0].copy())
+    else:
+        student["skill_mastery"][0]["skill_id"] = "UNKNOWN"
+    path.write_text(json.dumps(fixture), encoding="utf-8")
+    with TestClient(create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent), headers=HEADERS) as client:
+        response = client.get("/api/v1/students/DEMO_PARTIAL_001/profile")
+        assert response.status_code == 500
+        assert response.json()["error"]["code"] == "INVALID_PROFILE_DATA"
+
+
+def test_service_receives_independent_skill_evidence_and_full_history(tmp_path):
+    shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
+    path = tmp_path / "data" / "student_profiles.json"
+    fixture = json.loads(path.read_text(encoding="utf-8"))
+    student = fixture["students"][-1]
+    for skill, count in zip(student["skill_mastery"], [4, 1, 0]):
+        skill["evidence_count"] = count
+    path.write_text(json.dumps(fixture), encoding="utf-8")
+    fixture_generator = FakeExamGenerator(StaticDataAdapter(fixture_dir=path.parent))
+
+    class Replacement:
+        calls = 0
+
+        def generate(self, request, profile):
+            self.calls += 1
+            assert profile.learning_history[0].model_dump() == student["learning_history"][0]
+            assert [s.evidence_count for s in profile.skill_mastery] == [4, 1, 0]
+            return fixture_generator.generate(request, profile)
+
+    replacement = Replacement()
+    app = create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent, generator=replacement)
+    with TestClient(app, headers=HEADERS) as client:
+        generated(client, student_id=student["student_id"], generation_mode="default_blueprint")
+        assert replacement.calls == 1
+        assert client.get(f"/api/v1/students/{student['student_id']}/profile").json()["learning_history"] == student["learning_history"]
+
+
+def test_grade_eleven_profile_is_read_without_using_grade_ten_question_fixtures(tmp_path):
+    shutil.copytree(DEFAULT_FIXTURES, tmp_path / "data")
+    path = tmp_path / "data" / "student_profiles.json"
+    fixture = json.loads(path.read_text(encoding="utf-8"))
+    student = fixture["students"][0]
+    student["grade_level"] = 11
+    path.write_text(json.dumps(fixture), encoding="utf-8")
+    app = create_app(backend="fake", teacher_token=TOKEN, fixture_dir=path.parent)
+    with TestClient(app, headers=HEADERS) as client:
+        response = client.get(f"/api/v1/students/{student['student_id']}/profile")
+        assert response.status_code == 200
+        assert response.json()["grade_level"] == 11
+        response = client.post("/api/v1/exams/generate", json=payload(student["student_id"]))
+        assert response.status_code == 409
+        assert response.json()["error"]["code"] == "INSUFFICIENT_QUESTION_BANK"
+        assert not app.state.exams._exams
 
 
 def test_missing_fixture_and_database_do_not_create_files(tmp_path):
@@ -511,7 +606,7 @@ def test_generator_cannot_rewrite_trusted_context(mutation):
         assert not app.state.exams._exams
         assert (
             client.get("/api/v1/students/DEMO_NEW_001/profile").json()["evidence_count"]
-            == 0
+            is None
         )
 
 
@@ -536,7 +631,7 @@ def test_generator_nested_working_mutations_do_not_change_original_inputs():
         exam = generated(
             client, student_id="DEMO_SUFFICIENT_001", generation_mode="adaptive"
         )
-        assert exam["generation_mode"] == "adaptive" and exam["evidence_count"] == 3
+        assert exam["generation_mode"] == "adaptive" and exam["evidence_count"] is None
         assert client.get(url).json() == before
 
 

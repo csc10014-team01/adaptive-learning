@@ -25,10 +25,10 @@
 |  +-----------------------------------------+ +----------------------------------+ |
 |  | Biểu đồ năng lực theo chuyên đề         | | Đánh giá & Khuyến nghị           | |
 |  |                                         | |                                  | |
-|  |   Hàm số & Đồ thị        [======== ] 78%| | [!] Cần cải thiện:               | |
+|  |   Hàm số & Đồ thị        [-------- ] 78%| | [!] Cần cải thiện:               | |
 |  |   Hình không gian Oxyz   [====     ] 45%| | - Phương trình mặt phẳng (Oxyz)  | |
 |  |   Nguyên hàm - Tích phân [======   ] 62%| | - Ứng dụng tích phân tính diện   | |
-|  |   Số phức                [=======  ] 70%| |   tích hình phẳng                | |
+|  |   Số phức                [-------  ] 70%| |   tích hình phẳng                | |
 |  |                                         | |                                  | |
 |  |                                         | | Khuyến nghị: Ôn tập bổ trợ 3 câu | |
 |  |                                         | | tự luận mức độ Vận dụng          | |

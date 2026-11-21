@@ -6,9 +6,9 @@ import json
 import sqlite3
 from pathlib import Path
 from threading import RLock
-from typing import Literal
+from typing import Annotated, Literal
 
-from pydantic import Field, ValidationError
+from pydantic import Field, ValidationError, model_validator
 
 from src.api.schemas import (
     Answer,
@@ -18,6 +18,7 @@ from src.api.schemas import (
     ExamResponse,
     GradeLevel,
     Identifier,
+    LearningHistoryItem,
     SkillLabel,
     SkillMastery,
     StudentProfileResponse,
@@ -52,22 +53,43 @@ class RawStudent(ContractModel):
     learning_history: list[HistoryItem]
 
 
+class CanonicalStudent(ContractModel):
+    student_id: Identifier
+    name: Text
+    grade_level: Annotated[int, Field(strict=True, gt=0)]
+    skill_mastery: list[SkillMastery]
+    learning_history: list[LearningHistoryItem]
+
+
 class ProfileFile(ContractModel):
     fixture_kind: Literal["synthetic_api_demo", "data_module"]
     topic_id: Literal["combinatorics"]
-    students: list[RawStudent]
+    students: list[RawStudent | CanonicalStudent]
 
 
 class FixtureQuestion(ContractModel):
     question_id: Identifier
     grade_level: GradeLevel
     skill_ids: list[Identifier] = Field(min_length=1)
+    topic_id: Literal["combinatorics"] = "combinatorics"
+    primary_skill_id: Identifier | None = None
     cognitive_level: CognitiveLevel
     generate_type: Literal["direct"]
     content: Text
     answer: Answer
     solution_steps: list[Text] = Field(min_length=1)
     rubric_criteria: list[Text] = Field(min_length=1)
+
+
+    @model_validator(mode="after")
+    def valid_skill_links(self):
+        if len(set(self.skill_ids)) != len(self.skill_ids):
+            raise ValueError("Question skill_ids must be unique")
+        if self.primary_skill_id is None and len(self.skill_ids) == 1:
+            self.primary_skill_id = self.skill_ids[0]
+        if self.primary_skill_id is not None and self.primary_skill_id not in self.skill_ids:
+            raise ValueError("primary_skill_id must belong to skill_ids")
+        return self
 
 
 class QuestionFile(ContractModel):
@@ -125,19 +147,21 @@ class StaticDataAdapter:
         known_skills = {skill.skill_id for skill in self.topic.skills}
         for raw in profiles.students:
             try:
+                legacy = isinstance(raw, RawStudent)
+                count = raw.evidence_count if legacy else None
                 profile = StudentProfileResponse(
                     student_id=raw.student_id,
                     student_name=raw.name,
                     grade_level=raw.grade_level,
-                    evidence_count=raw.evidence_count,
-                    data_status=evidence_status(raw.evidence_count),
+                    evidence_count=count,
+                    data_status=evidence_status(count) if count is not None else None,
                     skill_mastery=raw.skill_mastery,
                     learning_history=[
                         {"test_id": item.test_id, "wrong_questions": item.wrongs}
                         for item in raw.learning_history
-                    ],
+                    ] if legacy else raw.learning_history,
                     recommended_blueprint_mode="adaptive"
-                    if raw.evidence_count >= 3
+                    if count is None or count >= 3
                     else "default_blueprint",
                 )
                 if profile.student_id in result or any(
@@ -278,9 +302,10 @@ class StaticDataAdapter:
             ) from exc
 
     def get_profile(self, student_id: str) -> StudentProfileResponse:
-        if student_id not in self.profiles:
+        profiles = self.profiles
+        if student_id not in profiles:
             raise ApiFailure(404, "STUDENT_NOT_FOUND", "Không tìm thấy học sinh.")
-        return self.profiles[student_id].model_copy(deep=True)
+        return profiles[student_id].model_copy(deep=True)
 
     def list_students(self) -> list[StudentSummary]:
         return [

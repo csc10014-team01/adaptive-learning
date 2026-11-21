@@ -4,9 +4,9 @@ import json
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
 
-# =========================
+# -------------------------
 # HELPER FUNCTIONS
-# =========================
+# -------------------------
 
 def check_required_fields(data: dict, required_fields: list) -> bool:
     """Kiểm tra các trường bắt buộc có tồn tại và không bị None."""

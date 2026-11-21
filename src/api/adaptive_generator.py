@@ -62,8 +62,10 @@ class SQLDataAdapter(StaticDataAdapter):
         bank_path: Path = DEFAULT_BANK,
         student_path: Path = DEFAULT_STUDENTS,
         fixture_dir: Path = DEFAULT_FIXTURES,
+        profile_json: bool = False,
     ):
         super().__init__(fixture_dir, bank_path)
+        self.profile_json = profile_json
         self.core = M3DataAdapter(bank_path=bank_path, student_path=student_path)
 
     @property
@@ -72,6 +74,8 @@ class SQLDataAdapter(StaticDataAdapter):
 
     @property
     def profiles(self):
+        if self.profile_json:
+            return super().profiles
         return {key: public_profile(value) for key, value in self.core.profiles.items()}
 
     @property
@@ -83,6 +87,8 @@ class SQLDataAdapter(StaticDataAdapter):
         ]
 
     def get_profile(self, student_id):
+        if self.profile_json:
+            return super().get_profile(student_id)
         return public_profile(self.core.get_profile(student_id))
 
 

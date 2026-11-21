@@ -6,9 +6,9 @@ import re
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 DB_PATH = BASE_DIR / "data"/"sample"/"dataset"/ "question_bank.db"
 
-# =========================
+# -------------------------
 # QUESTIONS
-# =========================
+# -------------------------
 
 
 def parse_json(text):
@@ -101,9 +101,9 @@ def add_question(DB_PATH, question: dict) -> bool:
         raise RuntimeError(f"Cannot add question: {e}")
 
 
-# =========================
+# -------------------------
 # ANSWERS
-# =========================
+# -------------------------
 
 def validate_answer(DB_PATH, answer: dict) -> bool:
     """
@@ -182,9 +182,9 @@ def add_answer(DB_PATH, answer: dict) -> bool:
         raise RuntimeError(f"Cannot add answer: {e}")
 
 
-# =========================
+# -------------------------
 # QUESTION TEMPLATES
-# =========================
+# -------------------------
 
 def validate_template(DB_PATH, template: dict) -> bool:
     """
